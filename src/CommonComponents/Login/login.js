@@ -164,6 +164,7 @@ const Login = () => {
       apis
         .post("/login", bodyData)
         .then((res) => {
+          console.log('api call', res);
           if (res.data.success === true) {
             setDisable(false);
             if (twoFactor) {

@@ -33,6 +33,7 @@ import {
 toast.configure();
 
 const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
+  console.log('--------------------', userType);
   const apis = useAuthInterceptor();
   const { t } = useTranslation();
   const adminToken = localStorage.getItem("admin_accessToken");
@@ -78,7 +79,9 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
         </div>
 
         {(() => {
+          console.log('usertype',userType);
           switch (userType) {
+            
             case "admin":
               return (
                 <nav>
