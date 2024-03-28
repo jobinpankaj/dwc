@@ -132,7 +132,7 @@ const Dashboard = () => {
         <Sidebar userType={"distributor"} />
 
         <div class="col main p-0">
-          <Header
+          <Header  userType={"distributor"}
             title={t("distributor.sidebar.dashboard")}
             updateSidebar={updateSidebar}
           />

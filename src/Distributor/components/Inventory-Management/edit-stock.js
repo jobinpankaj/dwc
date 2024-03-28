@@ -18,7 +18,7 @@ const EditStock = () => {
         <Sidebar userType={"distributor"}/>
 
             <div class="col main p-0">
-                <Header  title="Product-1 " updateSidebar={updateSidebar}/>
+                <Header  title="Product-1 " userType={"distributor"} updateSidebar={updateSidebar}/>
                 <div class="container-fluid page-content-box px-3 px-sm-4">
                     <div class="row">
                         <div class="col">
