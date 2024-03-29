@@ -48,7 +48,7 @@ const Dashboard = () => {
       <Row className="height-inherit">
         <Sidebar userType={"admin"} />
         <Col className="main p-0">
-          <Header title="Dashboard" updateSidebar={updateSidebar} />
+          <Header title="Dashboard" userType={"admin"} updateSidebar={updateSidebar} />
           <Container fluid className="page-content-box px-3 px-sm-4">
             <Row>
               <Col>

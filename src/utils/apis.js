@@ -6,7 +6,9 @@ const useAuthInterceptor = () => {
   const navigate = useNavigate();
 
   const apis = axios.create({
-    baseURL: process.env.REACT_APP_PROD_URL,
+    // baseURL: process.env.REACT_APP_PROD_URL,
+    // baseURL: 'http://laravelapi.com/api/v1',
+    baseURL: 'http://backapi.com/api/v1',
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",

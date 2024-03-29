@@ -163,6 +163,8 @@ const Teams = () => {
           <div class="container-fluid alignPadding h-100">
             <div class="col-xl-12 col-lg-12 col-md-12">
               <h2 class="subHeading text-uppercase text-white">
+                {/* <h1>check------------{t("notification_settings.heading")}</h1> */}
+                
                 {t("landing.team.team_intro")}{" "}
               </h2>
               <div class="contentBx">
@@ -356,7 +358,7 @@ const Teams = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="teamList col-auto mb-4">
+                    {/* <div className="teamList col-auto mb-4">
                       <div className="card">
                         <Link to={"/Phileppe-Wouters"}>
                           <img
@@ -409,7 +411,7 @@ const Teams = () => {
                           </ul>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="teamList col-auto mb-4">
                       <div className="card">
                         <Link to={"/Eve-Marie-Gravel"}>

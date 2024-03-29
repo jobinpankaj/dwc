@@ -233,7 +233,7 @@ const CreateTransfer = () => {
         />
 
         <div class="col main p-0">
-          <Header title="Create Transfer" updateSidebar={updateSidebar} />
+          <Header title="Create Transfer" userType={"supplier"} updateSidebar={updateSidebar} />
           <div class="container-fluid page-content-box px-3 px-sm-4">
             <div class="row">
               <div class="col">
