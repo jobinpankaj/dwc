@@ -16,86 +16,12 @@ import "../../assets/scss/dashboard.scss";
 import { useTranslation } from "react-i18next";
 import TopRetailers from "./Partials/TopRetailers";
 import TopProducts from "./Partials/TopProducts";
-import RadialChart from "./Partials/RadialChart";
+import RadialChart from "../../../CommonComponents/Charts/RadialChart";
 import LineChart from "./Partials/LineChart";
 
 const Dashboard = () => {
   const accessToken = localStorage.getItem("supplier_accessToken");
   const { t, i18n } = useTranslation();
-
-  const [data, setData] = useState([]);
-  const [topProductsData, setTopProductsData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const url = `supplier/topRetailerList`;
-  const topProductsURL = `supplier/topProductList`;
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      permission: "dashboard-view",
-    },
-  };
-
-  const apis = useAuthInterceptor();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!accessToken) {
-      navigate("/", {
-        state: {
-          url: "/dashboard",
-        },
-      });
-    }
-
-    apis
-      .get(url, config)
-      .then((res) => {
-        console.log(res);
-        if (res.data.success === true) {
-          setData(res.data.data);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        // toast.error(err.response.data.message, {
-        //     autoClose: 3000,
-        //     position: toast.POSITION.TOP_CENTER,
-        // });
-      });
-  }, []);
-
-  // top products
-  useEffect(() => {
-    if (!accessToken) {
-      navigate("/", {
-        state: {
-          url: "/dashboard",
-        },
-      });
-    }
-
-    apis
-      .get(topProductsURL, config)
-      .then((res) => {
-        console.log(res);
-        if (res.data.success === true) {
-          setTopProductsData(res.data.data);
-          // setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        // setLoading(false);
-        // toast.error(err.response.data.message, {
-        //     autoClose: 3000,
-        //     position: toast.POSITION.TOP_CENTER,
-        // });
-      });
-  }, []);
 
   return (
     <div className="container-fluid page-wrap dashboard">
@@ -103,7 +29,7 @@ const Dashboard = () => {
         <Sidebar userType={"supplier"} />
 
         <div className="col main p-0">
-          <Header title={t("supplier.sidebar.Dashboard1")} userType={"supplier"} />
+          <Header title={t("supplier.sidebar.Dashboard1")} />
 
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row">
@@ -199,158 +125,190 @@ const Dashboard = () => {
                     tabindex="0"
                   >
                     <div className="row mb-3">
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-10">
-                      <div className="card user-card height-100 line1">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-champagne-glasses"
-                              className="icon-position"
-                            />
-                          </div>
-            <div className="dash-widget-txt">
-            <p class="mb-0">
-            <h6>224</h6>
-            <span class="text-nowrap"><label className="badge bg-white bg-opacity-10 me-1">27.5%</label> This month</span>
-            </p>
-            </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-10">
-                      <div className="card user-card height-100 line2">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-chart-simple"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>$1,223,134.00</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">27.5%</label> Revenue</span>
-                                </p>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-10">
+                        <div className="card user-card height-100 line1">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-champagne-glasses"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>224</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    27.5%
+                                  </label>{" "}
+                                  This month
+                                </span>
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-10">
-                      <div className="card user-card height-100 line3">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-file-invoice"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>3,520</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">78.55%</label> Invoices </span>
-                                </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-10">
-                      <div className="card user-card height-100 line4">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-sack-dollar"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>2,552</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">39.05%</label> Sold</span>
-                                </p>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-10">
+                        <div className="card user-card height-100 line2">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-chart-simple"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>$1,223,134.00</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    27.5%
+                                  </label>{" "}
+                                  Revenue
+                                </span>
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
-                      <div className="card user-card height-100 line5">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-warehouse"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>350</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">.05%</label> warehouse</span>
-                                </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
-                      <div className="card user-card height-100 line6">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-sack-xmark"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>520</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">27.5%</label> Pending</span>
-                                </p>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-10">
+                        <div className="card user-card height-100 line3">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-file-invoice"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>3,520</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    78.55%
+                                  </label>{" "}
+                                  Invoices{" "}
+                                </span>
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
-                      <div className="card user-card height-100 line7">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-truck"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>3</h6>
-                                    <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">---</label> Shipped</span>
-                                </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
-                      <div className="card user-card height-100 line8">
-                        <div className="card-body">
-                          <div className="dash-widget">
-                            <FontAwesomeIcon
-                              icon="fa-solid fa-people-arrows"
-                              className="icon-position"
-                            />
-                          </div>
-                          <div className="dash-widget-txt">
-                                <p class="mb-0">
-                                    <h6>7</h6>
-            <span class="text-nowrap">
-            <label className="badge bg-white bg-opacity-10 me-1">55.5%</label> Customers</span>
-                                </p>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-10">
+                        <div className="card user-card height-100 line4">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-sack-dollar"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>2,552</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    39.05%
+                                  </label>{" "}
+                                  Sold
+                                </span>
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>      
-
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+                        <div className="card user-card height-100 line5">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-warehouse"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>350</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    .05%
+                                  </label>{" "}
+                                  warehouse
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+                        <div className="card user-card height-100 line6">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-sack-xmark"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>520</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    27.5%
+                                  </label>{" "}
+                                  Pending
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+                        <div className="card user-card height-100 line7">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-truck"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>3</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    ---
+                                  </label>{" "}
+                                  Shipped
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+                        <div className="card user-card height-100 line8">
+                          <div className="card-body">
+                            <div className="dash-widget">
+                              <FontAwesomeIcon
+                                icon="fa-solid fa-people-arrows"
+                                className="icon-position"
+                              />
+                            </div>
+                            <div className="dash-widget-txt">
+                              <p class="mb-0">
+                                <h6>7</h6>
+                                <span class="text-nowrap">
+                                  <label className="badge bg-white bg-opacity-10 me-1">
+                                    55.5%
+                                  </label>{" "}
+                                  Customers
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="row mb-3">
                       <div className="col-sm-5 mb-3 mb-sm-0">
@@ -360,7 +318,7 @@ const Dashboard = () => {
                               {t("supplier.sidebar.users")}
                             </h6>
                             <div className="row">
-                              <RadialChart />
+                              <RadialChart accessToken={accessToken} />
                             </div>
                             <hr />
                             <div className="row">

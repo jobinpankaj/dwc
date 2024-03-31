@@ -33,7 +33,6 @@ import {
 toast.configure();
 
 const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
-  console.log('--------------------', userType);
   const apis = useAuthInterceptor();
   const { t } = useTranslation();
   const adminToken = localStorage.getItem("admin_accessToken");
@@ -79,9 +78,7 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
         </div>
 
         {(() => {
-          console.log('usertype',userType);
           switch (userType) {
-            
             case "admin":
               return (
                 <nav>
@@ -396,16 +393,16 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                     )}
                     {hasPermission(REPORTS_VIEW) && (
                       <NavItem as="li">
-                        <a
-                          // to="/retailer/reports"
+                          <NavLink
+                           to="/retailer/reports"
                           onClick={() => progressPrompt()}
                           className="report"
-                          // exact
-                          // activeClassname="active"
+                         exact
+                         activeClassname="active"
                         >
                           <span class=""></span>
                           {t("retailer.sidebar.reports")}
-                        </a>
+                      </NavLink>
                       </NavItem>
                     )}
                     {/* {hasPermission(USER_VIEW) && (
@@ -552,16 +549,15 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                     )}
                     {hasPermission(REPORTS_VIEW) && (
                       <NavItem as="li">
-                        <a
-                          onClick={() => progressPrompt()}
-                          // to="/distributor/reports"
+                              <NavLink
+                           to="/distributor/reports"
                           className="report"
-                          // exact
-                          // activeClassname="active"
+                           exact
+                         activeClassname="active"
                         >
                           <span class=""></span>
                           {t("distributor.sidebar.reports")}
-                        </a>
+                      </NavLink>
                       </NavItem>
                     )}
                     {hasPermission(USER_VIEW) && (

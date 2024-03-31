@@ -7,11 +7,10 @@ import profile from "../../assets/images/profile.png";
 import "./header.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import "react-toastify/dist/ReactToastify.css";
-import { Popup } from "../../../CommonComponents/NotificationPopup/notification"; 
 
 toast.configure();
 
-const Header = ({ title, updateSidebar, }) => {
+const Header = ({ title, updateSidebar }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const token = localStorage.getItem("admin_accessToken");
@@ -49,7 +48,7 @@ const Header = ({ title, updateSidebar, }) => {
         navigate("/dashboard");
       });
   };
-  const [open, setOpen] = useState(false);
+
   return (
     <header className="bg-light">
       <div className="row m-0">
@@ -98,8 +97,14 @@ const Header = ({ title, updateSidebar, }) => {
             </svg>
           </div>
           <div className="toolbar">
-            <div className="notification icon-wrap" style={{ display: "block" }}>
-            <button onClick={() => setOpen(true, notification, supplier)} className="notification_btn" >
+            {/* <div className="wishlist icon-wrap" style={{ display: "none" }}>
+                            <span className="icon">
+                                <svg width="24" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path opacity="0.8" d="M10.9156 18.7342L10.9141 18.733C7.80374 16.0432 5.30481 13.8768 3.57178 11.8548C1.84802 9.84361 1 8.10693 1 6.29428C1 3.35565 3.40984 1 6.6 1C8.4029 1 10.1373 1.80545 11.2567 3.04933L12 3.87527L12.7433 3.04933C13.8627 1.80545 15.5971 1 17.4 1C20.5902 1 23 3.35565 23 6.29428C23 8.10693 22.152 9.84361 20.4282 11.8548C18.6952 13.8768 16.1963 16.0432 13.0859 18.733L13.0844 18.7342L12 19.6757L10.9156 18.7342Z" stroke="#231F20" stroke-width="2" />
+                                </svg>
+                            </span>
+                        </div> */}
+            <div className="notification icon-wrap" style={{ display: "none" }}>
               <span className="icon">
                 <svg
                   width="18"
@@ -116,9 +121,8 @@ const Header = ({ title, updateSidebar, }) => {
                   />
                 </svg>
               </span>
-              </button>
             </div>
-            {open ? <Popup text={'supplier'} closePopup={() => setOpen(false)} /> : null}
+
             <div className="language icon-wrap">
               <div className="dropdown">
                 <button

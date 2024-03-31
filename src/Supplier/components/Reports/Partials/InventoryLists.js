@@ -16,13 +16,16 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
-const postFormDataUrl = "/supplier/PostReportProductList";
-const getFormDataUrl = "/supplier/getsalesReport";
-const getFormDataproductName = "/supplier/reportFormdataProductsName";
+const getFormDataSuppliername = "/supplier/reportSuppliername";
+const postFormDataUrl = "/supplier/PostReportInventoryList";
+const getFormDataUrl = "/supplier/getinventoryReport";
+const getFormDataProUrl = "/supplier/reportSupplierProduct";
 const getFormDataproductType = "/supplier/reportFormdataProducttype";
 const getFormDataproductStyle = "/supplier/reportFormdataProductstyle";
 const getFormDataproductFormat = "/supplier/reportFormdataProductformat";
 const getFormDataWarehouseList = "/supplier/reportFormdataWarehousesList";
+const getFormDataUsersList = "/supplier/reportFormdataUsersList";
+
 const InventoryLists = ({ img, token }) => {
   // config for api call
   const config = {
@@ -38,23 +41,28 @@ const InventoryLists = ({ img, token }) => {
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
-    date_type: "",
-    distributer: "",
     from_date: "",
-    order_state: "",
-    product_type: "",
     to_date: "",
+        warehouse: "",
+        supply: "",
+        product_name: "",
+        product_type: "",
+        product_style: "",
+        product_format: "",
+        by_user: "",
     language: "",
     file_type: "",
   });
   const [loading, setLoading] = useState(false);
   const [getTableDataLoading, setGetTableDataLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [ProductNameData, setProductNameData] = useState([]);
+  const [ProData, setProData] = useState([]);
   const [ProductTypeData, setProductTypeData] = useState([]);  // testing values for table
   const [ProductStyleData, setProductStyleData] = useState([]);
   const [ProductFormatData, setProductFormatData] = useState([]);
   const [WarehouseFormatData, setWarehouseFormatData] = useState([]);
+  const [Suppliername, setSupplierData] = useState([]);
+  const [UserFormatData, setUserFormatData] = useState([]);
   // testing values for table
   // {
   //   created_at: "123",
@@ -93,7 +101,7 @@ const InventoryLists = ({ img, token }) => {
           console.log("response", { res });
 
           if (res.status === 200) {
-            toast.success("Profile Information saved!", {
+            toast.success("Inventory report generated!", {
               autoClose: 1000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -152,34 +160,62 @@ const InventoryLists = ({ img, token }) => {
     fetchFormData();
   }, []);
 
- // fetch saved form Product type data from db
-  const fetchProductNameData = () => {
-    // add permissions based on URL
-    config.headers.permission = "reports-view";
-    setGetTableDataLoading(true);
-    apis
-      .get(getFormDataproductName, config)
-      //.get(getFormDataUrl)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log("response Product Name data", { res });
-          setProductNameData(res.data.data);
-          setGetTableDataLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log({ error });
+  // fetch saved form city data from db
+const fetchFormSupplierData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataSuppliername, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response Distributor data", { res });
+        setSupplierData(res.data.data);
         setGetTableDataLoading(false);
-        if (error) {
-          console.log({ error });
-        }
-      });
-    setGetTableDataLoading(false);
-  };
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+};
 
-  useEffect(() => {
-    fetchProductNameData();
-  }, []);
+useEffect(() => {
+  fetchFormSupplierData();
+}, []);
+ // fetch saved form Product name data from db
+ const fetchFormProData = () => {
+   // add permissions based on URL
+   config.headers.permission = "reports-view";
+   setGetTableDataLoading(true);
+   apis
+     .get(getFormDataProUrl, config)
+     //.get(getFormDataUrl)
+     .then((res) => {
+       if (res.status === 200) {
+         console.log("response Product name data", { res });
+         setProData(res.data.data);
+         setGetTableDataLoading(false);
+       }
+     })
+     .catch((error) => {
+       console.log({ error });
+       setGetTableDataLoading(false);
+       if (error) {
+         console.log({ error });
+       }
+     });
+   setGetTableDataLoading(false);
+ };
+
+ useEffect(() => {
+   fetchFormProData();
+ }, []);
   // fetch saved form Product type data from db
   const fetchProductTypeData = () => {
     // add permissions based on URL
@@ -295,7 +331,36 @@ const InventoryLists = ({ img, token }) => {
   useEffect(() => {
     fetchWarehouseFormatData();
   }, []);
-  
+
+  // fetch saved form Users data from db
+  const fetchUserFormatData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataUsersList, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Warehouse data", { res });
+          setUserFormatData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchUserFormatData();
+  }, []);
+
   return (
     <>
       <div className="col-12 d-flex">
@@ -330,37 +395,20 @@ const InventoryLists = ({ img, token }) => {
               </Col>
 
               <Col>
-                Sébastien Morasse
-                <br />
-                List of products delivered to buyers
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
+              ))}
+                List of Inventories
                 <br />
                 Category
                 <br />
-                Find out where your products have been delivered during the
-                analyzed perio
+                Find out where your products have been Stored
               </Col>
               <Col xs={6}></Col>
             </Row>
 
             <hr />
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="date-type">
-                <Form.Label>Date Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="date_type"
-                  required
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option value="">Choose...</option>
-                  <option value="created_at">Created at</option>
-                  <option value="updated_at">Updated at</option>
-                </Form.Control>
-                <Form.Control.Feedback className="error-label" type="invalid">
-                  Date Type is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-
               <Form.Group as={Col} controlId="from_date">
                 <Form.Label>From</Form.Label>
                 <Form.Control
@@ -386,63 +434,46 @@ const InventoryLists = ({ img, token }) => {
                   To date is required.
                 </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group as={Col} controlId="distributer">
+              <Form.Group as={Col} controlId="warehouse">
                 <Form.Label>By warehouse</Form.Label>
                 <Form.Control
                   as="select"
                   required
-                  name="distributer"
+                  name="warehouse"
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
                                                     {WarehouseFormatData.map((values) => (
-                    <option value={values?.name}>{values?.name}</option>
+                    <option value={values?.id}>{values?.name}</option>
                   ))}
                 </Form.Control>
-                <Form.Control.Feedback className="error-label" type="invalid">
-                  Warehouse is required.
-                </Form.Control.Feedback>
               </Form.Group>
-              <Form.Group as={Col} controlId="distributer">
-                <Form.Label>Supply</Form.Label>
+              <Form.Group as={Col} controlId="product-name">
+                <Form.Label>Product Name</Form.Label>
                 <Form.Control
                   as="select"
                   required
-                  name="distributer"
+                  name="product_name"
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
+                  {ProData.map((values) => (
+                    <option value={values?.product_name}>{values?.product_name}</option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
-                  Supply is required.
+                  Product name is required.
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
 
             <Row className="mb-3">
-            <Form.Group as={Col} controlId="distributer">
-              <Form.Label>Product Name</Form.Label>
-              <Form.Control
-                as="select"
-                required
-                name="distributer"
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                                  {ProductNameData.map((values) => (
-                    <option value={values?.product_name}>{values?.product_name}</option>
-                  ))}
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Product name is required.
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} controlId="distributer">
+            <Form.Group as={Col} controlId="product-type">
               <Form.Label>Product type</Form.Label>
               <Form.Control
                 as="select"
                 required
-                name="distributer"
+                name="product_type"
                 onChange={(e) => handleChange(e)}
               >
                 <option value="">Choose...</option>
@@ -454,28 +485,28 @@ const InventoryLists = ({ img, token }) => {
                 Product type is required.
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group as={Col} controlId="distributer">
+            <Form.Group as={Col} controlId="product-style">
               <Form.Label>Product style</Form.Label>
               <Form.Control
                 as="select"
                 required
-                name="distributer"
+                name="product_style"
                 onChange={(e) => handleChange(e)}
               >
                 <option value="">Choose...</option>
                               {ProductStyleData.map((values) => (
                   <option value={values?.name}>{values?.name}</option>
-                ))}  
+                ))}
               </Form.Control>
               <Form.Control.Feedback className="error-label" type="invalid">
                 Product style is required.
               </Form.Control.Feedback>
             </Form.Group>
-              <Form.Group as={Col} controlId="product-type">
+              <Form.Group as={Col} controlId="product-format">
                 <Form.Label>Product Format</Form.Label>
                 <Form.Control
                   as="select"
-                  name="product_type"
+                  name="product_format"
                   required
                   onChange={(e) => handleChange(e)}
                 >
@@ -488,17 +519,19 @@ const InventoryLists = ({ img, token }) => {
                   Product format is required.
                 </Form.Control.Feedback>
               </Form.Group>
-      
-              <Form.Group as={Col} controlId="order-state">
+              <Form.Group as={Col} controlId="by-user">
                 <Form.Label>By User</Form.Label>
                 <Form.Control
                   as="select"
                   required
-                  name="order_state"
+                  name="by_user"
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="All">All</option>
+                  <option value="all">All</option>
+                {UserFormatData.map((values) => (
+                  <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+                ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   User is required.
@@ -528,8 +561,8 @@ const InventoryLists = ({ img, token }) => {
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >       <option value="">Choose...</option>
-                  <option value="CAeng">CA Eng</option>
-                  <option value="CAfr">CA Fr</option>
+                  <option value="CAeng">ENG</option>
+                  <option value="CAfr">FRA</option>
                 </Form.Control>
               </Form.Group>
             </Row>
