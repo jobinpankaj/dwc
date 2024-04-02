@@ -30,9 +30,6 @@ header{
             align-items: center;
             justify-content: flex-end;
             gap: 20px;
-            .notification_btn{
-                border: none;
-            }
             @media screen and (max-width:$mobile) {
                 gap: 10px;     
                 padding-top: 7px;      

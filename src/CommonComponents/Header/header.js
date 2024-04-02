@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -10,12 +10,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { handleLogout } from "../commonMethods";
 import { useDispatch } from "react-redux";
 import { restoreStore } from "../../redux/cartSlice";
-import { Popup } from '../NotificationPopup/notification';
 
 toast.configure();
 
-const Header = ({ title, updateSidebar, userType }) => {
-  console.log('from header admin--------', userType);
+const Header = ({ title, updateSidebar }) => {
   let currentPath = window.location.pathname;
   let pathSplit = currentPath.split("/");
   let users = ["supplier", "retailer", "distributor"];
@@ -27,17 +25,6 @@ const Header = ({ title, updateSidebar, userType }) => {
   const retailertoken = localStorage.getItem("retailer_accessToken");
   const dispatch = useDispatch();
   const apis = useAuthInterceptor();
-  var notification = [
-    { id: 1, name: 'Facture finale' },
-    { id: 2, name: 'Facture finale' },
-    { id: 3, name: 'Facture finale' },
-    { id: 4, name: 'Facture finale' },
-    { id: 5, name: 'Facture finale' },
-    { id: 6, name: 'Facture finale' },
-    { id: 7, name: 'Facture finale' },
-    { id: 8, name: 'Facture finale' },
-    { id: 9, name: 'Facture finale' },
-  ];
   const doLogout = () => {
     const res = handleLogout();
     res.then((flag) => {
@@ -101,8 +88,6 @@ const Header = ({ title, updateSidebar, userType }) => {
     }
   }, [retailertoken]);
 
-  const [open, setOpen] = useState(false);
-
   return (
     <header className="bg-light">
       <div className="row m-0">
@@ -151,8 +136,7 @@ const Header = ({ title, updateSidebar, userType }) => {
             </svg>
           </div>
           <div className="toolbar">
-            <div className="notification icon-wrap" style={{ display: "block" }}>
-            <button onClick={() => setOpen(true, notification)} className="notification_btn" >
+            <div className="notification icon-wrap" style={{ display: "none" }}>
               <span className="icon">
                 <svg
                   width="18"
@@ -169,9 +153,8 @@ const Header = ({ title, updateSidebar, userType }) => {
                   />
                 </svg>
               </span>
-              </button>
             </div>
-            {open ? <Popup text={userType} closePopup={() => setOpen(false)} /> : null}
+
             <div className="language icon-wrap">
               <div className="dropdown">
                 <button

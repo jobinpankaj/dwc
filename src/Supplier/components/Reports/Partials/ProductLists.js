@@ -16,18 +16,19 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
-const postFormDataUrl = "/supplier/PostReportProductList";
+const postFormDataUrl = "/PostReportProductList";
+
 const getFormDataUrl = "/supplier/getsalesReport";
-const getFormDataCityUrl = "/supplier/reportSupplierCity";
+const getFormDataProUrl = "/supplier/reportSupplierProduct";
 const getFormDataRetailerUrl = "/supplier/reportFormdataRetailer";
-const getFormDataproductName = "/supplier/reportFormdataProductsName";
+const getFormDataCadCspUrl = "/supplier/reportFormdataGetCadCsp";
 const getFormDataproductType = "/supplier/reportFormdataProducttype";
 const getFormDataproductStyle = "/supplier/reportFormdataProductstyle";
 const getFormDataproductFormat = "/supplier/reportFormdataProductformat";
 const getFormDataproductGroup = "/supplier/reportFormdataProductgroup";
 const getFormDataRetailersList = "/supplier/reportFormdataRetailersList";
-const getFormDataSupplierList = "/supplier/reportFormdataSupplierList";
-
+const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
+const getFormDataSuppliername = "/supplier/reportSuppliername";
 const ProductLists = ({ img, token }) => {
   // config for api call
   const config = {
@@ -43,7 +44,6 @@ const ProductLists = ({ img, token }) => {
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
-    date_type: "",
     from_date: "",
     to_date: "",
     supplier: "",
@@ -62,9 +62,11 @@ const ProductLists = ({ img, token }) => {
   const [loading, setLoading] = useState(false);
   const [getTableDataLoading, setGetTableDataLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [CityData, setCityData] = useState([]);
-  const [SupplierData, setSupplierData] = useState([]);
+  const [ProData, setProData] = useState([]);
+  const [DistributorData, setDistributorData] = useState([]);
+  const [Suppliername, setSupplierData] = useState([]);
   const [RetailerData, setRetailerData] = useState([]);
+  const [CadData, setCadData] = useState([]);
   const [ProductNameData, setProductNameData] = useState([]);
   const [ProductTypeData, setProductTypeData] = useState([]);  // testing values for table
   const [ProductStyleData, setProductStyleData] = useState([]);
@@ -107,7 +109,7 @@ const ProductLists = ({ img, token }) => {
           console.log("response", { res });
 
           if (res.status === 200) {
-            toast.success("Profile Information saved!", {
+            toast.success("Invoice Generated Successfully!", {
               autoClose: 1000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -126,7 +128,7 @@ const ProductLists = ({ img, token }) => {
           console.log({ error });
 
           if (error) {
-            toast.error("Something went wrong. Please try again later.", {
+            toast.error("Invoice not available. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -147,7 +149,7 @@ const ProductLists = ({ img, token }) => {
       //.get(getFormDataUrl)
       .then((res) => {
         if (res.status === 200) {
-          console.log("response table data", { res });
+          console.log("Response Sales table data", { res });
           setTableData(res.data.data);
           setGetTableDataLoading(false);
         }
@@ -176,7 +178,7 @@ const ProductLists = ({ img, token }) => {
       //.get(getFormDataUrl)
       .then((res) => {
         if (res.status === 200) {
-          console.log("response Retailer data", { res });
+          console.log("response Retailer list data", { res });
           setRetailerData(res.data.data);
           setGetTableDataLoading(false);
         }
@@ -196,17 +198,17 @@ const ProductLists = ({ img, token }) => {
   }, []);
 
   // fetch saved form city data from db
-  const fetchFormCityData = () => {
+  const fetchFormProData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
     setGetTableDataLoading(true);
     apis
-      .get(getFormDataCityUrl, config)
+      .get(getFormDataProUrl, config)
       //.get(getFormDataUrl)
       .then((res) => {
         if (res.status === 200) {
-          console.log("response city data", { res });
-          setCityData(res.data.data);
+          console.log("response Product name data", { res });
+          setProData(res.data.data);
           setGetTableDataLoading(false);
         }
       })
@@ -221,20 +223,49 @@ const ProductLists = ({ img, token }) => {
   };
 
   useEffect(() => {
-    fetchFormCityData();
+    fetchFormProData();
   }, []);
 
   // fetch saved form city data from db
+  const fetchFormDistributorData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataDistributorList, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Distributor list data", { res });
+          setDistributorData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchFormDistributorData();
+  }, []);
+
+    // fetch saved form city data from db
   const fetchFormSupplierData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
     setGetTableDataLoading(true);
     apis
-      .get(getFormDataSupplierList, config)
+      .get(getFormDataSuppliername, config)
       //.get(getFormDataUrl)
       .then((res) => {
         if (res.status === 200) {
-          console.log("response Supplier data", { res });
+          console.log("response Supplier name data", { res });
           setSupplierData(res.data.data);
           setGetTableDataLoading(false);
         }
@@ -253,34 +284,34 @@ const ProductLists = ({ img, token }) => {
     fetchFormSupplierData();
   }, []);
 
-  // fetch saved form Product type data from db
-  const fetchProductNameData = () => {
-    // add permissions based on URL
-    config.headers.permission = "reports-view";
-    setGetTableDataLoading(true);
-    apis
-      .get(getFormDataproductName, config)
-      //.get(getFormDataUrl)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log("response Product Name data", { res });
-          setProductNameData(res.data.data);
-          setGetTableDataLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log({ error });
+  // fetch saved form city data from db
+const fetchFormCadData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataCadCspUrl, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response CAD/CSP data", { res });
+        setCadData(res.data.data);
         setGetTableDataLoading(false);
-        if (error) {
-          console.log({ error });
-        }
-      });
-    setGetTableDataLoading(false);
-  };
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+};
 
-  useEffect(() => {
-    fetchProductNameData();
-  }, []);
+useEffect(() => {
+  fetchFormCadData();
+}, []);
   // fetch saved form Product type data from db
   const fetchProductTypeData = () => {
     // add permissions based on URL
@@ -430,8 +461,8 @@ const ProductLists = ({ img, token }) => {
               </Col>
 
               <Col>
-              {SupplierData.map((values) => (
-                <h5>{values?.first_name} {values?.last_name}</h5>
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
               ))}
                 Products Distributions
                 <br />
@@ -442,22 +473,6 @@ const ProductLists = ({ img, token }) => {
 
             <hr />
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="date-type">
-                <Form.Label>Date Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="date_type"
-                  required
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option value="">Choose...</option>
-                  <option value="created_at">Created at</option>
-                  <option value="updated_at">Updated at</option>
-                </Form.Control>
-                <Form.Control.Feedback className="error-label" type="invalid">
-                  Date Type is required.
-                </Form.Control.Feedback>
-              </Form.Group>
 
               <Form.Group as={Col} controlId="from_date">
                 <Form.Label>From</Form.Label>
@@ -485,7 +500,7 @@ const ProductLists = ({ img, token }) => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} controlId="supplier">
-                <Form.Label>By Supplier</Form.Label>
+                <Form.Label>By Distributor</Form.Label>
                 <Form.Control
                   as="select"
                   required
@@ -493,17 +508,14 @@ const ProductLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  {SupplierData.map((values) => (
-                    <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+                  {DistributorData.map((values) => (
+                    <option value={values?.user_id}>{values?.company_name}</option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Supplier is required.
                 </Form.Control.Feedback>
               </Form.Group>
-            </Row>
-
-            <Row className="mb-3">
               <Form.Group as={Col} controlId="retailer">
                 <Form.Label>By Retailer</Form.Label>
                 <Form.Control
@@ -513,14 +525,18 @@ const ProductLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
+                        <option value="all">All</option>
                   {RetailerData.map((values) => (
-                    <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+                    <option value={values?.user_id}>{values?.business_name}</option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Retailer type is required.
                 </Form.Control.Feedback>
               </Form.Group>
+            </Row>
+
+            <Row className="mb-3">
               <Form.Group as={Col} controlId="cad">
                 <Form.Label>CSP/CAD</Form.Label>
                 <Form.Control
@@ -530,9 +546,10 @@ const ProductLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                      {CityData.map((values) => (
-                        <option value={values?.city}>{values?.city}</option>
-                      ))}
+                           <option value="all">All</option>
+                           {CadData.map((values) => (
+                             <option value={values?.id}>{values?.name}</option>
+                           ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   CSP/CAD type is required.
@@ -547,7 +564,7 @@ const ProductLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  {ProductNameData.map((values) => (
+                  {ProData.map((values) => (
                     <option value={values?.product_name}>{values?.product_name}</option>
                   ))}
                 </Form.Control>
@@ -572,25 +589,26 @@ const ProductLists = ({ img, token }) => {
                   Product type is required.
                 </Form.Control.Feedback>
               </Form.Group>
+              <Form.Group as={Col} controlId="product-style">
+                <Form.Label>Product style</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="product_style"
+                  required
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="">Choose...</option>
+                  {ProductStyleData.map((values) => (
+                    <option value={values?.name}>{values?.name}</option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback className="error-label" type="invalid">
+                  Product style is required.
+                </Form.Control.Feedback>
+              </Form.Group>
             </Row>
+
             <Row className="mb-3">
-            <Form.Group as={Col} controlId="product-style">
-              <Form.Label>Product style</Form.Label>
-              <Form.Control
-                as="select"
-                name="product_style"
-                required
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                {ProductStyleData.map((values) => (
-                  <option value={values?.name}>{values?.name}</option>
-                ))}
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Product style is required.
-              </Form.Control.Feedback>
-            </Form.Group>
             <Form.Group as={Col} controlId="product-format">
               <Form.Label>Product format</Form.Label>
               <Form.Control
@@ -609,7 +627,7 @@ const ProductLists = ({ img, token }) => {
               </Form.Control.Feedback>
             </Form.Group>
               <Form.Group as={Col} controlId="order-state">
-                <Form.Label>Order status I</Form.Label>
+                <Form.Label>Order status </Form.Label>
                 <Form.Control
                   as="select"
                   required
@@ -617,7 +635,7 @@ const ProductLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="All">All</option>
+                  <option value="all">All</option>
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
                   <option value="shipped">Shipped</option>
@@ -628,65 +646,46 @@ const ProductLists = ({ img, token }) => {
                   Order state is required.
                 </Form.Control.Feedback>
               </Form.Group>
-      {/*}        <Form.Group as={Col} controlId="order-state">
-                <Form.Label>Order status II</Form.Label>
+              <Form.Group as={Col} controlId="invoice-state">
+                <Form.Label>Invoices Status</Form.Label>
                 <Form.Control
                   as="select"
                   required
-                  name="order_state"
+                  name="invoice_state"
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
                   <option value="All">All</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="delivered">NON Delivered</option>
-                  <option value="Pending">Refused</option>
-                  <option value="Approved">Broken</option>
-                  <option value="Onhold">Backorder</option>
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                  <option value="overdue">Overdue</option>
+                  <option value="closed">Closed</option>
+                  <option value="collect">Collect</option>
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
-                  Order state is required.
+                  Invoice status is required.
                 </Form.Control.Feedback>
-              </Form.Group> */}
+              </Form.Group>
+              <Form.Group as={Col} controlId="group">
+                <Form.Label>Group</Form.Label>
+                <Form.Control
+                  as="select"
+                  required
+                  name="group"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="">Choose...</option>
+                  {ProductGroupData.map((values) => (
+                    <option value={values?.name}>{values?.name}</option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback className="error-label" type="invalid">
+                  Group is required.
+                </Form.Control.Feedback>
+              </Form.Group>
             </Row>
             <Row className="mb-3">
-            <Form.Group as={Col} controlId="invoice-state">
-              <Form.Label>Invoices Status</Form.Label>
-              <Form.Control
-                as="select"
-                required
-                name="invoice_state"
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                <option value="All">All</option>
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-                <option value="overdue">Overdue</option>
-                <option value="closed">Closed</option>
-                <option value="collect">Collect</option>
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Invoice status is required.
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group as={Col} controlId="group">
-              <Form.Label>Group</Form.Label>
-              <Form.Control
-                as="select"
-                required
-                name="group"
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                {ProductGroupData.map((values) => (
-                  <option value={values?.name}>{values?.name}</option>
-                ))}
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Group is required.
-              </Form.Control.Feedback>
-            </Form.Group>
+
               <Form.Group as={Col} controlId="file-type">
                 <Form.Label>File Type</Form.Label>
                 <Form.Control
@@ -709,8 +708,8 @@ const ProductLists = ({ img, token }) => {
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >       <option value="">Choose...</option>
-                  <option value="CAeng">CA Eng</option>
-                  <option value="CAfr">CA Fr</option>
+                  <option value="CAeng">ENG</option>
+                  <option value="CAfr">FRA</option>
                 </Form.Control>
               </Form.Group>
             </Row>

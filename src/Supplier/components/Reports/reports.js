@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
-import generateReportImage from "../../assets/images/generate-report-icon.svg";
+import generateReportImage from "../../assets/images/logo.png";
 import ProductLists from "./Partials/ProductLists";
 import InventoryLists from "./Partials/InventoryLists";
 import SalesLists from "./Partials/SalesLists";
