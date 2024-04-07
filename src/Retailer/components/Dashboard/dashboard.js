@@ -19,6 +19,7 @@ import Autocomplete from "react-autocomplete";
 import TextInput from "react-autocomplete-input";
 import useAuthInterceptor from "../../../utils/apis";
 import { useTranslation } from "react-i18next";
+import Info from "../../../CommonComponents/Dashboard/Info";
 const Dashboard = () => {
   const { t } = useTranslation();
   const [showSidebar, setShowSidebar] = useState(false);
@@ -63,12 +64,12 @@ const Dashboard = () => {
         // console.log(res.data.data,"res.data.data")
       })
       .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       });
   }, []);
 
@@ -97,12 +98,12 @@ const Dashboard = () => {
         setOrders(res.data.data.orders);
       })
       .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       });
   }, []);
   console.log(supplierId, showNoteModal, "fgdbfghnb");
@@ -122,12 +123,12 @@ const Dashboard = () => {
           setProductList(res.data.data);
         })
         .catch((err) => {
-          if(err.message !== "revoke"){
-          toast.error("Something went wrong!", {
-            autoClose: 1000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
+          if (err.message !== "revoke") {
+            toast.error("Something went wrong!", {
+              autoClose: 1000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         });
     }
   };
@@ -161,12 +162,12 @@ const Dashboard = () => {
           setDropdownShow(true);
         })
         .catch((err) => {
-          if(err.message !== "revoke"){
-          toast.error("Something went wrong !! Please try again later", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
+          if (err.message !== "revoke") {
+            toast.error("Something went wrong !! Please try again later", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         });
     } else {
       setSupplierlist([]);
@@ -200,13 +201,13 @@ const Dashboard = () => {
         setNotes("");
       })
       .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
-        });
-        setLoader(false);
-      }
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+          setLoader(false);
+        }
       });
   };
   const formatDate = (createdDate) => {
@@ -254,6 +255,7 @@ const Dashboard = () => {
                   <div className="w-100 welcomeMSG">
                     {t("retailer.dashboard.welcome_retailer")}
                   </div>
+                  <Info accessToken={accessToken} />
                   {/* [Card 1] */}
                   {orders.length < 1 && (
                     <div class="card retailer-Meta-Info mb-3">
@@ -263,10 +265,8 @@ const Dashboard = () => {
                         </div>
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p")}
                             <p className="custom-atag">
-                           
                               {t("retailer.dashboard.dashboard_card_pp")}
                             </p>{" "}
                             {t("retailer.dashboard.dashboard_card_ppp")}
@@ -279,14 +279,16 @@ const Dashboard = () => {
                             .
                           </li>
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p2")}
-                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p22")}</p>
+                            <p className="custom-atag">
+                              {t("retailer.dashboard.dashboard_card_p22")}
+                            </p>
                           </li>
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p3")}
-                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p33")}</p>
+                            <p className="custom-atag">
+                              {t("retailer.dashboard.dashboard_card_p33")}
+                            </p>
                           </li>
                         </ul>
                       </div>
