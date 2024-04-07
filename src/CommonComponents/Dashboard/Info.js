@@ -77,12 +77,12 @@ const Info = ({ accessToken = "" }) => {
                   </div>
                   <div className="dash-widget-txt">
                     <p class="mb-0">
-                      <h6>224</h6>
+                      <h6>{data?.find(({ key }) => key == "Total_orders")?.value}</h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          27.5%
+                 Total Orders
                         </label>{" "}
-                        This month
+                      
                       </span>
                     </p>
                   </div>
@@ -106,9 +106,9 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          27.5%
+                     Total Revenue
                         </label>{" "}
-                        Revenue
+                        
                       </span>
                     </p>
                   </div>
@@ -134,9 +134,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          78.55%
-                        </label>{" "}
-                        Invoices{" "}
+                       Invoices Sent{" "}
+                        </label>{" "} 
                       </span>
                     </p>
                   </div>
@@ -159,9 +158,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          39.05%
+                           Total Sold
                         </label>{" "}
-                        Sold
                       </span>
                     </p>
                   </div>
@@ -187,9 +185,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          .05%
+                          Warehouses
                         </label>{" "}
-                        warehouse
                       </span>
                     </p>
                   </div>
@@ -215,9 +212,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          27.5%
+                            Pending Orders
                         </label>{" "}
-                        Pending
                       </span>
                     </p>
                   </div>
@@ -243,9 +239,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          ---
+                       Total Orders
                         </label>{" "}
-                        Shipped
                       </span>
                     </p>
                   </div>
@@ -271,9 +266,8 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          55.5%
+                          Customers
                         </label>{" "}
-                        Customers
                       </span>
                     </p>
                   </div>
