@@ -20,6 +20,7 @@ const Header = ({ title, updateSidebar, userType }) => {
   let pathSplit = currentPath.split("/");
   let users = ["supplier", "retailer", "distributor"];
   let currentUser = pathSplit[1];
+  console.log('current user---------',currentUser);
   const username = localStorage.getItem(`${currentUser}_fullName`)
   const userImg = localStorage.getItem(`${currentUser}_userImg`)
   const { t, i18n } = useTranslation();

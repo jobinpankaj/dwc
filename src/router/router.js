@@ -41,6 +41,7 @@ import RetailerForgotPassword from "../Retailer/components/Login/forgotpass";
 import RetailerResetPass from "../Retailer/components/Login/resetpass";
 import RetailerDashboard from "../Retailer/components/Dashboard/dashboard";
 import RetailerOrderManagement from "../Retailer/components/Order-Management/order-management";
+import AllSupplierList from "../Retailer/components/Marketplace/all-supplier";
 import Marketplace from "../Retailer/components/Marketplace/marketplace";
 import ProductDetails from "../Retailer/components/Marketplace/product-details";
 import Cart from "../Retailer/components/Marketplace/cart";
@@ -585,6 +586,15 @@ const Router = () => {
         />
         <Route
           exact
+          path="/retailer/supplier-list"
+          element={
+            <Protected>
+              <AllSupplierList />
+            </Protected>
+          }
+        />
+        <Route
+          exact
           path="/retailer/marketplace"
           element={
             <Protected>
@@ -592,6 +602,7 @@ const Router = () => {
             </Protected>
           }
         />
+        
         <Route
           exact
           path="/retailer/marketplace/product-details"
@@ -1510,7 +1521,7 @@ const Router = () => {
             </Protected>
           }
         ></Route>
-        <Route
+        {/* <Route
           exact
           path="/teams"
           element={
@@ -1518,7 +1529,7 @@ const Router = () => {
               <Teams />
             </Protected>
           }
-        ></Route>
+        ></Route> */}
         <Route
           exact
           path="/Johness"

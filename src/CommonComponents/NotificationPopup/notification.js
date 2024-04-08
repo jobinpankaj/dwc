@@ -29,12 +29,9 @@ export const Popup = ({ text, closePopup, userType }) => {
           {t("notification_settings.heading")}
         </header>
         <button className="cancel-btn" onClick={closePopup}>
-          X
+        <i class="fa-solid fa-x"></i>
         </button>
         <div className="switch-area">
-          <div className="switch-header">
-            <i class="fa-solid fa-bullhorn"></i>
-          </div>
           <div className="switch-icon">
             <div class="row">
               <div className="col-md-8"></div>
@@ -43,7 +40,7 @@ export const Popup = ({ text, closePopup, userType }) => {
                   <i class="fa-solid fa-computer"></i>
                 </div>
                 <div class="icon1">
-                  <i class="fa-solid fa-computer"></i>
+                  <i class="fa-solid fa-message"></i>
                 </div>
               </div>
             </div>

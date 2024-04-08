@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import { useTranslation } from "react-i18next";
+import Select from 'react-select';
 
 toast.configure();
 
@@ -23,7 +24,8 @@ const CreateCompanyProfile = () => {
   const [deliveryStatus, setDeliveryStatus] = useState("1");
   const [permitNo, setPermitNo] = useState([0]);
   const [alcohalPermit, setAlchohalPermit] = useState("");
-  const [opc, setOpc] = useState("0");
+  const [Consumption, setConsumption] = useState("0");
+ // const [opc, setOpc] = useState("0");
   // const [homeConsumption, setHomeConsumption] = useState("0");
   const [showBusinessName, setShowBusinessName] = useState("");
   const [website, setWebsite] = useState("");
@@ -36,6 +38,7 @@ const CreateCompanyProfile = () => {
   const [phoneError, setPhoneError] = useState("");
   const [publicPhoneError, setPublicPhoneError] = useState("");
   const [urlError, setUrlError] = useState("");
+  const [isValid, setIsValid] = useState(true);
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -44,6 +47,12 @@ const CreateCompanyProfile = () => {
   let emailregex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const mobileregex = /^[0-9]*$/;
+  const websiteRegex = /\.(com|ca|me|net|org)$/;
+  const phoneRegex = [
+    /^(\+\d{1,3}\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/     // 4502589632 format
+    , /^\+\d{1}\s\(\d{3}\)\s\d{3}-\d{3}-\d{4}$/ // +1 (514) 526-258-6987 format
+    ,/^\+\d{1}\(\d{3}\)\d{3}-\d{3}-\d{4}$/        // +1(514)526-258-6987 format
+  ];
   const navigate = useNavigate();
   const retailer_accessToken = localStorage.getItem("retailer_accessToken");
   useEffect(() => {
@@ -83,8 +92,9 @@ const CreateCompanyProfile = () => {
           setContactName(retailer_general.contact_name);
           setWebsite(retailer_general.website_url);
           setShowBusinessName(retailer_general.business_name_status);
-          setOpc(retailer_general.opc_status);
-          // setHomeConsumption(retailer_general.home_consumption);
+          setConsumption(retailer_general.consumtion_status);
+        //  setOpc(retailer_general.opc_status);
+       //setHomeConsumption(retailer_general.home_consumption);
           setAlchohalPermit(retailer_general.alcohol_permit);
           setDeliveryStatus(retailer_general.order_type);
           // setPermitNo(retailer_general.permit_numbers)
@@ -99,7 +109,7 @@ const CreateCompanyProfile = () => {
       }
       });
   }, [retailer_accessToken]);
-  console.log(opc, "Opc status");
+ // console.log(opc, "Opc status");
 
   const handleBusiness = (e) => {
     setbusiness(e.target.value);
@@ -107,6 +117,7 @@ const CreateCompanyProfile = () => {
   };
   const handleGroupName = (e) => {
     setGroupName(e.target.value);
+    console.log('-----------------------',e.target.value);
   };
   const handleCategory = (e) => {
     setCategory(e.target.value);
@@ -126,8 +137,22 @@ const CreateCompanyProfile = () => {
     setPermitNo(data);
   };
   console.log(permitNo);
+
+  
+  // const validateWebsite = (value) => {
+  //   if (value) {
+  //     const validExtensions = ['.com', '.ca', '.me', '.net', '.org'];
+  //     const isValidExtension = validExtensions.some(extension => value.endsWith(extension));
+  //     setIsValid(isValidExtension);
+  //   } else {
+  //     setIsValid(true); // Reset validation if input value is empty
+  //   }
+  // }
   const handleWebsite = (e) => {
+    const {value}= e.target.value
+    // console.log('websit url validations',e.target.value);
     setWebsite(e.target.value);
+    // validateWebsite(value);
     setUrlError("");
   };
   const handleContactName = (e) => {
@@ -156,6 +181,7 @@ const CreateCompanyProfile = () => {
     console.log({ e, keyword });
     if (keyword === "Delivery") {
       if (e.target.checked === true) {
+
         setDeliveryStatus("1");
       } else {
         setDeliveryStatus("0");
@@ -166,9 +192,15 @@ const CreateCompanyProfile = () => {
       } else {
         setDeliveryStatus("0");
       }
-    } else {
+    } else if (keyword === "Both"){
       if (e.target.checked === true) {
         setDeliveryStatus("3");
+      } else {
+        setDeliveryStatus("0");
+      }
+    } else {
+      if (e.target.checked === true) {
+        setDeliveryStatus("4");
       } else {
         setDeliveryStatus("0");
       }
@@ -185,13 +217,39 @@ const CreateCompanyProfile = () => {
       console.log(showBusinessName);
     }
   };
-  const handleOpc = (e) => {
-    if (e.target.checked) {
-      setOpc("1");
-    } else {
-      setOpc("0");
-    }
-  };
+  const handleConsumption = (e, key) => {
+    console.log({ e, key });
+   if (key === "site") {
+     if (e.target.checked === true) {
+       console.log({'-----------check1-----': e.target.checked});
+       setConsumption("1");
+     } else {
+       setConsumption("0");
+     }
+   } else {
+     if (e.target.checked === true) {
+       console.log({'-----------check2-----': e.target.checked});
+       setConsumption("2");
+     } else {
+       setConsumption("0");
+     }
+   }
+ }
+  // const handleOpc = (e) => {
+  //   if (e.target.checked) {
+  //     console.log('-checked--------------',e.target.checked);
+  //     setOpc("1");
+  //   } else {
+  //     setOpc("0");
+  //   }
+  // };
+  // const handleHomeConsumption = (e) => {
+  //   if (e.target.checked) {
+  //     setHomeConsumption("1");
+  //   } else {
+  //     setHomeConsumption("0");
+  //   }
+  // };
   // const handleHomeConsumption = (e) => {
   //   if (e.target.checked) {
   //     setHomeConsumption("1");
@@ -206,12 +264,14 @@ const CreateCompanyProfile = () => {
       emailValid = true,
       phoneValid = true,
       publicPhoneValid = true,
-      addressValid = true;
+      addressValid = true,
+      websiteValid=true; //New functionality
     if (business === "") {
       setBusinessError(t("retailer.profile.business_name_is_required"));
       businessValid = false;
     }
-    if (!emailregex.test(email) && email !== "") {
+    if (!emailregex.test(email)
+ && email !== "") {
       setEmailError(t("retailer.profile.not_a_valid_email"));
       emailValid = false;
     }
@@ -221,17 +281,26 @@ const CreateCompanyProfile = () => {
       phoneValid = false;
     }
 
-    if (!mobileregex.test(publicMobile) && publicMobile !== "") {
+    const isValidPhoneNumber = (publicMobile) => {
+      return phoneRegex.some(regex => regex.test(publicMobile));
+    };
+
+    if (!isValidPhoneNumber(publicMobile) && publicMobile !== "") {
       setPublicPhoneError(t("retailer.profile.not_a_valid_number"));
       publicPhoneValid = false;
     }
+    if(website!="" && website!==null){
+      if (!websiteRegex.test(website) && website !==""){
+        setUrlError("Enter Website .com, .ca, .me, .net, or .org only allowed");//Translation 
+        websiteValid=false;
+      } }
     
     if (
       !businessValid ||
       !emailValid ||
       !phoneValid ||
       !publicPhoneValid ||
-      urlError !== "" ||
+      !websiteValid ||
       !addressValid ||
       businessError !== ""
     ) {
@@ -246,11 +315,12 @@ const CreateCompanyProfile = () => {
         phone_number: mobile,
         contact_name: contactName,
         website_url: website,
-        opc_status: String(opc),
+        //opc_status: String(opc),
         business_name_status: String(showBusinessName),
         alcohol_permit: String(alcohalPermit),
         order_type: String(deliveryStatus),
         permit_numbers: permitNo,
+        consumtion_status: String(Consumption),
         // home_consumption:homeConsumption
       };
       console.log(bodyData);
@@ -295,6 +365,19 @@ const CreateCompanyProfile = () => {
         });
     }
   };
+  const groupOptions = [
+    { value: 'dbsq', label: 'DBSQ' },
+    { value: 'dbsq1', label: 'DBSQ' },
+    { value: 'dbsq2', label: 'DBSQ2' },
+    { value: 'other', label: 'Other' },
+    // Add more options as needed
+  ];
+  
+  const [selectedOption, setSelectedOption] = useState(null);
+  
+  const handleChange = selectedOption => {
+    setSelectedOption(selectedOption);
+  };
 
   return (
     <div class="container-fluid page-wrap add-supplier">
@@ -337,13 +420,38 @@ const CreateCompanyProfile = () => {
                             </div>
                             <div className="col-sm-6 mb-3">
                               <label className="form-label">{t("retailer.profile.group_name")}</label>
-                              <input
+
+                              <select
+                                className="form-select"
+                                value={groupName}
+                                onChange={(e) => handleGroupName(e)}
+                                name=""
+                                id=""
+                                placeholder="Select Group Name"
+                              >
+                                <option value="">{t("retailer.profile.enter_group_name")}</option>
+                                {groupOptions.map((g) => {
+                                  return (
+                                    <option key={g.id} value={g.value}>
+                                      {g.label}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                              {/* <input
                                 type="text"
                                 className="form-control"
                                 value={groupName}
                                 onChange={(e) => handleGroupName(e)}
                                 placeholder="Enter group name"
-                              />
+                              /> */}
+                              {/* <Select className="form-control"
+                                value={selectedOption}
+                                onChange={handleChange}
+                                options={options}
+                                isSearchable={true}
+                                placeholder="Enter Group Name"
+                              /> */}
                             </div>
                           </div>
                           <div className="row">
@@ -455,6 +563,7 @@ const CreateCompanyProfile = () => {
                               ) : (
                                 <></>
                               )}
+                              {!isValid && <p>Please enter a valid domain ending with .com, .ca, .me, .net, or .org</p>}
                             </div>
                             <div className="col-sm-6 mb-3 d-flex align-items-start">
                               <input
@@ -469,19 +578,58 @@ const CreateCompanyProfile = () => {
                               {t("retailer.profile.show_the_business_name")} 
                               </p>
                             </div>
-                            <div className="col-sm-6 mb-3 d-flex align-items-start">
+                            <div className="col-sm-6 d-flex">
+                            <div className="align-items-start form-check">
                               <input
-                                type="checkbox"
-                                checked={opc === "1" ? true : false}
+                                className="form-check-input"
+                                type="radio"
+                                name="inlineRadioOptions02"
+                                id="inlineRadio01"
+                                checked={Consumption === "1"}
+                                onChange={(e) =>
+                                  handleConsumption(e,"site")
+                                }
+                              />
+                              <label
+                                className="form-check-label font-regular mx-1"
+                                htmlFor="inlineRadio01"
+                              >
+                                {t("retailer.profile.on_premise_consumption")}
+                              </label>
+                            </div>
+
+                            <div className="align-items-start form-check mx-3 ">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="inlineRadioOptions02"
+                                id="inlineRadio02"
+                                checked={Consumption === "2"}
+                                onChange={(e) =>
+                                  handleConsumption(e,"home")
+                                }
+                              />
+                              <label
+                                className="form-check-label font-regular mx-1"
+                                htmlFor="inlineRadio02"
+                              >
+                                {t("retailer.profile.home_consumption1")}
+                              </label>
+                            </div>
+                            </div>
+                            {/* <div className="col-sm-3 mb-3 d-flex align-items-start">
+                              <input
+                                type="radio"
+                                checked={opc === "0" ? true : false}
                                 onChange={(e) => handleOpc(e)}
                                 className="me-2 mt-1"
                               />
                               <p className="m-0">{t("retailer.profile.on_premise_consumption")}</p>
                             </div>
                             
-                            {/* <div className="col-sm-6 mb-3 d-flex align-items-start">
+                            <div className="col-sm-3 mb-3 d-flex align-items-start">
                               <input
-                                type="checkbox"
+                                type="radio"
                                 checked={homeConsumption === "1" ? true : false}
                                 onChange={(e) => handleHomeConsumption(e)}
                                 className="me-2 mt-1"
@@ -546,7 +694,7 @@ const CreateCompanyProfile = () => {
                                 className="form-check-label font-regular"
                                 htmlFor="inlineRadio1"
                               >
-                                {t("retailer.profile.take_order")}
+                                {t("retailer.profile.take_order_delivery")}
                               </label>
                             </div>
                             <div className="form-check form-check-inline">
@@ -585,7 +733,28 @@ const CreateCompanyProfile = () => {
                                {t("retailer.profile.both")}
                               </label>
                             </div>
+                            <div className="form-check form-check-inline">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="inlineRadioOptions"
+                                id="inlineRadio3"
+                                checked={deliveryStatus === "4" ? true : false}
+                                onChange={(e) =>
+                                  handleDeliveryStatus(e, "None")
+                                }
+                              />
+                              <label
+                                className="form-check-label font-regular"
+                                htmlFor="inlineRadio3"
+                              >
+                               {t("retailer.profile.none")}
+                              </label>
+                              
+                              
+                            </div>
                           </div>
+                          
                         </div>
                       </div>
                       {/* [/General Info] */}
@@ -600,6 +769,9 @@ const CreateCompanyProfile = () => {
                         onClick={(e) => handleNext(e)}
                       >
                         {t("retailer.profile.next")}
+                      </button >
+                      <button className="btn btn-green">
+                        {t("retailer.profile.save")}
                       </button>
                     </form>
                   </div>

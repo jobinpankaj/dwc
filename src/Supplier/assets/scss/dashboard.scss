@@ -6,14 +6,14 @@
     justify-content: center;
     width: 100%;
     max-height: 220px;
-    min-height: 220px;
+    min-height: 245px;
     background-color: #fefefe;
     border-radius: 10px;
     padding: 10px 0px;
     overflow: hidden;
     box-sizing: content-box;
     @media screen and (max-width:$tablet-lg) {
-        min-height: 180px;
+        min-height: 245px;
         max-height: 180px;
     }
     &.min-square-width{
@@ -723,8 +723,8 @@ table{
         color: $green;
     }
     &.text-bg-red{
-        background-color: rgba(255, 69, 69, 0.05);
-        color: $red;
+        // background-color: rgba(255, 69, 69, 0.05);
+        color: $orange;
     }
     &.text-bg-orange{
         background-color: rgba(231, 214, 61, 0.25);
@@ -1105,6 +1105,7 @@ table{
         font-size: 10px;
     }
     .card-footer{
+        // background-color: red;
         &.total-sum{
             font-family: $font-bold;
             background-color: #ffffff;
@@ -1708,10 +1709,18 @@ table{
     display: flex;
     flex-direction: row;
     column-gap: 10px;
+    p{
+        margin-bottom: 15px;
+        span{
+            color: #ff6629 !important;
+            background: none !important;
+        }
+    } 
 }
 
 .custom-deactive p:hover{
     cursor: pointer;
+    
 }
 
 .MyOwnLoader{

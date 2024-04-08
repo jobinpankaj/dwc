@@ -111,7 +111,7 @@ const Sidebar = ({
               </a>
             </li>
 
-            <li className="subMenu">
+            {/* <li className="subMenu">
               <NavLink
                 to="/teams"
                 className="url"
@@ -119,44 +119,9 @@ const Sidebar = ({
                 activeClassname="active"
               >
                 {t("landing.landing_sidebar.team")}
-              </NavLink>
-              {/* <span className="submenuOpen" onClick={(e) => handleTeamList(e)}> <i class="fa-solid fa-angle-right"></i> </span>
-                                    <div className="ChildMenuList" ref={teamList}>
-                                        <ul className="menu">
-                                            <li>
-                                                <NavLink to="/DanielSt-Pierre-Bucke" className="url" exact activeClassname="active">
-                                                    Daniel St-Pierre (“Dan”)
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink to="/roch" className="url" exact activeClassname="active">
-                                                     Roch Côté
-                                                </NavLink>
-                                            </li>
+            </NavLink>
+            </li> */}
 
-                                            <li>
-                                                <NavLink to="/Johness" className="url" exact activeClassname="active">
-                                                    Johnessco Rodriguez
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink to="/Raphael-Ethier" className="url" exact activeClassname="active">
-                                                    Raphael Ethier
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink to="/Phileppe-Wouters" className="url" exact activeClassname="active">
-                                                    Phileppe Wouters
-                                                </NavLink>
-                                            </li>
-                                            <li>
-                                                <NavLink to="/Eve-Marie-Gravel" className="url" exact activeClassname="active">
-                                                    Eve-Marie Gravel
-                                                </NavLink>
-                                            </li>
-                                        </ul>
-                                    </div> */}
-            </li>
             <li>
               <NavLink
                 to="/news"
@@ -353,5 +318,43 @@ const Sidebar = ({
     </div>
   );
 };
+
+
+{/* <span className="submenuOpen" onClick={(e) => handleTeamList(e)}> <i class="fa-solid fa-angle-right"></i> </span>
+                                    <div className="ChildMenuList" ref={teamList}>
+                                        <ul className="menu">
+                                            <li>
+                                                <NavLink to="/DanielSt-Pierre-Bucke" className="url" exact activeClassname="active">
+                                                    Daniel St-Pierre (“Dan”)
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink to="/roch" className="url" exact activeClassname="active">
+                                                     Roch Côté
+                                                </NavLink>
+                                            </li>
+
+                                            <li>
+                                                <NavLink to="/Johness" className="url" exact activeClassname="active">
+                                                    Johnessco Rodriguez
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink to="/Raphael-Ethier" className="url" exact activeClassname="active">
+                                                    Raphael Ethier
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink to="/Phileppe-Wouters" className="url" exact activeClassname="active">
+                                                    Phileppe Wouters
+                                                </NavLink>
+                                            </li>
+                                            <li>
+                                                <NavLink to="/Eve-Marie-Gravel" className="url" exact activeClassname="active">
+                                                    Eve-Marie Gravel
+                                                </NavLink>
+                                            </li>
+                                        </ul>
+                                    </div> */}
 
 export default Sidebar;

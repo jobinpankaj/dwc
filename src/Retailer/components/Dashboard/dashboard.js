@@ -40,9 +40,28 @@ const Dashboard = () => {
   const accessToken = localStorage.getItem("retailer_accessToken");
   const apis = useAuthInterceptor();
   const navigate = useNavigate();
+  // const username = localStorage.getItem(`${currentUser}_fullName`);
+  // console.log('current user name---------------',username);
 
   const inputRef = useRef(null);
+  const supplierRef = useRef(null);
+  const scrollTosupplier = () => supplierRef.current.scrollIntoView();
 
+  let currentPath = window.location.pathname;
+  let pathSplit = currentPath.split("/");
+  let users = ["supplier", "retailer", "distributor"];
+  let currentUser = pathSplit[1];
+  console.log("current user from dashboard---------", currentUser);
+  const username = localStorage.getItem(`${currentUser}_fullName`);
+  const userImg = localStorage.getItem(`${currentUser}_userImg`);
+
+  useEffect(() => {
+    if (show) {
+      const timeoutId = setTimeout(() => {
+        setShow(false);
+      }, 3000);
+    }
+  });
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -60,15 +79,15 @@ const Dashboard = () => {
       .get(`/retailer/suppliersAllList`, config)
       .then((res) => {
         setMapSupplierList(res.data.data);
-        // console.log(res.data.data,"res.data.data")
+        console.log("res.data.data------", res.data.data);
       })
       .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       });
   }, []);
 
@@ -97,12 +116,12 @@ const Dashboard = () => {
         setOrders(res.data.data.orders);
       })
       .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       });
   }, []);
   console.log(supplierId, showNoteModal, "fgdbfghnb");
@@ -122,12 +141,12 @@ const Dashboard = () => {
           setProductList(res.data.data);
         })
         .catch((err) => {
-          if(err.message !== "revoke"){
-          toast.error("Something went wrong!", {
-            autoClose: 1000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
+          if (err.message !== "revoke") {
+            toast.error("Something went wrong!", {
+              autoClose: 1000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         });
     }
   };
@@ -161,12 +180,12 @@ const Dashboard = () => {
           setDropdownShow(true);
         })
         .catch((err) => {
-          if(err.message !== "revoke"){
-          toast.error("Something went wrong !! Please try again later", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
+          if (err.message !== "revoke") {
+            toast.error("Something went wrong !! Please try again later", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         });
     } else {
       setSupplierlist([]);
@@ -189,25 +208,33 @@ const Dashboard = () => {
       supplier_id: supplierId,
       request_note: notes,
     };
-    apis
-      .post("retailer/sendRequestToSupplier", bodyData, config)
-      .then((res) => {
-        setShowNoteModal(false);
-        setShow(true);
-        setLoader(false);
-        setSearchSupplier("");
-        setSupplierId();
-        setNotes("");
-      })
-      .catch((err) => {
-        if(err.message !== "revoke"){
-        toast.error("Something went wrong !! Please try again later", {
-          autoClose: 3000,
-          position: toast.POSITION.TOP_CENTER,
+    if (bodyData.request_note !== "" && bodyData.request_note !== null) {
+      apis
+        .post("retailer/sendRequestToSupplier", bodyData, config)
+        .then((res) => {
+          setShowNoteModal(false);
+          setShow(true);
+          setLoader(false);
+          setSearchSupplier("");
+          setSupplierId();
+          setNotes("");
+        })
+        .catch((err) => {
+          if (err.message !== "revoke") {
+            toast.error("Something went wrong !! Please try again later", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+            setLoader(false);
+          }
         });
-        setLoader(false);
-      }
+    } else {
+      toast.error("Please enter data ", {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
       });
+      setLoader(false);
+    }
   };
   const formatDate = (createdDate) => {
     const inputDatetime = new Date(createdDate);
@@ -237,6 +264,20 @@ const Dashboard = () => {
       .padStart(2, "0")} ${amOrPm}`;
   };
 
+  const suggestedSupplier = [
+    { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 2, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 3, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 4, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 5, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 6, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 7, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 8, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 9, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 10, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 11, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  ];
+
   return (
     <>
       <div class="container-fluid page-wrap retailer-dashboard">
@@ -244,7 +285,8 @@ const Dashboard = () => {
           <Sidebar userType={"retailer"} />
 
           <div class="col main p-0">
-            <Header userType={"retailer"}
+            <Header
+              userType={"retailer"}
               title={t("retailer.dashboard.header")}
               updateSidebar={updateSidebar}
             />
@@ -253,6 +295,7 @@ const Dashboard = () => {
                 <div className="col">
                   <div className="w-100 welcomeMSG">
                     {t("retailer.dashboard.welcome_retailer")}
+                    {username}
                   </div>
                   {/* [Card 1] */}
                   {orders.length < 1 && (
@@ -263,13 +306,19 @@ const Dashboard = () => {
                         </div>
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p")}
-                            <p className="custom-atag">
-                           
-                              {t("retailer.dashboard.dashboard_card_pp")}
-                            </p>{" "}
-                            {t("retailer.dashboard.dashboard_card_ppp")}
+                            {t("retailer.dashboard.dashboard_card_pp")}
+                            {t("retailer.dashboard.dashboard_card_ppp")}:
+                            <p
+                              className="custom-atag"
+                              onClick={() =>
+                                users.includes(currentUser)
+                                  ? navigate(`/${currentUser}/my-account`)
+                                  : navigate("/admin/my-account")
+                              }
+                            >
+                              {t("retailer.dashboard.dashboard_card_pppp")}
+                            </p>
                           </li>
                           <li class="list-group-item">
                             {t("retailer.dashboard.dashboard_card_p1")}
@@ -279,14 +328,19 @@ const Dashboard = () => {
                             .
                           </li>
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p2")}
-                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p22")}</p>
+                            <p
+                              className="custom-atag"
+                              onClick={scrollTosupplier}
+                            >
+                              {t("retailer.dashboard.dashboard_card_p22")}
+                            </p>
                           </li>
                           <li class="list-group-item">
-                            
                             {t("retailer.dashboard.dashboard_card_p3")}
-                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p33")}</p>
+                            <p className="custom-atag">
+                              {t("retailer.dashboard.dashboard_card_p33")}
+                            </p>
                           </li>
                         </ul>
                       </div>
@@ -527,6 +581,26 @@ const Dashboard = () => {
                     </div>
                   </div>
                   {/* [/Map Card] */}
+
+                  <div
+                    ref={supplierRef}
+                    className="card map-card retailer-searchBox my-4"
+                  >
+                    <div className="card-body">
+                      <div className="card-title">
+                        {t("retailer.dashboard.suggested_supplier")}
+                      </div>
+                      <div className="supplier_logoBox">
+                        {suggestedSupplier.map((supplier) => {
+                          return (
+                            <div className="supplier_logo">
+                              <img src={supplier.imgSource}></img>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -643,7 +717,7 @@ const Dashboard = () => {
           </div>
         </div>
       </Modal> */}
-      <Modal
+      {/* <Modal
         className="modal fade"
         show={show}
         centered
@@ -660,8 +734,23 @@ const Dashboard = () => {
           {" "}
           {t("retailer.dashboard.send_request_confirmation")}
         </Modal.Body>
-      </Modal>
+      </Modal> */}
       {/* [/Modal] */}
+      <Modal
+        className="modal fade"
+        show={show}
+        centered
+        onHide={() => setShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <img src={modalIcon} alt="Modal Icon" />
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {t("retailer.dashboard.send_request_confirmation")}
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

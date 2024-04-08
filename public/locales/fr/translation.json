@@ -1157,7 +1157,7 @@
       "product_value":"Valeur des ventes",
       "days":" jours",
       "top_retailers":"Top détaillants",
-      "top_products":"Top produits",
+      "top_products":"Top produits"
     },
     "my_account": {
       "my_account": "Mon compte",
@@ -2091,6 +2091,7 @@
       "edit":"Modifier",
       "business_name":"Nom de l'entreprise",
       "group_name":"Nom du groupe",
+      "enter_group_name": "Entrez le nom du groupe",
       "business_category":"Catégorie d'entreprise",
       "public_phone_number":"No tel principal ",
       "phone_number":"Autre tél.",
@@ -2116,6 +2117,7 @@
       "alcohol":"Alcool",
       "add":"ajouter",
       "both":"Les deux",
+      "none" :"aucune",
       "permit_no":"Numéro de permis",
       "business_name_is_required":"Le nom de l'entreprise est requis",
       "not_a_valid_email":"Adresse courriel non valide ",
@@ -2125,6 +2127,7 @@
       "email_required":"L'e-mail est requis",
       "phone_number_required":"",
       "take_order":"Prendre la commande pour la livraison",
+      "take_order_delivery":"Prendre la commande pour la livraison",
       "take_order_pickup":"Prendre la commande pour le retrait",
       "show_the_business_name":"Afficher le nom de l'entreprise sur les bons de commande",
       "do_u_want_to_change": "Voulez-vous changer votre mot de passe",
@@ -2136,8 +2139,8 @@
       "profile_info":"Informations sur le profil",
       "first_name":"Prénom",
       "last_name":"Nom de famille",
-      "email_address":"email",
-      "phone_number":"Autre tél.",
+      "email_address":"Courriel",
+      "phone_number":"Tél.",
       "cancel":"Annuler",
       "save":"Sauvegarder"
     },
@@ -2298,6 +2301,7 @@
       "search_marketplace_placeholder": "rechercher",
       "search_supplier_placeholder": "Entrer nom fournisseur ",
       "local_supplier": "Fournisseur par position",
+      "suggested_supplier" : "Fournisseur suggéré",
       "send_request": "Envoyer une demande ",
       "recent_orders": "Vos commandes récentes",
       "view_all": "Voir tout ",
@@ -2311,6 +2315,7 @@
       "dashboard_card_p": "Assurez-vous que votre ",
       "dashboard_card_pp": "emplacement et vos coordonnées sont",
       "dashboard_card_ppp": "est correct",
+      "dashboard_card_pppp": "Vérifier",
       "dashboard_card_p1": "Définissez votre ",
       "dashboard_card_p11": "préférences de notification.",
       "dashboard_card_p2": "Recherchez et ajoutez un ou plusieurs ",
@@ -2358,6 +2363,58 @@
     "popup_body_p4": "En COCHANT ceci, vous certifiez que vous avez 18 ans ou plus et que vous acceptez nos Conditions",
     "popup_btn": "Accepter"
   },
+
+  "notification_settings":{
+    "heading":"Paramètres",
+  "retailer_notification": {
+    "switch_1": "Facture finale",
+    "switch_2": "Message d'un fournisseur",
+    "switch_3": "Message d'un distributeur",
+    "switch_4": "Message de BLP",
+    "switch_5": "Commande approuvée",
+    "switch_6": "Commande annulée",
+    "switch_7": "Commande modifiée",
+    "switch_8": "Commande livrée",
+    "switch_9": "Invitation offre de service"
+    },
+
+    "supplier_notification": {
+      "switch_1": "Facture finale",
+      "switch_2": "Facture payée",
+      "switch_3": "Message d'un détaillant",
+      "switch_4": "Message d'un distributeur",
+      "switch_5": "Message de BLP",
+      "switch_6": "Commande annulée",
+      "switch_7": "Commande modifiée",
+      "switch_8": "Commande livrée",
+      "switch_9": "Demande de service détaillant"
+      },
+
+      "distributer_notification": {
+        "switch_1": "Facture finale",
+        "switch_2": "Facture payée",
+        "switch_3": "Message d'un détaillant",
+        "switch_4": "Message d'un distributeur",
+        "switch_5": "Message de BLP",
+        "switch_6": "Nouvelle commande",
+        "switch_7": "Commande annulée",
+        "switch_8": "Commande modifiée",
+        "switch_9": "Commande livrée",
+        "switch_10": "Connexion fournisseur"
+      },
+      
+      "superadmin_notification": {
+        "switch_1": "Frais de service payés",
+        "switch_2": "Message d'un détaillant",
+        "switch_3": "Message d'un Fournisseur",
+        "switch_4": "Message de BLP",
+        "switch_5": "Nouvelle demande assistance",
+        "switch_6": "Mise à jour realisée",
+        "switch_7": "Mise à jour en besoin",
+        "switch_8": "Nouveau compte détaillant créé"
+      }
+    },
+
   "router": {
       "adminLogin":"/admin/connexion"
     }

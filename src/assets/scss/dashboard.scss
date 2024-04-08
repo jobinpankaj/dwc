@@ -428,7 +428,7 @@ table {
 
   &.text-bg-red {
     background-color: rgba(255, 69, 69, 0.05);
-    color: $red;
+    color: $orange;
     &.border-bg-red {
       border-color: $red;
       border-width: 1px;
@@ -1382,7 +1382,7 @@ textarea.addNoteTextarea {
 
 .productBox {
   .card {
-    background: rgba(147, 112, 219, 0.05);
+    background: rgba(151, 219, 112, 0.05);
     border: 1.05666px solid rgba(35, 31, 32, 0.2);
     border-radius: 10.5666px;
     padding: 14px;
