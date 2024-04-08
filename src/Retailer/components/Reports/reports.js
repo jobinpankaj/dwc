@@ -45,18 +45,7 @@ const Reports = () => {
                       <Breadcrumb>
                         <Breadcrumb.Item href="#">Products</Breadcrumb.Item>
                       </Breadcrumb>
-                        <div className="col-2">
-                          <ProductLists
-                            img={generateReportImage}
-                            token={token}
-                          />
-                        </div>
-                        <div className="col-2">
-          <InventoryLists
-          img={generateReportImage}
-          token={token}
-        />
-                        </div>
+
                         <div className="col-2">
           <CustomMade
           img={generateReportImage}
@@ -75,7 +64,7 @@ const Reports = () => {
                             token={token}
                           />
                         </div>
-                        <div className="col-2">
+              {/*}          <div className="col-2">
                     <InvoiceLists
                     img={generateReportImage}
                     token={token}
@@ -86,7 +75,7 @@ const Reports = () => {
                     img={generateReportImage}
                     token={token}
                     />
-                        </div>
+                        </div> */}
                       </div>
 
                     </div>
