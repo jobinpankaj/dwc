@@ -19,6 +19,7 @@ import Autocomplete from "react-autocomplete";
 import TextInput from "react-autocomplete-input";
 import useAuthInterceptor from "../../../utils/apis";
 import { useTranslation } from "react-i18next";
+import Info from "../../../CommonComponents/Dashboard/Info";
 const Dashboard = () => {
   const { t } = useTranslation();
   const [showSidebar, setShowSidebar] = useState(false);
@@ -82,12 +83,6 @@ const Dashboard = () => {
         console.log("res.data.data------", res.data.data);
       })
       .catch((err) => {
-        if (err.message !== "revoke") {
-          toast.error("Something went wrong !! Please try again later", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
       });
   }, []);
 
@@ -208,33 +203,25 @@ const Dashboard = () => {
       supplier_id: supplierId,
       request_note: notes,
     };
-    if (bodyData.request_note !== "" && bodyData.request_note !== null) {
-      apis
-        .post("retailer/sendRequestToSupplier", bodyData, config)
-        .then((res) => {
-          setShowNoteModal(false);
-          setShow(true);
-          setLoader(false);
-          setSearchSupplier("");
-          setSupplierId();
-          setNotes("");
-        })
-        .catch((err) => {
-          if (err.message !== "revoke") {
-            toast.error("Something went wrong !! Please try again later", {
-              autoClose: 3000,
-              position: toast.POSITION.TOP_CENTER,
-            });
-            setLoader(false);
-          }
+    apis
+      .post("retailer/sendRequestToSupplier", bodyData, config)
+      .then((res) => {
+        setShowNoteModal(false);
+        setShow(true);
+        setLoader(false);
+        setSearchSupplier("");
+        setSupplierId();
+        setNotes("");
+      })
+      .catch((err) => {
+        if(err.message !== "revoke"){
+        toast.error("Something went wrong !! Please try again later", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
         });
-    } else {
-      toast.error("Please enter data ", {
-        autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
+        setLoader(false);
+      }
       });
-      setLoader(false);
-    }
   };
   const formatDate = (createdDate) => {
     const inputDatetime = new Date(createdDate);
@@ -285,8 +272,7 @@ const Dashboard = () => {
           <Sidebar userType={"retailer"} />
 
           <div class="col main p-0">
-            <Header
-              userType={"retailer"}
+            <Header userType={"retailer"}
               title={t("retailer.dashboard.header")}
               updateSidebar={updateSidebar}
             />
@@ -297,6 +283,7 @@ const Dashboard = () => {
                     {t("retailer.dashboard.welcome_retailer")}
                     {username}
                   </div>
+                  <Info accessToken={accessToken} />
                   {/* [Card 1] */}
                   {orders.length < 1 && (
                     <div class="card retailer-Meta-Info mb-3">
@@ -307,18 +294,11 @@ const Dashboard = () => {
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item">
                             {t("retailer.dashboard.dashboard_card_p")}
-                            {t("retailer.dashboard.dashboard_card_pp")}
-                            {t("retailer.dashboard.dashboard_card_ppp")}:
-                            <p
-                              className="custom-atag"
-                              onClick={() =>
-                                users.includes(currentUser)
-                                  ? navigate(`/${currentUser}/my-account`)
-                                  : navigate("/admin/my-account")
-                              }
-                            >
-                              {t("retailer.dashboard.dashboard_card_pppp")}
-                            </p>
+                            <p className="custom-atag">
+                           
+                              {t("retailer.dashboard.dashboard_card_pp")}
+                            </p>{" "}
+                            {t("retailer.dashboard.dashboard_card_ppp")}
                           </li>
                           <li class="list-group-item">
                             {t("retailer.dashboard.dashboard_card_p1")}
@@ -329,12 +309,7 @@ const Dashboard = () => {
                           </li>
                           <li class="list-group-item">
                             {t("retailer.dashboard.dashboard_card_p2")}
-                            <p
-                              className="custom-atag"
-                              onClick={scrollTosupplier}
-                            >
-                              {t("retailer.dashboard.dashboard_card_p22")}
-                            </p>
+                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p22")}</p>
                           </li>
                           <li class="list-group-item">
                             {t("retailer.dashboard.dashboard_card_p3")}

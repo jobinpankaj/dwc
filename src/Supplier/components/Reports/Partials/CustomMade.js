@@ -16,8 +16,11 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
-const postFormDataUrl = "/supplier/PostReportProductList";
-const getFormDataUrl = "/supplier/getsalesReport";
+const getFormDataSuppliername = "/supplier/reportSuppliername";
+const postFormDataUrl = "/supplier/PostReportCustomList";
+const getFormDataUrl = "/supplier/getCustomReports";
+const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
+const getFormDataproductType = "/supplier/reportFormdataProducttype";
 
 const CustomMade = ({ img, token }) => {
   // config for api call
@@ -46,7 +49,9 @@ const CustomMade = ({ img, token }) => {
   const [loading, setLoading] = useState(false);
   const [getTableDataLoading, setGetTableDataLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-
+  const [Suppliername, setSupplierData] = useState([]);
+  const [DistributorData, setDistributorData] = useState([]);
+  const [ProductTypeData, setProductTypeData] = useState([]);
   // testing values for table
   // {
   //   created_at: "123",
@@ -104,7 +109,7 @@ const CustomMade = ({ img, token }) => {
           console.log({ error });
 
           if (error) {
-            toast.error("Something went wrong. Please try again later.", {
+            toast.error("Invoice is not available. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -144,6 +149,92 @@ const CustomMade = ({ img, token }) => {
     fetchFormData();
   }, []);
 
+  // fetch saved form city data from db
+const fetchFormSupplierData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataSuppliername, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response Supplier data", { res });
+        setSupplierData(res.data.data);
+        setGetTableDataLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+};
+
+useEffect(() => {
+  fetchFormSupplierData();
+}, []);
+// fetch saved form city data from db
+  const fetchFormDistributorData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataDistributorList, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Distributor data", { res });
+          setDistributorData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchFormDistributorData();
+  }, []);
+
+   // fetch saved form Product type data from db
+  const fetchProductTypeData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataproductType, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Product type data", { res });
+          setProductTypeData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProductTypeData();
+  }, []);
+
   return (
     <>
       <div className="col-12 d-flex">
@@ -178,11 +269,10 @@ const CustomMade = ({ img, token }) => {
               </Col>
 
               <Col>
-                Sébastien Morasse
-                <br />
-                List of products delivered to buyers
-                <br />
-                Category
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
+              ))}
+              Custom Lists
                 <br />
                 Find out where your products have been delivered during the
                 analyzed perio
@@ -192,23 +282,6 @@ const CustomMade = ({ img, token }) => {
 
             <hr />
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="date-type">
-                <Form.Label>Date Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="date_type"
-                  required
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option value="">Choose...</option>
-                  <option value="created_at">Created at</option>
-                  <option value="updated_at">Updated at</option>
-                </Form.Control>
-                <Form.Control.Feedback className="error-label" type="invalid">
-                  Date Type is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-
               <Form.Group as={Col} controlId="from_date">
                 <Form.Label>From</Form.Label>
                 <Form.Control
@@ -246,8 +319,9 @@ const CustomMade = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="Dis1">Distributer</option>
-                  <option value="Dis2">supplier</option>
+                  {DistributorData.map((values) => (
+                    <option value={values?.user_id}>{values?.company_name}</option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Distributer is required.
@@ -263,16 +337,15 @@ const CustomMade = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="Beer">Beer</option>
-                  <option value="Wine">Wine</option>
+                  {ProductTypeData.map((values) => (
+                    <option value={values?.product_type}>{values?.product_type}</option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Product type is required.
                 </Form.Control.Feedback>
               </Form.Group>
-            </Row>
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="order-state">
+               <Form.Group as={Col} controlId="order-state">
                 <Form.Label>Order state</Form.Label>
                 <Form.Control
                   as="select"
@@ -317,8 +390,8 @@ const CustomMade = ({ img, token }) => {
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >       <option value="">Choose...</option>
-                  <option value="CAeng">CA Eng</option>
-                  <option value="CAfr">CA Fr</option>
+                  <option value="CAeng">ENG</option>
+                  <option value="CAfr">FRA</option>
                 </Form.Control>
               </Form.Group>
             </Row>

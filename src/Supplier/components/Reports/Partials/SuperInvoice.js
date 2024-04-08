@@ -18,7 +18,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
 const postFormDataUrl = "/supplier/PostReportProductList";
 const getFormDataUrl = "/supplier/getsalesReport";
-
+const getFormDataSuppliername = "/supplier/reportSuppliername";
+const getFormDataSupplierUrl = "/supplier/reportFormdataSuppliersList";
+const getFormDataproductGroup = "/supplier/reportFormdataProductgroup";
 const SuperInvoice = ({ img, token }) => {
   // config for api call
   const config = {
@@ -46,6 +48,9 @@ const SuperInvoice = ({ img, token }) => {
   const [loading, setLoading] = useState(false);
   const [getTableDataLoading, setGetTableDataLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [Suppliername, setSupplierData] = useState([]);
+  const [SupplierData, setSuppliersData] = useState([]);
+  const [ProductGroupData, setProductGroupData] = useState([]);
 
   // testing values for table
   // {
@@ -144,6 +149,96 @@ const SuperInvoice = ({ img, token }) => {
     fetchFormData();
   }, []);
 
+  useEffect(() => {
+    fetchFormData();
+  }, []);
+  // fetch saved form city data from db
+  const fetchFormSuppliersData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataSupplierUrl, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Suppliers data", { res });
+          setSuppliersData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchFormSuppliersData();
+  }, []);
+
+  // fetch saved form city data from db
+  const fetchFormSupplierData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataSuppliername, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response Distributor data", { res });
+        setSupplierData(res.data.data);
+        setGetTableDataLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+  fetchFormSupplierData();
+  }, []);
+
+  // fetch saved form Product Style data from db
+  const fetchProductGroupData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataproductGroup, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Group data", { res });
+          setProductGroupData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchProductGroupData();
+  }, []);
+
   return (
     <>
       <div className="col-12 d-flex">
@@ -178,14 +273,14 @@ const SuperInvoice = ({ img, token }) => {
               </Col>
 
               <Col>
-                Sébastien Morasse
-                <br />
-                List of products delivered to buyers
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
+              ))}
+                List of Invoices
                 <br />
                 Category
                 <br />
-                Find out where your products have been delivered during the
-                analyzed perio
+                Find out where your Invoices
               </Col>
               <Col xs={6}></Col>
             </Row>
@@ -243,8 +338,10 @@ const SuperInvoice = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="Dis1">---</option>
-                  <option value="Dis2">---</option>
+                  <option value="all">All</option>
+            {SupplierData.map((values) => (
+              <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+            ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Supplier is required.
@@ -283,9 +380,13 @@ const SuperInvoice = ({ img, token }) => {
                   required
                   onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Choose...</option>
-                  <option value="Beer">---</option>
-                  <option value="Wine">---</option>
+                <option value="">Choose...</option>
+                <option value="All">All</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="overdue">Overdue</option>
+                <option value="closed">Closed</option>
+                <option value="collect">Collect</option>
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Invoice status is required.
@@ -300,8 +401,10 @@ const SuperInvoice = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="Beer">---</option>
-                  <option value="Wine">---</option>
+                  <option value="">Choose...</option>
+                  {ProductGroupData.map((values) => (
+                    <option value={values?.name}>{values?.name}</option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Invoice status is required.
@@ -331,8 +434,8 @@ const SuperInvoice = ({ img, token }) => {
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >       <option value="">Choose...</option>
-                  <option value="CAeng">CA Eng</option>
-                  <option value="CAfr">CA Fr</option>
+                  <option value="CAeng"> ENG </option>
+                  <option value="CAfr"> FRA </option>
                 </Form.Control>
               </Form.Group>
             </Row>

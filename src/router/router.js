@@ -207,7 +207,7 @@ const Router = () => {
         <Route
           exact
           path={routePaths[currentLanguage]}
-          // path="/admin/login"
+           //path="/admin/login"
           element={
             <Protected>
               <Login />

@@ -16,9 +16,10 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
+const getFormDataSuppliername = "/supplier/reportSuppliername";
 const postFormDataUrl = "/supplier/PostReportProductList";
 const getFormDataUrl = "/supplier/getsalesReport";
-
+const getFormDataSupplierUrl = "/supplier/reportFormdataSuppliersList";
 const InvoiceLists = ({ img, token }) => {
   // config for api call
   const config = {
@@ -46,7 +47,8 @@ const InvoiceLists = ({ img, token }) => {
   const [loading, setLoading] = useState(false);
   const [getTableDataLoading, setGetTableDataLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
-
+  const [SupplierData, setSuppliersData] = useState([]);
+  const [Suppliername, setSupplierData] = useState([]);
   // testing values for table
   // {
   //   created_at: "123",
@@ -143,6 +145,63 @@ const InvoiceLists = ({ img, token }) => {
   useEffect(() => {
     fetchFormData();
   }, []);
+  // fetch saved form city data from db
+  const fetchFormSuppliersData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataSupplierUrl, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Suppliers data", { res });
+          setSuppliersData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    fetchFormSuppliersData();
+  }, []);
+
+  // fetch saved form city data from db
+  const fetchFormSupplierData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataSuppliername, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response Distributor data", { res });
+        setSupplierData(res.data.data);
+        setGetTableDataLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+  fetchFormSupplierData();
+  }, []);
 
   return (
     <>
@@ -178,14 +237,14 @@ const InvoiceLists = ({ img, token }) => {
               </Col>
 
               <Col>
-                Sébastien Morasse
-                <br />
-                List of products delivered to buyers
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
+              ))}
+                List of Invoices
                 <br />
                 Category
                 <br />
-                Find out where your products have been delivered during the
-                analyzed perio
+                Find out where your products Invoices
               </Col>
               <Col xs={6}></Col>
             </Row>
@@ -243,8 +302,10 @@ const InvoiceLists = ({ img, token }) => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                  <option value="Dis1">---</option>
-                  <option value="Dis2">---</option>
+                  <option value="all">All</option>
+            {SupplierData.map((values) => (
+              <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+            ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Supplier is required.
@@ -331,8 +392,8 @@ label="COllection fees"
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >       <option value="">Choose...</option>
-                  <option value="CAeng">CA Eng</option>
-                  <option value="CAfr">CA Fr</option>
+                  <option value="CAeng"> ENG </option>
+                  <option value="CAfr"> FRA </option>
                 </Form.Control>
               </Form.Group>
             </Row>
