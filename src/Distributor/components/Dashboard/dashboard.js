@@ -142,7 +142,7 @@ const Dashboard = () => {
         <div class="col main p-0">
           <Header
             title={t("distributor.sidebar.dashboard")}
-            updateSidebar={updateSidebar}
+            updateSidebar={updateSidebar} userType={"distributor"}
           />
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row">
