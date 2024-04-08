@@ -395,7 +395,6 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                       <NavItem as="li">
                           <NavLink
                            to="/retailer/reports"
-                          onClick={() => progressPrompt()}
                           className="report"
                          exact
                          activeClassname="active"

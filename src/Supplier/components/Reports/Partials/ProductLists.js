@@ -4,17 +4,18 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 import useAuthInterceptor from "../../../../utils/apis";
 import Loader from "../../UI/Loader";
 import { hasPermission } from "../../../../CommonComponents/commonMethods";
 import { REPORTS_VIEW, REPORTS_EDIT } from "../../../../Constants/constant";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
+
 // define needed URLs here
 const postFormDataUrl = "/PostReportProductList";
 
@@ -27,7 +28,7 @@ const getFormDataproductStyle = "/supplier/reportFormdataProductstyle";
 const getFormDataproductFormat = "/supplier/reportFormdataProductformat";
 const getFormDataproductGroup = "/supplier/reportFormdataProductgroup";
 const getFormDataRetailersList = "/supplier/reportFormdataRetailersList";
-const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
+const getFormDataDistributorList = "/supplier/reportFormdataRetailersList";
 const getFormDataSuppliername = "/supplier/reportSuppliername";
 const ProductLists = ({ img, token }) => {
   // config for api call
@@ -68,7 +69,7 @@ const ProductLists = ({ img, token }) => {
   const [RetailerData, setRetailerData] = useState([]);
   const [CadData, setCadData] = useState([]);
   const [ProductNameData, setProductNameData] = useState([]);
-  const [ProductTypeData, setProductTypeData] = useState([]);  // testing values for table
+  const [ProductTypeData, setProductTypeData] = useState([]); // testing values for table
   const [ProductStyleData, setProductStyleData] = useState([]);
   const [ProductFormatData, setProductFormatData] = useState([]);
   const [ProductGroupData, setProductGroupData] = useState([]);
@@ -103,7 +104,7 @@ const ProductLists = ({ img, token }) => {
       //console.log("form submit", { formData }, { config });
       console.log("form submit", { formData });
       apis
-      .post(postFormDataUrl, formData, config)
+        .post(postFormDataUrl, formData, config)
         //  .post(postFormDataUrl, formData)
         .then((res) => {
           console.log("response", { res });
@@ -255,7 +256,7 @@ const ProductLists = ({ img, token }) => {
     fetchFormDistributorData();
   }, []);
 
-    // fetch saved form city data from db
+  // fetch saved form city data from db
   const fetchFormSupplierData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
@@ -285,33 +286,33 @@ const ProductLists = ({ img, token }) => {
   }, []);
 
   // fetch saved form city data from db
-const fetchFormCadData = () => {
-  // add permissions based on URL
-  config.headers.permission = "reports-view";
-  setGetTableDataLoading(true);
-  apis
-    .get(getFormDataCadCspUrl, config)
-    //.get(getFormDataUrl)
-    .then((res) => {
-      if (res.status === 200) {
-        console.log("response CAD/CSP data", { res });
-        setCadData(res.data.data);
-        setGetTableDataLoading(false);
-      }
-    })
-    .catch((error) => {
-      console.log({ error });
-      setGetTableDataLoading(false);
-      if (error) {
+  const fetchFormCadData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataCadCspUrl, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response CAD/CSP data", { res });
+          setCadData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
         console.log({ error });
-      }
-    });
-  setGetTableDataLoading(false);
-};
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
 
-useEffect(() => {
-  fetchFormCadData();
-}, []);
+  useEffect(() => {
+    fetchFormCadData();
+  }, []);
   // fetch saved form Product type data from db
   const fetchProductTypeData = () => {
     // add permissions based on URL
@@ -431,16 +432,16 @@ useEffect(() => {
   return (
     <>
       <div className="col">
-        <Card className="reports reports1" style={{ width: '9rem' }}>
-      <Card.Body>
-        <FontAwesomeIcon icon="fa-solid fa-list-check" />
-        <Card.Title></Card.Title>
-        <Card.Text>
-      Distribution
-        </Card.Text>
-        <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
-      </Card.Body>
-    </Card>
+        <Card className="reports reports1" style={{ width: "9rem" }}>
+          <Card.Body>
+            <FontAwesomeIcon icon="fa-solid fa-list-check" />
+            <Card.Title></Card.Title>
+            <Card.Text>Distribution</Card.Text>
+            <Button variant="primary" onClick={() => setShowModal(true)}>
+              <FontAwesomeIcon icon="fa-solid fa-eye" />
+            </Button>
+          </Card.Body>
+        </Card>
       </div>
 
       <Modal
@@ -461,9 +462,9 @@ useEffect(() => {
               </Col>
 
               <Col>
-              {Suppliername.map((values) => (
-                <h5>{values?.company_name} </h5>
-              ))}
+                {Suppliername.map((values) => (
+                  <h5>{values?.company_name} </h5>
+                ))}
                 Products Distributions
                 <br />
                 Find out where your products have been delivered.
@@ -473,7 +474,6 @@ useEffect(() => {
 
             <hr />
             <Row className="mb-3">
-
               <Form.Group as={Col} controlId="from_date">
                 <Form.Label>From</Form.Label>
                 <Form.Control
@@ -500,7 +500,7 @@ useEffect(() => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} controlId="supplier">
-                <Form.Label>By Distributor</Form.Label>
+                <Form.Label>By Supplier</Form.Label>
                 <Form.Control
                   as="select"
                   required
@@ -509,7 +509,9 @@ useEffect(() => {
                 >
                   <option value="">Choose...</option>
                   {DistributorData.map((values) => (
-                    <option value={values?.user_id}>{values?.company_name}</option>
+                    <option value={values?.user_id}>
+                      {values?.business_name}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
@@ -525,9 +527,11 @@ useEffect(() => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                        <option value="all">All</option>
+                  <option value="all">All</option>
                   {RetailerData.map((values) => (
-                    <option value={values?.user_id}>{values?.business_name}</option>
+                    <option value={values?.user_id}>
+                      {values?.business_name}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
@@ -546,10 +550,10 @@ useEffect(() => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                           <option value="all">All</option>
-                           {CadData.map((values) => (
-                             <option value={values?.id}>{values?.name}</option>
-                           ))}
+                  <option value="all">All</option>
+                  {CadData.map((values) => (
+                    <option value={values?.id}>{values?.name}</option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   CSP/CAD type is required.
@@ -565,7 +569,9 @@ useEffect(() => {
                 >
                   <option value="">Choose...</option>
                   {ProData.map((values) => (
-                    <option value={values?.product_name}>{values?.product_name}</option>
+                    <option value={values?.product_name}>
+                      {values?.product_name}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
@@ -582,7 +588,9 @@ useEffect(() => {
                 >
                   <option value="">Choose...</option>
                   {ProductTypeData.map((values) => (
-                    <option value={values?.product_type}>{values?.product_type}</option>
+                    <option value={values?.product_type}>
+                      {values?.product_type}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
@@ -609,23 +617,23 @@ useEffect(() => {
             </Row>
 
             <Row className="mb-3">
-            <Form.Group as={Col} controlId="product-format">
-              <Form.Label>Product format</Form.Label>
-              <Form.Control
-                as="select"
-                name="product_format"
-                required
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                {ProductFormatData.map((values) => (
-                  <option value={values?.name}>{values?.name}</option>
-                ))}
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Product format is required.
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group as={Col} controlId="product-format">
+                <Form.Label>Product format</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="product_format"
+                  required
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="">Choose...</option>
+                  {ProductFormatData.map((values) => (
+                    <option value={values?.name}>{values?.name}</option>
+                  ))}
+                </Form.Control>
+                <Form.Control.Feedback className="error-label" type="invalid">
+                  Product format is required.
+                </Form.Control.Feedback>
+              </Form.Group>
               <Form.Group as={Col} controlId="order-state">
                 <Form.Label>Order status </Form.Label>
                 <Form.Control
@@ -685,14 +693,15 @@ useEffect(() => {
               </Form.Group>
             </Row>
             <Row className="mb-3">
-
               <Form.Group as={Col} controlId="file-type">
                 <Form.Label>File Type</Form.Label>
                 <Form.Control
                   as="select"
                   name="file_type"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="xlsx">XLSX</option>
                   <option value="csv">CSV</option>
                   <option value="pdf">PDF</option>
@@ -707,7 +716,9 @@ useEffect(() => {
                   as="select"
                   name="language"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="CAeng">ENG</option>
                   <option value="CAfr">FRA</option>
                 </Form.Control>
@@ -725,28 +736,33 @@ useEffect(() => {
           <hr />
           {!!getTableDataLoading && <Loader />}
           {!getTableDataLoading && (
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Created At</th>
-                  <th>Download</th>
-                  <th>File Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((values) => (
-                  <tr>
-                    <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
-                    <td>
-                      <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
-                        Download - {values?.file_type}
-                      </a>
-                    </td>
-                    <td>{values?.file_type}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            // <Table responsive striped bordered hover>
+            //   <thead>
+            //     <tr>
+            //       <th>Created At</th>
+            //       <th>Download</th>
+            //       <th>File Type</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {tableData.map((values) => (
+            //       <tr>
+            //         <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
+            //         <td>
+            //           <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
+            //             Download - {values?.file_type}
+            //           </a>
+            //         </td>
+            //         <td>{values?.file_type}</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </Table>
+            <ReportsTable
+              tableData={tableData}
+              headings={["Created At", "File Type", "Download"]}
+              className=""
+            />
           )}
         </Modal.Body>
         <Modal.Footer>
