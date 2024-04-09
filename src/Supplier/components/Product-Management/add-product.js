@@ -463,12 +463,23 @@ const AddProduct = () => {
 
   const handleStyleChange = (e) => {
     setSelectedStyle(e.target.value);
+    console.log(e.target.value);
+    if(e.target.value==='Other'){
+      handleStylePopup()
+    }
     setStyleError("");
+
   };
+
+  const handleStylePopup=()=>{
+    console.log('done');
+       
+  }
 
   const handleSubCatChange = (e) => {
     setSubCatError("");
     setSelectedSubCat(e.target.value);
+    
   };
 
   const handleAlcoholChange = (e) => {
@@ -721,7 +732,7 @@ const AddProduct = () => {
                               {stylesList &&
                                 stylesList.map((ele) => {
                                   return (
-                                    <option key={ele.id} value={ele.id}>
+                                    <option key={ele.id} value={ele.name}>
                                       {ele.name}
                                     </option>
                                   );

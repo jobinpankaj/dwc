@@ -57,7 +57,7 @@ const Dashboard = () => {
         <Sidebar userType={"admin"} />
 
         <div className="col main p-0">
-          <Header title="Dashboard" updateSidebar={updateSidebar} />
+          <Header title="Dashboard" updateSidebar={updateSidebar} userType={"admin"} />
 
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row">

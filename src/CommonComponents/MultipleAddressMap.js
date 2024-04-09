@@ -130,8 +130,8 @@ function onInfoWindowOpen(id, e) {
           >
             <div>
               <h6>
-                {selectedUser && selectedUser.full_name}'s
-                Location
+                {selectedUser && selectedUser.full_name}
+                {/* Location */}
               </h6>
               <p>
                 {selectedUser &&

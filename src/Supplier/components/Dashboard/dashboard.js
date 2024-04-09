@@ -30,7 +30,7 @@ const Dashboard = () => {
         <Sidebar userType={"supplier"} />
 
         <div className="col main p-0">
-          <Header title={t("supplier.sidebar.Dashboard1")} />
+          <Header title={t("supplier.sidebar.Dashboard1")} userType={"supplier"} />
 
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row">

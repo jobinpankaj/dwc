@@ -148,7 +148,7 @@ form {
     font-size: 14px;
 
     &:focus {
-      + .form-field-icon {
+      +.form-field-icon {
         .form-abs-img {
           fill: $purple;
         }
@@ -232,6 +232,41 @@ form {
   }
 }
 
+.css-13cymwt-control {
+  background: none !important;
+  border: none !important;
+  position: relative !important;
+  bottom: 5px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.css-13cymwt-control:focus {
+  background: none !important;
+  border: none !important;
+  position: relative !important;
+  bottom: 5px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  outline: none !important;
+}
+
+.css-t3ipsp-control {
+  border: none !important;
+  position: relative !important;
+  bottom: 5px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  outline: none !important;
+}
+
+.css-1nmdiq5-menu {
+  position: absolute !important;
+  top: 32px !important;
+  left: 0px !important;
+}
+
+
 .btn {
   @include btn;
   padding: 9px 20px;
@@ -257,6 +292,17 @@ form {
     }
   }
 
+  &.btn-green {
+    margin: 0px 10px;
+    color: green;
+    border: 1px solid;
+  }
+
+  &:hover {
+    background: green;
+    color: white;
+  }
+
   &.btn-outline-purple {
     background-color: $white;
     border-color: $purple;
@@ -277,6 +323,10 @@ form {
   &.btn-outline-black {
     background-color: transparent;
     border: 1px solid lighten($black, 0.7);
+
+    &:hover {
+      color: #151620;
+    }
 
     &:focus {
       box-shadow: none;
@@ -428,7 +478,8 @@ table {
 
   &.text-bg-red {
     background-color: rgba(255, 69, 69, 0.05);
-    color: $red;
+    color: $orange;
+
     &.border-bg-red {
       border-color: $red;
       border-width: 1px;
@@ -439,6 +490,7 @@ table {
   &.text-bg-orange {
     background-color: rgba(231, 214, 61, 0.25);
     color: $orange;
+
     &.border-bg-orange {
       border-color: $orange;
       border-width: 1px;
@@ -476,8 +528,7 @@ table {
     }
 
     .search-input {
-      background: rgba(138, 60, 172, 0.02) url(../images/search-Icon.png)
-        no-repeat;
+      background: rgba(138, 60, 172, 0.02) url(../images/search-Icon.png) no-repeat;
       background-position: 10px center;
       border: 1px solid rgba(36, 39, 49, 0.1);
       border-radius: 30px;
@@ -549,6 +600,7 @@ table {
   &.position-abs {
     right: 0;
     top: -13px;
+
     &.spaceBottom {
       top: -20px;
     }
@@ -765,6 +817,7 @@ table {
 
 .order-details {
   form {
+
     .form-control,
     .form-select {
       padding-inline-end: 0.75rem;
@@ -954,7 +1007,7 @@ table {
         border-left: 10px solid rgba(35, 31, 32, 0.1);
         opacity: 0.5;
 
-        > img {
+        >img {
           filter: grayscale(1);
         }
       }
@@ -987,6 +1040,7 @@ table {
     font-size: 19px;
     min-width: unset;
     flex-shrink: 0;
+
     @media screen and (max-width:$laptop-lg) {
       width: 18px !important;
       height: 18px;
@@ -1246,18 +1300,22 @@ table {
     .form-control {
       height: 40px;
       width: 300px;
+
       @media screen and (max-width:1400px) {
         width: 200px;
       }
+
       @media screen and (max-width:$mobile) {
         width: 180px;
       }
     }
+
     .dropdown-menu {
       overflow-y: auto;
       height: 300px;
     }
   }
+
   .map-box {
     height: 240px !important;
   }
@@ -1387,14 +1445,22 @@ textarea.addNoteTextarea {
 
 .productBox {
   .card {
-    background: rgba(147, 112, 219, 0.05);
-    border: 1.05666px solid rgba(35, 31, 32, 0.2);
+    // background: rgba(147, 112, 219, 1);
+    // border: 1.05666px solid rgba(35, 31, 32, 0.2);
+    // border-radius: 10.5666px;
+    // padding: 14px;
+    // font-family: $font-medium;
+    // font-weight: 500;
+    // color: $black;
+    background: rgb(105 1 127 / 5%);
+    border: 1.05666px solid rgb(0 0 0 / 7%);
     border-radius: 10.5666px;
     padding: 14px;
     font-family: $font-medium;
     font-weight: 500;
     color: $black;
-    
+    height: 400px;
+
     .card-title {
       font-size: 17.3367px;
       line-height: 140%;
@@ -1445,7 +1511,7 @@ textarea.addNoteTextarea {
           line-height: 140%;
           color: #231f20;
           opacity: 0.6;
-           font-weight: 600;
+          font-weight: 600;
         }
 
         // .btn {
@@ -1493,18 +1559,21 @@ textarea.addNoteTextarea {
       opacity: 0.6;
     }
   }
+
   @media screen and (max-width:1600px) {
-    .btn{
+    .btn {
       font-size: 14px !important;
       white-space: nowrap;
     }
   }
+
   @media screen and (max-width:1400px) {
-    .btn{
+    .btn {
       font-size: 12px !important;
     }
   }
 }
+
 .prodOtherInfo {
   display: flex;
   justify-content: flex-start;
@@ -1538,22 +1607,26 @@ textarea.addNoteTextarea {
     }
   }
 }
+
 .prodOtherOptions {
   font-family: $font-medium;
   line-height: 140%;
   color: $black;
+
   .dropdownOption {
     label {
       font-size: 16px;
       opacity: 0.7;
       margin-bottom: 15px;
     }
+
     .form-select {
       $borderCLR: lighten($black, 0.8);
       @include form-control(41px, $borderCLR);
     }
   }
 }
+
 .prodDetailActions {
   display: flex;
   justify-content: flex-start;
@@ -1567,16 +1640,19 @@ textarea.addNoteTextarea {
     font-family: $font-medium;
     line-height: 140%;
     color: $black;
+
     label {
       font-size: 16px;
       opacity: 0.7;
       margin-bottom: 15px;
     }
+
     &.ctaBox {
       min-width: 200px;
       padding-bottom: 10px;
     }
   }
+
   .OtherInfo-in {
     padding: 10px 15px;
     text-align: left;
@@ -1591,66 +1667,79 @@ textarea.addNoteTextarea {
       // width: 120px;
       height: 50px;
     }
+
     .qty-box {
       width: 100%;
       display: flex;
       justify-content: center;
+
       .form-control {
         width: 30px;
       }
     }
   }
+
   .price-box {
     font-family: $font-bold;
     font-size: 17.3367px;
     opacity: 0.6;
   }
 }
+
 .cartTile {
   .prodName {
     font-size: 18px;
     opacity: 0.7;
     margin: 0;
   }
+
   .cartInfo {
     .priceBox {
       font-weight: 700;
-      font-size:17px;
+      font-size: 17px;
       opacity: 0.6;
+
       @media screen and (max-width: $tablet-sm) {
         font-size: 16px;
       }
     }
   }
 }
+
 .cartTotalBox {
   .prodDetailActions {
     .actionBoxIn {
       width: 100%;
       align-items: center;
+
       &.ctaBox {
         .btn-purple {
           min-width: fit-content !important;
         }
       }
+
       label {
         margin: 0;
+
         @media screen and (max-width: $tablet-sm) {
           font-size: 12px;
         }
       }
     }
+
     .price-box {
       @media screen and (max-width: $tablet-sm) {
         font-size: 12px;
       }
     }
+
     .OtherInfo-in.badge.text-bg-light {
       width: 100%;
       justify-content: space-between;
     }
   }
 }
+
 .prodInfo-card {
   color: $black;
 
@@ -1659,11 +1748,13 @@ textarea.addNoteTextarea {
     font-size: 16px;
     opacity: 0.6;
   }
+
   .card-text {
     font-size: 14px;
     opacity: 0.6;
   }
 }
+
 .addProductBox {
   .card {
     background: rgba(147, 112, 219, 0.05);
@@ -1680,6 +1771,7 @@ textarea.addNoteTextarea {
       font-family: $font-medium;
       font-size: 16px;
       color: $purple;
+
       i {
         font-style: normal;
         width: 25px;
@@ -1696,6 +1788,7 @@ textarea.addNoteTextarea {
     }
   }
 }
+
 .accountHistory {
   display: flex;
   flex-flow: row wrap;
@@ -1714,6 +1807,7 @@ textarea.addNoteTextarea {
       align-items: center;
       gap: 0 7px;
     }
+
     &.balanceDue {
       background: rgba(254, 93, 93, 0.05);
       border: 0.5px solid rgba(254, 93, 93, 0.2);
@@ -1725,38 +1819,46 @@ textarea.addNoteTextarea {
   .search-table {
     width: 340px;
   }
-  .table > thead th,
+
+  .table>thead th,
   .table td {
     padding: 12px 20px;
     font-family: $font-medium;
   }
+
   .table td {
     padding: 8px 20px;
   }
+
   .table tbody tr:last-child {
     border-bottom-color: transparent;
   }
+
   .updateDate {
     font-family: $font-bold;
     color: #231f20;
   }
+
   .dayAgo {
     font-size: 10px;
     font-family: $font-medium;
     color: $black;
     display: flex;
   }
+
   .dropstart {
     display: flex;
     justify-content: start;
     align-items: center;
     float: none;
   }
+
   .badge {
     padding: 8px 12px;
     font-family: $font-medium;
     font-weight: 500;
   }
+
   .card-header {
     font-size: 18px;
     color: #231f20;
@@ -1764,6 +1866,7 @@ textarea.addNoteTextarea {
     border-bottom: 1px solid #e6eaec;
     padding: 20px 30px;
   }
+
   .paymentMethodList {
     .label {
       flex: 0 1 16.66%;
@@ -1771,30 +1874,37 @@ textarea.addNoteTextarea {
       font-family: $font-medium;
       opacity: 0.7;
     }
+
     .disCreption {
       flex: 0 1 auto;
       font-size: 14px;
       color: #231f20;
       opacity: 0.6;
+
       .btn {
         font-size: 14px;
       }
+
       .dropdown-toggle::after {
         margin-left: 12px;
       }
+
       .OtherInfo-in {
         display: flex;
         flex-flow: column;
         gap: 10px 0;
         padding: 12px 18px;
+
         .name {
           font-size: 14px;
           font-family: $font-medium;
           color: #231f20;
           opacity: 0.7;
         }
+
         .discreption-In {
           font-size: 12px;
+
           &.price {
             font-size: 16px;
             font-family: $font-bold;
@@ -1804,27 +1914,33 @@ textarea.addNoteTextarea {
     }
   }
 }
+
 .table .dropdown-menu {
   min-width: 100px;
 }
+
 .product-detail {
-  .prodImg > img {
+  .prodImg>img {
     height: 200px;
     width: auto;
   }
 }
+
 .product-list .productBox img {
-  height: 200px;
+  height: 250px;
   width: auto;
   max-width: 100%;
 }
+
 .prodDetailImg img {
   width: auto;
   max-width: 100%;
-  max-height: 200px;
+  max-height: 250px;
 }
+
 .searchListType {
   position: relative;
+
   .searchListBx {
     position: absolute;
     height: 200px;
@@ -1839,16 +1955,19 @@ textarea.addNoteTextarea {
     display: none;
     z-index: 99;
   }
+
   input {
-    &:focus + .searchListBx {
+    &:focus+.searchListBx {
       display: block;
     }
   }
 }
+
 .custom-atag {
   display: inline-block;
-  color: #231f20;
+  color: #9370db;
   text-decoration: none;
+
   &:hover {
     color: #9370db;
     cursor: pointer;
@@ -1857,9 +1976,77 @@ textarea.addNoteTextarea {
 
 .imageFix {
   height: 200px;
+
   .card-img-top {
     height: 100% !important;
     object-fit: cover;
     width: 100% !important;
+  }
+}
+
+.supplier_logoBox {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 400px;
+  overflow-y: overlay;
+
+  .supplier_logo {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #80808057;
+    padding: 5px;
+    background: #50505014;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 68px;
+      border-radius: 2px;
+    }
+  }
+}
+
+.supplier-card {
+  // border: 1px solid gray;
+  height: 300px;
+  padding: 10px;
+  border-radius: 10px;
+  // display: flex;
+  justify-content: center;
+  a{
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    width: 90%;
+    height: 300px;
+    border: 1px solid #8080807d;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 5px;
+    cursor: pointer;
+
+    .supplier-img {
+      height: 180px;
+      width: 180px;
+      border-radius: 50%;
+      // border: 1px solid red;
+      margin: 25px;
+
+
+      img {
+        height: 180px;
+        width: width;
+        border-radius: 50%;
+      }
+    }
+    .card-title{
+      text-align: center !important;
+      font-size: 20px !important;
+      text-transform: capitalize !important;
+      color: #878787;
+    }
   }
 }

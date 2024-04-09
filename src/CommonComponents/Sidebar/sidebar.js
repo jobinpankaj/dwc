@@ -355,7 +355,7 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                     {hasPermission(MARKETPLACE_VIEW) && (
                       <NavItem as="li">
                         <NavLink
-                          to="/retailer/marketplace"
+                          to="/retailer/supplier-list"
                           className="inventory-manage"
                           exact
                           activeClassname="active"
