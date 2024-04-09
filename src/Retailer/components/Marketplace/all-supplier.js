@@ -20,6 +20,7 @@ import {
   clearCart,
 } from "../../../redux/cartSlice";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 const Marketplace = () => {
   const apis = useAuthInterceptor();
@@ -37,46 +38,58 @@ const Marketplace = () => {
   const cartItems = useSelector((state) => state.cart.items);
   // console.log(cartItems,"cartItems")
   const dispatch = useDispatch();
+
+  const [supplierList, setSupplierList]= useState([]);
+
+  const allSupplierList = [
+    { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 2, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 3, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 4, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 5, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 6, imgSource: "https://picsum.photos/200", supplierName: "test" },
+    { id: 7, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 8, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 9, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 10, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+    { id: 11, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  ];
+
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  //   const location = useLocation();
-  //     useEffect(() => {
-  //       if (!token) {
-  //         navigate("/retailer/login");
-  //       }
-  //       const searchKeyword = location.state?.search || "";
+  const location = useLocation();
+  useEffect(() => {
+    if (!token) {
+      navigate("/retailer/login");
+    }
+    console.log(token);
+    const searchKeyword = location.state?.search || "";
 
-  //       setKeyword(searchKeyword);
-  //     }, [token, navigate]);
-  //     useEffect(() => {
-  //       setLoading(true);
-  //       const config = {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           permission: `marketplace-view`,
-  //         },
-  //       }
-  //    });
+    setKeyword(searchKeyword);
+  }, [token, navigate]);
 
-  //     apis
-  //       .post(`retailer/getSupplierProductList?search=${keyword}`, {}, config)
-  //       .then((res) => {
-  //         setProductList(res.data.data);
-  //         setData(res.data.data);
-  //         setLoading(false);
-  //       })
-  //       .catch((err) => {
-  //         console.error(err);
-  //         if (err.message !== "revoke") {
-  //           toast.error(t("error_message.something_went_wrong"), {
-  //             autoClose: 1000,
-  //             position: toast.POSITION.TOP_CENTER,
-  //           });
-  //           setLoading(false);
-  //         }
-  //       });
-  //   }, [keyword, token]);
+  useEffect(() => {
+    setLoading(true);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `marketplace-view`,
+      },
+    };
+
+    const fetchData = async () => {
+      try {
+          const response = await apis.get('http://backapi.com/api/v1/supplier/getAllSupplierData', config);
+          console.log('get all supplier----------------',response.data);
+          setSupplierList(response.data);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+    setLoading(false);
+    },[]);
 
   //   useEffect(() => {
   //     const quantities = cartItems.reduce((acc, item) => {
@@ -183,41 +196,27 @@ const Marketplace = () => {
   //   console.log(quantities, "que=antitired");
   //   console.log(data);
 
-  const allSupplierList = [
-    { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 2, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 3, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 4, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 5, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 6, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 7, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 8, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 9, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 10, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 11, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-  ];
+  
 
-
-
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = (e) => {
     const term = e.target.value;
-    console.log('getting value from search',term);
+    console.log("getting value from search", term);
     setSearchTerm(term);
-    const filtered = allSupplierList.filter(item =>
-      item.supplierName.toLowerCase().includes(term.toLowerCase()) ||
-      item.id.toString().includes(term.toLowerCase())
+    const filtered = supplierList.filter(
+      (item) =>
+        item.full_name.toLowerCase().includes(term.toLowerCase()) ||
+        item.id.toString().includes(term.toLowerCase())
     );
     setFilteredData(filtered);
   };
-  const displayData = searchTerm === '' ? allSupplierList : filteredData;
+  const displayData = searchTerm === "" ? supplierList : filteredData;
 
   const supplierHander = (e) => {
     console.log("get supplier id on click", e);
   };
-
 
   return (
     <div className="container-fluid page-wrap marketplace">
@@ -289,15 +288,21 @@ const Marketplace = () => {
                         {displayData.map((s) => {
                           return (
                             <div className="col-md-4 supplier-card my-3 mx-0 p-0">
-                              <a onClick={() => navigate(`/retailer/marketplace?supplier_id=${s.id}`)}>
-                              <div className="card">
-                                <div className="supplier-img">
-                                  <img src={s.imgSource}></img>
+                              <a
+                                onClick={() =>
+                                  navigate(
+                                    `/retailer/marketplace?supplier_id=${s.id}`
+                                  )
+                                }
+                              >
+                                <div className="card">
+                                  <div className="supplier-img">
+                                    <img src={s.user_image}></img>
+                                  </div>
+                                  <div className="card-title">
+                                    {s.full_name}
+                                  </div>
                                 </div>
-                                <div className="card-title">
-                                  {s.supplierName}
-                                </div>
-                              </div>
                               </a>
                             </div>
                           );
@@ -309,13 +314,13 @@ const Marketplace = () => {
                   {/* [/Card] */}
                 </div>
               </div>
-              {allSupplierList.length === 0 && (
+              {/* {supplierList.length === 0 && (
                 <div className="text-center">
                   <p className="fs-4">
                     {t("retailer.market_place.listing.no_products_to_show")}
                   </p>
                 </div>
-              )}
+              )} */}
             </div>
           )}
         </div>
