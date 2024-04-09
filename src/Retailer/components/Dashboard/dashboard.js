@@ -55,6 +55,7 @@ const Dashboard = () => {
   console.log("current user from dashboard---------", currentUser);
   const username = localStorage.getItem(`${currentUser}_fullName`);
   const userImg = localStorage.getItem(`${currentUser}_userImg`);
+  const [getSupplierList, setSupplierList]= useState([]);
 
   useEffect(() => {
     if (show) {
@@ -80,7 +81,8 @@ const Dashboard = () => {
       .get(`/retailer/suppliersAllList`, config)
       .then((res) => {
         setMapSupplierList(res.data.data);
-        console.log("res.data.data------", res.data.data);
+        setSupplierList(res.data.data)
+        console.log("all data of supplier-------------", res.data.data);
       })
       .catch((err) => {
       });
@@ -98,6 +100,32 @@ const Dashboard = () => {
       });
     }
   }, [accessToken, navigate]);
+
+  // get all supplier list
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        permission: "dashboard-view",
+      },
+    };
+    apis
+      .get("/supplier/getAllSupplierData", config)
+      .then((res) => {
+        setOrders(res.data.data.orders);
+      })
+      .catch((err) => {
+        if (err.message !== "revoke") {
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }, []);
+
+  
+
   useEffect(() => {
     const config = {
       headers: {
@@ -566,10 +594,10 @@ const Dashboard = () => {
                         {t("retailer.dashboard.suggested_supplier")}
                       </div>
                       <div className="supplier_logoBox">
-                        {suggestedSupplier.map((supplier) => {
+                        {getSupplierList.map((supplier) => {
                           return (
                             <div className="supplier_logo">
-                              <img src={supplier.imgSource}></img>
+                              <img src={supplier.user_image}></img>
                             </div>
                           );
                         })}

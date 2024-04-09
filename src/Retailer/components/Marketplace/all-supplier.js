@@ -80,7 +80,7 @@ const Marketplace = () => {
 
     const fetchData = async () => {
       try {
-          const response = await apis.get('http://backapi.com/api/v1/supplier/getAllSupplierData', config);
+          const response = await apis.get('/supplier/getAllSupplierData', config);
           console.log('get all supplier----------------',response.data);
           setSupplierList(response.data);
       } catch (error) {
@@ -90,6 +90,25 @@ const Marketplace = () => {
     fetchData();
     setLoading(false);
     },[]);
+
+    // useEffect(() => {
+    //   setSearchSupplierError("");
+    //   const config = {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       permission: "supplier-view",
+    //     },
+    //   };
+    //   apis
+    //     .get(`/retailer/suppliersAllList`, config)
+    //     .then((res) => {
+    //       setMapSupplierList(res.data.data);
+    //       setSupplierList(res.data.data)
+    //       console.log("all data of supplier-------------", res.data.data);
+    //     })
+    //     .catch((err) => {
+    //     });
+    // }, []);
 
   //   useEffect(() => {
   //     const quantities = cartItems.reduce((acc, item) => {
