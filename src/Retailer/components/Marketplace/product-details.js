@@ -31,10 +31,12 @@ const ProductDetails = (props) => {
   const [similarProducts, setSimilarProducts] = useState([]);
   const product_id = query.get("product_id");
   const supplier_id = query.get("supplier_id");
+  console.log('getting supplier id----------',supplier_id);
   const retailer_accessToken = localStorage.getItem("retailer_accessToken");
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  // const {supplier_id}= useParams
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -52,9 +54,9 @@ const ProductDetails = (props) => {
     apis
       .post(`getSimilarProducts`, bodyData1, config1)
       .then((res) => {
-        console.log(res);
         if (res.data.success) {
           setSimilarProducts(res.data.data);
+          console.log('similar product----------',res.data.data);
         } else {
           toast.error(res.response.data.message, {
             autoClose: 1000,
@@ -91,7 +93,7 @@ const ProductDetails = (props) => {
         config
       )
       .then((res) => {
-        console.log(res);
+        console.log('filtered product by supplier id-------------',res);
         if (res.data.success) {
           setProduct(res.data.data);
           setDesc(res.data.data.description[0]);
@@ -113,7 +115,8 @@ const ProductDetails = (props) => {
         }
       });
   }, [product_id, supplier_id, retailer_accessToken]);
-  console.log(desc);
+  
+  console.log('--------------what------------------- ',desc);
 
   useEffect(() => {
     const item = cartItems.find((item) => item.product_id === product.id);

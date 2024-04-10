@@ -50,12 +50,11 @@ const cartSlice = createSlice({
 
       if (existingItem) {
         existingItem.quantity = item.quantity;
-        console.log(existingItem,"existingItem")
+        console.log(existingItem, "existingItem");
       } else {
         state.items.push(item);
-        console.log(item,"item")
+        console.log(item, "item");
       }
-
 
       const token = localStorage.getItem("retailer_accessToken");
       const config = {

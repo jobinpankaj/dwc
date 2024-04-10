@@ -179,7 +179,7 @@ const Marketplace = () => {
     });
   };
   console.log(quantities, "que=antitired");
-  console.log(data);
+  console.log('getting data from marketplace',data);
 
   return (
     <div className="container-fluid page-wrap marketplace">

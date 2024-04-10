@@ -69,27 +69,48 @@ const Marketplace = () => {
     setKeyword(searchKeyword);
   }, [token, navigate]);
 
-  useEffect(() => {
-    setLoading(true);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        permission: `marketplace-view`,
-      },
-    };
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       permission: `marketplace-view`,
+  //     },
+  //   };
 
-    const fetchData = async () => {
-      try {
-          const response = await apis.get('/supplier/getAllSupplierData', config);
-          console.log('get all supplier----------------',response.data);
-          setSupplierList(response.data);
-      } catch (error) {
-          console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-    setLoading(false);
-    },[]);
+  //   const fetchData = async () => {
+  //     try {
+  //         const response = await apis.get('/supplier/getAllSupplierData', config);
+  //         console.log('get all supplier----------------',response.data);
+  //         setSupplierList(response.data);
+  //     } catch (error) {
+  //         console.error('Error fetching data:', error);
+  //     }
+  //   };
+  //   fetchData();
+  //   setLoading(false);
+  //   },[]);
+
+    useEffect(() => {
+      // setSearchSupplierError("");
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          permission: "supplier-view",
+        },
+      };
+      apis
+        .get(`/retailer/suppliersAllList`, config)
+        .then((res) => {
+          setSupplierList(res.data.data);
+          console.log("all data in market place-------------", res.data.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+        });
+    }, []);
+  
 
     // useEffect(() => {
     //   setSearchSupplierError("");
@@ -226,7 +247,7 @@ const Marketplace = () => {
     setSearchTerm(term);
     const filtered = supplierList.filter(
       (item) =>
-        item.full_name.toLowerCase().includes(term.toLowerCase()) ||
+        item.company_name.toLowerCase().includes(term.toLowerCase()) ||
         item.id.toString().includes(term.toLowerCase())
     );
     setFilteredData(filtered);
@@ -319,7 +340,7 @@ const Marketplace = () => {
                                     <img src={s.user_image}></img>
                                   </div>
                                   <div className="card-title">
-                                    {s.full_name}
+                                    {s.company_name}
                                   </div>
                                 </div>
                               </a>
@@ -333,13 +354,13 @@ const Marketplace = () => {
                   {/* [/Card] */}
                 </div>
               </div>
-              {/* {supplierList.length === 0 && (
+              {displayData.length === 0 && (
                 <div className="text-center">
                   <p className="fs-4">
                     {t("retailer.market_place.listing.no_products_to_show")}
                   </p>
                 </div>
-              )} */}
+              )}
             </div>
           )}
         </div>
