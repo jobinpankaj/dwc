@@ -17,8 +17,8 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // define needed URLs here
 const getFormDataSuppliername = "/supplier/reportSuppliername";
-const postFormDataUrl = "/supplier/PostReportProductList";
-const getFormDataUrl = "/supplier/getsalesReport";
+const postFormDataUrl = "/supplier/PostReportCustomList";
+const getFormDataUrl = "/supplier/getCustomReports";
 const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
 const getFormDataproductType = "/supplier/reportFormdataProducttype";
 
@@ -109,7 +109,7 @@ const CustomMade = ({ img, token }) => {
           console.log({ error });
 
           if (error) {
-            toast.error("Something went wrong. Please try again later.", {
+            toast.error("Invoice is not available. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -159,7 +159,7 @@ const fetchFormSupplierData = () => {
     //.get(getFormDataUrl)
     .then((res) => {
       if (res.status === 200) {
-        console.log("response Distributor data", { res });
+        console.log("response Supplier data", { res });
         setSupplierData(res.data.data);
         setGetTableDataLoading(false);
       }
@@ -270,7 +270,7 @@ useEffect(() => {
 
               <Col>
               {Suppliername.map((values) => (
-                <h5>{values?.first_name} {values?.last_name}</h5>
+                <h5>{values?.company_name} </h5>
               ))}
               Custom Lists
                 <br />
@@ -282,23 +282,6 @@ useEffect(() => {
 
             <hr />
             <Row className="mb-3">
-              <Form.Group as={Col} controlId="date-type">
-                <Form.Label>Date Type</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="date_type"
-                  required
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option value="">Choose...</option>
-                  <option value="created_at">Created at</option>
-                  <option value="updated_at">Updated at</option>
-                </Form.Control>
-                <Form.Control.Feedback className="error-label" type="invalid">
-                  Date Type is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-
               <Form.Group as={Col} controlId="from_date">
                 <Form.Label>From</Form.Label>
                 <Form.Control
@@ -336,9 +319,8 @@ useEffect(() => {
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Choose...</option>
-                   <option value="alll">All</option>
                   {DistributorData.map((values) => (
-                    <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+                    <option value={values?.user_id}>{values?.business_name}</option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
