@@ -29,6 +29,10 @@ const CreateTransfer = () => {
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+  const emailregex =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const [customDistributorEmail,setCustomDistributorEmail]=useState("");
+const [customDistributorEmailError,setCustomDistributorEmailError]=useState("");
 
   const handleUpdate = (send, inventoryId, batch) => {
      const updatedInv = inventoryList.map(ele => {
@@ -42,6 +46,11 @@ const CreateTransfer = () => {
 
   const handleCreate = () => {
     let distributor = true, custom = true, warehouse = true, transfer = true
+    let email =true
+if(selectedDistributor === "custom" && !emailregex.test(customDistributorEmail)){
+      setCustomDistributorEmailError("Please enter a valid email id")
+      email = false
+    }
 
     if(selectedWarehouse === ""){
       setWarehouseError("Please select a warehouse.")
@@ -291,7 +300,7 @@ const CreateTransfer = () => {
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col mb-3">
+                        <div className="col-md-6 mb-3">
                           <label className="form-label">
                             {t(
                               "supplier.inventory_management.create_transfer.warehouse"
@@ -338,6 +347,26 @@ const CreateTransfer = () => {
                           />
                           {customDistributorError !== "" ? (<p className="error-label">{customDistributorError}</p>) : (<></>)}
                         </div>
+                        {selectedDistributor === "custom" &&(
+                            <>
+                            <div className="col">
+                            <label className="form-label mb-1">
+                            </label>
+                            <input
+                            className="form-control mt-2"
+                            placeholder="Enter Distributor mail Id"
+                            value={customDistributorEmail}
+                            onChange={(e) =>{ 
+                              setCustomDistributorEmail(e.target.value)
+                              setCustomDistributorEmailError("")
+                            }
+                            }
+                          />
+                          {customDistributorEmailError !== "" ? (<p className="error-label">{customDistributorEmailError}</p>) : (<></>)}
+                        </div>
+                          </>)} 
+
+
                       </div>
                     </div>
                   </div>

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingOverlay from "react-loading-overlay";
+import { useTranslation } from "react-i18next";
 
 toast.configure();
 
@@ -67,6 +68,7 @@ const SupplierRetailerDetail = () => {
   const [hideFilter, setHideFilter] = useState("");
   const [loading, setLoading] = useState(true)
   const apis = useAuthInterceptor();
+  const { t } = useTranslation();
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -328,11 +330,11 @@ const SupplierRetailerDetail = () => {
                           <table className="table table-striped m-0">
                             <thead>
                               <tr>
-                                <th>Retailer Name</th>
-                                <th>Routes</th>
-                                <th>Address</th>
-                                <th>CSP</th>
-                                <th>CAD</th>
+                                <th>{t("admin.retailer_management.list.table_col1")}</th>
+                                <th>{t("admin.retailer_management.list.table_col2")}</th>
+                                <th>{t("admin.retailer_management.list.table_col3")}</th>
+                                <th>{t("admin.retailer_management.list.table_col4")}</th>
+                                <th>{t("admin.retailer_management.list.table_col6")}</th>
                                 <th className="tableActionBox"></th>
                               </tr>
                             </thead>
@@ -494,10 +496,96 @@ const SupplierRetailerDetail = () => {
                         </div>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
               </div>
             </div>
+
+          {/* map UI */}
+            <div class="row my-3">
+              <div class="col">
+                <div className="card user-card height-100">
+                  <div className="card-body p-0">
+                  <div className="col-sm-6 col-lg-6">
+                          {/* <div className="card-title">
+                            {t("retailer.dashboard.local_supplier")}
+                          </div> */}
+                          {/* <form class="row row-cols-lg-auto g-3 searchBox-form align-items-center mb-4">
+                            <div class="col-auto">
+                              <div className="input-group dropdown searchListType">
+                                <input
+                                  type="text"
+                                  className="form-control rounded-pill"
+                                  id=""
+                                  value={searchSupplier}
+                                  onChange={(e) =>
+                                    handleSupplierSearch(e.target.value)
+                                  }
+                                  placeholder="Enter Supplier name"
+                                />
+                                {supplierList.length > 0 && (
+                                  <ul
+                                    className={`w-100 searchListBx custom-scrollbar ${
+                                      dropdownShow ? "d-block" : "d-none"
+                                    }`}
+                                  >
+                                    {" "}
+                                    {supplierList.map((s) => (
+                                      <li
+                                        className="dropdown-item pe-pointer"
+                                        key={s.id}
+                                        onClick={() =>
+                                          handleSupplierDropdown(
+                                            s.full_name,
+                                            s.id
+                                          )
+                                        }
+                                      >
+                                        {s.full_name}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                              {searchSupplierError !== "" ? (
+                                <p className="error-label mt-2">
+                                  {searchSupplierError}
+                                </p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div class="col-auto align-self-start">
+                              <button
+                                type="button"
+                                class="btn btn-purple"
+                                // data-bs-toggle="modal"
+                                // data-bs-target="#addNoteModal"
+                                disabled={!showNote}
+                                onClick={() => setShowNoteModal(true)}
+                              >
+                                {t("retailer.dashboard.send_request")}
+                              </button>
+                            </div>
+                          </form> */}
+
+                          {/* <div className="w-100 map-box">
+                            {mapSupplierList.length > 0 && (
+                              <Map
+                                userInformation={mapSupplierList}
+                                showModal={setShowNoteModal}
+                                setSupplierId1={setSupplierId}
+                              />
+                            )}
+                          </div> */}
+                        </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           </LoadingOverlay>
           

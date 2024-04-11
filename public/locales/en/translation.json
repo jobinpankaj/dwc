@@ -1014,6 +1014,7 @@
         "table_col3": "Address",
         "table_col4": "CSP",
         "table_col5": "Status",
+        "table_col6": "CAD",
         "pagination_text": "Rows per page:"
       },
       "add_first": {

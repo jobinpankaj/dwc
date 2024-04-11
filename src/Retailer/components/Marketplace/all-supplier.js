@@ -39,7 +39,7 @@ const Marketplace = () => {
   // console.log(cartItems,"cartItems")
   const dispatch = useDispatch();
 
-  const [supplierList, setSupplierList]= useState([]);
+  const [supplierList, setSupplierList] = useState([]);
 
   const allSupplierList = [
     { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
@@ -91,45 +91,43 @@ const Marketplace = () => {
   //   setLoading(false);
   //   },[]);
 
-    useEffect(() => {
-      // setSearchSupplierError("");
-      setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          permission: "supplier-view",
-        },
-      };
-      apis
-        .get(`/retailer/suppliersAllList`, config)
-        .then((res) => {
-          setSupplierList(res.data.data);
-          console.log("all data in market place-------------", res.data.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-        });
-    }, []);
-  
+  useEffect(() => {
+    // setSearchSupplierError("");
+    setLoading(true);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "supplier-view",
+      },
+    };
+    apis
+      .get(`/retailer/suppliersAllList`, config)
+      .then((res) => {
+        setSupplierList(res.data.data);
+        console.log("all data in market place-------------", res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {});
+  }, []);
 
-    // useEffect(() => {
-    //   setSearchSupplierError("");
-    //   const config = {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       permission: "supplier-view",
-    //     },
-    //   };
-    //   apis
-    //     .get(`/retailer/suppliersAllList`, config)
-    //     .then((res) => {
-    //       setMapSupplierList(res.data.data);
-    //       setSupplierList(res.data.data)
-    //       console.log("all data of supplier-------------", res.data.data);
-    //     })
-    //     .catch((err) => {
-    //     });
-    // }, []);
+  // useEffect(() => {
+  //   setSearchSupplierError("");
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       permission: "supplier-view",
+  //     },
+  //   };
+  //   apis
+  //     .get(`/retailer/suppliersAllList`, config)
+  //     .then((res) => {
+  //       setMapSupplierList(res.data.data);
+  //       setSupplierList(res.data.data)
+  //       console.log("all data of supplier-------------", res.data.data);
+  //     })
+  //     .catch((err) => {
+  //     });
+  // }, []);
 
   //   useEffect(() => {
   //     const quantities = cartItems.reduce((acc, item) => {
@@ -236,8 +234,6 @@ const Marketplace = () => {
   //   console.log(quantities, "que=antitired");
   //   console.log(data);
 
-  
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
@@ -324,10 +320,10 @@ const Marketplace = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="row px-2">
+                      <div className="row">
                         {displayData.map((s) => {
                           return (
-                            <div className="col-md-4 supplier-card my-3 mx-0 p-0">
+                            <div className="col-md-4 supplier-card mt-3">
                               <a
                                 onClick={() =>
                                   navigate(
@@ -337,7 +333,14 @@ const Marketplace = () => {
                               >
                                 <div className="card">
                                   <div className="supplier-img">
-                                    <img src={s.user_image}></img>
+                                    <img
+                                      src={s.user_image || imageNotAvailable}
+                                      onError={(e) => {
+                                        e.target.src = imageNotAvailable; // Replace with the default image source
+                                      }}
+                                      className="card-img-top"
+                                      alt=""
+                                    />
                                   </div>
                                   <div className="card-title">
                                     {s.company_name}

@@ -20,6 +20,8 @@ import TextInput from "react-autocomplete-input";
 import useAuthInterceptor from "../../../utils/apis";
 import { useTranslation } from "react-i18next";
 import Info from "../../../CommonComponents/Dashboard/Info";
+import imageNotAvailable from "../../../assets/images/Image_not_available.png";
+
 const Dashboard = () => {
   const { t } = useTranslation();
   const [showSidebar, setShowSidebar] = useState(false);
@@ -575,7 +577,15 @@ const Dashboard = () => {
                         {mapSupplierList.map((supplier) => {
                           return (
                             <div className="supplier_logo">
-                              <img src={supplier.user_image} alt="Image"></img>
+                              {/* <img src={supplier.user_image} alt="Image"></img> */}
+                              <img
+                                    src={supplier.user_image || imageNotAvailable}
+                                    onError={(e) => {
+                                      e.target.src = imageNotAvailable; // Replace with the default image source
+                                    }}
+                                    className="card-img-top"
+                                     alt=""
+                                    />
                             </div>
                           );
                         })}
