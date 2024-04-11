@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [searchSupplier, setSearchSupplier] = useState("");
   const [searchSupplierError, setSearchSupplierError] = useState("");
   const [supplierList, setSupplierlist] = useState([""]);
+
   const [supplierId, setSupplierId] = useState(0);
   const [showNote, setShowNote] = useState(false);
   const [notes, setNotes] = useState("");
@@ -68,6 +69,7 @@ const Dashboard = () => {
       inputRef.current.focus();
     }
   }, []);
+
   useEffect(() => {
     setSearchSupplierError("");
     const config = {
@@ -85,6 +87,7 @@ const Dashboard = () => {
       .catch((err) => {
       });
   }, []);
+
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -120,6 +123,7 @@ const Dashboard = () => {
       });
   }, []);
   console.log(supplierId, showNoteModal, "fgdbfghnb");
+
   const searchProduct = (keyword) => {
     setProductList([]);
     setKeyword(keyword);
@@ -146,6 +150,7 @@ const Dashboard = () => {
     }
   };
 
+
   const handleSupplierDropdown = (full_name, id) => {
     setSearchSupplier(full_name);
     setSupplierId(id);
@@ -154,6 +159,7 @@ const Dashboard = () => {
     setShowNote(true);
     setDropdownShow(false);
   };
+
   const handleSupplierSearch = (e) => {
     setSupplierId(0);
     setShowNote(false);
@@ -566,10 +572,10 @@ const Dashboard = () => {
                         {t("retailer.dashboard.suggested_supplier")}
                       </div>
                       <div className="supplier_logoBox">
-                        {suggestedSupplier.map((supplier) => {
+                        {mapSupplierList.map((supplier) => {
                           return (
                             <div className="supplier_logo">
-                              <img src={supplier.imgSource}></img>
+                              <img src={supplier.user_image} alt="Image"></img>
                             </div>
                           );
                         })}

@@ -28,6 +28,14 @@ const Header = ({ title, updateSidebar, userType }) => {
   const retailertoken = localStorage.getItem("retailer_accessToken");
   const dispatch = useDispatch();
   const apis = useAuthInterceptor();
+
+  if(currentUser=="retailer"|| currentUser=="supplier" || currentUser=="distributor"){
+    userType=currentUser;
+  }
+  else{
+    userType="admin";
+  }
+
   var notification = [
     { id: 1, name: 'Facture finale' },
     { id: 2, name: 'Facture finale' },
