@@ -642,7 +642,7 @@ const Marketplace = () => {
                                       <div className="distributorInfo text-uppercase">
                                         {product?.user_profile?.company_name}
                                       </div>
-                                      <div className="row mb-3 justify-content-between">
+                                      <div className="row my-3 justify-content-between">
                                         <div className="col-auto">
                                           <div className="prodPrice h-100 d-flex align-items-center">
                                             {`$ ${(

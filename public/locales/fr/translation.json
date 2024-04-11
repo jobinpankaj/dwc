@@ -1012,6 +1012,7 @@
         "table_col3": "Adresse",
         "table_col4": "CSP",
         "table_col5": "Statut",
+        "table_col6": "CAD",
         "pagination_text": "Lignes par page :"
       },
       "add_first": {

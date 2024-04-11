@@ -17,7 +17,12 @@ import Header from "../../../CommonComponents/Header/header";
 import useAuthInterceptor from "../../../utils/apis";
 import "../../assets/scss/dashboard.scss";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
-import { INVENTORY_EDIT, INVENTORY_VIEW, PRICING_EDIT, PRODUCT_VIEW } from "../../../Constants/constant";
+import {
+  INVENTORY_EDIT,
+  INVENTORY_VIEW,
+  PRICING_EDIT,
+  PRODUCT_VIEW,
+} from "../../../Constants/constant";
 import LoadingOverlay from "react-loading-overlay";
 
 // import '../../assets/css/inventory.css'
@@ -58,12 +63,12 @@ const CustomTablePagination = styled(TablePagination)`
   }
 `;
 <head>
-  <link rel="stylesheet" type="text/css" href="inventory.css"/>
-</head>
+  <link rel="stylesheet" type="text/css" href="inventory.css" />
+</head>;
 const SupplierInventoryManagement = () => {
   const apis = useAuthInterceptor();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
   const token = localStorage.getItem("supplier_accessToken");
   const [show, setShow] = useState(false);
@@ -113,10 +118,10 @@ const SupplierInventoryManagement = () => {
   const [stockId, setStockId] = useState("");
   const [stockProduct, setStockProduct] = useState("");
   const [stockReason, setStockReason] = useState("");
-  const [aisleNameError, setAisleNameError] = useState("")
-  const [shelfNameError, setShelfNameError] = useState("")
+  const [aisleNameError, setAisleNameError] = useState("");
+  const [shelfNameError, setShelfNameError] = useState("");
   // Transfer List states
-  const [transerList, setTransferList] = useState("")
+  const [transerList, setTransferList] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -150,12 +155,12 @@ const SupplierInventoryManagement = () => {
 
   const handleAisleNameChange = (e) => {
     setAisleName(e.target.value);
-    setAisleNameError("")
+    setAisleNameError("");
   };
 
   const handleShelfNameChange = (e) => {
     setShelfName(e.target.value);
-    setShelfNameError("")
+    setShelfNameError("");
   };
 
   const handleAddressChange = (e) => {
@@ -231,7 +236,7 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             toast.error("Could not create warehouse. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -344,7 +349,7 @@ const SupplierInventoryManagement = () => {
       productValid = true,
       batchValid = true,
       aNameValid = true,
-      sNameValid = true
+      sNameValid = true;
 
     if (selectedAisle === "") {
       setAisleError("Please select an aisle.");
@@ -376,14 +381,14 @@ const SupplierInventoryManagement = () => {
       batchValid = false;
     }
 
-    if(aisleName === ""){
-      setAisleNameError("Aisle name is required.")
-      aNameValid = false
+    if (aisleName === "") {
+      setAisleNameError("Aisle name is required.");
+      aNameValid = false;
     }
 
-    if(shelfName === ""){
-      setShelfNameError("Shelf name is required.")
-      sNameValid = false
+    if (shelfName === "") {
+      setShelfNameError("Shelf name is required.");
+      sNameValid = false;
     }
 
     if (
@@ -393,7 +398,7 @@ const SupplierInventoryManagement = () => {
       aisleValid == false ||
       shelfValid == false ||
       batchValid == false ||
-      !aNameValid || 
+      !aNameValid ||
       !sNameValid
     ) {
       console.log("Validation Error");
@@ -435,7 +440,7 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             toast.error("Could not add inventory. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -480,7 +485,7 @@ const SupplierInventoryManagement = () => {
         }
       })
       .catch((error) => {
-        if(error.message !== "revoke"){
+        if (error.message !== "revoke") {
           toast.error("Could not update stock. Please try again later.", {
             autoClose: 3000,
             position: toast.POSITION.TOP_CENTER,
@@ -493,24 +498,22 @@ const SupplierInventoryManagement = () => {
     setShow4(true);
     setStockBatch(ele.batch);
     setStockId(ele.id);
-    setStockProduct(
-      ele.product_id
-    )
-  }
+    setStockProduct(ele.product_id);
+  };
 
   useEffect(() => {
-    if(hasPermission(INVENTORY_VIEW)){
+    if (hasPermission(INVENTORY_VIEW)) {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           permission: "inventory-view",
         },
       };
-  
+
       apis
         .get(`supplier/inventories`, config)
         .then((res) => {
-          setLoading(false)
+          setLoading(false);
           if (res.data.success === true) {
             setInventoryList(res.data.data);
           } else {
@@ -521,12 +524,15 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          setLoading(false)
-          if(error.message !== "revoke"){
-            toast.error("Could not fetch inventory list. Please try again later.", {
-              autoClose: 3000,
-              position: toast.POSITION.TOP_CENTER,
-            });
+          setLoading(false);
+          if (error.message !== "revoke") {
+            toast.error(
+              "Could not fetch inventory list. Please try again later.",
+              {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              }
+            );
           }
         });
     }
@@ -558,7 +564,7 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             toast.error(
               "Could not fetch warehouse list. Please try again later.",
               { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
@@ -586,11 +592,14 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
-            toast.error("Could not fetch product list. Please try again later.", {
-              autoClose: 3000,
-              position: toast.POSITION.TOP_CENTER,
-            });
+          if (error.message !== "revoke") {
+            toast.error(
+              "Could not fetch product list. Please try again later.",
+              {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              }
+            );
           }
         });
 
@@ -613,7 +622,7 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             toast.error(
               "Could not fetch distributors list. Please try again later.",
               { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
@@ -659,7 +668,7 @@ const SupplierInventoryManagement = () => {
           }
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
         });
     };
 
@@ -670,24 +679,31 @@ const SupplierInventoryManagement = () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-        permission: "inventory-view"
-      }
-    }
+        permission: "inventory-view",
+      },
+    };
 
-    apis.get('/supplier/inventoryTransfers', config)
-    .then((res) => {
-      if(res.data.success === true){
-        setTransferList(res.data.data)
-      }else{
-        toast.error("Could not fetch inventory list. Please try again later.", { autoClose: 3000, position: toast.POSITION.TOP_CENTER });
-      }
-    })
-    .catch((error) => {
-      if(error.message !== "revoke"){
-        toast.error("Could not fetch inventory list. Please try again later.", { autoClose: 3000, position: toast.POSITION.TOP_CENTER });
-      }
-    })
-  }, [])
+    apis
+      .get("/supplier/inventoryTransfers", config)
+      .then((res) => {
+        if (res.data.success === true) {
+          setTransferList(res.data.data);
+        } else {
+          toast.error(
+            "Could not fetch inventory list. Please try again later.",
+            { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+          );
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error(
+            "Could not fetch inventory list. Please try again later.",
+            { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+          );
+        }
+      });
+  }, []);
 
   let data;
   if (rowsPerPage > 0) {
@@ -711,951 +727,990 @@ const SupplierInventoryManagement = () => {
             styles={{
               overlay: (base) => ({
                 ...base,
-                background: '#fefefe',
-                width: '100%',
-                '& svg circle': {
-                  stroke: 'black'
-                }
-              })
+                background: "#fefefe",
+                width: "100%",
+                "& svg circle": {
+                  stroke: "black",
+                },
+              }),
             }}
           >
             <div class="container-fluid page-content-box px-3 px-sm-4">
-            <div class="row">
-              <div class="col">
-                <div class="tab-link-row position-relative">
-                  <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link active"
-                        id="stock-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#stock-tab-pane"
-                        type="button"
-                        role="tab"
-                        aria-controls="stock-tab-pane"
-                        aria-selected="true"
-                      >
-                        {t("supplier.inventory_management.list.stock")}
-                      </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                      <button
-                        class="nav-link"
-                        id="transfer-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#transfer-tab-pane"
-                        type="button"
-                        role="tab"
-                        aria-controls="transfer-tab-pane"
-                        aria-selected="false"
-                      >
-                        {t("supplier.inventory_management.list.transfer")}
-                      </button>
-                    </li>
-                  </ul>
+              <div class="row">
+                <div class="col">
+                  <div class="tab-link-row position-relative">
+                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link active"
+                          id="stock-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#stock-tab-pane"
+                          type="button"
+                          role="tab"
+                          aria-controls="stock-tab-pane"
+                          aria-selected="true"
+                        >
+                          {t("supplier.inventory_management.list.stock")}
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button
+                          class="nav-link"
+                          id="transfer-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#transfer-tab-pane"
+                          type="button"
+                          role="tab"
+                          aria-controls="transfer-tab-pane"
+                          aria-selected="false"
+                        >
+                          {t("supplier.inventory_management.list.transfer")}
+                        </button>
+                      </li>
+                    </ul>
 
-                  <div class="filter-box position-abs">
-                    <div class="dropdown date-selector">
-                      <button
-                        class="btn btn-outline-black btn-sm dropdown-toggle"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                         {t("supplier.inventory_management.list.all_product")}
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a class="dropdown-item" href="#">
-                          {t("supplier.inventory_management.list.visible_products")}
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#">
-                          {t("supplier.inventory_management.list.hidden_products")}
-                          </a>
-                        </li>
-                        <li>
-                          <a class="dropdown-item" href="#">
-                          {t("supplier.inventory_management.list.all_products")} 
-                          </a>
-                        </li>
-                      </ul>
+                    <div class="filter-box position-abs">
+                      <div class="dropdown date-selector">
+                        <button
+                          class="btn btn-outline-black btn-sm dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          {t("supplier.inventory_management.list.all_product")}
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" href="#">
+                              {t(
+                                "supplier.inventory_management.list.visible_products"
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#">
+                              {t(
+                                "supplier.inventory_management.list.hidden_products"
+                              )}
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#">
+                              {t(
+                                "supplier.inventory_management.list.all_products"
+                              )}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="tab-content" id="myTabContent">
-                  <div
-                    class="tab-pane fade show active"
-                    id="stock-tab-pane"
-                    role="tabpanel"
-                    aria-labelledby="stock-tab"
-                    tabindex="0"
-                  >
-                    {/* [Card] */}
-                    <div className="card user-card height-100">
-                      <div className="card-body p-0">
-                        <div className="row">
-                          <div className="col">
-                            <div className="card-top-filter-box p-3">
-                              {/* [Table Search] */}
-                              <div className="search-table">
-                                <div className="form-group">
-                                  <input
-                                    type="text"
-                                    className="search-input"
-                                    placeholder={t("supplier.inventory_management.list.search_here")}
-                                  ></input>
-                                </div>
-                              </div>
-                              {/* [/Table Search] */}
-
-                              {/* [Right Filter] */}
-                              <div className="filter-row text-end">
-                                {/* [Page Filter Box] */}
-                                <div className="filter-box">
-                                  {
-                                    hasPermission(INVENTORY_EDIT) && 
-                                    <button
-                                    type="button"
-                                    onClick={() => setShow(true)}
-                                    className="btn btn-purple btn-sm"
-                                    >
-                                      {t(
-                                        "supplier.inventory_management.list.warehouse_btn"
+                  <div class="tab-content" id="myTabContent">
+                    <div
+                      class="tab-pane fade show active"
+                      id="stock-tab-pane"
+                      role="tabpanel"
+                      aria-labelledby="stock-tab"
+                      tabindex="0"
+                    >
+                      {/* [Card] */}
+                      <div className="card user-card height-100">
+                        <div className="card-body p-0">
+                          <div className="row">
+                            <div className="col">
+                              <div className="card-top-filter-box p-3">
+                                {/* [Table Search] */}
+                                <div className="search-table">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      className="search-input"
+                                      placeholder={t(
+                                        "supplier.inventory_management.list.search_here"
                                       )}
-                                    </button>
-                                  }
-                                  {
-                                    hasPermission(INVENTORY_EDIT) &&
-                                    <button
-                                    type="button"
-                                    onClick={() => handleCreateInventory()}
-                                    className="btn btn-purple btn-sm"
-                                    >
-                                      {t(
-                                        "supplier.inventory_management.list.inventory_btn"
-                                      )}
-                                    </button>
-                                  }
-                                  
-                                  {/* Modal */}
-                                  <div class="dropdown right-filter">
-                                    <button
-                                      type="button"
-                                      class="btn dropdown-toggle"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                      data-bs-auto-close="outside"
-                                    >
-                                      <img src={filter} />{" "}
-                                      {t(
-                                        "supplier.inventory_management.list.filter"
-                                      )}
-                                    </button>
-                                    <form class="dropdown-menu p-3 ">
-                                      <div class="mb-3">
-                                        <label class="form-label">Format</label>
-                                        <select className="form-select">
-                                          <option selected disabled>
-                                          {t("supplier.inventory_management.list.select_format")}
-                                          </option>
-                                          <option value="">{t("supplier.inventory_management.list.bottle")}</option>
-                                          <option value="">{t("supplier.inventory_management.list.can")}</option>
-                                          <option value="">{t("supplier.inventory_management.list.keg")}</option>
-                                        </select>
-                                      </div>
-                                      <div class="mb-3">
-                                        <label class="form-label">
-                                        {t("supplier.inventory_management.list.producer")}
-                                        </label>
-                                        <select className="form-select">
-                                          <option selected disabled>
-                                          {t("supplier.inventory_management.list.choose_producer")}
-                                          </option>
-                                        </select>
-                                      </div>
-
-                                      <div className="d-flex justify-content-end">
-                                        <button
-                                          type="submit"
-                                          class="btn btn-purple width-auto me-2"
-                                        >
-                                          {t("supplier.inventory_management.list.apply")}
-                                        </button>
-                                        <button
-                                          type="reset"
-                                          class="btn btn-outline-black width-auto"
-                                        >
-                                         {t("supplier.inventory_management.list.reset")} 
-                                        </button>
-                                      </div>
-                                    </form>
+                                    ></input>
                                   </div>
                                 </div>
-                                {/* [/Page Filter Box] */}
+                                {/* [/Table Search] */}
+
+                                {/* [Right Filter] */}
+                                <div className="filter-row text-end">
+                                  {/* [Page Filter Box] */}
+                                  <div className="filter-box">
+                                    {hasPermission(INVENTORY_EDIT) && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setShow(true)}
+                                        className="btn btn-purple btn-sm"
+                                      >
+                                        {t(
+                                          "supplier.inventory_management.list.warehouse_btn"
+                                        )}
+                                      </button>
+                                    )}
+                                    {hasPermission(INVENTORY_EDIT) && (
+                                      <button
+                                        type="button"
+                                        onClick={() => handleCreateInventory()}
+                                        className="btn btn-purple btn-sm"
+                                      >
+                                        {t(
+                                          "supplier.inventory_management.list.inventory_btn"
+                                        )}
+                                      </button>
+                                    )}
+
+                                    {/* Modal */}
+                                    <div class="dropdown right-filter">
+                                      <button
+                                        type="button"
+                                        class="btn dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        data-bs-auto-close="outside"
+                                      >
+                                        <img src={filter} />{" "}
+                                        {t(
+                                          "supplier.inventory_management.list.filter"
+                                        )}
+                                      </button>
+                                      <form class="dropdown-menu p-3 ">
+                                        <div class="mb-3">
+                                          <label class="form-label">
+                                            Format
+                                          </label>
+                                          <select className="form-select">
+                                            <option selected disabled>
+                                              {t(
+                                                "supplier.inventory_management.list.select_format"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.bottle"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.can"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.keg"
+                                              )}
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">
+                                            {t(
+                                              "supplier.inventory_management.list.producer"
+                                            )}
+                                          </label>
+                                          <select className="form-select">
+                                            <option selected disabled>
+                                              {t(
+                                                "supplier.inventory_management.list.choose_producer"
+                                              )}
+                                            </option>
+                                          </select>
+                                        </div>
+
+                                        <div className="d-flex justify-content-end">
+                                          <button
+                                            type="submit"
+                                            class="btn btn-purple width-auto me-2"
+                                          >
+                                            {t(
+                                              "supplier.inventory_management.list.apply"
+                                            )}
+                                          </button>
+                                          <button
+                                            type="reset"
+                                            class="btn btn-outline-black width-auto"
+                                          >
+                                            {t(
+                                              "supplier.inventory_management.list.reset"
+                                            )}
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                  {/* [/Page Filter Box] */}
+                                </div>
+                                {/* [/Right Filter] */}
                               </div>
-                              {/* [/Right Filter] */}
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col">
-                            <div className="table-responsive">
-                              <table className="table table-striped m-0">
-                                <thead>
-                                  <tr>
-                                    <th>
-                                      {t(
-                                        "supplier.inventory_management.list.table_col1"
-                                      )}
-                                    </th>
-                                    <th className="text-center">
-                                    {t("supplier.inventory_management.list.batch_number")}
-                                    </th>
-                                    <th>
-                                      {t(
-                                        "supplier.inventory_management.list.table_col2"
-                                      )}
-                                    </th>
-                                    <th className="text-center">
-                                    {t("supplier.inventory_management.list.at_warehouse")}{" "}
-                                    </th>
-                                    {/* <th className="text-center">
+                          <div className="row">
+                            <div className="col">
+                              <div className="table-responsive">
+                                <table className="table table-striped m-0">
+                                  <thead>
+                                    <tr>
+                                      <th>
+                                        {t(
+                                          "supplier.inventory_management.list.table_col1"
+                                        )}
+                                      </th>
+                                      <th className="text-center">
+                                        Format
+                                        {/* {t(
+                                        "supplier.inventory_management.list.product_format"
+                                      )} */}
+                                      </th>
+                                      <th className="text-center">
+                                        {t(
+                                          "supplier.inventory_management.list.batch_number"
+                                        )}
+                                      </th>
+                                      <th>
+                                        {t(
+                                          "supplier.inventory_management.list.table_col2"
+                                        )}
+                                      </th>
+                                      <th className="text-center">
+                                        {t(
+                                          "supplier.inventory_management.list.at_warehouse"
+                                        )}{" "}
+                                      </th>
+                                      {/* <th className="text-center">
                                     {t("supplier.inventory_management.list.distributor_warehouse")} 
                                     </th>
                                     <th className="text-center">{t("supplier.inventory_management.list.intransit")}</th>
                                     <th className="text-center">{t("supplier.inventory_management.list.delivery")}</th> */}
-                                    <th>
-                                      {t(
-                                        "supplier.inventory_management.list.table_col3"
-                                      )}
-                                    </th>
-                                    <th>
-                                      {t(
-                                        "supplier.inventory_management.list.table_col4"
-                                      )}
-                                    </th>
-                                    <th>
-                                      {t(
-                                        "supplier.inventory_management.list.table_col5"
-                                      )}
-                                    </th>
-                                    <th className="text-center">
-                                      {t(
-                                        "supplier.inventory_management.list.table_col6"
-                                      )}
-                                    </th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {data && data.length > 0 ? (
-                                    data.map((ele) => {
-                                      return (
-                                        <tr key={ele.id}>
-                                          <td>
-                                            <div class="btn-group dropstart table-action float-start purple-hover">
-                                              <button
-                                                type="button"
-                                                class="dropdown-toggle px-0"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                {ele.product.product_name}
-                                              </button>
-                                              <ul class="dropdown-menu">
-                                                <li>
-                                                  <a
-                                                    className="dropdown-item"
-                                                    onClick={() =>
-                                                      ele.product.pricing ? toast.warn("Pricing already configured.", {
-                                                        autoClose: 3000,
-                                                        position: toast.POSITION.TOP_CENTER,
-                                                      }) : hasPermission(PRICING_EDIT) ? navigate(
-                                                        `/supplier/inventory-management/configure-pricing/${ele.product_id}`,
-                                                        {
-                                                          state: {
-                                                            product_name:
-                                                              ele.product
-                                                                .product_name,
-                                                            product_format:
-                                                              ele.product
-                                                                .product_format
-                                                                .name,
-                                                            product_unit:
-                                                              ele.product
-                                                                .product_format
-                                                                .unit,
-                                                          },
-                                                        }
-                                                      ) : toast.warn("You do not have permission to edit/add pricing.", {
-                                                        autoClose: 3000,
-                                                        position: toast.POSITION.TOP_CENTER,
-                                                      })
-                                                    }
-                                                  >
-                                                    {t(
-                                                      "supplier.inventory_management.list.config_price"
-                                                    )}
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a
-                                                    className="dropdown-item"
-                                                    onClick={() =>
-                                                      ele.product.availability ? toast.warn("Availability already configured.", {
-                                                          autoClose: 3000,
-                                                          position: toast.POSITION.TOP_CENTER,
-                                                        })  : hasPermission(INVENTORY_EDIT) ? navigate(
-                                                        `/supplier/inventory-management/configure-availability/${ele.product_id}`,
-                                                        {
-                                                          state: {
-                                                            product_name:
-                                                              ele.product
-                                                                .product_name,
-                                                            product_format:
-                                                              ele.product
-                                                                .product_format
-                                                                .name,
-                                                            product_unit:
-                                                              ele.product
-                                                                .product_format
-                                                                .unit,
-                                                            product_quantity:
-                                                              ele.quantity,
-                                                          },
-                                                        }
-                                                      )
-                                                      :
-                                                      toast.warn("You do not have permission to edit/add availability.", {
-                                                        autoClose: 3000,
-                                                        position: toast.POSITION.TOP_CENTER,
-                                                      })
-                                                    }
-                                                  >
-                                                    {t(
-                                                      "supplier.inventory_management.list.config_availability"
-                                                    )}
-                                                  </a>
-                                                </li>
-                                                <li>
-                                                  <a
-                                                    className="dropdown-item"
-                                                    onClick={() =>
-                                                      hasPermission(PRODUCT_VIEW) ? navigate(
-                                                        `/supplier/product-management/view-product/${ele.product_id}`
-                                                      ) : toast.warn("You do not have permission to view product.", {
-                                                        autoClose: 3000,
-                                                        position: toast.POSITION.TOP_CENTER,
-                                                      })
-                                                    }
-                                                  >
-                                                    {t(
-                                                      "supplier.inventory_management.list.product_detail"
-                                                    )}
-                                                  </a>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                          <td className="text-center">
-                                            {ele.batch}
-                                          </td>
-                                          <td>
-                                            {ele.user_profile ?
-                                            ele.user_profile.company_name ?
-                                            ele.user_profile.company_name
-                                            : "N/A"
-                                            : "N/A"}
-                                          </td>
-                                          <td>
-                                            <div class="btn-group dropend table-action float-none d-flex justify-content-center">
-                                              <button
-                                                type="button"
-                                                class="dropdown-toggle px-0 text-purple"
-                                                aria-expanded="false"
-                                                onClick={() => hasPermission(INVENTORY_EDIT) ? 
-                                                  openStockUpdate(ele)
-                                                 : toast.warn("You do not have permission to edit inventory.", {
-                                                  autoClose: 3000,
-                                                  position: toast.POSITION.TOP_CENTER,
-                                                })}
-                                              >
-                                                {ele.quantity}
-                                              </button>
-                                            </div>
-                                          </td>
-                                          {/* <td className="text-center">0</td>
+                                      <th>
+                                        {t(
+                                          "supplier.inventory_management.list.table_col3"
+                                        )}
+                                      </th>
+                                      <th>
+                                        {t(
+                                          "supplier.inventory_management.list.table_col4"
+                                        )}
+                                      </th>
+                                      <th>
+                                        {t(
+                                          "supplier.inventory_management.list.table_col5"
+                                        )}
+                                      </th>
+                                      <th className="text-center">
+                                        {t(
+                                          "supplier.inventory_management.list.table_col6"
+                                        )}
+                                      </th>
+                                      <th></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {data && data.length > 0 ? (
+                                      data.map((ele) => {
+                                        return (
+                                          <tr key={ele.id}>
+                                            <td>
+                                              <div class="btn-group dropstart table-action float-start purple-hover">
+                                                <button
+                                                  type="button"
+                                                  class="dropdown-toggle px-0"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false"
+                                                >
+                                                  {ele.product.product_name}
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  <li>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        ele.product.pricing
+                                                          ? toast.warn(
+                                                              "Pricing already configured.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                          : hasPermission(
+                                                              PRICING_EDIT
+                                                            )
+                                                          ? navigate(
+                                                              `/supplier/inventory-management/configure-pricing/${ele.product_id}`,
+                                                              {
+                                                                state: {
+                                                                  product_name:
+                                                                    ele.product
+                                                                      .product_name,
+                                                                  product_format:
+                                                                    ele.product
+                                                                      .product_format
+                                                                      .name,
+                                                                  product_unit:
+                                                                    ele.product
+                                                                      .product_format
+                                                                      .unit,
+                                                                },
+                                                              }
+                                                            )
+                                                          : toast.warn(
+                                                              "You do not have permission to edit/add pricing.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                      }
+                                                    >
+                                                      {t(
+                                                        "supplier.inventory_management.list.config_price"
+                                                      )}
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        ele.product.availability
+                                                          ? toast.warn(
+                                                              "Availability already configured.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                          : hasPermission(
+                                                              INVENTORY_EDIT
+                                                            )
+                                                          ? navigate(
+                                                              `/supplier/inventory-management/configure-availability/${ele.product_id}`,
+                                                              {
+                                                                state: {
+                                                                  product_name:
+                                                                    ele.product
+                                                                      .product_name,
+                                                                  product_format:
+                                                                    ele.product
+                                                                      .product_format
+                                                                      .name,
+                                                                  product_unit:
+                                                                    ele.product
+                                                                      .product_format
+                                                                      .unit,
+                                                                  product_quantity:
+                                                                    ele.quantity,
+                                                                },
+                                                              }
+                                                            )
+                                                          : toast.warn(
+                                                              "You do not have permission to edit/add availability.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                      }
+                                                    >
+                                                      {t(
+                                                        "supplier.inventory_management.list.config_availability"
+                                                      )}
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      onClick={() =>
+                                                        hasPermission(
+                                                          PRODUCT_VIEW
+                                                        )
+                                                          ? navigate(
+                                                              `/supplier/product-management/view-product/${ele.product_id}`
+                                                            )
+                                                          : toast.warn(
+                                                              "You do not have permission to view product.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                      }
+                                                    >
+                                                      {t(
+                                                        "supplier.inventory_management.list.product_detail"
+                                                      )}
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </td>
+                                            <td className="text-center">
+                                              {ele.product.product_format.name}
+                                            </td>
+
+                                            <td className="text-center">
+                                              {ele.batch}
+                                            </td>
+                                            <td>
+                                              {ele.user_profile
+                                                ? ele.user_profile.company_name
+                                                  ? ele.user_profile
+                                                      .company_name
+                                                  : "N/A"
+                                                : "N/A"}
+                                            </td>
+                                            <td>
+                                              <div class="btn-group dropend table-action float-none d-flex justify-content-center">
+                                                <button
+                                                  type="button"
+                                                  class="dropdown-toggle px-0 text-purple"
+                                                  aria-expanded="false"
+                                                  onClick={() =>
+                                                    hasPermission(
+                                                      INVENTORY_EDIT
+                                                    )
+                                                      ? openStockUpdate(ele)
+                                                      : toast.warn(
+                                                          "You do not have permission to edit inventory.",
+                                                          {
+                                                            autoClose: 3000,
+                                                            position:
+                                                              toast.POSITION
+                                                                .TOP_CENTER,
+                                                          }
+                                                        )
+                                                  }
+                                                >
+                                                  {ele.quantity}
+                                                </button>
+                                              </div>
+                                            </td>
+                                            {/* <td className="text-center">0</td>
                                           <td className="text-center">0</td>
                                           <td className="text-center">0</td> */}
-                                          <td>{ele.warehouse.name}</td>
-                                          <td>{ele.aisle}</td>
-                                          <td>{ele.shelf}</td>
-                                          <td>
-                                            <div className="d-flex flex-column gap-2">
-                                              {ele.product.availability ? (
-                                                <span className="badge text-bg-green">
-                                                  Availability Configured
-                                                </span>
-                                              ) : (
-                                                <span className="badge text-bg-orange">
-                                                  Availability Not Set
-                                                </span>
-                                              )}
-                                              {ele.product.pricing ? (
-                                                <span className="badge text-bg-green">
-                                                  Pricing Configured
-                                                </span>
-                                              ) : (
-                                                <span className="badge text-bg-orange">
-                                                  Pricing Not Set
-                                                </span>
-                                              )}
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <div class="btn-group dropstart table-action">
-                                              <button
-                                                type="button"
-                                                class="dropdown-toggle"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                              >
-                                                <span></span>
-                                              </button>
-                                              <ul class="dropdown-menu">
-                                                {/* <li>
+                                            <td>{ele.warehouse.name}</td>
+                                            <td>{ele.aisle}</td>
+                                            <td>{ele.shelf}</td>
+                                            <td>
+                                              <div className="d-flex flex-column gap-2">
+                                                {ele.product.availability ? (
+                                                  <span className="badge text-bg-green">
+                                                    Availability Configured
+                                                  </span>
+                                                ) : (
+                                                  <span className="badge text-bg-orange">
+                                                    Availability Not Set
+                                                  </span>
+                                                )}
+                                                {ele.product.pricing ? (
+                                                  <span className="badge text-bg-green">
+                                                    Pricing Configured
+                                                  </span>
+                                                ) : (
+                                                  <span className="badge text-bg-orange">
+                                                    Pricing Not Set
+                                                  </span>
+                                                )}
+                                              </div>
+                                            </td>
+                                            <td>
+                                              <div class="btn-group dropstart table-action">
+                                                <button
+                                                  type="button"
+                                                  class="dropdown-toggle"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false"
+                                                >
+                                                  <span></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  {/* <li>
                                                                                                         <a className="dropdown-item">View Map</a>
                                                                                                     </li> */}
-                                                <li>
-                                                  <a
-                                                    onClick={() => hasPermission(INVENTORY_EDIT) ? openStockUpdate(ele)
-                                                      : toast.warn("You do not have permission to edit inventory.", {
-                                                        autoClose: 3000,
-                                                        position: toast.POSITION.TOP_CENTER,
-                                                      })
-                                                    }
-                                                    className="dropdown-item"
-                                                  >
-                                                    {" "}
-                                                    Edit
-                                                  </a>
-                                                </li>
-                                              </ul>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      );
-                                    })
-                                  ) : (
-                                    <>{t("supplier.inventory_management.list.no_data_to_show")}</>
-                                  )}
-                                </tbody>
-                                <tfoot>
-                                  <tr>
-                                    {data.length > 0 ? (
-                                      <CustomTablePagination
-                                        rowsPerPageOptions={[
-                                          5,
-                                          10,
-                                          15,
-                                          { label: "All", value: -1 },
-                                        ]}
-                                        labelRowsPerPage={t(
-                                          "admin.supplier_management.list.pagination_text"
-                                        )}
-                                        colSpan={12}
-                                        count={inventoryList.length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        size="small"
-                                        slotProps={{
-                                          select: {
-                                            "aria-label": "rows per page",
-                                          },
-                                          actions: {
-                                            showFirstButton: true,
-                                            showLastButton: true,
-                                          },
-                                        }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={
-                                          handleChangeRowsPerPage
-                                        }
-                                        sx={{
-                                          ".MuiTablePagination-toolbar button":
-                                            {
-                                              backgroundColor: "#623ead",
-                                              borderColor: "#623ead",
-                                              borderRadius: "25px",
-                                              color: "#fefefe",
-                                            },
-
-                                          ".MuiTablePagination-toolbar span": {
-                                            fontSize: "12px",
-                                          },
-                                        }}
-                                      />
+                                                  <li>
+                                                    <a
+                                                      onClick={() =>
+                                                        hasPermission(
+                                                          INVENTORY_EDIT
+                                                        )
+                                                          ? openStockUpdate(ele)
+                                                          : toast.warn(
+                                                              "You do not have permission to edit inventory.",
+                                                              {
+                                                                autoClose: 3000,
+                                                                position:
+                                                                  toast.POSITION
+                                                                    .TOP_CENTER,
+                                                              }
+                                                            )
+                                                      }
+                                                      className="dropdown-item"
+                                                    >
+                                                      {" "}
+                                                      Edit
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })
                                     ) : (
-                                      <></>
+                                      <>
+                                        {t(
+                                          "supplier.inventory_management.list.no_data_to_show"
+                                        )}
+                                      </>
                                     )}
-                                  </tr>
-                                </tfoot>
-                              </table>
+                                  </tbody>
+                                  <tfoot>
+                                    <tr>
+                                      {data.length > 0 ? (
+                                        <CustomTablePagination
+                                          rowsPerPageOptions={[
+                                            5,
+                                            10,
+                                            15,
+                                            { label: "All", value: -1 },
+                                          ]}
+                                          labelRowsPerPage={t(
+                                            "admin.supplier_management.list.pagination_text"
+                                          )}
+                                          colSpan={12}
+                                          count={inventoryList.length}
+                                          rowsPerPage={rowsPerPage}
+                                          page={page}
+                                          size="small"
+                                          slotProps={{
+                                            select: {
+                                              "aria-label": "rows per page",
+                                            },
+                                            actions: {
+                                              showFirstButton: true,
+                                              showLastButton: true,
+                                            },
+                                          }}
+                                          onPageChange={handleChangePage}
+                                          onRowsPerPageChange={
+                                            handleChangeRowsPerPage
+                                          }
+                                          sx={{
+                                            ".MuiTablePagination-toolbar button":
+                                              {
+                                                backgroundColor: "#623ead",
+                                                borderColor: "#623ead",
+                                                borderRadius: "25px",
+                                                color: "#fefefe",
+                                              },
+
+                                            ".MuiTablePagination-toolbar span":
+                                              {
+                                                fontSize: "12px",
+                                              },
+                                          }}
+                                        />
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </tr>
+                                  </tfoot>
+                                </table>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* [/Card] */}
                     </div>
-                    {/* [/Card] */}
-                  </div>
 
-                  <div
-                    class="tab-pane fade"
-                    id="transfer-tab-pane"
-                    role="tabpanel"
-                    aria-labelledby="transfer-tab"
-                    tabindex="0"
-                  >
-                    {/* [Card] */}
-                    <div className="card user-card height-100">
-                      <div className="card-body p-0">
-                        <div className="row">
-                          <div className="col">
-                            <div className="card-top-filter-box p-3">
-                              {/* [Table Search] */}
-                              <div className="search-table">
-                                <div className="form-group">
-                                  <input
-                                    type="text"
-                                    className="search-input"
-                                    placeholder="Search Here..."
-                                  ></input>
-                                </div>
-                              </div>
-                              {/* [/Table Search] */}
-
-                              {/* [Right Filter] */}
-                              <div className="filter-row text-end">
-                                {/* [Page Filter Box] */}
-                                <div className="filter-box">
-                                  {
-                                    hasPermission(INVENTORY_EDIT) && 
-                                    <button
-                                    type="button"
-                                    onClick={() =>
-                                      navigate(
-                                        "/supplier/inventory-management/create-transfer"
-                                      )
-                                    }
-                                    className="btn btn-purple btn-sm"
-                                    >
-                                      + Create New
-                                    </button>
-                                  }
-                                  <div class="dropdown right-filter">
-                                    <button
-                                      type="button"
-                                      class="btn dropdown-toggle"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                      data-bs-auto-close="outside"
-                                    >
-                                      <img src={filter} /> {t(
-                                        "supplier.inventory_management.list.filter1"
-                                      )}
-                                    </button>
-                                    <form class="dropdown-menu p-3 ">
-                                      <div class="mb-3">
-                                        <label class="form-label">Format</label>
-                                        <select className="form-select">
-                                          <option selected disabled>
-                                          {t("supplier.inventory_management.list.select_format")}
-                                          </option>
-                                          <option value="">{t("supplier.inventory_management.list.bottle")}</option>
-                                          <option value="">{t("supplier.inventory_management.list.can")}</option>
-                                          <option value="">{t("supplier.inventory_management.list.keg")}</option>
-                                        </select>
-                                      </div>
-                                      <div class="mb-3">
-                                        <label class="form-label">
-                                        {t("supplier.inventory_management.list.producer")}
-                                        </label>
-                                        <select className="form-select">
-                                          <option selected disabled>
-                                          {t("supplier.inventory_management.list.choose_producer")}
-                                          </option>
-                                        </select>
-                                      </div>
-
-                                      <div className="d-flex justify-content-end">
-                                        <button
-                                          type="submit"
-                                          class="btn btn-purple width-auto me-2"
-                                        >
-                                          {t("supplier.inventory_management.list.apply")}
-                                        </button>
-                                        <button
-                                          type="reset"
-                                          class="btn btn-outline-black width-auto"
-                                        >
-                                         {t("supplier.inventory_management.list.reset")}
-                                        </button>
-                                      </div>
-                                    </form>
+                    <div
+                      class="tab-pane fade"
+                      id="transfer-tab-pane"
+                      role="tabpanel"
+                      aria-labelledby="transfer-tab"
+                      tabindex="0"
+                    >
+                      {/* [Card] */}
+                      <div className="card user-card height-100">
+                        <div className="card-body p-0">
+                          <div className="row">
+                            <div className="col">
+                              <div className="card-top-filter-box p-3">
+                                {/* [Table Search] */}
+                                <div className="search-table">
+                                  <div className="form-group">
+                                    <input
+                                      type="text"
+                                      className="search-input"
+                                      placeholder="Search Here..."
+                                    ></input>
                                   </div>
                                 </div>
-                                {/* [/Page Filter Box] */}
+                                {/* [/Table Search] */}
+
+                                {/* [Right Filter] */}
+                                <div className="filter-row text-end">
+                                  {/* [Page Filter Box] */}
+                                  <div className="filter-box">
+                                    {hasPermission(INVENTORY_EDIT) && (
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          navigate(
+                                            "/supplier/inventory-management/create-transfer"
+                                          )
+                                        }
+                                        className="btn btn-purple btn-sm"
+                                      >
+                                        + Create New
+                                      </button>
+                                    )}
+                                    <div class="dropdown right-filter">
+                                      <button
+                                        type="button"
+                                        class="btn dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                        data-bs-auto-close="outside"
+                                      >
+                                        <img src={filter} />{" "}
+                                        {t(
+                                          "supplier.inventory_management.list.filter1"
+                                        )}
+                                      </button>
+                                      <form class="dropdown-menu p-3 ">
+                                        <div class="mb-3">
+                                          <label class="form-label">
+                                            Format
+                                          </label>
+                                          <select className="form-select">
+                                            <option selected disabled>
+                                              {t(
+                                                "supplier.inventory_management.list.select_format"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.bottle"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.can"
+                                              )}
+                                            </option>
+                                            <option value="">
+                                              {t(
+                                                "supplier.inventory_management.list.keg"
+                                              )}
+                                            </option>
+                                          </select>
+                                        </div>
+                                        <div class="mb-3">
+                                          <label class="form-label">
+                                            {t(
+                                              "supplier.inventory_management.list.producer"
+                                            )}
+                                          </label>
+                                          <select className="form-select">
+                                            <option selected disabled>
+                                              {t(
+                                                "supplier.inventory_management.list.choose_producer"
+                                              )}
+                                            </option>
+                                          </select>
+                                        </div>
+
+                                        <div className="d-flex justify-content-end">
+                                          <button
+                                            type="submit"
+                                            class="btn btn-purple width-auto me-2"
+                                          >
+                                            {t(
+                                              "supplier.inventory_management.list.apply"
+                                            )}
+                                          </button>
+                                          <button
+                                            type="reset"
+                                            class="btn btn-outline-black width-auto"
+                                          >
+                                            {t(
+                                              "supplier.inventory_management.list.reset"
+                                            )}
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                  {/* [/Page Filter Box] */}
+                                </div>
+                                {/* [/Right Filter] */}
                               </div>
-                              {/* [/Right Filter] */}
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col">
-                            <div className="table-responsive">
-                              <table className="table table-striped m-0">
-                                <thead>
-                                  <tr>
-                                    <th>SENDER</th>
-                                    <th>RECIPIENT</th>
-                                    <th>STATUS</th>
-                                    <th>DATE</th>
-                                    <th>SENT</th>
-                                    <th>RECEIVED</th>
-                                    <th>BROKEN</th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {
-                                    transerList && transerList.length > 0 ?
-                                    transerList.map((ele) => {
-                                      const date = new Date(ele.created_at);
-                                      const day = String(date.getDate()).padStart(2, '0');
-                                      const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
-                                      const year = date.getFullYear();
-                                      const finalDate = `${day}-${month}-${year}`
-                                      return(
-                                        <tr>
-                                        <td>{ele.senderName}</td>
-                                        <td>{ele.recipentName}</td>
-                                        <td>{ele.status}</td>
-                                        <td>{finalDate}</td>
-                                        <td>{ele.send}</td>
-                                        <td>{ele.recieved}</td>
-                                        <td>{ele.broken}</td>
-                                        <td>
-                                          <div class="btn-group dropstart table-action">
-                                            <button
-                                              type="button"
-                                              class="dropdown-toggle"
-                                              data-bs-toggle="dropdown"
-                                              aria-expanded="false"
-                                            >
-                                              <span></span>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li>
-                                                <a
-                                                  className="dropdown-item"
-                                                  href="/order-detail"
+                          <div className="row">
+                            <div className="col">
+                              <div className="table-responsive">
+                                <table className="table table-striped m-0">
+                                  <thead>
+                                    <tr>
+                                      <th>SENDER</th>
+                                      <th>RECIPIENT</th>
+                                      <th>STATUS</th>
+                                      <th>DATE</th>
+                                      <th>SENT</th>
+                                      <th>RECEIVED</th>
+                                      <th>BROKEN</th>
+                                      <th></th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {transerList && transerList.length > 0 ? (
+                                      transerList.map((ele) => {
+                                        const date = new Date(ele.created_at);
+                                        const day = String(
+                                          date.getDate()
+                                        ).padStart(2, "0");
+                                        const month = String(
+                                          date.getMonth() + 1
+                                        ).padStart(2, "0"); // Months are zero-based, so add 1
+                                        const year = date.getFullYear();
+                                        const finalDate = `${day}-${month}-${year}`;
+                                        return (
+                                          <tr>
+                                            <td>{ele.senderName}</td>
+                                            <td>{ele.recipentName}</td>
+                                            <td>{ele.status}</td>
+                                            <td>{finalDate}</td>
+                                            <td>{ele.send}</td>
+                                            <td>{ele.recieved}</td>
+                                            <td>{ele.broken}</td>
+                                            <td>
+                                              <div class="btn-group dropstart table-action">
+                                                <button
+                                                  type="button"
+                                                  class="dropdown-toggle"
+                                                  data-bs-toggle="dropdown"
+                                                  aria-expanded="false"
                                                 >
-                                                  {t("supplier.inventory_management.list.view_map")}
-                                                </a>
-                                              </li>
-                                              <li>
-                                                <a className="dropdown-item">
-                                                  Edit
-                                                </a>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        </td>
-                                        </tr>
-                                      )
-                                    })
-                                    :
-                                    <>No data to show</>
-                                  }
-                                  
-                                </tbody>
-                              </table>
+                                                  <span></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                  <li>
+                                                    <a
+                                                      className="dropdown-item"
+                                                      href="/order-detail"
+                                                    >
+                                                      {t(
+                                                        "supplier.inventory_management.list.view_map"
+                                                      )}
+                                                    </a>
+                                                  </li>
+                                                  <li>
+                                                    <a className="dropdown-item">
+                                                      Edit
+                                                    </a>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })
+                                    ) : (
+                                      <>No data to show</>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* [/Card] */}
                     </div>
-                    {/* [/Card] */}
-                  </div>
-                  {/* modal Box Creat Warehouse */}
-                  <Modal
-                    className="modal fade"
-                    show={show}
-                    centered
-                    onHide={() => handleCancel1()}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title>
-                        {" "}
-                        {t(
-                          "supplier.inventory_management.warehouse.header"
-                        )}{" "}
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <form>
-                        <div className="row">
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="Warehouse-name" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.warehouse.name"
-                              )}
-                            </label>
-                            <input
-                              type="text"
-                              value={warehouseName}
-                              onChange={(e) => handleWarehouseChange(e)}
-                              class="form-control pe-2"
-                              id="Warehouse-name"
-                            />
-                            {nameError !== "" ? (
-                              <p className="error-label">{nameError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label
-                              for="Warehouse-address"
-                              class="col-form-label"
-                            >
-                              {t(
-                                "supplier.inventory_management.warehouse.address"
-                              )}
-                            </label>
-                            {/* <input type="text" value={warehouseAddress} onChange = {(e) => handleAddressChange(e)} class="form-control pe-2" id="Warehouse-address" /> */}
-                            <GooglePlacesAutocomplete
-                              apiKey="AIzaSyBLkLSPnlPCzCfWun-oexkLi9DT7ijQXeY"
-                              selectProps={{
-                                value: warehouseAddress,
-                                onChange: (e) => handleAddressChange(e),
-                              }}
-                            />
-                            {addressError !== "" ? (
-                              <p className="error-label">{addressError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="num-aisles" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.warehouse.aisle"
-                              )}
-                            </label>
-                            <input
-                              type="number"
-                              class="form-control pe-2"
-                              value={aisle}
-                              onChange={(e) => setAisle(e.target.value)}
-                              min="1"
-                              id="num-aisles"
-                            />
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="num-shelves" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.warehouse.shelf"
-                              )}
-                            </label>
-                            <input
-                              type="number"
-                              min={"1"}
-                              onkeydown="return false"
-                              value={shelves}
-                              onChange={(e) => setShelves(e.target.value)}
-                              class="form-control pe-2"
-                              id="num-shelves"
-                            />
-                          </div>
-                        </div>
-                      </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <button
-                        type="button"
-                        class="btn btn-outline-black"
-                        data-bs-dismiss="modal"
-                        onClick={() => handleCancel1()}
-                      >
-                        {t(
-                          "supplier.inventory_management.warehouse.cancel_btn"
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-purple"
-                        onClick={() => handleSaveWarehouse()}
-                      >
-                        {t(
-                          "supplier.inventory_management.warehouse.create_btn"
-                        )}
-                      </button>
-                    </Modal.Footer>
-                  </Modal>
-                  {/* modal box Creat Warehouse end */}
-
-                  {/* modal Box Creat Warehouse */}
-                  <Modal
-                    className="modal fade"
-                    show={show2}
-                    centered
-                    onHide={() => setShow2(false)}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title>
-                        {" "}
-                        {t("supplier.inventory_management.inventory.header")}
-                      </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <h3 className="titleName">
-                        {t(
-                          "supplier.inventory_management.inventory.sub_header"
-                        )}
-                      </h3>
-                      <form>
-                        <div className="row">
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label
-                              for="SelectProductName"
-                              class="col-form-label"
-                            >
-                              {t(
-                                "supplier.inventory_management.inventory.product"
-                              )}
-                            </label>
-                            <select
-                              class="form-select"
-                              id="SelectProductName"
-                              aria-label="Default select example"
-                              value={selectedProduct}
-                              onChange={(e) => handleProductChange(e)}
-                            >
-                              <option value="">Choose Product</option>
-                              {productList && productList.length > 0 ? (
-                                productList.map((ele) => {
-                                  return (
-                                    <option
-                                      key={ele.id}
-                                      value={JSON.stringify({
-                                        productId: ele.id,
-                                        productInventory: ele.inventory,
-                                      })}
-                                    >
-                                      {ele.product_name}
-                                    </option>
-                                  );
-                                })
-                              ) : (
-                                <></>
-                              )}
-                            </select>
-                            {productError !== "" ? (
-                              <p className="error-label">{productError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label
-                              for="SelectDistributor"
-                              class="col-form-label"
-                            >
-                              {t(
-                                "supplier.inventory_management.inventory.distributor"
-                              )}
-                            </label>
-                            <select
-                              class="form-select"
-                              id="SelectDistributor"
-                              aria-label="Default select example"
-                              value={selectedDistributor}
-                              onChange={(e) => handleDistributorChange(e)}
-                              disabled={exist}
-                            >
-                              <option value="">Choose Distributor</option>
-                              {distributorList && distributorList.length > 0 ? (
-                                distributorList.map((ele) => {
-                                  return (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.user_profile ? ele.user_profile.company_name ? ele.user_profile.company_name : "N/A" : "N/A"}
-                                    </option>
-                                  );
-                                })
-                              ) : (
-                                <></>
-                              )}
-                            </select>
-                            {distributorError !== "" ? (
-                              <p className="error-label">{distributorError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="SelectQuantity" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.quantity"
-                              )}
-                            </label>
-                            <NumericInput
-                              className="form-control"
-                              value={selectedQuantity}
-                              min={1}
-                              onChange={(e) => setSelectedQuantity(e)}
-                              step={1}
-                              precision={0}
-                              size={5}
-                              strict
-                            />
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="SelectWarehouse" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.warehouse"
-                              )}
-                            </label>
-                            {exist ? (
+                    {/* modal Box Creat Warehouse */}
+                    <Modal
+                      className="modal fade"
+                      show={show}
+                      centered
+                      onHide={() => handleCancel1()}
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title>
+                          {" "}
+                          {t(
+                            "supplier.inventory_management.warehouse.header"
+                          )}{" "}
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <form>
+                          <div className="row">
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="Warehouse-name"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.warehouse.name"
+                                )}
+                              </label>
                               <input
-                                class="form-control"
-                                value={selectedWarehouse}
-                                disabled
+                                type="text"
+                                value={warehouseName}
+                                onChange={(e) => handleWarehouseChange(e)}
+                                class="form-control pe-2"
+                                id="Warehouse-name"
                               />
-                            ) : (
+                              {nameError !== "" ? (
+                                <p className="error-label">{nameError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="Warehouse-address"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.warehouse.address"
+                                )}
+                              </label>
+                              {/* <input type="text" value={warehouseAddress} onChange = {(e) => handleAddressChange(e)} class="form-control pe-2" id="Warehouse-address" /> */}
+                              <GooglePlacesAutocomplete
+                                apiKey="AIzaSyBLkLSPnlPCzCfWun-oexkLi9DT7ijQXeY"
+                                selectProps={{
+                                  value: warehouseAddress,
+                                  onChange: (e) => handleAddressChange(e),
+                                }}
+                              />
+                              {addressError !== "" ? (
+                                <p className="error-label">{addressError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label for="num-aisles" class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.warehouse.aisle"
+                                )}
+                              </label>
+                              <input
+                                type="number"
+                                class="form-control pe-2"
+                                value={aisle}
+                                onChange={(e) => setAisle(e.target.value)}
+                                min="1"
+                                id="num-aisles"
+                              />
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label for="num-shelves" class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.warehouse.shelf"
+                                )}
+                              </label>
+                              <input
+                                type="number"
+                                min={"1"}
+                                onkeydown="return false"
+                                value={shelves}
+                                onChange={(e) => setShelves(e.target.value)}
+                                class="form-control pe-2"
+                                id="num-shelves"
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <button
+                          type="button"
+                          class="btn btn-outline-black"
+                          data-bs-dismiss="modal"
+                          onClick={() => handleCancel1()}
+                        >
+                          {t(
+                            "supplier.inventory_management.warehouse.cancel_btn"
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-purple"
+                          onClick={() => handleSaveWarehouse()}
+                        >
+                          {t(
+                            "supplier.inventory_management.warehouse.create_btn"
+                          )}
+                        </button>
+                      </Modal.Footer>
+                    </Modal>
+                    {/* modal box Creat Warehouse end */}
+
+                    {/* modal Box Creat Warehouse */}
+                    <Modal
+                      className="modal fade"
+                      show={show2}
+                      centered
+                      onHide={() => setShow2(false)}
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title>
+                          {" "}
+                          {t("supplier.inventory_management.inventory.header")}
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <h3 className="titleName">
+                          {t(
+                            "supplier.inventory_management.inventory.sub_header"
+                          )}
+                        </h3>
+                        <form>
+                          <div className="row">
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="SelectProductName"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.inventory.product"
+                                )}
+                              </label>
                               <select
                                 class="form-select"
-                                id="SelectWarehouse"
+                                id="SelectProductName"
                                 aria-label="Default select example"
-                                value={selectedWarehouse}
-                                onChange={(e) => handleSelectedWarehouse(e)}
+                                value={selectedProduct}
+                                onChange={(e) => handleProductChange(e)}
                               >
-                                <option value="">Choose Warehouse</option>
-                                {warehouseList && warehouseList.length > 0 ? (
-                                  warehouseList.map((ele) => {
+                                <option value="">Choose Product</option>
+                                {productList && productList.length > 0 ? (
+                                  productList.map((ele) => {
                                     return (
                                       <option
                                         key={ele.id}
                                         value={JSON.stringify({
-                                          id: ele.id,
-                                          aisles: ele.aisles,
-                                          shelves: ele.shelves,
+                                          productId: ele.id,
+                                          productInventory: ele.inventory,
                                         })}
                                       >
-                                        {ele.name}
+                                        {ele.product_name}
                                       </option>
                                     );
                                   })
@@ -1663,300 +1718,420 @@ const SupplierInventoryManagement = () => {
                                   <></>
                                 )}
                               </select>
-                            )}
+                              {productError !== "" ? (
+                                <p className="error-label">{productError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="SelectDistributor"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.inventory.distributor"
+                                )}
+                              </label>
+                              <select
+                                class="form-select"
+                                id="SelectDistributor"
+                                aria-label="Default select example"
+                                value={selectedDistributor}
+                                onChange={(e) => handleDistributorChange(e)}
+                                disabled={exist}
+                              >
+                                <option value="">Choose Distributor</option>
+                                {distributorList &&
+                                distributorList.length > 0 ? (
+                                  distributorList.map((ele) => {
+                                    return (
+                                      <option key={ele.id} value={ele.id}>
+                                        {ele.user_profile
+                                          ? ele.user_profile.company_name
+                                            ? ele.user_profile.company_name
+                                            : "N/A"
+                                          : "N/A"}
+                                      </option>
+                                    );
+                                  })
+                                ) : (
+                                  <></>
+                                )}
+                              </select>
+                              {distributorError !== "" ? (
+                                <p className="error-label">
+                                  {distributorError}
+                                </p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="SelectQuantity"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.inventory.quantity"
+                                )}
+                              </label>
+                              <NumericInput
+                                className="form-control"
+                                value={selectedQuantity}
+                                min={1}
+                                onChange={(e) => setSelectedQuantity(e)}
+                                step={1}
+                                precision={0}
+                                size={5}
+                                strict
+                              />
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label
+                                for="SelectWarehouse"
+                                class="col-form-label"
+                              >
+                                {t(
+                                  "supplier.inventory_management.inventory.warehouse"
+                                )}
+                              </label>
+                              {exist ? (
+                                <input
+                                  class="form-control"
+                                  value={selectedWarehouse}
+                                  disabled
+                                />
+                              ) : (
+                                <select
+                                  class="form-select"
+                                  id="SelectWarehouse"
+                                  aria-label="Default select example"
+                                  value={selectedWarehouse}
+                                  onChange={(e) => handleSelectedWarehouse(e)}
+                                >
+                                  <option value="">Choose Warehouse</option>
+                                  {warehouseList && warehouseList.length > 0 ? (
+                                    warehouseList.map((ele) => {
+                                      return (
+                                        <option
+                                          key={ele.id}
+                                          value={JSON.stringify({
+                                            id: ele.id,
+                                            aisles: ele.aisles,
+                                            shelves: ele.shelves,
+                                          })}
+                                        >
+                                          {ele.name}
+                                        </option>
+                                      );
+                                    })
+                                  ) : (
+                                    <></>
+                                  )}
+                                </select>
+                              )}
 
-                            {warehouseError !== "" ? (
-                              <p className="error-label">{warehouseError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="SelectAisle" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.aisle"
+                              {warehouseError !== "" ? (
+                                <p className="error-label">{warehouseError}</p>
+                              ) : (
+                                <></>
                               )}
-                            </label>
-                            {exist ? (
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label for="SelectAisle" class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.inventory.aisle"
+                                )}
+                              </label>
+                              {exist ? (
+                                <input
+                                  class="form-control"
+                                  value={selectedAisle}
+                                  disabled
+                                />
+                              ) : (
+                                <select
+                                  class="form-select"
+                                  id="SelectAisle"
+                                  aria-label="Default select example"
+                                  value={selectedAisle}
+                                  onChange={(e) => handleAisleChange(e)}
+                                  disabled={
+                                    selectedWarehouse == "" || exist
+                                      ? true
+                                      : false
+                                  }
+                                >
+                                  <option value="">Choose Aisle</option>
+                                  {selectedWarehouse == "" ? (
+                                    <></>
+                                  ) : (
+                                    generateAisleOptions()
+                                  )}
+                                </select>
+                              )}
+                              {aisleError !== "" ? (
+                                <p className="error-label">{aisleError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.inventory.aisle_name"
+                                )}
+                              </label>
                               <input
                                 class="form-control"
-                                value={selectedAisle}
-                                disabled
-                              />
-                            ) : (
-                              <select
-                                class="form-select"
-                                id="SelectAisle"
-                                aria-label="Default select example"
-                                value={selectedAisle}
-                                onChange={(e) => handleAisleChange(e)}
+                                value={aisleName}
                                 disabled={
-                                  selectedWarehouse == "" || exist
-                                    ? true
-                                    : false
+                                  selectedAisle === "" || exist ? true : false
                                 }
-                              >
-                                <option value="">Choose Aisle</option>
-                                {selectedWarehouse == "" ? (
-                                  <></>
-                                ) : (
-                                  generateAisleOptions()
+                                placeholder="Enter aisle name"
+                                onChange={(e) => handleAisleNameChange(e)}
+                              />
+                              {aisleNameError !== "" ? (
+                                <p className="error-label">{aisleNameError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label for="SelectShelf" class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.inventory.shelf"
                                 )}
-                              </select>
-                            )}
-                            {aisleError !== "" ? (
-                              <p className="error-label">{aisleError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.aisle_name"
+                              </label>
+                              {exist ? (
+                                <input
+                                  class="form-control"
+                                  value={selectedShelf}
+                                  disabled
+                                />
+                              ) : (
+                                <select
+                                  class="form-select"
+                                  id="SelectShelf"
+                                  aria-label="Default select example"
+                                  value={selectedShelf}
+                                  onChange={(e) => handleShefChange(e)}
+                                  disabled={
+                                    selectedWarehouse == "" || exist
+                                      ? true
+                                      : false
+                                  }
+                                >
+                                  <option value="">Choose Shelf</option>
+                                  {selectedWarehouse == "" ? (
+                                    <></>
+                                  ) : (
+                                    generateShelfOptions()
+                                  )}
+                                </select>
                               )}
-                            </label>
-                            <input
-                              class="form-control"
-                              value={aisleName}
-                              disabled={
-                                selectedAisle === "" || exist ? true : false
-                              }
-                              placeholder="Enter aisle name"
-                              onChange={(e) => handleAisleNameChange(e)}
-                            />
-                            {aisleNameError !== "" ? (
-                              <p className="error-label">{aisleNameError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label for="SelectShelf" class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.shelf"
+                              {shelfError !== "" ? (
+                                <p className="error-label">{shelfError}</p>
+                              ) : (
+                                <></>
                               )}
-                            </label>
-                            {exist ? (
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.inventory.shelf_name"
+                                )}
+                              </label>
                               <input
                                 class="form-control"
-                                value={selectedShelf}
-                                disabled
-                              />
-                            ) : (
-                              <select
-                                class="form-select"
-                                id="SelectShelf"
-                                aria-label="Default select example"
-                                value={selectedShelf}
-                                onChange={(e) => handleShefChange(e)}
+                                value={shelfName}
+                                placeholder="Enter shelf name"
                                 disabled={
-                                  selectedWarehouse == "" || exist
-                                    ? true
-                                    : false
+                                  selectedShelf === "" || exist ? true : false
                                 }
-                              >
-                                <option value="">Choose Shelf</option>
-                                {selectedWarehouse == "" ? (
-                                  <></>
-                                ) : (
-                                  generateShelfOptions()
-                                )}
-                              </select>
-                            )}
-                            {shelfError !== "" ? (
-                              <p className="error-label">{shelfError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label class="col-form-label">
-                              {t(
-                                "supplier.inventory_management.inventory.shelf_name"
+                                onChange={(e) => handleShelfNameChange(e)}
+                              />
+                              {shelfNameError !== "" ? (
+                                <p className="error-label">{shelfNameError}</p>
+                              ) : (
+                                <></>
                               )}
-                            </label>
-                            <input
-                              class="form-control"
-                              value={shelfName}
-                              placeholder="Enter shelf name"
-                              disabled={
-                                selectedShelf === "" || exist ? true : false
-                              }
-                              onChange={(e) => handleShelfNameChange(e)}
-                            />
-                            {shelfNameError !== "" ? (
-                              <p className="error-label">{shelfNameError}</p>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                          <div className="col-sm-6 col-12 mb-sm-3 mb-2">
-                            <label class="col-form-label">{t("supplier.inventory_management.list.batch_number")}</label>
-                            <input
-                              class="form-control"
-                              placeholder="Enter batch number"
-                              value={batch}
-                              onChange={(e) => {
-                                setBatch(e.target.value);
-                                setBatchError("");
+                            </div>
+                            <div className="col-sm-6 col-12 mb-sm-3 mb-2">
+                              <label class="col-form-label">
+                                {t(
+                                  "supplier.inventory_management.list.batch_number"
+                                )}
+                              </label>
+                              <input
+                                class="form-control"
+                                placeholder="Enter batch number"
+                                value={batch}
+                                onChange={(e) => {
+                                  setBatch(e.target.value);
+                                  setBatchError("");
+                                }}
+                              />
+                              {batchError !== "" ? (
+                                <p className="error-label">{batchError}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div
+                              className="col-sm-6 col-12 mb-sm-3 mb-2"
+                              style={{
+                                display:
+                                  childDivs.length > 0 ? "block" : "none",
                               }}
-                            />
-                            {batchError !== "" ? (
-                              <p className="error-label">{batchError}</p>
-                            ) : (
-                              <></>
-                            )}
+                            >
+                              <label class="col-form-label">
+                                or select from the following
+                              </label>
+                              <div id="parentDiv">{childDivs}</div>
+                            </div>
                           </div>
-                          <div
-                            className="col-sm-6 col-12 mb-sm-3 mb-2"
-                            style={{
-                              display: childDivs.length > 0 ? "block" : "none",
+                        </form>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <button
+                          type="button"
+                          class="btn btn-outline-black"
+                          data-bs-dismiss="modal"
+                          onClick={() => setShow2(false)}
+                        >
+                          {t(
+                            "supplier.inventory_management.inventory.cancel_btn"
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-purple"
+                          onClick={() => handleSaveInventory()}
+                        >
+                          {t(
+                            "supplier.inventory_management.inventory.create_btn"
+                          )}
+                        </button>
+                      </Modal.Footer>
+                    </Modal>
+                    {/* modal box Creat Warehouse end */}
+                    <Modal
+                      className="modal fade"
+                      show={show3}
+                      centered
+                      onHide={() => setShow3(false)}
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title>
+                          {t(
+                            "supplier.inventory_management.list.create_warehouse"
+                          )}{" "}
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <p>
+                          {t(
+                            "supplier.inventory_management.list.please_create"
+                          )}{" "}
+                          <a
+                            onClick={() => {
+                              setShow(true);
+                              setShow3(false);
                             }}
+                            className="custom-atag"
                           >
-                            <label class="col-form-label">
-                              or select from the following
-                            </label>
-                            <div id="parentDiv">{childDivs}</div>
-                          </div>
-                        </div>
-                      </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <button
-                        type="button"
-                        class="btn btn-outline-black"
-                        data-bs-dismiss="modal"
-                        onClick={() => setShow2(false)}
-                      >
-                        {t(
-                          "supplier.inventory_management.inventory.cancel_btn"
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-purple"
-                        onClick={() => handleSaveInventory()}
-                      >
-                        {t(
-                          "supplier.inventory_management.inventory.create_btn"
-                        )}
-                      </button>
-                    </Modal.Footer>
-                  </Modal>
-                  {/* modal box Creat Warehouse end */}
-                  <Modal
-                    className="modal fade"
-                    show={show3}
-                    centered
-                    onHide={() => setShow3(false)}
-                  >
-                    <Modal.Header closeButton>
-                      <Modal.Title>{t("supplier.inventory_management.list.create_warehouse")}  </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <p>
-                      {t("supplier.inventory_management.list.please_create")}
-                        {" "}
-                        <a
-                          onClick={() => {
-                            setShow(true);
-                            setShow3(false);
-                          }}
-                          className="custom-atag"
-                        >
-                          {t("supplier.inventory_management.list.create_new")}
-                          
-                        </a>
-                      </p>
-                    </Modal.Body>
-                  </Modal>
+                            {t("supplier.inventory_management.list.create_new")}
+                          </a>
+                        </p>
+                      </Modal.Body>
+                    </Modal>
 
-                  <Modal
-                    className="modal fade"
-                    show={show4}
-                    centered
-                    onHide={() => {
-                      setShow4(false);
-                    }}
-                  >
-                    <Modal.Header>
-                      <h5 class="modal-title text-purpal">Update Stock</h5>
-                      <button
-                        type="button"
-                        class="btn-close text-purpal"
-                        aria-label="Close"
-                        onClick={() => setShow4(false)}
-                      ></button>
-                    </Modal.Header>
-                    <Modal.Body>
-                      <div className="mb-2">
-                        <label className="form-label">Modification</label>
-                        <NumericInput
-                          className="form-control"
-                          value={stock}
-                          onChange={(e) => setStock(e)}
-                          step={1}
-                          precision={0}
-                          size={5}
-                          strict
-                        />
-                      </div>
-                      <div className="mb-2">
-                        <label className="form-label">Reason</label>
-                        <select
-                          className="form-select"
-                          value={stockReason}
-                          onChange={(e) => setStockReason(e.target.value)}
-                        >
-                          <option value={""}>Select Reason</option>
-                          <option value={"Reciepts"}>Reciepts</option>
-                          <option value={"Adjustments"}>Adjustment</option>
-                          <option value={"Return"}>Return</option>
-                          <option value={"Purchase"}>Purchase</option>
-                          <option value={"Other"}>Other</option>
-                        </select>
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Batch Number</label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          value={stockBatch}
-                          disabled
-                        />
-                      </div>
-                    </Modal.Body>
-                    <Modal.Footer
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
+                    <Modal
+                      className="modal fade"
+                      show={show4}
+                      centered
+                      onHide={() => {
+                        setShow4(false);
                       }}
                     >
-                      <button
-                        type="button"
-                        class="btn btn-outline-purple"
-                        onClick={() => {
-                          setShow4(false);
+                      <Modal.Header>
+                        <h5 class="modal-title text-purpal">Update Stock</h5>
+                        <button
+                          type="button"
+                          class="btn-close text-purpal"
+                          aria-label="Close"
+                          onClick={() => setShow4(false)}
+                        ></button>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div className="mb-2">
+                          <label className="form-label">Modification</label>
+                          <NumericInput
+                            className="form-control"
+                            value={stock}
+                            onChange={(e) => setStock(e)}
+                            step={1}
+                            precision={0}
+                            size={5}
+                            strict
+                          />
+                        </div>
+                        <div className="mb-2">
+                          <label className="form-label">Reason</label>
+                          <select
+                            className="form-select"
+                            value={stockReason}
+                            onChange={(e) => setStockReason(e.target.value)}
+                          >
+                            <option value={""}>Select Reason</option>
+                            <option value={"Reciepts"}>Reciepts</option>
+                            <option value={"Adjustments"}>Adjustment</option>
+                            <option value={"Return"}>Return</option>
+                            <option value={"Purchase"}>Purchase</option>
+                            <option value={"Other"}>Other</option>
+                          </select>
+                        </div>
+                        <div className="mb-3">
+                          <label className="form-label">Batch Number</label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            value={stockBatch}
+                            disabled
+                          />
+                        </div>
+                      </Modal.Body>
+                      <Modal.Footer
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
                         }}
                       >
-                        Cancel
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-purple btn-md w-auto"
-                        onClick={() => handleUpdateStock()}
-                      >
-                        Update
-                      </button>
-                    </Modal.Footer>
-                  </Modal>
+                        <button
+                          type="button"
+                          class="btn btn-outline-purple"
+                          onClick={() => {
+                            setShow4(false);
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-purple btn-md w-auto"
+                          onClick={() => handleUpdateStock()}
+                        >
+                          Update
+                        </button>
+                      </Modal.Footer>
+                    </Modal>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </LoadingOverlay>
-          
         </div>
       </div>
     </div>
