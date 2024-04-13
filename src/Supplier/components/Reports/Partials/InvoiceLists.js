@@ -207,8 +207,7 @@ const InvoiceLists = ({ img, token }) => {
 
   return (
     <>
-      <div className="col-12 d-flex">
-        <Card className="reports reports4" style={{ width: "9rem" }}>
+        <Card className="reports reports4">
           <Card.Body>
             <FontAwesomeIcon icon="fa-solid fa-file-invoice-dollar" />
             <Card.Title></Card.Title>
@@ -218,7 +217,6 @@ const InvoiceLists = ({ img, token }) => {
             </Button>
           </Card.Body>
         </Card>
-      </div>
 
       <Modal
         className="modal fade"
