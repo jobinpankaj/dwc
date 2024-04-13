@@ -205,7 +205,6 @@ const InvoiceLists = ({ img, token }) => {
 
   return (
     <>
-      <div className="col-12 d-flex">
         <Card className="reports reports4" style={{ width: '9rem' }}>
 
       <Card.Body>
@@ -217,7 +216,6 @@ const InvoiceLists = ({ img, token }) => {
         <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
       </Card.Body>
     </Card>
-      </div>
 
       <Modal
         className="modal fade"

@@ -366,8 +366,7 @@ const SalesLists = ({ img, token }) => {
 
   return (
     <>
-      <div className="col-12 d-flex">
-        <Card className="reports reports3" style={{ width: "9rem" }}>
+        <Card className="reports reports3">
           <Card.Body>
             <FontAwesomeIcon icon="fa-solid fa-list-ul" />
             <Card.Title></Card.Title>
@@ -377,7 +376,6 @@ const SalesLists = ({ img, token }) => {
             </Button>
           </Card.Body>
         </Card>
-      </div>
 
       <Modal
         className="modal fade"

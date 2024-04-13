@@ -430,8 +430,7 @@ useEffect(() => {
 
   return (
     <>
-      <div className="col">
-        <Card className="reports reports1" style={{ width: '9rem' }}>
+        <Card className="reports reports1">
       <Card.Body>
         <FontAwesomeIcon icon="fa-solid fa-list-check" />
         <Card.Title></Card.Title>
@@ -441,7 +440,6 @@ useEffect(() => {
         <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
       </Card.Body>
     </Card>
-      </div>
 
       <Modal
         className="modal fade"
