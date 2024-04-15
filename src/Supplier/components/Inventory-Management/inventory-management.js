@@ -515,6 +515,7 @@ const SupplierInventoryManagement = () => {
         .then((res) => {
           setLoading(false);
           if (res.data.success === true) {
+            console.log("Wareee",res.data.data);
             setInventoryList(res.data.data);
           } else {
             toast.error(
@@ -988,16 +989,16 @@ const SupplierInventoryManagement = () => {
                                           "supplier.inventory_management.list.table_col3"
                                         )}
                                       </th>
-                                      <th>
+                                      {/* <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col4"
                                         )}
-                                      </th>
-                                      <th>
+                                      </th> */}
+                                      {/* <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col5"
                                         )}
-                                      </th>
+                                      </th> */}
                                       <th className="text-center">
                                         {t(
                                           "supplier.inventory_management.list.table_col6"
@@ -1156,7 +1157,9 @@ const SupplierInventoryManagement = () => {
                                               </div>
                                             </td>
                                             <td className="text-center">
-                                              {ele.product.product_format.name}
+                                            {
+                                            ele.product?(ele.product.product_format?(ele.product.product_format.name?(ele.product.product_format.name):("N/A")):"N/A"):"N/A"
+                                          }
                                             </td>
 
                                             <td className="text-center">
@@ -1200,8 +1203,8 @@ const SupplierInventoryManagement = () => {
                                           <td className="text-center">0</td>
                                           <td className="text-center">0</td> */}
                                             <td>{ele.warehouse.name}</td>
-                                            <td>{ele.aisle}</td>
-                                            <td>{ele.shelf}</td>
+                                            {/* <td>{ele.aisle}</td>
+                                            <td>{ele.shelf}</td> */}
                                             <td>
                                               <div className="d-flex flex-column gap-2">
                                                 {ele.product.availability ? (

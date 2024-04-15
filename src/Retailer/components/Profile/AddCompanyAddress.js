@@ -384,7 +384,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={address2}
                                   onChange={(e) => handleAddress2(e)}
-                                  placeholder="Enter address"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.address_2_ph"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -394,7 +396,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={city}
                                   onChange={(e) => setCity(e.target.value)}
-                                  placeholder="Enter city name"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.city_ph"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -406,7 +410,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={postalCode === 0 ? "" : postalCode}
                                   onChange={(e) => handlePostalCode(e)}
-                                  placeholder="Enter postal code"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.postal_ph"
+                                  )}
                                 />
                               </div>
 
@@ -416,7 +422,9 @@ const AddCompanyAddress = () => {
                                   type="text"
                                   className="form-control"
                                   value={country}
-                                  placeholder="Enter postal code"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.country_ph"
+                                  )}
                                   onChange={(e) => setCountry(e.target.value)}
                                 />
                               </div>
@@ -426,7 +434,9 @@ const AddCompanyAddress = () => {
                                   type="text"
                                   className="form-control"
                                   value={state}
-                                  placeholder="Enter postal code"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.state_ph"
+                                  )}
                                   onChange={(e) => setState(e.target.value)}
                                 />
                               </div>
@@ -449,7 +459,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={time}
                                   onChange={(e) => handleTime(e)}
-                                  placeholder="Enter order number"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.time_ph"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -459,7 +471,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={note}
                                   onChange={(e) => handleNotes(e)}
-                                  placeholder="write note for delivery"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.note_ph"
+                                  )}
                                 />
                               </div>
                             </div>
@@ -473,7 +487,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={contactName}
                                   onChange={(e) => handleContactName(e)}
-                                  placeholder="Enter contact name"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.contact_label"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -483,7 +499,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={phone}
                                   onChange={(e) => handlePhone(e)}
-                                  placeholder="Enter phone no."
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.phone_label"
+                                  )}
                                 />
                               </div>
                             </div>
@@ -542,7 +560,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={shippingAddress2}
                                   onChange={(e) => handleShippingAddress2(e)}
-                                  placeholder="Enter address"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.address_2_ph"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -552,7 +572,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={shippingCity}
                                   onChange={(e) => handleShippingCity(e)}
-                                  placeholder="Enter city name"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.city_ph"
+                                  )}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
@@ -564,7 +586,9 @@ const AddCompanyAddress = () => {
                                   className="form-control"
                                   value={shippingPostal}
                                   onChange={(e) => handleShippingPostal(e)}
-                                  placeholder="Enter postal code"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.postal_ph"
+                                  )}
                                 />
                               </div>
 
@@ -574,7 +598,9 @@ const AddCompanyAddress = () => {
                                   type="text"
                                   className="form-control"
                                   value={shippingCountry}
-                                  placeholder="Enter state"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.country_ph"
+                                  )}
                                   onChange={(e) =>
                                     setShippingCountry(e.target.value)
                                   }
@@ -586,7 +612,9 @@ const AddCompanyAddress = () => {
                                   type="text"
                                   className="form-control"
                                   value={shippingState}
-                                  placeholder="Enter state"
+                                  placeholder={t(
+                                    "admin.retailer_management.add_second.state_ph"
+                                  )}
                                   onChange={(e) =>
                                     setShippingState(e.target.value)
                                   }

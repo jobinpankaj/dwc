@@ -392,7 +392,7 @@ const AddProduct = () => {
 
   useEffect(() => {
     apis
-      .get("/getProductStyles", {})
+      .get("/Styles", {})
       .then((res) => {
         if (res.data.success === true) {
           setStylesList(res.data.data);
@@ -732,7 +732,7 @@ const AddProduct = () => {
                               {stylesList &&
                                 stylesList.map((ele) => {
                                   return (
-                                    <option key={ele.id} value={ele.name}>
+                                    <option key={ele.id} value={ele.id}>
                                       {ele.name}
                                     </option>
                                   );

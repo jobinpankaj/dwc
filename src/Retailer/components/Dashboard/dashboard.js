@@ -21,6 +21,7 @@ import useAuthInterceptor from "../../../utils/apis";
 import { useTranslation } from "react-i18next";
 import Info from "../../../CommonComponents/Dashboard/Info";
 import imageNotAvailable from "../../../assets/images/Image_not_available.png";
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -259,19 +260,26 @@ const Dashboard = () => {
       .padStart(2, "0")} ${amOrPm}`;
   };
 
-  const suggestedSupplier = [
-    { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 2, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 3, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 4, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 5, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 6, imgSource: "https://picsum.photos/200", supplierName: "test" },
-    { id: 7, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 8, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 9, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 10, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-    { id: 11, imgSource: "https://picsum.photos/200", supplierName: "demo" },
-  ];
+  const scrollToSuggestedSupplier = () => {
+    const suggestedSupplier = document.getElementById('suggested-supplier');
+    if (suggestedSupplier) {
+      suggestedSupplier.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // const suggestedSupplier = [
+  //   { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  //   { id: 2, imgSource: "https://picsum.photos/200", supplierName: "test" },
+  //   { id: 3, imgSource: "https://picsum.photos/200", supplierName: "test" },
+  //   { id: 4, imgSource: "https://picsum.photos/200", supplierName: "test" },
+  //   { id: 5, imgSource: "https://picsum.photos/200", supplierName: "test" },
+  //   { id: 6, imgSource: "https://picsum.photos/200", supplierName: "test" },
+  //   { id: 7, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  //   { id: 8, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  //   { id: 9, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  //   { id: 10, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  //   { id: 11, imgSource: "https://picsum.photos/200", supplierName: "demo" },
+  // ];
 
   return (
     <>
@@ -294,40 +302,92 @@ const Dashboard = () => {
                   <Info accessToken={accessToken} />
                   {/* [Card 1] */}
                   {orders.length < 1 && (
-                    <div class="card retailer-Meta-Info mb-3">
-                      <div class="card-body">
-                        <div className="card-title">
-                          {t("retailer.dashboard.dashboard_card1")}
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            {t("retailer.dashboard.dashboard_card_p")}
-                            <p className="custom-atag">
+                    // <div class="card retailer-Meta-Info mb-3">
+                    //   <div class="card-body">
+                    //     <div className="card-title">
+                    //       {t("retailer.dashboard.dashboard_card1")}
+                    //     </div>
+                    //     <ul class="list-group list-group-flush">
+                    //       <li class="list-group-item">
+                    //         {t("retailer.dashboard.dashboard_card_p")}
+                    //         <p className="custom-atag">
                            
-                              {t("retailer.dashboard.dashboard_card_pp")}
-                            </p>{" "}
-                            {t("retailer.dashboard.dashboard_card_ppp")}
-                          </li>
-                          <li class="list-group-item">
-                            {t("retailer.dashboard.dashboard_card_p1")}
-                            <p className="custom-atag">
-                              {t("retailer.dashboard.dashboard_card_p11")}
-                            </p>
-                            .
-                          </li>
-                          <li class="list-group-item">
-                            {t("retailer.dashboard.dashboard_card_p2")}
-                            <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p22")}</p>
-                          </li>
-                          <li class="list-group-item">
-                            {t("retailer.dashboard.dashboard_card_p3")}
-                            <p className="custom-atag">
-                              {t("retailer.dashboard.dashboard_card_p33")}
-                            </p>
-                          </li>
-                        </ul>
+                    //           {t("retailer.dashboard.dashboard_card_pp")}
+                    //         </p>{" "}
+                    //         {t("retailer.dashboard.dashboard_card_ppp")}
+                    //       </li>
+                    //       <li class="list-group-item">
+                    //         {t("retailer.dashboard.dashboard_card_p1")}
+                    //         <p className="custom-atag">
+                    //           {t("retailer.dashboard.dashboard_card_p11")}
+                    //         </p>
+                    //         .
+                    //       </li>
+                    //       <li class="list-group-item">
+                    //         {t("retailer.dashboard.dashboard_card_p2")}
+                    //         <p className="custom-atag">{t("retailer.dashboard.dashboard_card_p22")}</p>
+                    //       </li>
+                    //       <li class="list-group-item">
+                    //         {t("retailer.dashboard.dashboard_card_p3")}
+                    //         <p className="custom-atag">
+                    //           {t("retailer.dashboard.dashboard_card_p33")}
+                    //         </p>
+                    //       </li>
+                    //     </ul>
+                    //   </div>
+                    // </div>
+                    <div class="card retailer-Meta-Info mb-3">
+                    <div class="card-body">
+                      <div className="card-title">
+                        {t("retailer.dashboard.dashboard_card1")}
                       </div>
+                      <ul class="list-group list-group-flush">
+                     
+                      <li class="list-group-item">
+                          {t("retailer.dashboard.dashboard_card_p4")}
+                          <p className="custom-atag" >
+                         
+                          <Link className="custom-atag" to="/retailer/my-account">
+                         {t("retailer.dashboard.dashboard_card_p44")}
+                          </Link>                            
+                          </p>{" "}                          
+                        </li>
+
+                        {/* <li class="list-group-item">
+                          {t("retailer.dashboard.dashboard_card_p")}
+                          <p className="custom-atag">
+                         
+                            {t("retailer.dashboard.dashboard_card_pp")}
+                          </p>{" "}
+                          {t("retailer.dashboard.dashboard_card_ppp")}
+                        </li> */}
+                        <li class="list-group-item">
+                          {t("retailer.dashboard.dashboard_card_p1")}
+                          <p className="custom-atag">
+                            {t("retailer.dashboard.dashboard_card_p11")}
+                          </p>
+                          .
+                        </li>
+                        <li class="list-group-item">
+                          {t("retailer.dashboard.dashboard_card_p2")}
+                          <p className="custom-atag">
+                          <Link className="custom-atag" onClick={scrollToSuggestedSupplier}>
+                            {t("retailer.dashboard.dashboard_card_p22")}
+                          </Link>
+                            </p>
+                        </li>
+                        <li class="list-group-item">
+                          {t("retailer.dashboard.dashboard_card_p3")}
+                          <p className="custom-atag">
+                           
+                            <Link className="custom-atag" to="/retailer/supplier-list">
+                            {t("retailer.dashboard.dashboard_card_p33")}
+                          </Link>           
+                          </p>
+                        </li>
+                      </ul>
                     </div>
+                  </div>
                   )}
                   {/* [/Card 2] */}
 
@@ -427,7 +487,9 @@ const Dashboard = () => {
                                   onChange={(e) =>
                                     handleSupplierSearch(e.target.value)
                                   }
-                                  placeholder="Enter Supplier name"
+                                  placeholder={t(
+                                    "retailer.dashboard.search_supplier_placeholder"
+                                  )}
                                 />
                                 {supplierList.length > 0 && (
                                   <ul
@@ -570,7 +632,8 @@ const Dashboard = () => {
                     className="card map-card retailer-searchBox my-4"
                   >
                     <div className="card-body">
-                      <div className="card-title">
+                      <div className="card-title" id="suggested-supplier">
+                      
                         {t("retailer.dashboard.suggested_supplier")}
                       </div>
                       <div className="supplier_logoBox">

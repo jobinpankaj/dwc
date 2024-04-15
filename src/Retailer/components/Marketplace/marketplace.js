@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { Oval } from "react-loader-spinner";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+// import { useLocation } from 'react-router-dom';
 import {
   addToCart,
   removeFromCart,
@@ -35,12 +36,22 @@ const Marketplace = () => {
   const token = localStorage.getItem("retailer_accessToken");
   const [showSidebar, setShowSidebar] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
+  const [supplierProduct, setSupplierProduct] = useState([])
+
+ 
+
+
   // console.log(cartItems,"cartItems")
   const dispatch = useDispatch();
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
   const location = useLocation();
+  const { pathname, search } = location;
+  
+  const supplier_id= search.split('=')
+  console.log('=======================',supplier_id[1]);
+
   useEffect(() => {
     if (!token) {
       navigate("/retailer/login");
@@ -62,6 +73,35 @@ const Marketplace = () => {
       .then((res) => {
         setProductList(res.data.data);
         setData(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.message !== "revoke") {
+          toast.error(t("error_message.something_went_wrong"), {
+            autoClose: 1000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+          setLoading(false);
+        }
+      });
+  }, [keyword, token]);
+
+  // get all product of a supplier
+  useEffect(() => {
+    setLoading(true);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `marketplace-view`,
+      },
+    };
+    apis
+      .get(`retailer/getSupplierAllProduct/${supplier_id[1]}`, config)
+      .then((res) => {
+        console.log('right data of a supplier---------------',res.data.data);
+        setSupplierProduct(res.data.data);
+        // setData(res.data.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -601,7 +641,7 @@ const Marketplace = () => {
                           {/* [Product List] */}
                           <div className="row product-list m-0">
                             {/* [Product Box] */}
-                            {data?.map((product) => (
+                            {supplierProduct?.map((product) => (
                               <div className="col-md-4 col-xxl-3 mb-3 productBox">
                                 <div class="card">
                                   <a
@@ -729,7 +769,7 @@ const Marketplace = () => {
                   {/* [/Card] */}
                 </div>
               </div>
-              {data.length === 0 && (
+              {supplierProduct.length === 0 && (
                 <div className="text-center">
                   <p className="fs-4">
                     {t("retailer.market_place.listing.no_products_to_show")}
