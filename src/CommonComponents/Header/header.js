@@ -246,7 +246,7 @@ const Header = ({ title, updateSidebar, userType }) => {
                         : navigate("/admin/my-account")
                     }
                   >
-                    My Account
+                    {t("header.my_account")}
                   </p>
                 </li>
                 <li>
@@ -258,12 +258,12 @@ const Header = ({ title, updateSidebar, userType }) => {
                         : navigate("/admin/change-password")
                     }
                   >
-                    Change Password
+                    {t("header.change_pass")}
                   </p>
                 </li>
                 <li>
                   <p className="dropdown-item" onClick={() => doLogout()}>
-                    Logout
+                  {t("header.logout")}
                   </p>
                 </li>
               </ul>

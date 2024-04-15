@@ -1068,7 +1068,9 @@
         "country": "Pays",
         "country_ph": "Entrez le nom du pays",
         "cancel_button": "Annuler",
-        "save_button": "Sauvegarder"
+        "save_button": "Sauvegarder",
+        "time_ph":"entrer l'heure",
+        "note_ph":"écrire une note pour la livraison"
       },
       "edit_second": {
         "title": "Modifier le détaillant",
@@ -2070,18 +2072,21 @@
       "confirm_password_characters":"Confirmer que le mot de passe doit comporter au moins 8 caractères."
     },
     "profile": {
+      "my_profile":"Mon profil",
+      "logout":"Se déconnecter",
       "profile_info":"Informations sur le profil",
       "retailer_detail":"Info détaillant",
       "first_name":"Prénom",
       "last_name":"Nom de famille",
-      "email_address":"l' adresse email",
+      "email_address":"Courriel",
       "user_role":"Rôle d'utilisateur",
       "choose":"Choisir",
       "choose_file":"Choisir le fichier",
-      "contact_email":"Email du contact",
+      "contact_email":"Courriel du contact",
       "consumption":"Consommation ",
       "on_site":"Sur place (CSP) ",
       "address":"Adresse",
+      "address_placeholder":"Adresse de facturation",
       "addressed_to":"Adressée à",
       "same_as_main_address":"Identique à l'adresse principale",
       "upload_business_certi":"Télécharger le certificat professionnel",
@@ -2092,17 +2097,21 @@
       "edit":"Modifier",
       "business_name":"Nom de l'entreprise",
       "group_name":"Nom du groupe",
-      "enter_group_name": "Entrez le nom du groupe",
+      "enter_group_name": "Choix du groupe",
       "business_category":"Catégorie d'entreprise",
-      "public_phone_number":"No tel principal ",
+      "public_phone_number":"No Tél principal ",
       "phone_number":"Autre tél.",
+      "phone_number_placeholder":"Télephone portable",
       "contact_name":"Nom du contact",
       "website_url":"Site Web ",
-      "on_premise_consumption":"Sur place (CSP)",
+      "website_url_placeholder": "Site Web",
+      "on_premise_consumption":"Consommation sur place (CSP)",
       "permit_of_alcohol":"J'ai un permis d'alcool",
-      "billing_info":"Informations de facturation",
+      "billing_info":"Facturation",
       "gst_tax":"Taxe TPS",
+      "gst_tax_placeholder": "Numéro de TPS",
       "qst_tax":"Inscription à la TVQ",
+      "qst_tax_placeholder": "Numéro de TVQ",
       "billing_address":"adresse de facturation",
       "home_consumption":"Consommation à domicile (CAD)",
       "main_address":"Adresse principale ",
@@ -2112,6 +2121,7 @@
       "postal_code":"Code postal",
       "country":"Pays",
       "company":"Entreprise",
+      "company_placeholder":"Nom d’Entreprise",
       "cancel":"Annuler",
       "next":"Suivante",
       "save":"Sauvegarder",
@@ -2134,7 +2144,8 @@
       "do_u_want_to_change": "Voulez-vous changer votre mot de passe",
       "no": "Non",
       "yes": "Oui",
-      "home_consumption1":"Consommation à domicile (CAD)"
+      "home_consumption1":"Consommation à domicile (CAD)",
+      "edit_retailer":"Modifier le détaillant"
     },
     "edit_profile":{
       "profile_info":"Informations sur le profil",
@@ -2143,7 +2154,8 @@
       "email_address":"Courriel",
       "phone_number":"Tél.",
       "cancel":"Annuler",
-      "save":"Sauvegarder"
+      "save":"Sauvegarder",
+      "edit_retailer":"Modifier le détaillant"
     },
     "sidebar": {
       "back_superadmin": "Retour à superadmin",
@@ -2317,12 +2329,14 @@
       "dashboard_card_pp": "emplacement et vos coordonnées sont",
       "dashboard_card_ppp": "est correct",
       "dashboard_card_pppp": "Vérifier",
-      "dashboard_card_p1": "Définissez votre ",
-      "dashboard_card_p11": "préférences de notification.",
-      "dashboard_card_p2": "Recherchez et ajoutez un ou plusieurs ",
-      "dashboard_card_p22": "fournisseurs.",
-      "dashboard_card_p3": "Place ton ",
-      "dashboard_card_p33": "premier ordre."
+      "dashboard_card_p1": "Configurez vos préférences de notification ",
+      "dashboard_card_p11": "Choisir Préférences.",
+      "dashboard_card_p2": "Découvrez et ajoutez des fournisseurs.",
+      "dashboard_card_p22": "Détaillants suggérés.",
+      "dashboard_card_p3": "Passez votre première commande.",
+      "dashboard_card_p33": "Marché.",
+      "dashboard_card_p4": "Vérifiez que toutes les informations de votre profil sont correctes.",
+      "dashboard_card_p44": "lien pour vérifier"
     },
     "account_payable":{
       "account_payable":"Compte à payer",
@@ -2395,7 +2409,7 @@
         "switch_1": "Facture finale",
         "switch_2": "Facture payée",
         "switch_3": "Message d'un détaillant",
-        "switch_4": "Message d'un distributeur",
+        "switch_4": "Message d'un fournisseur",
         "switch_5": "Message de BLP",
         "switch_6": "Nouvelle commande",
         "switch_7": "Commande annulée",
@@ -2407,15 +2421,22 @@
       "superadmin_notification": {
         "switch_1": "Frais de service payés",
         "switch_2": "Message d'un détaillant",
-        "switch_3": "Message d'un Fournisseur",
+        "switch_3": "Message du Fournisseur",
         "switch_4": "Message de BLP",
         "switch_5": "Nouvelle demande assistance",
         "switch_6": "Mise à jour realisée",
         "switch_7": "Mise à jour en besoin",
-        "switch_8": "Nouveau compte détaillant créé"
+        "switch_8": "Nouveau compte détaillant créé",
+        "switch_9": "Message d'un Distributeur"
       }
     },
 
+    "header": {
+      "my_account": "Mon compte",
+      "logout": "Se déconnecter",
+      "change_pass": "Changer mot de passe"
+    },
+    
   "router": {
       "adminLogin":"/admin/connexion"
     }

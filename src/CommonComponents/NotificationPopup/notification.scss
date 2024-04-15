@@ -50,6 +50,7 @@
       height: 85%;
       overflow-y: scroll;
       overflow-x: hidden;
+      background-color: #fff;
       .switch-header{
          height: 20px;
          width: 100%;
@@ -136,6 +137,7 @@
         display: inline-block;
         margin-right: 10px; 
         text-align: left;
+        white-space: nowrap;
     }
 
 }

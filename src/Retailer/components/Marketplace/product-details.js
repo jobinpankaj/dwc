@@ -80,7 +80,7 @@ const ProductDetails = (props) => {
     }
   }, [retailer_accessToken, navigate]);
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
     const config = {
       headers: {
         Authorization: `Bearer ${retailer_accessToken}`,

@@ -276,8 +276,11 @@ if(selectedDistributor === "custom" && !emailregex.test(customDistributorEmail))
                             onChange={(e) =>{
                               setSelectedDistributor(e.target.value)
                               setDistributorError("")
+                              setCustomDistributorError("")
+                              setCustomDistributorEmailError("")
                               if(e.target.value !== "custom"){
                                 setCustomDistributor("")
+                                setCustomDistributorEmail("")
                               }
                             }
                             }
