@@ -22,8 +22,10 @@ import { useTranslation } from "react-i18next";
 import Info from "../../../CommonComponents/Dashboard/Info";
 import imageNotAvailable from "../../../assets/images/Image_not_available.png";
 import { Link } from 'react-router-dom';
+import { Popup } from "../../../CommonComponents/NotificationPopup/notification";
 
-const Dashboard = () => {
+
+const Dashboard = (userType) => {
   const { t } = useTranslation();
   const [showSidebar, setShowSidebar] = useState(false);
   const [searchSupplier, setSearchSupplier] = useState("");
@@ -59,6 +61,8 @@ const Dashboard = () => {
   console.log("current user from dashboard---------", currentUser);
   const username = localStorage.getItem(`${currentUser}_fullName`);
   const userImg = localStorage.getItem(`${currentUser}_userImg`);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (show) {
@@ -125,6 +129,14 @@ const Dashboard = () => {
         }
       });
   }, []);
+
+  // if(currentUser=="retailer"|| currentUser=="supplier" || currentUser=="distributor"){
+  //   userType=currentUser;
+  // }
+  // else{
+  //   userType="admin";
+  // }
+
   console.log(supplierId, showNoteModal, "fgdbfghnb");
 
   const searchProduct = (keyword) => {
@@ -266,6 +278,12 @@ const Dashboard = () => {
       suggestedSupplier.scrollIntoView({ behavior: 'smooth' });
     }
   };
+  if(currentUser=="retailer"|| currentUser=="supplier" || currentUser=="distributor"){
+    userType=currentUser;
+  }
+  else{
+    userType="admin";
+  }
 
   // const suggestedSupplier = [
   //   { id: 1, imgSource: "https://picsum.photos/200", supplierName: "demo" },
@@ -363,11 +381,12 @@ const Dashboard = () => {
                         </li> */}
                         <li class="list-group-item">
                           {t("retailer.dashboard.dashboard_card_p1")}
-                          <p className="custom-atag">
+                          <p className="custom-atag" onClick={() => setOpen(true, )}>
                             {t("retailer.dashboard.dashboard_card_p11")}
                           </p>
                           .
                         </li>
+                        {open ? <Popup text={userType} closePopup={() => setOpen(false)} /> : null}
                         <li class="list-group-item">
                           {t("retailer.dashboard.dashboard_card_p2")}
                           <p className="custom-atag">

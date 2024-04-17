@@ -742,7 +742,7 @@ const EditProfile = () => {
                                     type="text"
                                     className="form-control"
                                     value={firstName}
-                                    placeholder="Enter first name"
+                                    placeholder={t("retailer.edit_profile.efn")} 
                                     onChange={(e) => handleFirstNameChange(e)}
                                   />
                                   {firstNameError !== "" ? (
@@ -761,7 +761,7 @@ const EditProfile = () => {
                                     type="text"
                                     className="form-control"
                                     value={lastName}
-                                    placeholder="Enter last name"
+                                    placeholder={t("retailer.edit_profile.eln")} 
                                     onChange={(e) => handleLastNameChange(e)}
                                   />
                                   {lastNameError !== "" ? (
@@ -782,7 +782,7 @@ const EditProfile = () => {
                                     type="email"
                                     className="form-control"
                                     value={email}
-                                    placeholder="Enter email"
+                                    placeholder={t("retailer.edit_profile.em")} 
                                     onChange={(e) => handleEmailChange(e)}
                                   />
                                   {emailError !== "" ? (
@@ -799,7 +799,7 @@ const EditProfile = () => {
                                     type="text"
                                     className="form-control"
                                     value={mobile}
-                                    placeholder="Enter mobile No."
+                                    placeholder={t("retailer.edit_profile.emn")} 
                                     onChange={(e) => handleMobileChange(e)}
                                   />
                                   {mobileError !== "" ? (
