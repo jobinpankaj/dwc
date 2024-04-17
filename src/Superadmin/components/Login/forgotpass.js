@@ -71,11 +71,11 @@ const ForgotPassword = () => {
   return (
     <>
       <div class="page-wrap">
-        <div class="container-fluid p-2">
+        <div class="container-fluid g-0">
           <div class="row m-0 login-setup">
             <LoginLeftSidebar />
 
-            <div class="col-sm-8 login-setup-right">
+            <div class="col-md-6 login-setup-right">
               <div class="form-box col col-sm-12 col-md-10 col-lg-8">
                 <h3>Password Assistance</h3>
                 <p class="sub-head">
@@ -154,12 +154,12 @@ const ForgotPassword = () => {
                 <div class="modal-content p-3">
                     <div class="modal-header border-0">
                     <h5 class="modal-title">
-                        
+
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
-                        A link has been sent on your e-mail address. Please enter 
+                        A link has been sent on your e-mail address. Please enter
                         click on the link to reset your password
                     </div>
                 </div>
