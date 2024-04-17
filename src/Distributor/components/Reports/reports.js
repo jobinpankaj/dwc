@@ -45,19 +45,19 @@ const Reports = () => {
                       <Breadcrumb>
                         <Breadcrumb.Item href="#">Products</Breadcrumb.Item>
                       </Breadcrumb>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
                           <ProductLists
                             img={generateReportImage}
                             token={token}
                           />
                         </div>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
           <InventoryLists
           img={generateReportImage}
           token={token}
         />
                         </div>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
           <CustomMade
           img={generateReportImage}
           token={token}
@@ -69,19 +69,19 @@ const Reports = () => {
                       <Breadcrumb>
                         <Breadcrumb.Item href="#">Sales</Breadcrumb.Item>
                       </Breadcrumb>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
                           <SalesLists
                             img={generateReportImage}
                             token={token}
                           />
                         </div>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
                     <InvoiceLists
                     img={generateReportImage}
                     token={token}
                     />
                         </div>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
                     <SuperInvoice
                     img={generateReportImage}
                     token={token}

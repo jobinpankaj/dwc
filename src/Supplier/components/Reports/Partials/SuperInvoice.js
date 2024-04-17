@@ -4,17 +4,17 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 import useAuthInterceptor from "../../../../utils/apis";
 import Loader from "../../UI/Loader";
 import { hasPermission } from "../../../../CommonComponents/commonMethods";
 import { REPORTS_VIEW, REPORTS_EDIT } from "../../../../Constants/constant";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
 // define needed URLs here
 const postFormDataUrl = "/supplier/PostReportProductList";
 const getFormDataUrl = "/supplier/getsalesReport";
@@ -84,7 +84,7 @@ const SuperInvoice = ({ img, token }) => {
       //console.log("form submit", { formData }, { config });
       console.log("form submit", { formData });
       apis
-      .post(postFormDataUrl, formData, config)
+        .post(postFormDataUrl, formData, config)
         //  .post(postFormDataUrl, formData)
         .then((res) => {
           console.log("response", { res });
@@ -183,31 +183,31 @@ const SuperInvoice = ({ img, token }) => {
 
   // fetch saved form city data from db
   const fetchFormSupplierData = () => {
-  // add permissions based on URL
-  config.headers.permission = "reports-view";
-  setGetTableDataLoading(true);
-  apis
-    .get(getFormDataSuppliername, config)
-    //.get(getFormDataUrl)
-    .then((res) => {
-      if (res.status === 200) {
-        console.log("response Distributor data", { res });
-        setSupplierData(res.data.data);
-        setGetTableDataLoading(false);
-      }
-    })
-    .catch((error) => {
-      console.log({ error });
-      setGetTableDataLoading(false);
-      if (error) {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataSuppliername, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Distributor data", { res });
+          setSupplierData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
         console.log({ error });
-      }
-    });
-  setGetTableDataLoading(false);
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
   };
 
   useEffect(() => {
-  fetchFormSupplierData();
+    fetchFormSupplierData();
   }, []);
 
   // fetch saved form Product Style data from db
@@ -241,19 +241,16 @@ const SuperInvoice = ({ img, token }) => {
 
   return (
     <>
-      <div className="col-12 d-flex">
-        <Card className="reports reports6" style={{ width: '9rem' }}>
-
-      <Card.Body>
-    <FontAwesomeIcon icon="fa-solid fa-file-invoice" />
-        <Card.Title></Card.Title>
-        <Card.Text>
-      Super Invoice
-        </Card.Text>
-        <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
-      </Card.Body>
-    </Card>
-      </div>
+        <Card className="reports reports6">
+          <Card.Body>
+            <FontAwesomeIcon icon="fa-solid fa-file-invoice" />
+            <Card.Title></Card.Title>
+            <Card.Text>Super Invoice</Card.Text>
+            <Button variant="primary" onClick={() => setShowModal(true)}>
+              <FontAwesomeIcon icon="fa-solid fa-eye" />
+            </Button>
+          </Card.Body>
+        </Card>
 
       <Modal
         className="modal fade"
@@ -273,9 +270,9 @@ const SuperInvoice = ({ img, token }) => {
               </Col>
 
               <Col>
-              {Suppliername.map((values) => (
-                <h5>{values?.company_name} </h5>
-              ))}
+                {Suppliername.map((values) => (
+                  <h5>{values?.company_name} </h5>
+                ))}
                 List of Invoices
                 <br />
                 Category
@@ -339,9 +336,11 @@ const SuperInvoice = ({ img, token }) => {
                 >
                   <option value="">Choose...</option>
                   <option value="all">All</option>
-            {SupplierData.map((values) => (
-              <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
-            ))}
+                  {SupplierData.map((values) => (
+                    <option value={values?.id}>
+                      {values?.first_name} {values?.last_name}
+                    </option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Supplier is required.
@@ -350,27 +349,27 @@ const SuperInvoice = ({ img, token }) => {
             </Row>
 
             <Row className="mb-3">
-            <Form.Group as={Col} controlId="order-state">
-              <Form.Label>Order status</Form.Label>
-              <Form.Control
-                as="select"
-                required
-                name="order_state"
-                onChange={(e) => handleChange(e)}
-              >
-                <option value="">Choose...</option>
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Onhold">On Hold</option>
-                <option value="shipped">Shipped</option>
-                <option value="delivered">Delivered</option>
-                <option value="cancelled">Cancelled</option>
-              </Form.Control>
-              <Form.Control.Feedback className="error-label" type="invalid">
-                Order status is required.
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group as={Col} controlId="order-state">
+                <Form.Label>Order status</Form.Label>
+                <Form.Control
+                  as="select"
+                  required
+                  name="order_state"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option value="">Choose...</option>
+                  <option value="All">All</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Onhold">On Hold</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </Form.Control>
+                <Form.Control.Feedback className="error-label" type="invalid">
+                  Order status is required.
+                </Form.Control.Feedback>
+              </Form.Group>
 
               <Form.Group as={Col} controlId="product-type">
                 <Form.Label>Invoice status</Form.Label>
@@ -380,13 +379,13 @@ const SuperInvoice = ({ img, token }) => {
                   required
                   onChange={(e) => handleChange(e)}
                 >
-                <option value="">Choose...</option>
-                <option value="All">All</option>
-                <option value="paid">Paid</option>
-                <option value="pending">Pending</option>
-                <option value="overdue">Overdue</option>
-                <option value="closed">Closed</option>
-                <option value="collect">Collect</option>
+                  <option value="">Choose...</option>
+                  <option value="All">All</option>
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                  <option value="overdue">Overdue</option>
+                  <option value="closed">Closed</option>
+                  <option value="collect">Collect</option>
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Invoice status is required.
@@ -418,7 +417,9 @@ const SuperInvoice = ({ img, token }) => {
                   as="select"
                   name="file_type"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="xlsx">XLSX</option>
                   <option value="csv">CSV</option>
                   <option value="pdf">PDF</option>
@@ -433,7 +434,9 @@ const SuperInvoice = ({ img, token }) => {
                   as="select"
                   name="language"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="CAeng"> ENG </option>
                   <option value="CAfr"> FRA </option>
                 </Form.Control>
@@ -451,28 +454,33 @@ const SuperInvoice = ({ img, token }) => {
           <hr />
           {!!getTableDataLoading && <Loader />}
           {!getTableDataLoading && (
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Created At</th>
-                  <th>Download</th>
-                  <th>File Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((values) => (
-                  <tr>
-                    <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
-                    <td>
-                      <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
-                        Download - {values?.file_type}
-                      </a>
-                    </td>
-                    <td>{values?.file_type}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            // <Table responsive striped bordered hover>
+            //   <thead>
+            //     <tr>
+            //       <th>Created At</th>
+            //       <th>Download</th>
+            //       <th>File Type</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {tableData.map((values) => (
+            //       <tr>
+            //         <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
+            //         <td>
+            //           <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
+            //             Download - {values?.file_type}
+            //           </a>
+            //         </td>
+            //         <td>{values?.file_type}</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </Table>
+            <ReportsTable
+              tableData={tableData}
+              headings={["Created At", "File Type", "Download"]}
+              className=""
+            />
           )}
         </Modal.Body>
         <Modal.Footer>

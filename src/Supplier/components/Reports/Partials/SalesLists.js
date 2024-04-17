@@ -4,17 +4,17 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 import useAuthInterceptor from "../../../../utils/apis";
 import Loader from "../../UI/Loader";
 import { hasPermission } from "../../../../CommonComponents/commonMethods";
 import { REPORTS_VIEW, REPORTS_EDIT } from "../../../../Constants/constant";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
 // define needed URLs here
 const postFormDataUrl = "/supplier/PostSuperSalesReports";
 const getFormDataUrl = "/supplier/getSuperSalesReports";
@@ -25,7 +25,7 @@ const getFormDataproductFormat = "/supplier/reportFormdataProductformat";
 const getFormDataSupplierUrl = "/supplier/reportFormdataSuppliersList";
 const getFormDataRetailerUrl = "/supplier/reportFormdataRetailer";
 const getFormDataRetailersList = "/supplier/reportFormdataRetailersList";
-const getFormDataDistributorList = "/supplier/reportFormdataDistributorList"
+const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
 const getFormDataUsersList = "/supplier/reportFormdataUsersList";
 
 const SalesLists = ({ img, token }) => {
@@ -61,9 +61,10 @@ const SalesLists = ({ img, token }) => {
   const [Suppliername, setSupplierData] = useState([]);
   const [SupplierData, setSuppliersData] = useState([]);
   const [RetailerData, setRetailerData] = useState([]);
-  const [ProductTypeData, setProductTypeData] = useState([]);  // testing values for table
+  const [ProductTypeData, setProductTypeData] = useState([]); // testing values for table
   const [ProductFormatData, setProductFormatData] = useState([]);
   const [UserFormatData, setUserFormatData] = useState([]);
+
   // testing values for table
   // {
   //   created_at: "123",
@@ -96,7 +97,7 @@ const SalesLists = ({ img, token }) => {
       //console.log("form submit", { formData }, { config });
       console.log("form submit", { formData });
       apis
-      .post(postFormDataUrl, formData, config)
+        .post(postFormDataUrl, formData, config)
         //  .post(postFormDataUrl, formData)
         .then((res) => {
           console.log("response", { res });
@@ -143,6 +144,7 @@ const SalesLists = ({ img, token }) => {
       .then((res) => {
         if (res.status === 200) {
           console.log("response table data", { res });
+
           setTableData(res.data.data);
           setGetTableDataLoading(false);
         }
@@ -247,7 +249,7 @@ const SalesLists = ({ img, token }) => {
   useEffect(() => {
     fetchFormRetailersData();
   }, []);
-    // fetch saved form city data from db
+  // fetch saved form city data from db
   const fetchFormSupplierData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
@@ -364,19 +366,16 @@ const SalesLists = ({ img, token }) => {
 
   return (
     <>
-      <div className="col-12 d-flex">
-        <Card className="reports reports3" style={{ width: '9rem' }}>
-
-      <Card.Body>
-<FontAwesomeIcon icon="fa-solid fa-list-ul" />
-        <Card.Title></Card.Title>
-        <Card.Text>
-      Sales
-        </Card.Text>
-        <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
-      </Card.Body>
-    </Card>
-      </div>
+        <Card className="reports reports3">
+          <Card.Body>
+            <FontAwesomeIcon icon="fa-solid fa-list-ul" />
+            <Card.Title></Card.Title>
+            <Card.Text>Sales</Card.Text>
+            <Button variant="primary" onClick={() => setShowModal(true)}>
+              <FontAwesomeIcon icon="fa-solid fa-eye" />
+            </Button>
+          </Card.Body>
+        </Card>
 
       <Modal
         className="modal fade"
@@ -396,9 +395,9 @@ const SalesLists = ({ img, token }) => {
               </Col>
 
               <Col>
-              {Suppliername.map((values) => (
-                <h5>{values?.company_name} </h5>
-              ))}
+                {Suppliername.map((values) => (
+                  <h5>{values?.company_name} </h5>
+                ))}
                 List of Sales
                 <br />
                 Category
@@ -445,7 +444,9 @@ const SalesLists = ({ img, token }) => {
                 >
                   <option value="">Choose...</option>
                   {SupplierData.map((values) => (
-                    <option value={values?.user_id}>{values?.company_name}</option>
+                    <option value={values?.user_id}>
+                      {values?.company_name}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
@@ -453,7 +454,7 @@ const SalesLists = ({ img, token }) => {
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
-  {/*}
+            {/*}
             <Row className="mb-3">
               <Form.Group as={Col} controlId="product-type">
                 <Form.Label>By Frequency</Form.Label>
@@ -535,14 +536,16 @@ const SalesLists = ({ img, token }) => {
                   <option value="">Choose...</option>
                   <option value="all">All</option>
                   {UserFormatData.map((values) => (
-                    <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
+                    <option value={values?.id}>
+                      {values?.first_name} {values?.last_name}
+                    </option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   User is required.
                 </Form.Control.Feedback>
               </Form.Group>
-    {/*}          <Form.Group as={Col} controlId="product-type">
+              {/*}          <Form.Group as={Col} controlId="product-type">
             <Form.Label>Select</Form.Label>
               {['checkbox'].map((type) => (
               <div key={`inline-${type}`} className="mb-3">
@@ -576,34 +579,41 @@ const SalesLists = ({ img, token }) => {
          </div>
             ))}
                 </Form.Group> */}
-                <Form.Group as={Col} controlId="retailer">
-                  <Form.Label>By Retailer</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="retailer"
-                    onChange={(e) => handleChange(e)}
-                  >       <option value="">Choose...</option>
+              <Form.Group as={Col} controlId="retailer">
+                <Form.Label>By Retailer</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="retailer"
+                  onChange={(e) => handleChange(e)}
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   {RetailerData.map((values) => (
-                    <option value={values?.user_id}>{values?.business_name}</option>
+                    <option value={values?.user_id}>
+                      {values?.business_name}
+                    </option>
                   ))}
-                  </Form.Control>
-                  {/* <Form.Control.Feedback className="error-label" type="invalid">
+                </Form.Control>
+                {/* <Form.Control.Feedback className="error-label" type="invalid">
                     Please select an option.
                   </Form.Control.Feedback> */}
-                </Form.Group>
+              </Form.Group>
             </Row>
             <Row className="mb-3">
-
               <Form.Group as={Col} controlId="Product_type">
                 <Form.Label>Product type</Form.Label>
                 <Form.Control
                   as="select"
                   name="product_type"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
-                {ProductTypeData.map((values) => (
-  <option value={values?.product_type}>{values?.product_type}</option>
-))}
+                >
+                  {" "}
+                  <option value="">Choose...</option>
+                  {ProductTypeData.map((values) => (
+                    <option value={values?.product_type}>
+                      {values?.product_type}
+                    </option>
+                  ))}
                 </Form.Control>
               </Form.Group>
               <Form.Group as={Col} controlId="Product-format">
@@ -612,10 +622,12 @@ const SalesLists = ({ img, token }) => {
                   as="select"
                   name="product_format"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
-                {ProductFormatData.map((values) => (
-                  <option value={values?.name}>{values?.name}</option>
-                ))}
+                >
+                  {" "}
+                  <option value="">Choose...</option>
+                  {ProductFormatData.map((values) => (
+                    <option value={values?.name}>{values?.name}</option>
+                  ))}
                 </Form.Control>
               </Form.Group>
             </Row>
@@ -626,7 +638,9 @@ const SalesLists = ({ img, token }) => {
                   as="select"
                   name="file_type"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="xlsx">XLSX</option>
                   <option value="csv">CSV</option>
                   <option value="pdf">PDF</option>
@@ -641,7 +655,9 @@ const SalesLists = ({ img, token }) => {
                   as="select"
                   name="language"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="CAeng"> ENG </option>
                   <option value="CAfr"> FRA </option>
                 </Form.Control>
@@ -659,28 +675,33 @@ const SalesLists = ({ img, token }) => {
           <hr />
           {!!getTableDataLoading && <Loader />}
           {!getTableDataLoading && (
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Created At</th>
-                  <th>Download</th>
-                  <th>File Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((values) => (
-                  <tr>
-                    <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
-                    <td>
-                      <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
-                        Download - {values?.file_type}
-                      </a>
-                    </td>
-                    <td>{values?.file_type}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            // <Table responsive striped bordered hover>
+            //   <thead>
+            //     <tr>
+            //       <th>Created At</th>
+            //       <th>Download</th>
+            //       <th>File Type</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {tableData.map((values) => (
+            //       <tr>
+            //         <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
+            //         <td>
+            //           <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
+            //             Download - {values?.file_type}
+            //           </a>
+            //         </td>
+            //         <td>{values?.file_type}</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </Table>
+            <ReportsTable
+              tableData={tableData}
+              headings={["Created At", "File Type", "Download"]}
+              className=""
+            />
           )}
         </Modal.Body>
         <Modal.Footer>

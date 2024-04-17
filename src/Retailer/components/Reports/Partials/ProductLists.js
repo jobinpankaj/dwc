@@ -27,7 +27,7 @@ const getFormDataproductStyle = "/supplier/reportFormdataProductstyle";
 const getFormDataproductFormat = "/supplier/reportFormdataProductformat";
 const getFormDataproductGroup = "/supplier/reportFormdataProductgroup";
 const getFormDataRetailersList = "/supplier/reportFormdataRetailersList";
-const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
+const getFormDataDistributorList = "/supplier/reportFormdataRetailersList";
 const getFormDataSuppliername = "/supplier/reportSuppliername";
 const ProductLists = ({ img, token }) => {
   // config for api call
@@ -44,7 +44,6 @@ const ProductLists = ({ img, token }) => {
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
-    date_type: "",
     from_date: "",
     to_date: "",
     supplier: "",
@@ -150,7 +149,7 @@ const ProductLists = ({ img, token }) => {
       //.get(getFormDataUrl)
       .then((res) => {
         if (res.status === 200) {
-          console.log("response table data", { res });
+          console.log("Response Sales table data", { res });
           setTableData(res.data.data);
           setGetTableDataLoading(false);
         }
@@ -431,8 +430,7 @@ useEffect(() => {
 
   return (
     <>
-      <div className="col">
-        <Card className="reports reports1" style={{ width: '9rem' }}>
+        <Card className="reports reports1">
       <Card.Body>
         <FontAwesomeIcon icon="fa-solid fa-list-check" />
         <Card.Title></Card.Title>
@@ -442,7 +440,6 @@ useEffect(() => {
         <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
       </Card.Body>
     </Card>
-      </div>
 
       <Modal
         className="modal fade"
@@ -501,7 +498,7 @@ useEffect(() => {
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} controlId="supplier">
-                <Form.Label>By Distributor</Form.Label>
+                <Form.Label>By Supplier</Form.Label>
                 <Form.Control
                   as="select"
                   required
@@ -510,7 +507,7 @@ useEffect(() => {
                 >
                   <option value="">Choose...</option>
                   {DistributorData.map((values) => (
-                    <option value={values?.user_id}>{values?.company_name}</option>
+                    <option value={values?.user_id}>{values?.business_name}</option>
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">

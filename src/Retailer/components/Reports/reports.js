@@ -46,7 +46,7 @@ const Reports = () => {
                         <Breadcrumb.Item href="#">Products</Breadcrumb.Item>
                       </Breadcrumb>
 
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
           <CustomMade
           img={generateReportImage}
           token={token}
@@ -58,7 +58,7 @@ const Reports = () => {
                       <Breadcrumb>
                         <Breadcrumb.Item href="#">Sales</Breadcrumb.Item>
                       </Breadcrumb>
-                        <div className="col-2">
+                        <div className="col-2 width-9rem">
                           <SalesLists
                             img={generateReportImage}
                             token={token}

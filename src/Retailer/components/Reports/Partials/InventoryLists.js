@@ -302,7 +302,7 @@ const InventoryLists = ({ img, token }) => {
   useEffect(() => {
     fetchWarehouseFormatData();
   }, []);
-  
+
   // fetch saved form Users data from db
   const fetchUserFormatData = () => {
     // add permissions based on URL
@@ -331,10 +331,9 @@ const InventoryLists = ({ img, token }) => {
   useEffect(() => {
     fetchUserFormatData();
   }, []);
-  
+
   return (
     <>
-      <div className="col-12 d-flex">
         <Card className="reports reports2" style={{ width: '9rem' }}>
 
       <Card.Body>
@@ -346,7 +345,6 @@ const InventoryLists = ({ img, token }) => {
         <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
       </Card.Body>
     </Card>
-      </div>
 
       <Modal
         className="modal fade"
@@ -502,7 +500,7 @@ const InventoryLists = ({ img, token }) => {
                 <option value="">Choose...</option>
                               {ProductStyleData.map((values) => (
                   <option value={values?.name}>{values?.name}</option>
-                ))}  
+                ))}
               </Form.Control>
               <Form.Control.Feedback className="error-label" type="invalid">
                 Product style is required.
@@ -525,7 +523,7 @@ const InventoryLists = ({ img, token }) => {
                   Product format is required.
                 </Form.Control.Feedback>
               </Form.Group>
-      
+
               <Form.Group as={Col} controlId="by-user">
                 <Form.Label>By User</Form.Label>
                 <Form.Control

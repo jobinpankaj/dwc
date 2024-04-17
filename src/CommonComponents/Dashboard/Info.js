@@ -82,7 +82,7 @@ const Info = ({ accessToken = "" }) => {
                         <label className="badge bg-white bg-opacity-10 me-1">
                  Total Orders
                         </label>{" "}
-                      
+
                       </span>
                     </p>
                   </div>
@@ -108,7 +108,7 @@ const Info = ({ accessToken = "" }) => {
                         <label className="badge bg-white bg-opacity-10 me-1">
                      Total Revenue
                         </label>{" "}
-                        
+
                       </span>
                     </p>
                   </div>
@@ -135,7 +135,7 @@ const Info = ({ accessToken = "" }) => {
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
                        Invoices Sent{" "}
-                        </label>{" "} 
+                        </label>{" "}
                       </span>
                     </p>
                   </div>
@@ -166,7 +166,7 @@ const Info = ({ accessToken = "" }) => {
                 </div>
               </div>
             </div>
-            <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+            <div className="col-sm-2 col-sm-dash mb-3 mb-10">
               <div className="card user-card height-100 line5">
                 <div className="card-body">
                   <div className="dash-widget">
@@ -193,7 +193,7 @@ const Info = ({ accessToken = "" }) => {
                 </div>
               </div>
             </div>
-            <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+            <div className="col-sm-2 col-sm-dash mb-3 mb-10">
               <div className="card user-card height-100 line6">
                 <div className="card-body">
                   <div className="dash-widget">
@@ -220,7 +220,7 @@ const Info = ({ accessToken = "" }) => {
                 </div>
               </div>
             </div>
-            <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+            <div className="col-sm-2 col-sm-dash mb-3 mb-10">
               <div className="card user-card height-100 line7">
                 <div className="card-body">
                   <div className="dash-widget">
@@ -239,7 +239,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                       Total Orders
+                       Shipped Orders
                         </label>{" "}
                       </span>
                     </p>
@@ -247,7 +247,7 @@ const Info = ({ accessToken = "" }) => {
                 </div>
               </div>
             </div>
-            <div className="col-sm-2 col-sm-dash mb-3 mb-sm-0">
+            <div className="col-sm-2 col-sm-dash mb-3 mb-10">
               <div className="card user-card height-100 line8">
                 <div className="card-body">
                   <div className="dash-widget">
