@@ -1171,6 +1171,97 @@
       "change": "Change Password",
       "logout": "Logout"
     },
+    "my_account_view":{
+      "Profile_Info":{
+        "profile_info":"Profile Info.",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "email_address": "Email Address",
+        "user_role": "User Role",
+        "contact_number":"Contact Number"
+      },
+      "General_Information":{
+        "general_information" : "General Information",
+        "company_name":"Company Name*",
+        "company_url":"Website URL (Example : http://www.yourdomain.com)",
+        "contact_name":"Contact Name",
+        "contact_email":"Contact Email*",
+        "mobile_num":"Mobile Number*",
+        "alcolhol_permit":"Alcohol Production Permit*",
+        "alcolhol_production_lmit":"Alcohol Production Limit (In Hectolitres)*",
+        "desc1":"Show the business name on purchase orders",
+        "desc2":"We produce our product in our facility but it is distributed by Distribution Bucket",
+        "desc3":"We have a product but we do NOT produce in our own facility",
+        "desc4":"We are an agency and we sell and collect payments on behalf of other suppliers",
+        "desc5":"We produce our product in our facility but we authorize Buvons Local Pro to distribute and collect naments on our hehalf"
+
+      },
+      "Main_Address":{
+        "main_address":"Main Address",
+        "address":"Address*",
+        "address2":"Address 2",
+        "city_name":"City Name",
+        "postal_code":"Postal Code",
+        "country":"Country",
+        "state":"State"
+      },
+      "Billing_Address":{
+        "billing_address":"Billing Address",
+        "cmpany":"Commpany",
+        "address":"Address",
+        "address2":"Address 2",
+        "city_name":"City Name",
+        "country":"Country",
+        "state":"State"
+      },
+      "Billing_Information":{
+        "billing_information":"Billing Information",
+        "omp":"Order Number Prefix",
+        "gst_tax":"GST Tax",
+        "qst_tax":"QST Tax Regsitration"
+      },
+      "additional":{
+        "link_distibuted_btn":"Linked Distributors",
+        "edit_btn":"Edit"
+      },
+      "placeholder":{
+        "enter_company_name":"Enter Company Name",
+        "website_url":"Enter website URL",
+        "contact-no":"Enter contact name",
+        "contact_email":"Enter contact email",
+        "emobile_no":"Enter mobile no.",
+        "permit_no":"Enter permit no.",
+        "alcohol_permit":"Enter Alcohol production limit",
+        "order_no":"Enter Order Number",
+        "gst_tax":"Enter GST tax",
+        "qst_tax":"Enter QST tax regsitration",
+        "enter_add":"Enter address",
+        "city_name":"Enter city name",
+        "postal_code":"Enter postal code",
+        "country": "Enter country name"
+
+      }
+    },
+    "my_account_edit":{
+
+      "mobile_no":"Mobile number",
+      "create_new_pass":"Create New Password",
+      "confirm_pass":"Confirm New Password",
+      "save-btn":"Save",
+      "cancel-btn":"Cancel",
+      "company_logo":"Company Logo",
+      "country_name":"Enter country name",
+      "state_name":"Enter state",
+      "efn":"Enter first name",
+      "eln":"Enter last name",
+      "em":"Enter Email",
+      "emn":"Enter mobile No.",
+      "ep":"Enter password",
+      "cf":"Confirm password",
+      "eapp":"Enter alcohol production permit"
+    },
+
+
     "order_management": {
       "list": {
         "title": "Orders",
@@ -1487,6 +1578,9 @@
         "table_col4": "Status",
         "table_col5": "Action"
       }
+    },
+    "retailer_management":{
+      "search": "By name or address"
     }
   },
   "distributor": {
@@ -2155,7 +2249,18 @@
       "phone_number": "Mobile number",
       "cancel": "Cancel",
       "save": "Save",
-      "edit_retailer":"Edit Retailer"
+      "edit_retailer":"Edit Retailer",
+      "ent_bsss_name":"Enter business name",
+      "slt_grp_nam":"Select Group Name",
+      "entr_con_emai":"Enter contact email",
+      "emobile_no":"Enter mobile no.",
+      "ent_con":"Enter contact name",
+      "web_url":"Enter website URL",
+      "per_no":"Enter permit no.",
+      "efn":"Enter first name",
+      "eln":"Enter last name",
+      "em":"Enter Email",
+      "emn":"Enter mobile No."
     },
     "sidebar": {
       "back_superadmin": "Back To superadmin",

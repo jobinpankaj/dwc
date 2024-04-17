@@ -444,13 +444,9 @@ const Retailer = () => {
                                   )}
                                 </th>
                                 <th>
-                                  {t(
-                                    "admin.retailer_management.list.table_col4"
-                                  )}
+                                  CSP/CAD
                                 </th>
-                                <th>
-                                  CAD
-                                </th>
+
                                 <th>
                                   {t(
                                     "admin.retailer_management.list.table_col5"
@@ -474,52 +470,13 @@ const Retailer = () => {
                                           : "N/A"}
                                       </td>
                                       <td>
-                                        {ele.user_profile ? (
-                                          ele.user_profile.opc_status ===
-                                          "1" ? (
-                                            <FontAwesomeIcon
-                                              icon="fa-solid fa-check"
-                                              size="2xl"
-                                              color="green"
-                                            />
-                                          ) : (
-                                            <FontAwesomeIcon
-                                            icon="fa-solid fa-xmark"
-                                            size="2xl"
-                                            color="red"
-                                          />
-                                          )
-                                        ) : (
-                                          <FontAwesomeIcon
-                                            icon="fa-solid fa-xmark"
-                                            size="2xl"
-                                            color="red"
-                                          />
-                                        )}
-                                      </td>
-                                      <td>
-                                        {ele.user_profile ? (
-                                          ele.user_profile.home_consumption ===
-                                          "1" ? (
-                                            <FontAwesomeIcon
-                                              icon="fa-solid fa-check"
-                                              size="2xl"
-                                              color="green"
-                                            />
-                                          ) : (
-                                            <FontAwesomeIcon
-                                            icon="fa-solid fa-xmark"
-                                            size="2xl"
-                                            color="red"
-                                          />
-                                          )
-                                        ) : (
-                                          <FontAwesomeIcon
-                                            icon="fa-solid fa-xmark"
-                                            size="2xl"
-                                            color="red"
-                                          />
-                                        )}
+                                        {
+                                         ele.user_profile ? (ele.user_profile.opc_status==="1"?(
+                                          <b style={{ color: "red" }}>CSP</b>
+                                        ):(ele.user_profile.home_consumption==="1"?(
+                                          <b style={{ color: "green" }}>CAD</b>
+                                        ):"N/A")):"N/A"
+                                        }
                                       </td>
                                       <td>
                                         <div class="form-check form-switch d-inline-flex align-items-center w-auto">

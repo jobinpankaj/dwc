@@ -1167,6 +1167,96 @@
       "change": "Changer le mot de passe",
       "logout": "Se déconnecter"
     },
+    "my_account_view":{
+      "Profile_Info":{
+        "profile_info":"Informations de profil",
+        "first_name": "Prénom",
+        "last_name": "Nom de famille",
+        "email_address": "Adresse e-mail",
+        "user_role": "Rôle d'utilisateur de messagerie",
+        "contact_number":"Numéro de contact"
+      },
+      "General_Information":{
+        "general_information" : "Informations générales",
+        "company_name":"Nom général de l'entreprise*",
+        "company_url":"URL du site Web (Exemple : http://www.votredomaine.com)",
+        "contact_name":"Nom du contact",
+        "contact_email":"E-mail de contact*",
+        "mobile_num":"Numéro de portable*",
+        "alcolhol_permit":"Permis de production d'alcool*",
+        "alcolhol_production_lmit":"Limite de production d'alcool (en hectolitres)*",
+        "desc1":"Afficher le nom de l'entreprise sur les bons de commande",
+        "desc2":"Nous produisons notre produit dans notre établissement mais il est distribué par Distribution Bucket",
+        "desc3":"Nous avons un produit mais nous NE produisons PAS dans notre propre établissement",
+        "desc4":"Nous sommes une agence et nous vendons et collectons les paiements pour le compte d'autres fournisseurs",
+        "desc5":"Nous produisons notre produit dans notre établissement mais nous autorisons Buvons Local Pro à distribuer et à collecter les paiements en notre nom"
+
+      },
+      "Main_Address":{
+        "main_address":"Adresse principale",
+        "address":"Adresse*",
+        "address2":"Adresse 2",
+        "city_name":"Nom de la ville",
+        "postal_code":"Code postal",
+        "country":"Pays",
+        "state":"État"
+      },
+      "Billing_Address":{
+        "billing_address":"Adresse de facturation",
+        "cmpany":"Entreprise",
+        "address":"Adresse",
+        "address2":"Adresse 2",
+        "city_name":"Nom de la ville",
+        "country":"Pays",
+        "state":"État"
+      },
+      "Billing_Information":{
+        "billing_information":"Informations de facturation",
+        "omp":"Préfixe du numéro de commande",
+        "gst_tax":"Taxe GST",
+        "qst_tax":"Enregistrement de la taxe QST"
+      },
+      "additional":{
+        "link_distibuted_btn":"Distributeurs liés",
+        "edit_btn":"Modifier"
+      },
+      "placeholder":{
+
+        "enter_company_name":"Entrez le nom de l'entreprise",
+        "website_url":"Entrez l'URL du site Web",
+        "contact-no":"Entrez le nom de contact",
+        "contact_email":"Entrez l'e-mail de contact",
+        "emobile_no":"Entrez le numéro de portable",
+        "permit_no":"Entrez le numéro de permis",
+        "alcohol_permit":"Entrez la limite de production d'alcool",
+        "order_no":"Entrez le numéro de commande",
+        "gst_tax":"Entrez la taxe GST",
+        "qst_tax":"Entrez l'enregistrement de la taxe QST",
+        "enter_add":"Entrez l'adresse",
+        "city_name":"Entrez le nom de la ville",
+        "postal_code":"Entrez le code postal",
+        "country": "Entrez le nom du pays"
+      }
+    },
+    "my_account_edit":{
+
+      "mobile_no":"Numéro de portable",
+      "create_new_pass":"Créer un nouveau mot de passe",
+      "confirm_pass":"Confirmer le nouveau mot de passe",
+      "save-btn":"Enregistrer",
+      "cancel-btn":"Annuler",
+      "company_logo":"Logo d'entreprise",
+      "country_name":"Entrez le nom du pays",
+      "state_name":"Entrez l'état",
+      "efn":"Entrez le prénom",
+      "eln":"Entrez le nom de famille",
+      "em":"Entrez l'e-mail",
+      "emn":"Entrez le numéro de portable",
+      "ep":"Entrez le mot de passe",
+      "cf":"Confirmez le mot de passe",
+      "eapp":"Saisir le permis de production d'alcool"
+    },
+
     "order_management": {
       "list": {
         "title": "Commandes",
@@ -1483,6 +1573,9 @@
         "table_col4": "Statut",
         "table_col5": "Action"
       }
+    },
+    "retailer_management":{
+      "search": "Par nom ou adresse"
     }
   },
   "distributor": {
@@ -2155,7 +2248,18 @@
       "phone_number":"Tél.",
       "cancel":"Annuler",
       "save":"Sauvegarder",
-      "edit_retailer":"Modifier le détaillant"
+      "edit_retailer":"Modifier le détaillant",
+      "ent_bsss_name":"Entrez le nom de l'entreprise",
+      "slt_grp_nam":"Sélectionnez le nom du groupe",
+      "entr_con_emai":"Entrez l'e-mail de contact",
+      "emobile_no":"Entrez le numéro de portable",
+      "ent_con":"Entrez le nom du contact",
+      "web_url":"Entrez l'URL du site Web",
+      "per_no":"Entrez le numéro de permis",
+      "efn":"Entrez le prénom",
+      "eln":"Entrez le nom de famille",
+      "em":"Entrez l'e-mail",
+      "emn":"Entrez le numéro de portable"
     },
     "sidebar": {
       "back_superadmin": "Retour à superadmin",
@@ -2426,7 +2530,7 @@
         "switch_5": "Nouvelle demande assistance",
         "switch_6": "Mise à jour realisée",
         "switch_7": "Mise à jour en besoin",
-        "switch_8": "Nouveau compte détaillant créé",
+        "switch_8": "NOUVELLE compte détaillant créé",
         "switch_9": "Message d'un Distributeur"
       }
     },

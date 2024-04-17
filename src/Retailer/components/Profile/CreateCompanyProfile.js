@@ -849,7 +849,7 @@ const CreateCompanyProfile = () => {
   let emailregex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const mobileregex = /^[0-9]*$/;
-  const websiteRegex = /\.(com|ca|me|net|org)$/;
+  const websiteRegex = /^(http:\/\/|https:\/\/)(.*)(\.com|\.ca|\.me|\.net|\.org)$/;
   const phoneRegex = [
     /^(\+\d{1,3}\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/, // 4502589632 format
     /^\+\d{1}\s\(\d{3}\)\s\d{3}-\d{3}-\d{4}$/, // +1 (514) 526-258-6987 format
@@ -1235,7 +1235,7 @@ const CreateCompanyProfile = () => {
                                 className="form-control"
                                 value={business}
                                 onChange={(e) => handleBusiness(e)}
-                                placeholder="Enter business name"
+                                placeholder={t("retailer.edit_profile.ent_bsss_name")}
                               />
                               {businessError !== "" ? (
                                 <p className="error-label m-0 p-0">
@@ -1256,7 +1256,7 @@ const CreateCompanyProfile = () => {
                                 onChange={(e) => handleGroupName(e)}
                                 name=""
                                 id=""
-                                placeholder="Select Group Name"
+                                placeholder={t("retailer.edit_profile.slt_grp_nam")}
                               >
                                 <option value="">
                                   {t("retailer.profile.enter_group_name")}
@@ -1317,7 +1317,7 @@ const CreateCompanyProfile = () => {
                                 className="form-control"
                                 value={email}
                                 onChange={(e) => handleEmail(e)}
-                                placeholder="Enter contact email"
+                                placeholder={t("retailer.edit_profile.entr_con_emai")} 
                               />
                               {emailError !== "" ? (
                                 <p className="error-label m-0 p-0">
@@ -1382,7 +1382,7 @@ const CreateCompanyProfile = () => {
                                 className="form-control"
                                 value={contactName}
                                 onChange={(e) => handleContactName(e)}
-                                placeholder="Enter contact name"
+                                placeholder={t("retailer.edit_profile.ent_con")} 
                               />
                             </div>
                             <div className="col-sm-6 mb-3">
@@ -1520,7 +1520,7 @@ const CreateCompanyProfile = () => {
                                     onChange={(e) =>
                                       handlePermitNo(e.target, i)
                                     }
-                                    placeholder="Enter permit no."
+                                    placeholder={t("retailer.edit_profile.per_no")} 
                                   />
                                 </div>
                               ))}
