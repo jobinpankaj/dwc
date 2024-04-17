@@ -1743,3 +1743,22 @@ table{
     flex-direction: column;
     align-items: center;
 }
+.map-details{
+    h3{
+     color: #79018c;
+    }
+    span .fa-circle{
+     font-size: 15px;
+    }
+    span{
+     font-size: 20px;
+    }
+ }
+ .container-user {
+     display: flex;
+     align-items: center;
+   }
+   
+   .line {
+    font-size: 20px;
+   }

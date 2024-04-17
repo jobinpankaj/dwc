@@ -9,6 +9,7 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { geocodeByPlaceId, getLatLng } from "react-places-autocomplete";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
+import { useTranslation } from "react-i18next";
 
 toast.configure();
 
@@ -42,6 +43,7 @@ const AddCompanyAddress = () => {
 
   const [show, setShow] = useState(false);
   const [logo, setLogo] = useState("");
+  const { t } = useTranslation();
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -278,12 +280,12 @@ const AddCompanyAddress = () => {
                       <form>
                         {/* [General Info] */}
                         <div className="row mb-3">
-                          <div className="form-head w-100">Main Address</div>
+                          <div className="form-head w-100">{t("supplier.my_account_view.Main_Address.main_address")}</div>
                           <div className="col-12">
                             <div className="row">
                               <div className="col-sm-6 mb-3">
                                 <label className="form-label">
-                                  Address<sup>*</sup>
+                                {t("supplier.my_account_view.Main_Address.address")}<sup>*</sup>
                                 </label>
                                 {show ? (
                                   <GooglePlacesAutocomplete
@@ -306,55 +308,55 @@ const AddCompanyAddress = () => {
                                 )}
                               </div>
                               <div className="col-sm-6 mb-3">
-                                <label className="form-label">Address 2</label>
+                                <label className="form-label">{t("supplier.my_account_view.Main_Address.address2")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={address2}
                                   onChange={(e) => handleAddress2(e)}
-                                  placeholder="Enter address"
+                                  placeholder={t("supplier.my_account_view.placeholder.enter_add")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
-                                <label className="form-label">City Name</label>
+                                <label className="form-label">{t("supplier.my_account_view.Main_Address.city_name")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={city}
                                   onChange={(e) => setCity(e.target.value)}
-                                  placeholder="Enter city name"
+                                  placeholder={t("supplier.my_account_view.placeholder.city_name")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3 position-relative">
-                                <label className="form-label">State</label>
+                                <label className="form-label">{t("supplier.my_account_view.Main_Address.state")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={state}
-                                  placeholder="Enter postal code"
+                                  placeholder={t("supplier.my_account_view.placeholder.postal_code")}
                                   onChange={(e) => setState(e.target.value)}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
                                 <label className="form-label">
-                                  Postal Code
+                                {t("supplier.my_account_view.Main_Address.postal_code")}
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={postalCode === 0 ? "" : postalCode}
                                   onChange={(e) => handlePostalCode(e)}
-                                  placeholder="Enter postal code"
+                                  placeholder={t("supplier.my_account_view.placeholder.postal_code")}
                                 />
                               </div>
 
                               <div className="col-sm-6 mb-3 position-relative">
-                                <label className="form-label">Country</label>
+                                <label className="form-label"> {t("supplier.my_account_view.Main_Address.country")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={country}
-                                  placeholder="Enter postal code"
+                                  placeholder={t("supplier.my_account_view.placeholder.country")}
                                   onChange={(e) => setCountry(e.target.value)}
                                 />
                               </div>
@@ -366,7 +368,7 @@ const AddCompanyAddress = () => {
                         {/* Billing Address */}
 
                         <div className="row">
-                          <div className="form-head w-100">Billing Address</div>
+                          <div className="form-head w-100">{t("supplier.my_account_view.Billing_Address.billing_address")}</div>
                           <div className="w-100 d-flex align-items-start mb-3">
                             <input
                               type="checkbox"
@@ -381,7 +383,7 @@ const AddCompanyAddress = () => {
                                 <div className="row">
                                   <div className="col-sm-6 mb-3">
                                     <label className="form-label">
-                                      Address<sup>*</sup>
+                                    {t("supplier.my_account_view.Billing_Address.billing_address")}<sup>*</sup>
                                     </label>
                                     <input
                                       type="text"
@@ -392,73 +394,73 @@ const AddCompanyAddress = () => {
                                   </div>
                                   <div className="col-sm-6 mb-3">
                                     <label className="form-label">
-                                      Address 2
+                                    {t("supplier.my_account_view.Main_Address.address2")}
                                     </label>
                                     <input
                                       type="text"
                                       className="form-control"
                                       value={address2}
-                                      placeholder="Enter address"
+                                      placeholder={t("supplier.my_account_view.placeholder.enter_add")}
                                       disabled
                                     />
                                   </div>
                                   <div className="col-sm-6 mb-3">
                                     <label className="form-label">
-                                      City Name
+                                    {t("supplier.my_account_view.Main_Address.city_name")}
                                     </label>
                                     <input
                                       type="text"
                                       className="form-control"
                                       value={city}
-                                      placeholder="Enter city name"
+                                      placeholder={t("supplier.my_account_view.placeholder.city_name")}
                                       disabled
                                     />
                                   </div>
                                   <div className="col-sm-6 mb-3 position-relative">
-                                    <label className="form-label">State</label>
+                                    <label className="form-label">{t("supplier.my_account_view.Main_Address.state")}</label>
                                     <input
                                       type="text"
                                       className="form-control"
                                       value={state}
-                                      placeholder="Enter state name"
+                                      placeholder={t("supplier.my_account_edit.state_name")}
                                       disabled
                                     />
                                   </div>
                                   <div className="col-sm-6 mb-3">
                                     <label className="form-label">
-                                      Postal Code
+                                    {t("supplier.my_account_view.Main_Address.postal_code")}
                                     </label>
                                     <input
                                       type="text"
                                       className="form-control"
                                       value={postalCode}
-                                      placeholder="Enter postal code"
+                                      placeholder={t("supplier.my_account_view.placeholder.postal_code")}
                                       disabled
                                     />
                                   </div>
 
                                   <div className="col-sm-6 mb-3 position-relative">
                                     <label className="form-label">
-                                      Country
+                                    {t("supplier.my_account_view.Main_Address.country")}
                                     </label>
                                     <input
                                       type="text"
                                       className="form-control"
                                       value={country}
-                                      placeholder="Enter country name"
+                                      placeholder={t("supplier.my_account_edit.country_name")}
                                       disabled
                                     />
                                   </div>
                                   <div className="col-sm-6 mb-3 position-relative">
                                     <label className="form-label">
-                                      Company Logo
+                                    {t("supplier.my_account_edit.company_logo")}
                                     </label>
                                     <input
                                       type="file"
                                       accept="image/*"
                                       className="form-control"
                                       onChange={handleLogo}
-                                      placeholder="Enter state"
+                                      placeholder={t("supplier.my_account_edit.state_name")}
                                     />
                                     {/* {logo && (
                                   <input
@@ -476,7 +478,7 @@ const AddCompanyAddress = () => {
                             <>
                               <div className="col-sm-6 mb-3">
                                 <label className="form-label">
-                                  Address<sup>*</sup>
+                                {t("supplier.my_account_view.Billing_Address.billing_address")}<sup>*</sup>
                                 </label>
 
                                 {show ? (
@@ -499,67 +501,67 @@ const AddCompanyAddress = () => {
                                   )} */}
                               </div>
                               <div className="col-sm-6 mb-3">
-                                <label className="form-label">Address 2</label>
+                                <label className="form-label">{t("supplier.my_account_view.Main_Address.address2")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={billingAddress2}
                                   onChange={(e) => handleAddress2(e)}
-                                  placeholder="Enter address"
+                                  placeholder={t("supplier.my_account_view.placeholder.enter_add")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
-                                <label className="form-label">City Name</label>
+                                <label className="form-label"> {t("supplier.my_account_view.Main_Address.city_name")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={billingCity}
-                                  placeholder="Enter city name"
+                                  placeholder={t("supplier.my_account_view.placeholder.city_name")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3">
                                 <label className="form-label">
-                                  Postal Code
+                                {t("supplier.my_account_view.Main_Address.postal_code")}
                                 </label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={billingPostal}
                                   onChange={(e) => handlePostalCode(e)}
-                                  placeholder="Enter postal code"
+                                  placeholder={t("supplier.my_account_view.placeholder.postal_code")}
+                                  
                                 />
                               </div>
 
                               <div className="col-sm-6 mb-3 position-relative">
-                                <label className="form-label">Country</label>
+                                <label className="form-label"> {t("supplier.my_account_view.Main_Address.country")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={billingCountry}
                                   onChange={(e) => setCountry(e.target.value)}
-                                  placeholder="Enter country"
+                                  placeholder={t("supplier.my_account_edit.country_name")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3 position-relative">
-                                <label className="form-label">State</label>
+                                <label className="form-label">{t("supplier.my_account_view.Main_Address.state")}</label>
                                 <input
                                   type="text"
                                   className="form-control"
                                   value={billingState}
                                   onChange={(e) => setState(e.target.value)}
-                                  placeholder="Enter state"
+                                  placeholder={t("supplier.my_account_edit.state_name")}
                                 />
                               </div>
                               <div className="col-sm-6 mb-3 position-relative">
                                 <label className="form-label">
-                                  Company Logo
-                                </label>
+                                {t("supplier.my_account_edit.company_logo")}                                </label>
                                 <input
                                   type="file"
                                   accept="image/*"
                                   className="form-control"
                                   onChange={handleLogo}
-                                  placeholder="Enter state"
+                                  placeholder={t("supplier.my_account_edit.state_name")}
                                 />
                                 {/* {logo && (
                               <input
@@ -578,13 +580,13 @@ const AddCompanyAddress = () => {
                           className="btn btn-outline-black me-2"
                           onClick={() => navigate("/supplier/my-account")}
                         >
-                          Cancel
+                           {t("supplier.my_account_edit.cancel-btn")}
                         </button>
                         <button
                           className="btn btn-purple"
                           onClick={(e) => handleNext(e)}
                         >
-                          Save
+                           {t("supplier.my_account_edit.save-btn")}
                         </button>
                       </form>
                     </div>
