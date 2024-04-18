@@ -2192,6 +2192,7 @@
       "group_name": "Group Name",
       "enter_group_name": "Enter Group Name",
       "business_category": "Business Category",
+      "business_category_choose":"Choose",
       "public_phone_number": "Public Mobile No.",
       "phone_number": "Phone Number",
       "phone_number_placeholder":"Enter mobile no.",

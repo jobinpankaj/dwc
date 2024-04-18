@@ -1297,7 +1297,9 @@ const CreateCompanyProfile = () => {
                                 name=""
                                 id=""
                               >
-                                <option value="">Choose</option>
+                                <option value="">
+                                {t("retailer.profile.business_category_choose")}
+                                </option>
                                 {categoryList.map((c) => {
                                   return (
                                     <option key={c.id} value={c.id}>
