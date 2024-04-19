@@ -11,7 +11,8 @@ import { handleLogout } from "../commonMethods";
 import { useDispatch } from "react-redux";
 import { restoreStore } from "../../redux/cartSlice";
 import { Popup } from "../NotificationPopup/notification";
-// import { RetailerRequest } from "../../Supplier/components/Dashboard/retailer-request";
+import RetailerRequest from "../../Supplier/components/Dashboard/retailer-request";
+//import { RetailerRequest } from "../../Supplier/components/Dashboard/retailer-request";
 // src\Supplier\components\Dashboard\retailer-request.js
 
 toast.configure();
@@ -164,15 +165,25 @@ const Header = ({ title, updateSidebar, userType }) => {
           <div className="toolbar">
             {/* <div><i class="fa-solid fa-bell"></i></div> */}
             <>
-              {userType === "supplier" && (
+              {/* {userType === "supplier" && (
                 <div  className="notification-bell" onClick={()=>setRetailerNotify(true)}>
                   <div className="total-notify">5</div>
                   <i className="fa-solid fa-bell"></i>
                 </div>
-              )}
+              )} */}
               {/* {open ? (
               <RetailerRequest text={userType} closePopup={() => setRetailerNotify(false)} />
             ) : null} */}
+             {userType === "supplier" && (
+                <div  className="notification-bell" onClick={()=>setRetailerNotify(!openRetailerNotify)}>
+                  <div className="total-notify">5</div>
+                  <i className="fa-solid fa-bell"></i>
+                </div>
+              )}
+              {openRetailerNotify ? (
+              <RetailerRequest text={userType} closePopup={() => setRetailerNotify(false)}  setRetailerNotify={setRetailerNotify}/>
+            ) : null}
+
             </>
 
             <div

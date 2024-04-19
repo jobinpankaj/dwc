@@ -2549,6 +2549,7 @@
   },
 
   "router": {
-      "adminLogin":"/admin/login"
+      "adminLogin":"/admin/login",
+      "adminDashboard":"dashboard"
     }
 }

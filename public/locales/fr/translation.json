@@ -2252,7 +2252,7 @@
       "edit_retailer":"Modifier le détaillant",
       "ent_bsss_name":"Entrez le nom de l'entreprise",
       "slt_grp_nam":"Sélectionnez le nom du groupe",
-      "entr_con_emai":"Entrez l'e-mail de contact",
+      "entr_con_emai":"Courriel de contact",
       "emobile_no":"Entrez le numéro de portable",
       "ent_con":"Entrez le nom du contact",
       "web_url":"Entrez l'URL du site Web",
@@ -2543,6 +2543,7 @@
     },
     
   "router": {
-      "adminLogin":"/admin/connexion"
+      "adminLogin":"/admin/connexion",
+      "admindashboard":"/tableau de bord"
     }
 }
