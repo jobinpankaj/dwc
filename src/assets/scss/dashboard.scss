@@ -1,6 +1,16 @@
 @import "variables";
 @import "mixins";
 
+@keyframes slideFromRightToLeft {
+  from {
+      transform: translateX(100%);
+  }
+
+  to {
+      transform: translateX(0%);
+  }
+}
+
 body {
   font-family: $font-regular;
   font-size: 14px;
@@ -1833,3 +1843,4 @@ textarea.addNoteTextarea {
     max-width: fit-content !important;
   }
 }
+

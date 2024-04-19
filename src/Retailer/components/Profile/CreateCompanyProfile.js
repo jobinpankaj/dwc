@@ -818,6 +818,7 @@ const CreateCompanyProfile = () => {
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const [showSidebar, setShowSidebar] = useState(false);
+  const [consumptionError,setConsumptionError]=useState("");
   const [business, setbusiness] = useState("");
   const [businessError, setBusinessError] = useState("");
   const [groupName, setGroupName] = useState("");
@@ -826,8 +827,8 @@ const CreateCompanyProfile = () => {
   const [permitNo, setPermitNo] = useState([0]);
   const [alcohalPermit, setAlchohalPermit] = useState("");
   const [Consumption, setConsumption] = useState("0");
-  // const [opc, setOpc] = useState("0");
-  // const [homeConsumption, setHomeConsumption] = useState("0");
+   const [opc, setOpc] = useState("0");
+   const [homeConsumption, setHomeConsumption] = useState("0");
   const [showBusinessName, setShowBusinessName] = useState("");
   const [website, setWebsite] = useState("");
   const [contactName, setContactName] = useState("");
@@ -845,6 +846,8 @@ const CreateCompanyProfile = () => {
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
+  
 
   let emailregex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -895,8 +898,8 @@ const CreateCompanyProfile = () => {
           setWebsite(retailer_general.website_url);
           setShowBusinessName(retailer_general.business_name_status);
           setConsumption(retailer_general.consumtion_status);
-          //  setOpc(retailer_general.opc_status);
-          //setHomeConsumption(retailer_general.home_consumption);
+          setOpc(retailer_general.opc_status);
+          setHomeConsumption(retailer_general.home_consumption);
           setAlchohalPermit(retailer_general.alcohol_permit);
           setDeliveryStatus(retailer_general.order_type);
           // setPermitNo(retailer_general.permit_numbers)
@@ -1030,23 +1033,28 @@ const CreateCompanyProfile = () => {
     }
   };
   const handleConsumption = (e, key) => {
-    console.log({ e, key });
-    if (key === "site") {
-      if (e.target.checked === true) {
-        console.log({ "-----------check1-----": e.target.checked });
-        setConsumption("1");
-      } else {
-        setConsumption("0");
-      }
-    } else {
-      if (e.target.checked === true) {
-        console.log({ "-----------check2-----": e.target.checked });
-        setConsumption("2");
-      } else {
-        setConsumption("0");
-      }
-    }
-  };
+    setConsumptionError("");
+      console.log({ e, key });
+     if (key === "site") {
+       if (e.target.checked === true) {
+         console.log({'-----------check1-----': e.target.checked});
+         setOpc("1");
+         setHomeConsumption("0");
+       } else {
+        setHomeConsumption("1");
+        setOpc("0");
+       }
+     } else {
+       if (e.target.checked === true) {
+         console.log({'-----------check2-----': e.target.checked});
+         setHomeConsumption("1");
+         setOpc("0");
+       } else {
+        setOpc("1");
+        setHomeConsumption("0");
+       }
+     }
+   }
   // const handleOpc = (e) => {
   //   if (e.target.checked) {
   //     console.log('-checked--------------',e.target.checked);
@@ -1077,6 +1085,7 @@ const CreateCompanyProfile = () => {
       phoneValid = true,
       publicPhoneValid = true,
       addressValid = true,
+      consumptionvalid=true,
       websiteValid = true; //New functionality
     if (business === "") {
       setBusinessError(t("retailer.profile.business_name_is_required"));
@@ -1103,12 +1112,17 @@ const CreateCompanyProfile = () => {
       setPublicPhoneError(t("retailer.profile.not_a_valid_number"));
       publicPhoneValid = false;
     }
-    if (website != "" && website !== null) {
-      if (!websiteRegex.test(website) && website !== "") {
-        setUrlError("Enter Website .com, .ca, .me, .net, or .org only allowed"); //Translation
-        websiteValid = false;
-      }
+    // if (website != "" && website !== null) {
+    //   if (!websiteRegex.test(website) && website !== "") {
+    //     setUrlError("Enter Website .com, .ca, .me, .net, or .org only allowed"); //Translation
+    //     websiteValid = false;
+    //   }
+    // }
+    if(homeConsumption==="1" || opc==="1")
+    {
     }
+    else{consumptionvalid=false;
+    setConsumptionError("Please Select any value")}
 
     if (
       !businessValid ||
@@ -1117,6 +1131,7 @@ const CreateCompanyProfile = () => {
       !publicPhoneValid ||
       !websiteValid ||
       !addressValid ||
+      !consumptionvalid ||
       businessError !== ""
     ) {
       console.log("Validation Error");
@@ -1130,13 +1145,13 @@ const CreateCompanyProfile = () => {
         phone_number: mobile,
         contact_name: contactName,
         website_url: website,
-        //opc_status: String(opc),
+        opc_status: opc,
         business_name_status: String(showBusinessName),
         alcohol_permit: String(alcohalPermit),
         order_type: String(deliveryStatus),
         permit_numbers: permitNo,
-        consumtion_status: String(Consumption),
-        // home_consumption:homeConsumption
+        // consumtion_status: String(Consumption),
+        home_consumption:homeConsumption
       };
       console.log(bodyData);
       const config = {
@@ -1428,39 +1443,46 @@ const CreateCompanyProfile = () => {
                               </p>
                             </div>
                             <div className="col-sm-6 d-flex">
-                              <div className="align-items-start form-check">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="inlineRadioOptions02"
-                                  id="inlineRadio01"
-                                  checked={Consumption === "1"}
-                                  onChange={(e) => handleConsumption(e, "site")}
-                                />
-                                <label
-                                  className="form-check-label font-regular mx-1"
-                                  htmlFor="inlineRadio01"
-                                >
-                                  {t("retailer.profile.on_premise_consumption")}
-                                </label>
-                              </div>
+                            <div className="align-items-start form-check">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="inlineRadioOptions02"
+                                id="inlineRadio01"
+                                checked={opc === "1"}
+                                onChange={(e) =>
+                                  handleConsumption(e,"site")
+                                }
+                              />
+                              <label
+                                className="form-check-label font-regular mx-1"
+                                htmlFor="inlineRadio01"
+                              >
+                                {t("retailer.profile.on_premise_consumption")}
+                              </label>
+                            </div>
 
-                              <div className="align-items-start form-check mx-3 ">
-                                <input
-                                  className="form-check-input"
-                                  type="radio"
-                                  name="inlineRadioOptions02"
-                                  id="inlineRadio02"
-                                  checked={Consumption === "2"}
-                                  onChange={(e) => handleConsumption(e, "home")}
-                                />
-                                <label
-                                  className="form-check-label font-regular mx-1"
-                                  htmlFor="inlineRadio02"
-                                >
-                                  {t("retailer.profile.home_consumption1")}
-                                </label>
-                              </div>
+                            <div className="align-items-start form-check mx-3 ">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="inlineRadioOptions02"
+                                id="inlineRadio02"
+                                checked={homeConsumption === "1"}
+                                onChange={(e) =>
+                                  handleConsumption(e,"home")
+                                }
+                              />
+                              <label
+                                className="form-check-label font-regular mx-1"
+                                htmlFor="inlineRadio02"
+                              >
+                                {t("retailer.profile.home_consumption1")}
+                              </label>
+                            </div>
+                            {/* {consumptionError===""?(<></>):(<p className="error-label m-0 p-0">
+                                  {consumptionError}
+                                </p>)} */}
                             </div>
                             {/* <div className="col-sm-3 mb-3 d-flex align-items-start">
                               <input

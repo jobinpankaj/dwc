@@ -197,8 +197,13 @@ const Router = () => {
   const routePaths = {
     en: t("router.adminLogin"),
     fr: t("router.adminLogin"),
-    // Add other route paths here
+
+    
   };
+  const admindash={
+en:t("router.admindashboard"),
+    fr:t("router.admindashboard"),
+  }
 
   return (
     <main>
@@ -244,6 +249,7 @@ const Router = () => {
         <Route
           exact
           path="/dashboard"
+          // path={admindash[currentLanguage]}
           element={
             <Protected>
               <Dashboard />
