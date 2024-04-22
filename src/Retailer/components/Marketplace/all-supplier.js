@@ -323,7 +323,7 @@ const Marketplace = () => {
                       <div className="row">
                         {displayData.map((s) => {
                           return (
-                            <div className="col-md-4 supplier-card mt-3">
+                            <div className="col-md-4 col-lg-3 col-xl-2 supplier-card mt-3">
                               <a
                                 onClick={() =>
                                   navigate(

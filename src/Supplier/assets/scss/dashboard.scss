@@ -2299,3 +2299,117 @@ table {
     position: relative;
     height: 100%;
 }
+
+.main_container{
+    position: fixed;
+    left: 37%;
+    top: 29%;
+    width: 40%;
+    height:60%;
+    z-index:999;
+    background-color: bisque;
+    margin: auto;
+    padding:1rem;
+    border:1px solid blue;
+    border-radius: 16px;
+}
+.header12{
+    display:flex;
+    justify-content: space-between;
+    .firstIcon{
+        padding-left: 45%;
+    }
+
+
+}
+.address{
+    display: flex;
+    .content{
+        margin-top:0px;
+        margin-left: 10px;
+    }
+
+
+}
+.postal-address{
+    display:flex;
+    .content{
+        margin-left: 4px;
+       
+    }
+
+}
+.footer{
+    display: flex;
+    .content{
+        margin-right: 40px;
+    }
+    justify-content:center;
+    align-items: center;
+
+}
+.custom-list {
+    list-style-type: none; 
+}
+
+.user-card {
+
+    .cmd-data {
+        overflow: auto;
+
+        table {
+            width: 100%;
+            text-align: center;
+
+            td {
+                border-right: 2px solid #fff;
+                background: #f6f0f9;
+                font-size: 25px;
+
+                span {
+                    font-size: 15px;
+                    position: relative;
+                    bottom: 3px;
+                    left: 10px;
+                }
+
+                .count-cnl {
+                    position: relative !important;
+                    left: -14px !important;
+                    bottom: 0px;
+                }
+            }
+
+            .fa-ban {
+                color: red;
+                position: relative;
+                top: 4px;
+                left: -20px;
+            }
+
+            .fa-sack-dollar {
+                color: #0d6efd;
+            }
+
+            .cancel {
+                color: #0d6efd;
+                font-size: 14px;
+
+            }
+
+            .fa-xmark,
+            .fa-triangle-exclamation {
+                color: red;
+            }
+
+            .fa-check {
+                color: limegreen;
+            }
+
+            .fa-clock {
+                color: orange;
+            }
+
+        }
+    }
+}

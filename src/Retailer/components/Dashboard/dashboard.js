@@ -655,10 +655,10 @@ const Dashboard = (userType) => {
                       
                         {t("retailer.dashboard.suggested_supplier")}
                       </div>
-                      <div className="supplier_logoBox">
+                      <div className="supplier_logoBox" >
                         {mapSupplierList.map((supplier) => {
                           return (
-                            <div className="supplier_logo">
+                            <div className="supplier_logo" >
                               {/* <img src={supplier.user_image} alt="Image"></img> */}
                               <img
                                     src={supplier.user_image || imageNotAvailable}
