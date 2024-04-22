@@ -492,6 +492,7 @@ const PricingAvailability = () => {
                                         "supplier.pricing.pricing_list.table_col2"
                                       )}
                                     </th>
+                                    <th>Format</th>
                                     <th>
                                       {t(
                                         "supplier.pricing.pricing_list.table_col3"
@@ -526,6 +527,10 @@ const PricingAvailability = () => {
                                                 ? ele.user_profile.company_name
                                                 : "N/A"
                                                 : "N/A"}
+                                          </td>
+                                          <td>
+                                            {ele.product_format
+                                            ? ele.product_format.name?ele.product_format.name:"N/A":"N/A"}
                                           </td>
                                           <td>$ {ele.pricing.price}</td>
                                           <td>
@@ -978,6 +983,7 @@ const PricingAvailability = () => {
                                   <tr>
                                     <th>Product Name</th>
                                     <th>Producer</th>
+                                    <th>Format</th>
                                     <th>Available for sale</th>
                                     <th>Ordered</th>
                                     <th>In Stock</th>
@@ -993,6 +999,7 @@ const PricingAvailability = () => {
                                         <tr>
                                           <td>{ele.product.product_name}</td>
                                           <td>{ele.product.user_profile ? ele.product.user_profile.company_name ? ele.product.user_profile.company_name : "N/A" : "N/A" }</td>
+                                          <td>{ele.product.product_format?ele.product.product_format.name?ele.product.product_format.name:"N/A":"N/A"}</td>
                                           <td>0</td>
                                           <td>0</td>
                                           <td>0</td>

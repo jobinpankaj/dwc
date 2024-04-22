@@ -59,6 +59,7 @@ const Requests = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loading, setLoading] = useState(true)
+  const [openModal ,setModalopen] = useState(false)
   const apis = useAuthInterceptor();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -243,6 +244,75 @@ const Requests = () => {
                                       <td>
                                         {ele.status === "2" ? (
                                           <>
+
+                                            <span className="m-r-8px " onClick={()=>setModalopen(true)}>
+                                            <i class="fa-solid fa-eye"  style={{ fontSize: "1.32em" , color: 'blue' }}></i>
+                                            </span>
+
+                                            {
+                                              openModal ?  (
+                                              <div className="main_container">
+                                              <div className="header12"  >
+                                                <span className="firstIcon">
+                                                  <i className="fa fa-eye" style={{ fontSize: '32px', color: 'blue' }} aria-hidden="true"></i>
+                                                </span> 
+                                                <span onClick={()=>setModalopen(false)}  >
+                                                  <i className="fa fa-times" aria-hidden="true"  style={{ fontSize: "1.32em", textAlign:"right"}}></i>
+                                                </span>
+                                              </div>
+                                        
+                                              <div className="address">
+                                                <div>Store Name</div>
+                                                <div className="content">This is the Store name</div>
+                                              </div>
+                                        
+                                              <div>
+                                                <ul className="custom-list">
+                                                  <li>Group_Name</li>
+                                                  <li>
+                                                    <i className="fa fa-phone" style={{ marginRight: '10px' }} aria-hidden="true"></i>
+                                                    Phone no
+                                                  </li>
+                                                  <li>
+                                                    <i className="fa-solid fa-envelope" style={{ marginRight: '10px' }} aria-hidden="true"></i>
+                                                    Email address
+                                                  </li>
+                                                </ul>
+                                              </div>
+                                        
+                                              <div className="postal-address">
+                                                <div>
+                                                  <i className="fa-duotone fa-mailbox"></i> Mailbox:
+                                                </div>
+                                                <div className="content">
+                                                  <div>This is the first line of address, state name Uttar Pradesh</div>
+                                                  <div>Postal code 201309</div>
+                                                  <div>Country name</div>
+                                                </div>
+                                              </div>
+                                        
+                                              <div>
+                                                <ul>
+                                                  <li>Alcohol permit: 74209209389</li>
+                                                  <li>Category: CAD</li>
+                                                  <li>Tax number: 372309409</li>
+                                                  <li>QST number: 72342734942</li>
+                                                </ul>
+                                              </div>
+                                        
+                                              <div className="footer">
+                                                <div className="content" onClick={() =>handleAction("1", ele.id)}>
+                                                  <i className="fa fa-check" style={{ fontSize: '20px', color: 'green' }} aria-hidden="true"  ></i>
+                                                </div>
+                                                <div onClick={() =>handleAction("0", ele.id)}>
+                                                  <i className="fa fa-times" style={{ fontSize: '20px', color: 'red' }} aria-hidden="true"  ></i>
+                                                </div>
+                                              </div>
+                                            </div>) : null
+                                            }
+
+
+
                                             <span
                                               className="badge action text-bg-green"
                                               onClick={() =>

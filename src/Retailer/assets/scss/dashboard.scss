@@ -1991,10 +1991,10 @@ textarea.addNoteTextarea {
   overflow-y: overlay;
 
   .supplier_logo {
-    width: 90px;
-    height: 80px;
+    width: 160px;
+    height: 150px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 5px;
+    padding: 10px;
     background: #9d98981c;
     border-radius: 5px;
     margin: 10px;
@@ -2002,7 +2002,7 @@ textarea.addNoteTextarea {
 
     img {
       width: 100%;
-      height: 68px;
+      height: 96%;
       border-radius: 2px;
       object-fit: cover;
     }
