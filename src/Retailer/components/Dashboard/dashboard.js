@@ -23,6 +23,11 @@ import Info from "../../../CommonComponents/Dashboard/Info";
 import imageNotAvailable from "../../../assets/images/Image_not_available.png";
 import { Link } from 'react-router-dom';
 import { Popup } from "../../../CommonComponents/NotificationPopup/notification";
+import Box from "@mui/material/Box";
+import Popper from "@mui/material/Popper";
+
+
+
 
 
 const Dashboard = (userType) => {
@@ -47,6 +52,10 @@ const Dashboard = (userType) => {
   const accessToken = localStorage.getItem("retailer_accessToken");
   const apis = useAuthInterceptor();
   const navigate = useNavigate();
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedSupplier, setSupplier] = useState("");
   // const username = localStorage.getItem(`${currentUser}_fullName`);
   // console.log('current user name---------------',username);
 
@@ -63,6 +72,21 @@ const Dashboard = (userType) => {
   const userImg = localStorage.getItem(`${currentUser}_userImg`);
 
   const [open, setOpen] = useState(false);
+
+
+  const handleElementClick = (event, supplier) => {
+    setIsPopupOpen(false);
+    setAnchorEl(event.currentTarget); // Set the clicked element as the anchor
+    setSupplier(supplier);
+    setSupplierId(supplier.id);
+    setIsPopupOpen(true); // Toggle the popup
+  };
+
+    // eslint-disable-next-line no-unused-vars
+    const handlePopupToggle = (event) => {
+      setIsPopupOpen((prev) => !prev);
+      setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
 
   useEffect(() => {
     if (show) {
@@ -667,7 +691,46 @@ const Dashboard = (userType) => {
                                     }}
                                     className="card-img-top"
                                      alt=""
+                                     onClick={(event) =>
+                                      handleElementClick(event, supplier)
+                                    }
                                     />
+                                     <Popper
+                                open={isPopupOpen}
+                                anchorEl={anchorEl}
+                                placement="top"
+                                style={{ zIndex: '100'}}>
+                               <Box>
+                                <span className="close-popper" onClick={() => setIsPopupOpen(false)}>X</span>
+                                 
+                                <p className="name-tag mb-1">
+                                  <span>{selectedSupplier.first_name}</span>&nbsp;<b></b>&nbsp;<span>{selectedSupplier.last_name}</span></p>
+                                <span>2389 Rue Principale, Dunham, QC J0E 1M0, Canada</span>
+                            
+                                  <div className="text-center">
+                                    <button
+                                      type="button"
+                                      class="btn btn-purple"                                    
+                                      onClick={() => {setShowNoteModal(true);setIsPopupOpen(false)}}
+                                    >
+                                      {t("retailer.dashboard.send_request")}
+                                    </button>
+                                  </div>
+                                </Box>
+
+                                <Box
+                                  sx={{
+                                    content: '""', 
+                                    position: "absolute", 
+                                    bottom: "-12px", 
+                                    left: "45%", 
+                                    height: "12px",
+                                    width: "25px",
+                                    backgroundColor: "#fff",
+                                    clipPath: "polygon(0 0, 50% 100%, 100% 0)",
+                                  }}
+                                />
+                              </Popper>
                             </div>
                           );
                         })}
@@ -732,6 +795,8 @@ const Dashboard = (userType) => {
         centered
         onHide={() => {
           setShowNoteModal(false);
+          setIsPopupOpen(false);
+          setShowNote('');
         }}
       >
         <Modal.Header closeButton>

@@ -2119,3 +2119,21 @@ textarea.addNoteTextarea {
 .searchListBx {
   z-index: 9999;
 }
+
+.base-Popper-root {
+  background-color: #ffffff;
+  padding: 13px;
+  border-radius: 5px;
+}
+.close-popper{
+  cursor: pointer;
+  color: #808d8e;
+  font-weight: 600;
+  position: absolute;
+  right: 7px;
+  top: 2px;
+}
+.name-tag{
+  font-size: 22px;
+  font-family: "ubunturegular";
+}

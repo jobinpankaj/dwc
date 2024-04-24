@@ -1260,7 +1260,7 @@ const OrderManagement = () => {
                             <option value="">Client 3</option>
                           </select>
                         </div>
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                           <label class="form-label">Routes</label>
                           <select className="form-select">
                             <option selected disabled>
@@ -1272,7 +1272,7 @@ const OrderManagement = () => {
                             <option value="">Route 2</option>
                             <option value="">Route 3</option>
                           </select>
-                        </div>
+                        </div> */}
                         <div class="mb-3">
                           <label class="form-label">
                             {t("supplier.order_management.list.issues")}{" "}

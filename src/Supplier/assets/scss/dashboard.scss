@@ -2192,6 +2192,7 @@ table {
         font-size: 20px;
         font-weight: 600;
     }
+
     h5 {
         font-size: 16px;
     }
@@ -2213,9 +2214,10 @@ table {
         }
     }
 
-    .account-info{
+    .account-info {
         margin-top: 15px;
         margin-bottom: 30px;
+
         .one-component {
             display: flex;
 
@@ -2232,7 +2234,8 @@ table {
         font-size: 15px;
     }
 
-    .fa-circle-user, .fa-money-bill-transfer {
+    .fa-circle-user,
+    .fa-money-bill-transfer {
         font-size: 25px;
         color: lightgreen;
     }
@@ -2300,57 +2303,6 @@ table {
     height: 100%;
 }
 
-.main_container{
-    position: fixed;
-    left: 37%;
-    top: 29%;
-    width: 40%;
-    height:60%;
-    z-index:999;
-    background-color: bisque;
-    margin: auto;
-    padding:1rem;
-    border:1px solid blue;
-    border-radius: 16px;
-}
-.header12{
-    display:flex;
-    justify-content: space-between;
-    .firstIcon{
-        padding-left: 45%;
-    }
-
-
-}
-.address{
-    display: flex;
-    .content{
-        margin-top:0px;
-        margin-left: 10px;
-    }
-
-
-}
-.postal-address{
-    display:flex;
-    .content{
-        margin-left: 4px;
-       
-    }
-
-}
-.footer{
-    display: flex;
-    .content{
-        margin-right: 40px;
-    }
-    justify-content:center;
-    align-items: center;
-
-}
-.custom-list {
-    list-style-type: none; 
-}
 
 .user-card {
 
@@ -2412,4 +2364,130 @@ table {
 
         }
     }
+}
+
+
+.main_container {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    z-index: 999;
+    background-color: rgb(233, 231, 229);
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    .fa-store {
+        font-size: 35px;
+    }
+
+    .group-n {
+        color: #673BB7;
+        font-size: 16px;
+
+        span {
+            color: #6c757d;
+        }
+    }
+
+    button{
+        border: unset !important;
+        background-color: unset !important;
+    }
+
+    .custom-list {
+
+        .svg-inline--fa {
+            font-size: 20px !important;
+            color: #673BB7;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            span {
+                margin-left: 10px;
+            }
+        }
+
+        p {
+            margin-bottom: 3px !important;
+            color: #673BB7;
+            span{
+                color: #6c757d;
+            }
+        }
+
+    }
+
+    .header12 {
+        display: flex;
+        justify-content: space-between;
+
+        .fa-eye {
+            font-size: 2em;
+            color: blue;
+          
+        }
+        .fa-xmark{
+            font-size: 23px;
+            color: #6c757d;
+            cursor: pointer;
+        }
+    }
+
+    .address {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+
+        .content {
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+
+    }
+
+    .postal-address {
+        display: flex;
+
+        .content {
+            margin-left: 4px;
+
+        }
+
+    }
+
+    .footer {
+        display: flex;
+
+        .content {
+            margin-right: 40px;
+        }
+
+        justify-content:center;
+        align-items: center;
+
+    }
+
+    .custom-list {
+        list-style-type: none;
+    }
+}
+
+.retailer-requests {
+
+    .fa-times {
+        font-size: 1.32em;
+        text-align: right;
+        cursor: pointer;
+    }
+   
 }
