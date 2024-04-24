@@ -1494,6 +1494,7 @@
         "metro": "Numéro SAP (Métro)",
         "sobeys": "Numéro SAP (Sobeys)",
         "organic": "BIO",
+        "other":"Autre",
         "style": "Style",
         "subcategory": "Catégorie de détaillants",
         "percentage": "Pourcentage d'alcool",

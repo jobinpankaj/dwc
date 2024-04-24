@@ -1500,6 +1500,7 @@
         "sobeys": "SAP Number (Sobeys)",
         "organic": "Organic",
         "style": "Style",
+        "other":"Other",
         "subcategory": "Subcategory",
         "percentage": "Alcohol Percentage",
         "format": "Format",
