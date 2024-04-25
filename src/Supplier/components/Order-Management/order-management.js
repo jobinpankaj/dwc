@@ -973,6 +973,7 @@ const OrderManagement = () => {
   const [targetId, setTargetId] = useState([]);
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [ordersStatusCount , setOrdersStatusCount] = useState({})  
   const [statusError, setStatusError] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [dateError, setDateError] = useState("");
@@ -1135,6 +1136,29 @@ const OrderManagement = () => {
           setLoading(false);
           if (error.message !== "revoke") {
             toast.error("Could not fetch order list. Please try again later.", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        });
+
+        apis
+        .get("/supplier/ordersStatusCount", config)
+        .then((res) => {
+          setLoading(false);
+          if (res.data.success === true) {
+            setOrdersStatusCount(res.data.data);
+          } else {
+            toast.error("Could not fetch order status count. Please try again later.", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          if (error.message !== "revoke") {
+            toast.error("Could not fetch order status count. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
@@ -1427,22 +1451,22 @@ const OrderManagement = () => {
               <div className="card user-card my-2 height-100">
                 <div className="cmd-data">
                   <table>
-                    <tr>
+                  <tr>
                       <td>
                         {sigma}
-                        <span>1000</span>
+                        <span>{ordersStatusCount.total_order}</span>
                       </td>
                       <td>
                         <i class="fa-regular fa-clock"></i>
-                        <span>60</span>
+                        <span>{ordersStatusCount.pending_order}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-check"></i>
-                        <span>990</span>
+                        <span>{ordersStatusCount.approved_order}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-xmark"></i>
-                        <span>40</span>
+                        <span>{ordersStatusCount.cancelled_order}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-sack-dollar"></i>
@@ -1626,8 +1650,7 @@ const OrderManagement = () => {
                                             <span className="badge text-bg-green">
                                               {ele.status}
                                             </span>
-                                          ) : ele.status === "Pending" ||
-                                            ele.status === "On Hold" ? (
+                                          ) : ele.status === "Pending" || ele.status === "On Hold" ? (
                                             <span className="badge text-bg-orange">
                                               {ele.status}
                                             </span>
@@ -1635,12 +1658,17 @@ const OrderManagement = () => {
                                             <span className="badge text-bg-red">
                                               {ele.status}
                                             </span>
+                                          ) : ele.status === "Delivered" || ele.status === "Shipped" ? (
+                                            <span className="badge text-bg-blue">
+                                              {ele.status}
+                                            </span>
                                           ) : (
                                             "TBD"
                                           )}
                                         </td>
-                                        <td>TBD</td>
-                                        <td>TBD</td>
+
+                                        <td>{ele.total_quantity?ele.total_quantity : "N/A"}</td>
+                                        <td>{ele.total_amount?ele.total_amount:"N/A"}</td>
                                         <td>
                                           {ele.order_distributors[0] &&
                                           ele.order_distributors[0]
@@ -1701,19 +1729,26 @@ const OrderManagement = () => {
                                               <span></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                              <li>
+                                              <li className="text-center">
                                                 <NavLink
                                                   to={`/supplier/order-management/order-detail/${ele.id}`}
                                                   className="dropdown-item"
                                                 >
-                                                  View
+                                                <i class="fa-solid fa-eye" style={{color:'blue'}}></i>
                                                 </NavLink>
                                               </li>
                                               {/* <li> <a className="dropdown-item">Edit</a></li> */}
-                                              <li className="seperator">
+                                              <li className="seperator d-flex">
                                                 <a className="dropdown-item">
-                                                  Download
+                                                <i class="fa-solid fa-file-pdf" style={{color:'red'}}></i>
                                                 </a>
+                                                <a className="dropdown-item">
+                                                <i class="fa-solid fa-file-csv" style={{color:'black'}}></i>
+                                                </a>
+                                                <a className="dropdown-item">
+                                                <i class="fa-solid fa-file-excel" style={{color:'green'}}></i>
+                                                </a>
+                                                <i class=""></i>
                                               </li>
                                             </ul>
                                           </div>

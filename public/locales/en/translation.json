@@ -2362,6 +2362,7 @@
         "approved": "Approved",
         "cancelled": "Cancelled",
         "delivered": "Delivered",
+        "payment" : "Payment",
         "on_hold": "On Hold",
         "pending": "Pending",
         "shipped": "Shipped",

@@ -2491,3 +2491,37 @@ table {
     }
    
 }
+.bottom-btn, .tab-pane {
+
+    .btn-outline-black:hover{
+        box-shadow: 0px 0px 6px rgb(99, 99, 99);
+    }
+
+    .btn{
+        padding: 3px 15px !important;
+    }
+
+    .btn-outline-success {
+        background-color: green;
+
+    }
+
+    .btn-outline-secondary {
+        background-color: #777676 !important;
+    }
+
+    .btn-outline-success:hover {
+        border-color: green;
+        box-shadow: 0px 0px 6px green;
+    }
+
+    .btn-outline-secondary:hover {
+        border-color: #777676;
+        box-shadow: 0px 0px 6px #777676 !important;
+    }
+}
+.shadow-none{
+    h5{
+        color: #673BB7;
+    }
+}

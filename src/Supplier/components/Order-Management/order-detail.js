@@ -455,11 +455,97 @@ const OrderDetail = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="row mt-sm-5 mt-4 ">
-                      <div class="col-12  d-flex gap-4 justify-content-sm-end justify-content-center">
-                        <button class="btn btn-purple"> + New Order</button>
-                        <button class="btn btn-outline-black">Save </button>
-                        <button class="btn btn-purple">Accept</button>
+                    <div className="row mt-sm-5 mt-4 bottom-btn ">
+                      {/* <div class="col-12  d-flex gap-4 justify-content-sm-end justify-content-center"> */}
+                      <div className="col-md-8 d-flex justify-content-between">
+                        <div className="">
+                          <button
+                            className="btn btn-outline-black"
+                            title="Edit"
+                          >
+                            <i
+                              class="fa-solid fa-pen-to-square"
+                              style={{ color: "blue" }}
+                            ></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="Print"
+                          >
+                            <i
+                              class="fa-solid fa-print"
+                              style={{ color: "#ffa500" }}
+                            ></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="Cancel"
+                          >
+                            <i
+                              class="fa-solid fa-ban"
+                              style={{ color: "red" }}
+                            ></i>
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="Download"
+                          >
+                            <i
+                              class="fa-solid fa-download"
+                              style={{ color: "#20c152" }}
+                            ></i>
+                          </button>
+
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="PDF"
+                          >
+                            <i
+                              class="fa-solid fa-file-pdf"
+                              style={{ color: "red" }}
+                            ></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="CSV"
+                          >
+                            <i
+                              class="fa-solid fa-file-csv"
+                              style={{ color: "black" }}
+                            ></i>
+                          </button>
+                          <button
+                            className="btn btn-outline-black mx-2"
+                            title="EXCEL"
+                          >
+                            <i
+                              class="fa-solid fa-file-excel"
+                              style={{ color: "green" }}
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-md-4 text-end">
+                        <button class="btn btn-purple" title="New Order">
+                          <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <button
+                          class="btn btn-outline-secondary mx-2"
+                          title="Save"
+                        >
+                          <i
+                            class="fa-solid fa-file-arrow-down"
+                            style={{ color: "#fff" }}
+                          ></i>
+                        </button>
+                        <button class="btn btn-outline-success" title="Accept">
+                          <i
+                            class="fa-solid fa-check"
+                            style={{ color: "#fff" }}
+                          ></i>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -568,11 +654,21 @@ const OrderDetail = () => {
                               <div className="card-body">
                                 <form>
                                   <p>Write Message Concerning Order #BW5522</p>
-                                  <div className="mb-3">
-                                    <textarea
-                                      className="form-control"
-                                      placeholder="Write message here..."
-                                    ></textarea>
+                                  <div className="row mb-3">
+                                    <div className="col-md-6">
+                                      <h5>Retailer</h5>
+                                      <textarea
+                                        className="form-control"
+                                        placeholder="Write message here..."
+                                      ></textarea>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <h5>Distributer</h5>
+                                      <textarea
+                                        className="form-control"
+                                        placeholder="Write message here..."
+                                      ></textarea>
+                                    </div>
                                   </div>
                                   <button className="btn btn-purple width-auto">
                                     Send
@@ -600,19 +696,48 @@ const OrderDetail = () => {
                         <div className="filter-row page-top-filter">
                           {/* [Page Filter Box] */}
                           <div className="filter-box justify-content-between w-100">
-                            <select className="btn btn-outline-black btn-sm text-start">
-                              <option>Invoice #BW5522</option>
-                              <option>Order #BW5522</option>
-                            </select>
+                            <div>
+                              <select className="btn btn-outline-black btn-sm text-start">
+                                <option>Invoice #BW5522</option>
+                                <option>Order #BW5522</option>
+                              </select>
+                            </div>
+                            <div>
+                              <button
+                                className="btn btn-outline-black mx-2"
+                                title="PDF"
+                              >
+                                <i
+                                  class="fa-solid fa-file-pdf"
+                                  style={{ color: "red" }}
+                                ></i>
+                              </button>
 
-                            <button
-                              type="button"
-                              class="btn btn-purple btn-sm"
-                              data-bs-toggle="modal"
-                              data-bs-target="#uploadFiles"
-                            >
-                              Upload
-                            </button>
+                              <button
+                                className="btn btn-outline-black mx-2"
+                                title="CSV"
+                              >
+                                <i
+                                  class="fa-solid fa-file-csv"
+                                  style={{ color: "black" }}
+                                ></i>
+                              </button>
+
+                              <button
+                                className="btn btn-outline-black mx-2"
+                                title="Excel"
+                              >
+                                <i
+                                  class="
+                                  fa-solid fa-file-excel"
+                                  style={{ color: "green" }}
+                                ></i>
+                              </button>
+
+                              <button className="btn btn-outline-black"  type="button" title="Upload Document" data-bs-toggle="modal"  data-bs-target="#uploadFiles">
+                                <i class="fa-solid fa-upload" style={{color: 'blue'}}></i>
+                                </button>
+                            </div>
                           </div>
                           {/* [/Page Filter Box] */}
                         </div>

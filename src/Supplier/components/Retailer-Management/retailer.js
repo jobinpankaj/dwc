@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingOverlay from "react-loading-overlay";
 import Map from "./map-retailer";
 import { useTranslation } from "react-i18next";
+import { Form, Modal } from "react-bootstrap";
 
 toast.configure();
 
@@ -73,31 +74,77 @@ const SupplierRetailerDetail = () => {
   const [reatilerId, setReatilerId] = useState(0);
   const [fullNameRetailerList, setFullNameRetailerList] = useState([]);
   // console.log('asas',fullNameRetailerList)
-  const [nameList, setNameList] = useState([]);
+  const [nameList,setNameList]=useState([]);
   const [dropdownShow, setDropdownShow] = useState(false);
-  const [searchRetailer, setSearchRetailer] = useState("");
+  const [searchRetailer,setSearchRetailer]=useState("");
+  const [showNoteModal,setShowNoteModal]=useState(false);
+  const [notes,setNotes]=useState("")
+  const [invitationStatus,setInvitationStatus]=useState(false)
+
+  const handleSendNote=()=>{
+    if(notes.trim()!=="")
+    {
+    console.log("Id:",reatilerId)
+    console.log("Notes opened")
+    }
+    else
+    {
+      toast.error("Please enter data.", {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  }
+  const removeModal = () => {
+    setShowNoteModal(false);
+    setNotes("");
+  };
+  const submit=()=>
+  {
+    if(invitationStatus==true){
+    if(reatilerId==0)
+    {
+      toast.error("Select retailer from the list", {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else
+    {
+      setShowNoteModal(true)
+    }
+  }
+  else{
+    toast.error("Select retailer from the list", {
+      autoClose: 3000,
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+  }
 
   const handleRetailerDropdown = (full_name, id) => {
     setSearchRetailer(full_name);
+    setInvitationStatus(true)
     setReatilerId(id);
     // setShowNote(true);
     setDropdownShow(false);
     // setShowNote(true);
   };
 
-  const handleRetailerSearch = (e) => {
+  const handleRetailerSearch=(e)=>{
     setReatilerId(0);
-    setDropdownShow(false);
-    setSearchRetailer(e);
-    if (e.length > 2) {
-      const matchingStrings = fullNameRetailerList.filter((str) =>
-        str.full_name.toLowerCase().startsWith(e.toLowerCase())
-      );
-      setNameList(matchingStrings);
-      console.log(matchingStrings, "dada");
+    setInvitationStatus(false)
+    setDropdownShow(false)
+    setSearchRetailer(e)
+    if(e.length>0)
+    {
+      const matchingStrings = fullNameRetailerList.filter(str => str.full_name.toLowerCase().startsWith(e.toLowerCase()));
+      setNameList(matchingStrings)
+      console.log(matchingStrings,"dada")
       setDropdownShow(true);
     }
-  };
+
+  }
   // console.log('casadsdaas',fullNameRetailerList)
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -620,7 +667,7 @@ const SupplierRetailerDetail = () => {
                               )} */}
                             </div>
                             <div class="col-auto align-self-start">
-                              <button
+                              <button onClick={()=>{submit()}}
                                 type="button"
                                 class="btn btn-purple"
                                 // data-bs-toggle="modal"
@@ -674,9 +721,10 @@ const SupplierRetailerDetail = () => {
                         <div className="w-100 map-box">
                           {retailerList.length > 0 && (
                             <Map
-                              userInformation={retailerList}
-                              setReatilerId1={setReatilerId}
-                            />
+                            userInformation={retailerList}
+                            setReatilerId1={setReatilerId}
+                            showModal={setShowNoteModal}
+                          />
                           )}
                         </div>
                       </div>
@@ -688,6 +736,49 @@ const SupplierRetailerDetail = () => {
           </LoadingOverlay>
         </div>
       </div>
+      <Modal
+        className="modal fade"
+        show={showNoteModal}
+        centered
+        onHide={() => {
+          setShowNoteModal(false);
+          setNotes("")
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Send notes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <textarea
+            // ref={inputRef}
+            className="addNoteTextarea"
+            placeholder="Add Note Here"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          ></textarea>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            type="button"
+            className="btn btn-outline-black me-2"
+            onClick={removeModal}
+          >
+            Cancel
+          </button>
+
+          
+            <button
+              type="button"
+              className="btn btn-purple"
+              // data-bs-target="#noteSubmittedModal"
+              // data-bs-toggle="modal"
+              onClick={(e) => handleSendNote(e)}
+            >
+              Submit
+            </button>
+          
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
