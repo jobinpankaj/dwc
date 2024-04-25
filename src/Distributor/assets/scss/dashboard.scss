@@ -349,7 +349,10 @@ table {
 .badge {
   padding: 5px 1px;
   font-size: 12px;
-
+  &.text-bg-blue {
+    background-color: rgba(214, 222, 233, 0.856);
+    color: blue;
+  }
   &.text-bg-green {
     background-color: rgba(202, 251, 197, 0.5);
     color: $green;

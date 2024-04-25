@@ -64,6 +64,14 @@ const OrderManagement = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const token = localStorage.getItem("retailer_accessToken");
 
+
+  const sigma = "\u03A3";
+
+  function MyComponent() {
+    return <div>{sigma}</div>;
+  }
+
+
   useEffect(() => {
     const config = {
       headers: {
@@ -166,6 +174,9 @@ const OrderManagement = () => {
                             {t("retailer.order_management.listing.delivered")}
                           </option>
                           <option value="">
+                            {t("retailer.order_management.listing.payment")}
+                          </option>
+                          <option value="">
                             {t("retailer.order_management.listing.on_hold")}
                           </option>
                           <option value="">
@@ -245,6 +256,47 @@ const OrderManagement = () => {
                 </div>
               </div>
             </div>
+
+ {/* ------Commandes----- */}
+ <div className="card user-card my-2 height-100">
+              <div className="cmd-data">
+                <table>
+                  <tr>
+                    <td>
+                      {sigma}
+                      <span>1000</span>
+                    </td>
+                    <td>
+                      <i class="fa-regular fa-clock"></i>
+                      <span>60</span>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-check"></i>
+                      <span>990</span>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-xmark"></i>
+                      <span>40</span>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-sack-dollar"></i>
+                      <span>800</span>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-sack-dollar cancel"></i>
+                      <i class="fa-solid fa-ban"></i>
+                      <span className="count-cnl">100</span>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                      <span>35</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            {/* ----end----- */}
+
             <div className="row">
               <div className="col">
                 {/* [Card] */}
@@ -412,6 +464,23 @@ const OrderManagement = () => {
                                             )}
                                           </p>
                                         </li>
+
+                                        <li
+                                          class={`list-group-item border-0 text-center ${order.status === "Payment" &&
+                                            "active"
+                                            }`}
+                                        >
+                                          <span className="d-inline-flex align-items-center justify-content-center">
+                                            {/* <img src={payment} alt="" /> */}
+                                            <i class="fa-solid fa-sack-dollar" style={{color: '#bababa'}}></i>
+                                          </span>
+                                          <p>
+                                            {t(
+                                              "retailer.order_management.listing.payment"
+                                            )}
+                                          </p>
+                                        </li>
+
                                       </ul>
                                     </div>
                                   </td>
@@ -459,7 +528,7 @@ const OrderManagement = () => {
                                         <span></span>
                                       </button>
                                       <ul class="dropdown-menu">
-                                        <li>
+                                        <li className="text-center">
                                           <a
                                             onClick={() =>
                                               navigate(
@@ -468,30 +537,24 @@ const OrderManagement = () => {
                                             }
                                             className="dropdown-item"
                                           >
-                                            <svg
-                                              width="18"
-                                              height="13"
-                                              viewBox="0 0 18 13"
-                                              fill="none"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M17.1944 6.6607L17.2136 6.65046L17.1483 6.48452C15.7899 3.03162 12.6041 0.8 9.00005 0.8C5.39652 0.8 2.2113 3.03092 0.852397 6.48289C0.78258 6.65282 0.782532 6.84559 0.852259 7.01555C1.72943 9.25731 3.39878 11.022 5.56904 11.9673C6.67312 12.467 7.82889 12.6988 9.00005 12.6988C10.1202 12.6988 11.2238 12.4847 12.2923 12.0388L12.2933 12.0384C14.4808 11.1113 16.2528 9.29455 17.1478 7.0158C17.194 6.90306 17.2095 6.78025 17.1944 6.6607ZM6.13341 10.6426C4.39015 9.89084 3.0433 8.51321 2.28191 6.74908C3.46292 3.99149 6.08018 2.24535 9.00005 2.24535C11.9192 2.24535 14.5369 4.00788 15.7182 6.74963C14.9556 8.52857 13.5136 9.95668 11.7709 10.6927L11.7675 10.6941C9.94954 11.4568 7.93628 11.4399 6.13511 10.6433L6.13341 10.6426Z"
-                                                fill=""
-                                                stroke=""
-                                                stroke-width="0.4"
-                                              />
-                                              <path
-                                                d="M9.00036 3.48359C7.25064 3.48359 5.83772 4.95598 5.83772 6.7499C5.83772 8.54382 7.25061 10.0162 9.00036 10.0162C10.7501 10.0162 12.163 8.54382 12.163 6.7499C12.163 4.95598 10.7501 3.48359 9.00036 3.48359ZM9.00036 8.57093C8.03991 8.57093 7.24766 7.76102 7.24766 6.7499C7.24766 5.73879 8.03991 4.92887 9.00036 4.92887C9.96081 4.92887 10.7531 5.73879 10.7531 6.7499C10.7531 7.76102 9.96081 8.57093 9.00036 8.57093Z"
-                                                fill=""
-                                                stroke=""
-                                                stroke-width="0.4"
-                                              />
-                                            </svg>
-                                            {t(
+                                            <i class="fa-solid fa-eye" style={{ color: 'blue' }}></i>
+
+                                            {/* {t(
                                               "retailer.order_management.listing.view_details"
-                                            )}
+                                            )} */}
                                           </a>
+                                        </li>
+                                        <li className="seperator d-flex">
+                                          <a className="dropdown-item">
+                                            <i class="fa-solid fa-file-pdf" style={{ color: 'red' }}></i>
+                                          </a>
+                                          <a className="dropdown-item">
+                                            <i class="fa-solid fa-file-csv" style={{ color: 'black' }}></i>
+                                          </a>
+                                          <a className="dropdown-item">
+                                            <i class="fa-solid fa-file-excel" style={{ color: 'green' }}></i>
+                                          </a>
+                                          <i class=""></i>
                                         </li>
                                       </ul>
                                     </div>
