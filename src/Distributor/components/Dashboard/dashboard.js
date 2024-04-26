@@ -24,7 +24,7 @@ import fr from "date-fns/locale/fr";
 import TopProducts from "./Partials/TopProducts";
 import TopRetailers from "./Partials/TopRetailers";
 import LineChart from "./Partials/LineChart";
-import RadialChart from "../../../CommonComponents/Charts/RadialChart";
+import RadialChart from "../../../CommonComponents/Charts/RadialChartD";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Info from "../../../CommonComponents/Dashboard/Info";
