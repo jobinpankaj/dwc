@@ -16,7 +16,7 @@ import "../../assets/scss/dashboard.scss";
 import { useTranslation } from "react-i18next";
 import TopRetailers from "./Partials/TopRetailers";
 import TopProducts from "./Partials/TopProducts";
-import RadialChart from "../../../CommonComponents/Charts/RadialChart";
+import RadialChart from "../../../CommonComponents/Charts/RadialChartS";
 import LineChart from "./Partials/LineChart";
 import Info from "../../../CommonComponents/Dashboard/Info";
 
