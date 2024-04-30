@@ -18,7 +18,7 @@ import TopRetailers from "./Partials/TopRetailers";
 import TopProducts from "./Partials/TopProducts";
 import RadialChart from "../../../CommonComponents/Charts/RadialChartS";
 import LineChart from "./Partials/LineChart";
-import Info from "../../../CommonComponents/Dashboard/Info";
+import Info from "../../../CommonComponents/Dashboard/SuppliersInfo";
 
 const Dashboard = () => {
   const accessToken = localStorage.getItem("supplier_accessToken");
