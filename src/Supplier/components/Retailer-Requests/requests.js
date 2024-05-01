@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
 import {
   TablePagination,
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
-import { styled } from "@mui/system";
+import { height, styled, width } from "@mui/system";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
@@ -14,9 +15,8 @@ import "../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import LoadingOverlay from "react-loading-overlay";
 import { Button } from "react-admin";
-
-
-
+import { hasPermission } from "../../../CommonComponents/commonMethods";
+import { GROUP_EDIT, GROUP_VIEW } from "../../../Constants/constant";
 
 toast.configure();
 
@@ -62,8 +62,12 @@ const Requests = () => {
   const [updateList, setUpdateList] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [loading, setLoading] = useState(true)
-  const [openModal, setModalopen] = useState(false)
+  const [loading, setLoading] = useState(true);
+  const [openModal, setModalopen] = useState(false);
+  const [groupModal, setGroupModal] = useState(false);
+  const [groupList, setGroupsList] = useState("");
+  const [selectedGroupName , setSelectedGroupName] = useState('')
+  const [requestRetailerData , setRequestRtailerData] = useState({})
   const apis = useAuthInterceptor();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -75,6 +79,7 @@ const Requests = () => {
   };
 
   const handleAction = (action, target) => {
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -129,7 +134,7 @@ const Requests = () => {
     apis
       .get("/supplier/retailerRequests", config)
       .then((res) => {
-        setLoading(false)
+        setLoading(false);
         if (res.data.success === true) {
           setRequestList(res.data.data);
         } else {
@@ -140,7 +145,7 @@ const Requests = () => {
         }
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
         if (error.message !== "revoke") {
           toast.error("Could not fetch request list. Please try again later.", {
             autoClose: 3000,
@@ -149,6 +154,41 @@ const Requests = () => {
         }
       });
   }, [updateList]);
+
+  //another useeffect to get all group
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "groups-view",
+      },
+    };
+
+    if (hasPermission(GROUP_VIEW)) {
+      apis
+        .get("/supplier/groups", config)
+        .then((res) => {
+          setLoading(false);
+          if (res.data.success === true) {
+            setGroupsList(res.data.data);
+          } else {
+            toast.error("Could not fetch groups. Please try again later.", {
+              autoClose: 2000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          if (error.message !== "revoke") {
+            toast.error("Could not fetch groups. Please try again later.", {
+              autoClose: 2000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        });
+    }
+  }, []);
 
   let data;
   if (rowsPerPage > 0) {
@@ -173,12 +213,12 @@ const Requests = () => {
             styles={{
               overlay: (base) => ({
                 ...base,
-                background: '#fefefe',
-                width: '100%',
-                '& svg circle': {
-                  stroke: 'black'
-                }
-              })
+                background: "#fefefe",
+                width: "100%",
+                "& svg circle": {
+                  stroke: "black",
+                },
+              }),
             }}
           >
             <div className="container-fluid page-content-box px-3 px-sm-4">
@@ -202,11 +242,21 @@ const Requests = () => {
                             <table className="table table-striped m-0">
                               <thead>
                                 <tr>
-                                  <th>{t("supplier.request.list.table_col1")}</th>
-                                  <th>{t("supplier.request.list.table_col2")}</th>
-                                  <th>{t("supplier.request.list.table_col3")}</th>
-                                  <th>{t("supplier.request.list.table_col4")}</th>
-                                  <th>{t("supplier.request.list.table_col5")}</th>
+                                  <th>
+                                    {t("supplier.request.list.table_col1")}
+                                  </th>
+                                  <th>
+                                    {t("supplier.request.list.table_col2")}
+                                  </th>
+                                  <th>
+                                    {t("supplier.request.list.table_col3")}
+                                  </th>
+                                  <th>
+                                    {t("supplier.request.list.table_col4")}
+                                  </th>
+                                  <th>
+                                    {t("supplier.request.list.table_col5")}
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -240,7 +290,13 @@ const Requests = () => {
                                     return (
                                       <tr>
                                         <td>
-                                          {ele.retailer_information.user_profile ? ele.retailer_information.user_profile.business_name ? ele.retailer_information.user_profile.business_name : "N/A" : "N/A"}
+                                          {ele.retailer_information.user_profile
+                                            ? ele.retailer_information
+                                                .user_profile.business_name
+                                              ? ele.retailer_information
+                                                  .user_profile.business_name
+                                              : "N/A"
+                                            : "N/A"}
                                         </td>
                                         <td>{ele.request_note}</td>
                                         <td>{createdAt}</td>
@@ -248,81 +304,178 @@ const Requests = () => {
                                         <td>
                                           {ele.status === "2" ? (
                                             <>
-
-                                              <span className="m-r-8px " onClick={() => setModalopen(true)}>
-                                                <i class="fa-solid fa-eye-slash" style={{ color: 'blue', fontSize: '20px', cursor:'pointer' }}></i>
+                                              <span
+                                                className="m-r-8px "
+                                                onClick={() =>
+                                                  {setModalopen(true);setRequestRtailerData(ele);
+                                                  console.log("this is the whole object i which retailer is getting",ele ,requestRetailerData,"fkk" )}
+                                                }
+                                              >
+                                                <i
+                                                  class="fa-solid fa-eye-slash"
+                                                  style={{
+                                                    color: "blue",
+                                                    fontSize: "20px",
+                                                    cursor: "pointer",
+                                                  }}
+                                                ></i>
                                               </span>
+                                              {openModal ? (
+                                                <div className="main_container">
+                                                  <div className="header12">
+                                                    <span></span>
+                                                    <span className="">
+                                                      <i
+                                                        className="fa fa-eye"
+                                                        aria-hidden="true"
+                                                      ></i>
+                                                    </span>
+                                                    <span
+                                                      onClick={() =>
+                                                        setModalopen(false)
+                                                      }
+                                                    >
+                                                      <i
+                                                        className="fa fa-times"
+                                                        aria-hidden="true"
+                                                      ></i>
+                                                    </span>
+                                                  </div>
 
+                                                  <div className="address mt-2">
+                                                    <FontAwesomeIcon icon="fa-solid fa-store" />
+                                                    &nbsp;
+                                                    <span>
+                                                    N/A
+                                                    </span>
+                                                  </div>
 
-                                              {
-                                                openModal ? (
-                                                  <div className="main_container">
-                                                    <div className="header12"  >
-                                                      <span></span>
-                                                      <span className="">
-                                                        <i className="fa fa-eye" aria-hidden="true"></i>
-                                                      </span>
-                                                      <span onClick={() => setModalopen(false)}  >
-                                                        <i className="fa fa-times" aria-hidden="true"></i>
-                                                      </span>
+                                                  <div className="mx-3 mt-2 custom-list">
+                                                    <div className="text-center group-n">
+                                                    {t("supplier.retailer_request.group")}:{" "}
+                                                      <span>{requestRetailerData.retailer_information.user_profile.group_name}</span>
                                                     </div>
+                                                    <ul className="mt-2">
+                                                      <li>
+                                                        <i
+                                                          className="fa fa-phone"
+                                                          aria-hidden="true"
+                                                        ></i>
+                                                        <span>
+                                                        {requestRetailerData.retailer_information.phone_number? (requestRetailerData.retailer_information.phone_number) : requestRetailerData.retailer_information.user_profile.phone_number ? (requestRetailerData.retailer_information.user_profile.phone_number) : ("N/A") }
+                                                        </span>
+                                                      </li>
+                                                      <li>
+                                                        <i class="fa-regular fa-envelope"></i>
+                                                        <span>
+                                                        {requestRetailerData.retailer_information.email? (requestRetailerData.retailer_information.email):("N/A")}
+                                                        </span>
+                                                      </li>
+                                                      <li>
+                                                        <i class="fa-regular fa-envelope-open"></i>
+                                                        <span>
+                                                        {requestRetailerData.retailer_information.user_main_address.address_1 ? (requestRetailerData.retailer_information.user_main_address.address_1):("N/A")}
+                                                        </span>
+                                                      </li>
+                                                    </ul>
+                                                    <p>
+                                                    {t("supplier.retailer_request.postal_code")}:{""}
+                                                      <span>{requestRetailerData.retailer_information.user_main_address.postal_code ? (requestRetailerData.retailer_information.user_main_address.postal_code):("N/A")}</span>
+                                                    </p>
+                                                    <p>
+                                                    {t("supplier.retailer_request.country_name")}:{" "}
+                                                      <span>{requestRetailerData.retailer_information.user_main_address.country ?(requestRetailerData.retailer_information.user_main_address.country):("N/A")}</span>
+                                                    </p>
 
-                                                    <div className="address mt-2">
-                                                      <FontAwesomeIcon icon="fa-solid fa-store" />
-                                                      &nbsp;<span>This is the Store name</span>
-                                                    </div>
+                                                    <p>
+                                                    {t("supplier.retailer_request.Alcohol_permit")}:{" "}
+                                                      <span>{requestRetailerData.retailer_information.user_profile.alcohol_permit ? (requestRetailerData.retailer_information.user_profile.alcohol_permit):("N/A")}</span>
+                                                    </p>
+                                                    <p>
+                                                    {t("supplier.retailer_request.category")}: <span>CAD</span>
+                                                    </p>
+                                                    <p>
+                                                    {t("supplier.retailer_request.gst")}:{" "}
+                                                      <span>N/A</span>
+                                                    </p>
+                                                    <p>
+                                                    {t("supplier.retailer_request.qst")}:{" "}
+                                                      <span>N/A</span>
+                                                    </p>
+                                                  </div>
 
-                                                    <div className="mx-3 mt-2 custom-list">
-                                                      <div className="text-center group-n">Group Name: <span>Rockbrand</span></div>
-                                                      <ul className="mt-2">
-                                                        <li>
-                                                          <i className="fa fa-phone" aria-hidden="true"></i>
-                                                          <span>Phone Number</span>
-                                                        </li>
-                                                        <li>
-                                                          <i class="fa-regular fa-envelope"></i>
-                                                          <span>Email address</span>
-
-                                                        </li>
-                                                        <li>
-                                                          <i class="fa-regular fa-envelope-open"></i>
-                                                          <span>This is the first line of address, state name Uttar Pradesh</span>
-                                                        </li>
-                                                      </ul>
-                                                      <p>Postal code: <span>201309</span></p>
-                                                      <p>Country name: <span>India</span></p>
-
-                                                      <p>Alcohol permit: <span>74209209389</span></p>
-                                                      <p>Category: <span>CAD</span></p>
-                                                      <p>Tax Number: <span>72309409</span></p>
-                                                      <p>QST number: <span>72342734942</span></p>
-                                                    
-                                                    </div>
-
-                                                    <div className="footer mt-3">
-                                                      <button className="content" onClick={() => handleAction("1", ele.id)}>
-                                                        <i className="fa fa-check" style={{ fontSize: '20px', color: '#27C26C' }} aria-hidden="true"  ></i>
-                                                      </button>
-                                                      <button onClick={() => handleAction("0", ele.id)}>
-                                                        <i className="fa fa-times" style={{ fontSize: '20px', color: 'red' }} aria-hidden="true"  ></i>
-                                                      </button>
-                                                    </div>
-                                                  </div>) : null
-                                              }
-
-
-                                              &emsp;<span
+                                                  <div className="footer mt-3">
+                                                    <button
+                                                      className="content"
+                                                      onClick={() => {
+                                                        handleAction(
+                                                          "1",
+                                                          requestRetailerData.id
+                                                        );
+                                                        setModalopen(false);
+                                                        if (
+                                                          requestRetailerData
+                                                            .retailer_information
+                                                            .user_profile
+                                                            .group_name === null
+                                                        ) {
+                                                          setGroupModal(true);
+                                                        }
+                                                      }}
+                                                    >
+                                                      <i
+                                                        className="fa fa-check"
+                                                        style={{
+                                                          fontSize: "20px",
+                                                          color: "#27C26C",
+                                                        }}
+                                                        aria-hidden="true"
+                                                      ></i>
+                                                    </button>
+                                                    <button
+                                                      onClick={() => {
+                                                        handleAction(
+                                                          "0",
+                                                          requestRetailerData.id
+                                                        );
+                                                        setModalopen(false);
+                                                      }}
+                                                    >
+                                                      <i
+                                                        className="fa fa-times"
+                                                        style={{
+                                                          fontSize: "20px",
+                                                          color: "red",
+                                                        }}
+                                                        aria-hidden="true"
+                                                      ></i>
+                                                    </button>
+                                                  </div>
+                                                </div>
+                                              ) : null}
+                                              &emsp;
+                                              <span
                                                 className="badge action"
                                                 onClick={() =>
-                                                  handleAction("1", ele.id)
-                                                } style={{ color: '#27c26c' }}
+                                                  {handleAction("1", ele.id)
+                                                  if (
+                                                    ele
+                                                      .retailer_information
+                                                      .user_profile
+                                                      .group_name === null
+                                                  ) {
+                                                    setGroupModal(true);
+                                                  }}
+                                                }
+                                                style={{ color: "#27c26c" }}
                                               >
                                                 <i
                                                   className="fa fa-check"
                                                   aria-hidden="true"
                                                 ></i>
                                               </span>{" "}
-                                              &emsp;<span
+                                              &emsp;
+                                              <span
                                                 className="badge action text-bg-red"
                                                 onClick={() =>
                                                   handleAction("0", ele.id)
@@ -398,11 +551,71 @@ const Requests = () => {
                     </div>
                   </div>
                   {/* [/Card] */}
+                  {/* [Modal is request has not setected any group] */}
+                  <Modal
+                    className="modal fade"
+                    show={groupModal}
+                    centered
+                    onHide={() => {
+                      setGroupModal(false);
+                    }}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title> {t("supplier.retailer_request.assign_group")}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <select
+                        className="rounded-pill" style={{width:'100%', height: '40px'}}
+                        value={selectedGroupName}
+                        onChange={(e) => {
+                          setSelectedGroupName(e.target.value);
+                          
+                        }}
+                      >
+                        <option value=""> {t("supplier.retailer_request.assign_group")}</option>
+                        {groupList && groupList.length > 0 ? (
+                          groupList.map((ele) => {
+                            return (
+                              <>
+                                <option value={ele.id}>
+                                  {ele.name}
+                                </option>
+                              </>
+                            );
+                          })
+                        ) : (
+                          <></>
+                        )}
+                      </select>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        type="button"
+                        className="btn btn-outline-black me-2"
+                        onClick={() => {
+                          setGroupModal(false);
+                          setSelectedGroupName('');
+                        }}
+                      >
+                        {t("retailer.dashboard.cancel")}
+                      </button>
+                      <button
+                        className="btn btn-purple rounded-pill "
+                        type="submit"
+                        // making api call for aet the group name of retailer for now we jus close his modal
+                        onClick={() => {
+                          setGroupModal(false);
+                          setSelectedGroupName("");
+                        }}
+                      >
+                        {t("landing.contact.verify_btn")}
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
                 </div>
               </div>
             </div>
           </LoadingOverlay>
-
         </div>
       </div>
     </div>
@@ -410,3 +623,4 @@ const Requests = () => {
 };
 
 export default Requests;
+

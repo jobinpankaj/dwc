@@ -17,6 +17,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Map from "./map-retailer";
 import { useTranslation } from "react-i18next";
 import { Form, Modal } from "react-bootstrap";
+import modalIcon from "../../assets/images/modalIcon.png";
 
 toast.configure();
 
@@ -81,11 +82,42 @@ const SupplierRetailerDetail = () => {
   const [notes,setNotes]=useState("")
   const [invitationStatus,setInvitationStatus]=useState(false)
 
+
+  const [show, setShow] = useState(false);
+  const [connectedRetailer,setConnectedRetailer]=useState("");
+  const [notConnectedRetailer,setNotConnectedRetailer]=useState("");
+
   const handleSendNote=()=>{
     if(notes.trim()!=="")
     {
-    console.log("Id:",reatilerId)
-    console.log("Notes opened")
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          permission: "retailer-view",
+        },
+      };
+      const bodyData = {
+        retailer_id: reatilerId,
+        request_note: notes,
+      };
+      apis
+        .post("supplier/sendRequestToRetailer", bodyData, config)
+        .then((res) => {
+          setShowNoteModal(false);
+          setSearchRetailer("");
+          setReatilerId(0);
+          setNotes("");
+          setShow(true)
+        })
+        .catch((err) => {
+          if(err.message !== "revoke"){
+          toast.error("Something went wrong !! Please try again later", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+          // setLoader(false);
+        }
+        });
     }
     else
     {
@@ -283,6 +315,36 @@ const SupplierRetailerDetail = () => {
   } else {
     data = retailerList;
   }
+
+  const countRetailer = () => {
+    let connectRetailer = 0;
+    let notConnectRetailer = 0;
+    
+    if (Array.isArray(retailerList) && retailerList.length > 0) {
+      retailerList.forEach(x => {
+        if (x.supplier_data && x.supplier_data.status && x.supplier_data.status === '1') {
+          connectRetailer++;
+        } else {
+          notConnectRetailer++;
+        }
+      });
+    }
+  
+    setConnectedRetailer(connectRetailer);
+    setNotConnectedRetailer(notConnectRetailer);
+  };
+  useEffect(() => {
+    countRetailer();
+    if (show) {
+      const timeoutId = setTimeout(() => {
+        setShow(false);
+        
+      }, 3000);
+    }
+  });
+
+
+
   return (
     <div class="container-fluid page-wrap product-manage">
       <div class="row height-inherit">
@@ -689,7 +751,7 @@ const SupplierRetailerDetail = () => {
                               <span className="mx-3">
                                 <i class="fa-solid fa-people-arrows"></i>
                               </span>
-                              <span className="connection-count">(5)</span>
+                              <span className="connection-count">{connectedRetailer}</span>
                             </div>
                             <div className="clients-platform">
                               <div class="container-user">
@@ -711,7 +773,7 @@ const SupplierRetailerDetail = () => {
                                   ></i>
                                 </span>
                                 <span className="connection-count mx-3">
-                                  (88)
+                                  {notConnectedRetailer}
                                 </span>
                               </div>
                             </div>
@@ -778,6 +840,22 @@ const SupplierRetailerDetail = () => {
             </button>
           
         </Modal.Footer>
+      </Modal>
+
+      <Modal
+        className="modal fade"
+        show={show}
+        centered
+        onHide={() => setShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <img src={modalIcon} alt="Modal Icon" />
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {t("retailer.dashboard.send_request_confirmation")}
+        </Modal.Body>
       </Modal>
     </div>
   );

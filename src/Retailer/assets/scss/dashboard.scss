@@ -2137,3 +2137,33 @@ textarea.addNoteTextarea {
   font-size: 22px;
   font-family: "ubunturegular";
 }
+
+.download-buttons-container {
+
+  position: relative;
+
+  .slide-buttons {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      transition: transform 0.3s ease;
+      transform: translateY(-150%);
+  }
+
+  .download-buttons-container:hover .slide-buttons {
+      transform: translateX(0);
+  }
+}
+
+
+
+@media print {
+  @page {
+    size: 50mm 150mm;
+  }
+  #printItem{
+    padding-top: 40px !important;
+  }
+}

@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from "react";
+
+
+
+
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import logoDark from "../../assets/images/logo-dark.svg";
@@ -14,14 +18,36 @@ import { toast } from "react-toastify";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import ReactToPrint from 'react-to-print';
+
+// class ComponentToPrint extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.componentRef = React.createRef(); // Initialize componentRef
+  // }
+//   render() {
+//     return (
+//       <div>
+//         Content that you want to print
+//       </div>
+//     );
+//   }
+// }
 
 const OrderDetail = () => {
+
+  // constructor(props){
+  //   super(props);
+  //   this.componentRef = React.createRef(); // Initialize componentRef
+  // }
+
   const apis = useAuthInterceptor();
   const token = localStorage.getItem("supplier_accessToken");
   const { t, i18n } = useTranslation();
   const { order_id } = useParams();
   const [orderDetail, setOrderDetail] = useState("");
-
+  const componentRef = useRef(null); // Initialize useRef
+  
   useEffect(() => {
     const config = {
       headers: {
@@ -43,7 +69,7 @@ const OrderDetail = () => {
         }
       })
       .catch((error) => {
-        if(error.message !== "revoke"){
+        if (error.message !== "revoke") {
           toast.error("Could not fetch order details. Please try again later.", {
             autoClose: 3000,
             position: toast.POSITION.TOP_CENTER,
@@ -51,8 +77,22 @@ const OrderDetail = () => {
         }
       });
   }, []);
+  
   return (
+
     <div class="container-fluid page-wrap order-details">
+
+
+      {/* <div>
+        <ReactToPrint
+          trigger={() => <button>Print this document</button>}
+          content={() => this.componentRef}
+        />
+        <div ref={(el) => (this.componentRef = el)}>
+          Content to print
+        </div>
+      </div> */}
+
       <div class="row height-inherit">
         <Sidebar userType={"supplier"} />
 
@@ -147,8 +187,8 @@ const OrderDetail = () => {
                                             value={
                                               orderDetail && orderDetail.supplier_information.user_profile
                                                 ? orderDetail.supplier_information.user_profile.company_name
-                                                ? orderDetail.supplier_information.user_profile.company_name
-                                                : "N/A"
+                                                  ? orderDetail.supplier_information.user_profile.company_name
+                                                  : "N/A"
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -236,8 +276,8 @@ const OrderDetail = () => {
                                             value={
                                               orderDetail && orderDetail.retailer_information.user_profile
                                                 ? orderDetail.retailer_information.user_profile.business_name
-                                                ? orderDetail.retailer_information.user_profile.business_name
-                                                : "N/A"
+                                                  ? orderDetail.retailer_information.user_profile.business_name
+                                                  : "N/A"
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -255,8 +295,8 @@ const OrderDetail = () => {
                                             value={
                                               orderDetail
                                                 ? orderDetail
-                                                    .retailer_information
-                                                    .phone_number
+                                                  .retailer_information
+                                                  .phone_number
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -274,7 +314,7 @@ const OrderDetail = () => {
                                             value={
                                               orderDetail
                                                 ? orderDetail
-                                                    .retailer_information.email
+                                                  .retailer_information.email
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -291,10 +331,10 @@ const OrderDetail = () => {
                                             type="text"
                                             value={
                                               orderDetail &&
-                                              orderDetail.retailer_information
+                                                orderDetail.retailer_information
                                                 ? orderDetail
-                                                    .retailer_information
-                                                    .user_profile.opc_status ===
+                                                  .retailer_information
+                                                  .user_profile.opc_status ===
                                                   "1"
                                                   ? "On-site"
                                                   : "N/A"
@@ -347,7 +387,7 @@ const OrderDetail = () => {
                                 </thead>
                                 <tbody>
                                   {orderDetail &&
-                                  orderDetail.items.length > 0 ? (
+                                    orderDetail.items.length > 0 ? (
                                     orderDetail.items.map((ele) => {
                                       return (
                                         <tr>
@@ -734,9 +774,9 @@ const OrderDetail = () => {
                                 ></i>
                               </button>
 
-                              <button className="btn btn-outline-black"  type="button" title="Upload Document" data-bs-toggle="modal"  data-bs-target="#uploadFiles">
-                                <i class="fa-solid fa-upload" style={{color: 'blue'}}></i>
-                                </button>
+                              <button className="btn btn-outline-black" type="button" title="Upload Document" data-bs-toggle="modal" data-bs-target="#uploadFiles">
+                                <i class="fa-solid fa-upload" style={{ color: 'blue' }}></i>
+                              </button>
                             </div>
                           </div>
                           {/* [/Page Filter Box] */}
@@ -831,5 +871,6 @@ const OrderDetail = () => {
     </div>
   );
 };
+
 
 export default OrderDetail;

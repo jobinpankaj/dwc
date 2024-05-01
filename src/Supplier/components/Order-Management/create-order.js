@@ -36,12 +36,19 @@ const CreateOrder = () => {
   const [editableItem, setEditableItem] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
   const [update, setUpdate] = useState(false);
-  const [includeTax, setIncludeTax] = useState(false);
+  const [includeTax, setIncludeTax] = useState(true);
   const [grandSubTot, setGrandSubTot] = useState("0");
   const [grandTot, setGrandTot] = useState("0");
   const [retailerError, setRetailerError] = useState("");
   const [distributorError, setDistributorError] = useState("");
   const [note, setNote] = useState("");
+  const [q, setQ] = useState("");
+  const [filterRetailer, setFilterRetailre] = useState([]);
+  const [emailNameModal, setEmailNameModal] = useState(false);
+  const [formState, setFormState] = useState({
+    distributorName: "",
+    distributorEmail: "",
+  });
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
@@ -262,6 +269,40 @@ const CreateOrder = () => {
     }
   }, [update, includeTax]);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState, // Retain other properties in the object
+      [name]: value, // Update the relevant field by its name
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("Distributor Information:", formState);
+
+    // toast.success("Distributor Information Submitted")
+    setSelectedDistributor("");
+    setEmailNameModal(false);
+    // setFormState(null);
+    // form.reset()
+
+  };
+
+  const searchingHandle = (e) => {
+    setQ(e.target.value)
+    const search = e.target.value;
+    const filterData = retailerList.filter(
+      (user) =>
+        user.full_name.toLowerCase().includes(search.toLowerCase()) ||
+        user.user_main_address.address_1.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilterRetailre(filterData);
+    if(search.trim().length==0){
+      setFilterRetailre([]);
+    }
+  };
+
   useEffect(() => {
     if (selectedDistributor !== "") {
       const config2 = {
@@ -349,8 +390,8 @@ const CreateOrder = () => {
                           <label>
                             {t("supplier.order_management.new_order.retailer")}
                           </label>
-                          <div className="w-100">
-                            <select
+                          <div className="w-100 mt-2">
+                            {/* <select
                               className="rounded-pill"
                               value={selectedRetailer}
                               onChange={(e) => {
@@ -370,7 +411,39 @@ const CreateOrder = () => {
                               ) : (
                                 <></>
                               )}
-                            </select>
+                            </select> */}
+                            <input
+                              type="search"
+                              name="search-form"
+                              id="search-form"
+                              className="search-input w-100"
+                              placeholder="Search for Retailer..."
+                              value={q}
+                              onChange={(e) => {
+                                searchingHandle(e);
+                              }}
+                            ></input>
+                            <ul style={{ border: filterRetailer.length > 0 ? "1px solid black" : "none" }}>
+                            {filterRetailer && filterRetailer.length > 0 ? (
+                              filterRetailer.map((ele) => {
+                                return (
+                                 <li
+                                 key={ele.id} // Assuming ele.id exists and is unique
+                                 style={{
+                                   overflow: "hidden",
+                                   whiteSpace: "nowrap",
+                                   textOverflow: "ellipsis",
+                                   cursor: "pointer" // Optionally add cursor pointer for better UX
+                                 }}
+                                 onClick={()=>{
+                                  setQ(ele.full_name);
+                                  setFilterRetailre([]);
+                                 }}>{ele.full_name}</li>
+                                );
+                              })
+                            ) : (
+                              <></>
+                            )}</ul>
                             {retailerError !== "" ? (
                               <p className="error-label">{retailerError}</p>
                             ) : (
@@ -396,10 +469,13 @@ const CreateOrder = () => {
                           </label>
                           <div className="w-100">
                             <select
-                              className="rounded-pill"
+                              className="rounded-pill w-100"
                               value={selectedDistributor}
                               onChange={(e) => {
                                 setSelectedDistributor(e.target.value);
+                                if (e.target.value === "other") {
+                                  setEmailNameModal(true);
+                                }
                                 setDistributorError("");
                                 setAddedItem([]);
                               }}
@@ -416,6 +492,7 @@ const CreateOrder = () => {
                               ) : (
                                 <></>
                               )}
+                               <option value="other">Other</option>
                             </select>
                             {distributorError !== "" ? (
                               <p className="error-label">{distributorError}</p>
@@ -430,13 +507,117 @@ const CreateOrder = () => {
                             </button>
                         </div> */}
                       </div>
+                      {/* Additional Field */}
+                      {/* {selectedDistributor === "other" && (
+                        <>
+                          <div className="col-sm-4 col-xl-3 mb-4 mb-sm-0">
+                            <div className="create-order-dropdown-box mb-3">
+                              <div className="w-100">
+                                <form onSubmit={handleSubmit}>
+                                  <div>
+                                    
+                                    <input
+                                      type="text"
+                                      name="distributorName" // Corresponds to state object key
+                                      placeholder="Enter Distributor Name"
+                                      value={formState.distributorName} // Access from the state object
+                                      onChange={handleInputChange} // Use a single handler
+                                    />
+                                  </div>
+                                  <div>
+                                    
+                                    <input
+                                      type="email"
+                                      name="distributorEmail" // Corresponds to state object key
+                                      placeholder="Enter Distributor Email ID"
+                                      value={formState.distributorEmail} // Access from the state object
+                                      onChange={handleInputChange} // Same handler for both fields
+                                    />
+                                  </div>
+
+                                  <button
+                                    className="btn btn-purple rounded-pill "
+                                    type="submit"
+                                  >
+                                    {t("landing.contact.verify_btn")}
+                                  </button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )} */}
                       {/* [/Distributor] */}
+
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             {/* [/Card 1] */}
+
+            <Modal
+                className="modal fade"
+                show={emailNameModal}
+                centered
+                onHide={() => {
+                  setEmailNameModal(false);
+                  setSelectedDistributor("")
+                }}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>{"fill the Detail"}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <form onSubmit={handleSubmit}>
+                    <div>
+                      {/* Input for distributor name */}
+                      <label className="form-label">
+                          {"Distributor Name"}<sup>*</sup>
+                      </label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="distributorName" // Corresponds to state object key
+                        value={formState.distributorName} // Access from the state object
+                        onChange={handleInputChange} // Use a single handler
+                      />
+                    </div>
+
+                    <div>
+                      {/* Input for distributor email */}
+                      <label className="form-label">
+                                  {"Enter Distribuor Email"}<sup>*</sup>
+                      </label>
+                      <input
+                        className="form-control "
+                        type="email"
+                        name="distributorEmail"
+                        value={formState.distributorEmail} 
+                        onChange={handleInputChange} 
+                      />
+                    </div>
+
+                  </form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button
+            type="button"
+            className="btn btn-outline-black me-2"
+            onClick={()=>{setEmailNameModal(false);
+              setSelectedDistributor("")}}
+          >
+            {t("retailer.dashboard.cancel")}
+          </button>
+                  <button
+                    className="btn btn-purple rounded-pill "
+                    type="submit"
+                    onClick={handleSubmit}
+                  >
+                    {t("landing.contact.verify_btn")}
+                  </button>
+                </Modal.Footer>
+              </Modal>
 
             {/* [Card 2] */}
 
@@ -623,21 +804,23 @@ const CreateOrder = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-12">
+              <div className="col-12 bottom-btn">
                 <button
                   type="button"
                   onClick={() => navigate("/supplier/order-management")}
-                  className="btn btn-outline-black"
+                  className="btn btn-outline-black" style={{width: '70px'}}
                 >
-                  {t("supplier.order_management.new_order.cancel_btn")}
+                  <i class="fa-solid fa-ban" style={{ color: "red" }}></i>
                 </button>
+                
                 &nbsp;&nbsp;&nbsp;
                 <button
                   type="button"
                   onClick={() => handleCreate()}
-                  className="btn btn-purple"
+                  className="btn btn-purple" style={{color: '#fff', background: '#23cd0e',border: '1px solid #23cd0e'}}
                 >
-                  {t("supplier.order_management.new_order.create_btn")}
+                  <i class="fa-solid fa-check"></i>&emsp;<i class="fa-solid fa-plus">
+                    </i>&emsp;<i class="fa-solid fa-file-circle-check"></i>
                 </button>
               </div>
             </div>
