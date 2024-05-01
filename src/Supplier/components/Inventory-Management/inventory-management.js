@@ -515,7 +515,7 @@ const SupplierInventoryManagement = () => {
         .then((res) => {
           setLoading(false);
           if (res.data.success === true) {
-            console.log("Wareee",res.data.data);
+            console.log("Wareee", res.data.data);
             setInventoryList(res.data.data);
           } else {
             toast.error(
@@ -553,6 +553,7 @@ const SupplierInventoryManagement = () => {
         .then((res) => {
           if (res.data.success === true) {
             setWarehouseList(res.data.data);
+            console.log("=============", res.data.data);
             setWarehouseCount(res.data.data.length);
             if (res.data.data.length < 1) {
               setShow3(true);
@@ -984,11 +985,21 @@ const SupplierInventoryManagement = () => {
                                     </th>
                                     <th className="text-center">{t("supplier.inventory_management.list.intransit")}</th>
                                     <th className="text-center">{t("supplier.inventory_management.list.delivery")}</th> */}
-                                      <th>
+                                      {/* <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col3"
                                         )}
-                                      </th>
+                                      </th> */}
+                                      {/* {warehouseList &&
+                                      warehouseList.length > 0 ? (
+                                        warehouseList.map((ele) => {
+                                          return (
+                                            <th key={ele.id}>{ele.name}</th>
+                                          );
+                                        })
+                                      ) : (
+                                        <></>
+                                      )} */}
                                       {/* <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col4"
@@ -1157,19 +1168,25 @@ const SupplierInventoryManagement = () => {
                                               </div>
                                             </td>
                                             <td className="text-center">
-                                            {
-                                            ele.product?(ele.product.product_format?(ele.product.product_format.name?(ele.product.product_format.name):("N/A")):"N/A"):"N/A"
-                                          }
+                                              {ele.product
+                                                ? ele.product.product_format
+                                                  ? ele.product.product_format
+                                                      .name
+                                                    ? ele.product.product_format
+                                                        .name
+                                                    : "N/A"
+                                                  : "N/A"
+                                                : "N/A"}
                                             </td>
 
                                             <td className="text-center">
-                                              {ele.batch}
+                                              {ele.batch_number}
                                             </td>
                                             <td>
-                                              {ele.user_profile
-                                                ? ele.user_profile.company_name
-                                                  ? ele.user_profile
-                                                      .company_name
+                                              {ele.total
+                                                ? ele.total
+                                                  ? ele.total
+                                                      
                                                   : "N/A"
                                                 : "N/A"}
                                             </td>
@@ -1195,14 +1212,26 @@ const SupplierInventoryManagement = () => {
                                                         )
                                                   }
                                                 >
-                                                  {ele.quantity}
+                                                  {ele.at_warehouse}
                                                 </button>
                                               </div>
                                             </td>
                                             {/* <td className="text-center">0</td>
                                           <td className="text-center">0</td>
                                           <td className="text-center">0</td> */}
-                                            <td>{ele.warehouse.name}</td>
+                                            {/* {warehouseList &&
+                                            warehouseList.length > 0 ? (
+                                              warehouseList.map((el) => {
+                                                return (
+                                                  <td key={el.id}>
+                                                    {ele.id}
+                                                    {ele.id}
+                                                  </td>
+                                                );
+                                              })
+                                            ) : (
+                                              <></>
+                                            )} */}
                                             {/* <td>{ele.aisle}</td>
                                             <td>{ele.shelf}</td> */}
                                             <td>

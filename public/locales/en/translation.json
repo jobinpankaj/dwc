@@ -1266,6 +1266,7 @@
       "list": {
         "title": "Orders",
         "new": "+ New Order",
+        "Change_Status" : "Change Status",
         "table_col1": "Order No.",
         "table_col2": "Date",
         "table_col3": "Retailer",
@@ -1314,7 +1315,7 @@
         "table_col3": "QUANTITY",
         "table_col4": "SUBTOTAL",
         "note": "Note",
-        "include": "Include Taxes",
+        "include": "Remove Taxes",
         "subtotal": "Subtotal",
         "total": "Total",
         "cancel_btn": "Cancel",
@@ -1582,6 +1583,34 @@
     },
     "retailer_management":{
       "search": "By name or address"
+    },
+    "retailer_request":{
+      "group": "Group",
+      "postal_code":"Postal Code",
+      "country_name":"Country name",
+      "Alcohol_permit":"Alcohol permit",
+      "category":"Category",
+      "gst":"GST",
+      "qst":"QST",
+      "assign_group":"Assign Group",
+      "select_retailer":"Select Retailer",
+      "select_distributor":"Select Distributor",
+      "new":"New",
+      "new_order":"New Order",
+      "estemeted_dlivery_at":"Estimated Delivery at",
+      "add_to_shipment":"Added to Shipment",
+      "status":"Status",
+      "reailer":"Retailer",
+      "distributor":"Distributer",
+      "write_message_ph":"Write message here...",
+      "send":"Send",
+      "day_ago":"day ago",
+      "days_ago":"days ago",
+      "month_ago":"month ago",
+      "months_ago":"months ago",
+      "year_ago":"year ago",
+      "years_ago":"years ago",
+      "write_message_concerning":"Write Message Concerning Order"
     }
   },
   "distributor": {

@@ -63,14 +63,13 @@ const OrderManagement = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const token = localStorage.getItem("retailer_accessToken");
-
+  const [orderList, setOrderList] = useState("");
 
   const sigma = "\u03A3";
 
   function MyComponent() {
     return <div>{sigma}</div>;
   }
-
 
   useEffect(() => {
     const config = {
@@ -85,6 +84,22 @@ const OrderManagement = () => {
         if (res.data) {
           // console.log(object)
           setOrders(res.data.data);
+        }
+      })
+      .catch((err) => {
+        if (err.message !== "revoke") {
+          toast.error(err.response.data.message, {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+
+    apis
+      .get("retailer/orderListingStatusCount", config)
+      .then((res) => {
+        if (res.data) {
+          setOrderList(res.data.data);
         }
       })
       .catch((err) => {
@@ -113,20 +128,20 @@ const OrderManagement = () => {
   }
 
   const totalPrice = (arr) => {
-    let total = 0
+    let total = 0;
     // if (arr.length) {
-      total = arr.reduce((accumulator, currentValue) => {
-        // const accumulatorTotal =
-        //   accumulator?.product?.pricing?.unit_price * accumulator?.quantity ||
-        //   0;
-        const currentValueTotal =
-          currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
-          0;
-        return accumulator + currentValueTotal;
-      },0);
-      return total?.toFixed(2);
+    total = arr.reduce((accumulator, currentValue) => {
+      // const accumulatorTotal =
+      //   accumulator?.product?.pricing?.unit_price * accumulator?.quantity ||
+      //   0;
+      const currentValueTotal =
+        currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
+        0;
+      return accumulator + currentValueTotal;
+    }, 0);
+    return total?.toFixed(2);
     // } else {
-      // return "0.00"; // or any default value if cartItems is empty
+    // return "0.00"; // or any default value if cartItems is empty
     // }
   };
 
@@ -257,26 +272,26 @@ const OrderManagement = () => {
               </div>
             </div>
 
- {/* ------Commandes----- */}
- <div className="card user-card my-2 height-100">
+            {/* ------Commandes----- */}
+            <div className="card user-card my-2 height-100">
               <div className="cmd-data">
                 <table>
                   <tr>
                     <td>
                       {sigma}
-                      <span>1000</span>
+                      <span>{orderList.total_order}</span>
                     </td>
                     <td>
                       <i class="fa-regular fa-clock"></i>
-                      <span>60</span>
+                      <span>{orderList.pending_order}</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-check"></i>
-                      <span>990</span>
+                      <span>{orderList.approved_order}</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-xmark"></i>
-                      <span>40</span>
+                      <span>{orderList.cancelled_order}</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-sack-dollar"></i>
@@ -466,13 +481,17 @@ const OrderManagement = () => {
                                         </li>
 
                                         <li
-                                          class={`list-group-item border-0 text-center ${order.status === "Payment" &&
+                                          class={`list-group-item border-0 text-center ${
+                                            order.status === "Payment" &&
                                             "active"
-                                            }`}
+                                          }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             {/* <img src={payment} alt="" /> */}
-                                            <i class="fa-solid fa-sack-dollar" style={{color: '#bababa'}}></i>
+                                            <i
+                                              class="fa-solid fa-sack-dollar"
+                                              style={{ color: "#bababa" }}
+                                            ></i>
                                           </span>
                                           <p>
                                             {t(
@@ -480,7 +499,6 @@ const OrderManagement = () => {
                                             )}
                                           </p>
                                         </li>
-
                                       </ul>
                                     </div>
                                   </td>
@@ -537,7 +555,10 @@ const OrderManagement = () => {
                                             }
                                             className="dropdown-item"
                                           >
-                                            <i class="fa-solid fa-eye" style={{ color: 'blue' }}></i>
+                                            <i
+                                              class="fa-solid fa-eye"
+                                              style={{ color: "blue" }}
+                                            ></i>
 
                                             {/* {t(
                                               "retailer.order_management.listing.view_details"
@@ -546,13 +567,22 @@ const OrderManagement = () => {
                                         </li>
                                         <li className="seperator d-flex">
                                           <a className="dropdown-item">
-                                            <i class="fa-solid fa-file-pdf" style={{ color: 'red' }}></i>
+                                            <i
+                                              class="fa-solid fa-file-pdf"
+                                              style={{ color: "red" }}
+                                            ></i>
                                           </a>
                                           <a className="dropdown-item">
-                                            <i class="fa-solid fa-file-csv" style={{ color: 'black' }}></i>
+                                            <i
+                                              class="fa-solid fa-file-csv"
+                                              style={{ color: "black" }}
+                                            ></i>
                                           </a>
                                           <a className="dropdown-item">
-                                            <i class="fa-solid fa-file-excel" style={{ color: 'green' }}></i>
+                                            <i
+                                              class="fa-solid fa-file-excel"
+                                              style={{ color: "green" }}
+                                            ></i>
                                           </a>
                                           <i class=""></i>
                                         </li>

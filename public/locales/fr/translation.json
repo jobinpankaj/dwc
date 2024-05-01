@@ -1260,6 +1260,7 @@
     "order_management": {
       "list": {
         "title": "Commandes",
+        "Change_Status" : "Changer le statut",
         "new": "Nouvelle commande",
         "table_col1": "N ° de commande.",
         "table_col2": "Date",
@@ -1309,7 +1310,7 @@
         "table_col3": "QUANTITÉ",
         "table_col4": "TOTAL",
         "note": "Note",
-        "include": "Inclure les taxes",
+        "include": "Enlever",
         "subtotal": "Total",
         "total": "Total",
         "cancel_btn": "Annuler",
@@ -1577,6 +1578,34 @@
     },
     "retailer_management":{
       "search": "Par nom ou adresse"
+    },
+    "retailer_request":{
+      "group": "Groupe",
+      "postal_code":"Code Postal",
+      "country_name":"Nom du pays",
+      "Alcohol_permit":"Permis d'alcool",
+      "category":"Catégorie",
+      "gst":"TPS",
+      "qst":"TVQ",
+      "assign_group":"Attribuer un groupe",
+      "select_retailer":"Sélectionnez un détaillant",
+      "select_distributor":"Sélectionnez un distributeur",
+      "new":"Nouveau",
+      "new_order":"Nouvel ordre",
+      "estemeted_dlivery_at":"Livraison estimée à",
+      "add_to_shipment":"Ajouté à l'envoi",
+      "status":"Statut",
+      "reailer":"Détaillant",
+      "distributor":"Distributeur",
+      "write_message_ph":"Écrivez un message ici...",
+      "send":"Envoyer",
+      "day_ago":"il y a un jour",
+      "days_ago":"il y a quelques jours",
+      "month_ago":"il y a un mois",
+      "months_ago":"il y a des mois",
+      "year_ago":"il y'a un an",
+      "years_ago":"il y a des années",
+      "write_message_concerning":"Écrire un message concernant la commande"
     }
   },
   "distributor": {

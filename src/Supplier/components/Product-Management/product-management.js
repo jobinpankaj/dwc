@@ -518,52 +518,90 @@ const ProductManagement = () => {
                         <div className="card h-100">
                           {/* changes adding tabindex */}
                           {/* tabIndex="1" onBlur={()=>{setDropdownShow(false)}} */}
-                          <div className="card-body" >     
-                            {/* <a className="addBtn" > */}
-                            <a className="xy" onClick={() => handleAddProduct()} >
-                              <i>+</i>
-                              {t("supplier.product_management.list.add_button")}
-                            </a>
-                            <br/>
-                            <a className="xy" onClick={()=>{setShowFormat(true)
-                            setDropdownShow(true)}}>
-                              <i>+</i>
-                              Format
-                            </a>
-                            {showFormat==true?(<><input
-                              type="text"
-                              placeholder="Name"
-                              value={productName}
-                              onChange={(e)=>{handleProductNameChange(e)}}
-                              onFocus={(e)=>{setDropdownShow(true)}}
-                              // onBlur={()=>{setDropdownShow(false)}}
-                              />
-                              <button onClick={()=>{handleSubmit()}}>Search</button></>):(<></>)}
-                              <br/>
-                              {productNameError==""?(<></>):(<>{productNameError}</>)}
-                            {newProducList && newProducList.length > 0 && showFormat==true? (<div>
-                              <ul
-                                    className={`w-100 searchListBx custom-scrollbar ${
-                                      dropdownShow ? "d-block" : "d-none"
-                                    }`}
-                                  >
-                                    {" "}
-                                    {newProducList.map((s) => (
-                                      <li
-                                        className="dropdown-item pe-pointer"
-                                        key={s.id}
-                                        onClick={() =>
-                                          handleProductDropdown(
-                                            s.product_name,
-                                            s.id
-                                          )
-                                        }
-                                      >
-                                        {s.product_name}
-                                      </li>
-                                    ))}
-                                  </ul>
-                            </div>):(<></>)}
+                          <div className="card-body" >
+                            <div className="addBtn">
+                              <a className="d-flex" onClick={() => handleAddProduct()}>
+                                <span> <i>+</i></span>
+                                &nbsp;<span>{t("supplier.retailer_request.new")}</span>
+                                {/* <span> {t("supplier.product_management.list.add_button")}</span> */}
+                              </a>
+                              <div>
+                                <div>
+                                  <a className="d-flex justify-content-center" onClick={() => {
+                                    setShowFormat(true);
+                                    setDropdownShow(true);
+                                  }}>
+                                    <span><i>+</i></span>
+                                    &nbsp;<span>Format</span>
+                                  </a>
+                                </div>
+                                <div>
+                                  {showFormat === true ? (
+                                    <>
+                                      <div style={{ position: 'relative' }}>
+                                        <input
+                                          type="text"
+                                          placeholder="Name"
+                                          value={productName}
+                                          onChange={(e) => {
+                                            handleProductNameChange(e);
+                                          }}
+                                          onFocus={(e) => {
+                                            setDropdownShow(true);
+                                          }}
+                                        />
+                                        <button className="search-btn"
+                                          onClick={() => {
+                                            handleSubmit();
+                                          }}
+                                        >
+                                          <i className="fa-solid fa-magnifying-glass"></i>
+                                        </button>
+                                      </div>
+
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </div>
+
+                                <p className="error_msg mt-1">{productNameError == "" ? (<></>) : (<>{productNameError}</>)}</p>
+
+                                {newProducList && newProducList.length > 0 && showFormat == true ? (
+                                  <>
+                                    <ul
+                                      className={`w-100 searchListBx custom-scrollbar ${dropdownShow ? "d-block" : "d-none"
+                                        }`}
+                                      style={{
+                                        backgroundColor: dropdownShow ? '#fff' : 'transparent',
+                                        padding: '8px 10px',
+                                        color: '#3c3c3c',
+                                        borderRadius: '5px',
+                                        fontSize: '14px'
+                                      }}
+                                    >
+                                      {newProducList.map((s) => (
+                                        <li
+                                          className="dropdown-item pe-pointer"
+                                          key={s.id}
+                                          onClick={() =>
+                                            handleProductDropdown(
+                                              s.product_name,
+                                              s.id
+                                            )
+                                          }
+                                        >
+                                          {s.product_name}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </>
+                                ) : (<></>)}
+
+
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>

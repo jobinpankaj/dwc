@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import logoDark from "../../assets/images/logo-dark.svg";
 import bottle from "../../assets/images/bottle.png";
 import newOrder from "../../assets/images/new-order.png";
@@ -10,12 +10,15 @@ import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
 import { useNavigate, useParams } from "react-router-dom";
+import viewfile from "../../assets/images/view-file.png";
 import useAuthInterceptor from "../../../utils/apis";
 import { Oval } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { useReactToPrint } from "react-to-print";
 
 const OrderDetail = () => {
+  const componentRef = useRef();
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -23,6 +26,20 @@ const OrderDetail = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+
+
+  const toggleButtons = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleClose = () => {
+    setIsOpen(false); // Close the slide-buttons
+  };
+
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -87,7 +104,7 @@ const OrderDetail = () => {
                           {t("retailer.order_management.order_detail.details")}
                         </button>
                       </li>
-                      {/* <li class="nav-item" role="presentation">
+                      <li class="nav-item" role="presentation">
                         <button
                           class="nav-link"
                           id="order-tab"
@@ -116,7 +133,7 @@ const OrderDetail = () => {
                         >
                           {t("retailer.order_management.order_detail.document")}
                         </button>
-                      </li> */}
+                      </li>
                     </ul>
                   </div>
 
@@ -337,7 +354,7 @@ const OrderDetail = () => {
                           </div>
                         </div>
                       </div>
-                      <div class="row mb-3">
+                      <div class="row mb-3" id="printItem" ref={componentRef}>
                         <div class="col">
                           <div class="card shadow-none height-100">
                             <div class="card-body p-0">
@@ -447,57 +464,58 @@ const OrderDetail = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="row justify-content-end">
-                        <div className="col-sm-3">
-                          <div className="card shadow-none order-subtotal-box">
-                            <div className="card-body p-3">
-                              <div className="price-breakage mb-2 d-flex justify-content-between">
-                                <label>
-                                  {order?.items.length}{" "}
-                                  {t(
-                                    "retailer.order_management.order_detail.products"
-                                  )}
-                                  {/* (22.704L) */}:
-                                </label>
-                                <span>
-                                  {order?.items
-                                    .reduce(
-                                      (total, item) =>
-                                        total + parseFloat(item.sub_total),
-                                      0
-                                    )
-                                    .toFixed(2)}
-                                </span>
-                              </div>
-                              <div className="price-breakage mb-2 d-flex justify-content-between">
-                                <label>
-                                  {t(
-                                    "retailer.order_management.order_detail.deposits"
-                                  )}
-                                  :
-                                </label>
-                                <span>${order?.totalOrderProductDeposit}</span>
-                              </div>
-                              <div className="price-breakage-sum mb-2 d-flex justify-content-between">
-                                <label>
-                                  {t(
-                                    "retailer.order_management.order_detail.sub_total_2"
-                                  )}
-                                </label>
-                                <span>
-                                  $
-                                  {order?.items
-                                    .reduce(
-                                      (total, item) =>
-                                        total + parseFloat(item.sub_total),
-                                      0
-                                    )
-                                    .toFixed(2)}
-                                </span>
-                              </div>
-                              <hr />
-                              <div className="price-addon mb-2 d-flex justify-content-between">
+                        <div className="row justify-content-end">
+                          <div className="col-sm-3">
+                            <div className="card shadow-none order-subtotal-box">
+                              <div className="card-body p-3">
+                                <div className="price-breakage mb-2 d-flex justify-content-between">
+                                  <label>
+                                    {order?.items.length}{" "}
+                                    {t(
+                                      "retailer.order_management.order_detail.products"
+                                    )}
+                                    {/* (22.704L) */}:
+                                  </label>
+                                  <span>
+                                    {order?.items
+                                      .reduce(
+                                        (total, item) =>
+                                          total + parseFloat(item.sub_total),
+                                        0
+                                      )
+                                      .toFixed(2)}
+                                  </span>
+                                </div>
+                                <div className="price-breakage mb-2 d-flex justify-content-between">
+                                  <label>
+                                    {t(
+                                      "retailer.order_management.order_detail.deposits"
+                                    )}
+                                    :
+                                  </label>
+                                  <span>
+                                    ${order?.totalOrderProductDeposit}
+                                  </span>
+                                </div>
+                                <div className="price-breakage-sum mb-2 d-flex justify-content-between">
+                                  <label>
+                                    {t(
+                                      "retailer.order_management.order_detail.sub_total_2"
+                                    )}
+                                  </label>
+                                  <span>
+                                    $
+                                    {order?.items
+                                      .reduce(
+                                        (total, item) =>
+                                          total + parseFloat(item.sub_total),
+                                        0
+                                      )
+                                      .toFixed(2)}
+                                  </span>
+                                </div>
+                                <hr />
+                                <div className="price-addon mb-2 d-flex justify-content-between">
                                 <label>
                                   {t(
                                     "retailer.order_management.order_detail.gst"
@@ -517,7 +535,7 @@ const OrderDetail = () => {
                                     .toFixed(2)}
                                 </span>
                                 </label>
-                                <span>${order?.totalOrderGST}</span>
+                                <span>${order?.totalOrderGST.toFixed(2)}</span>
                               </div>
                               <div className="price-addon d-flex justify-content-between">
                                 <label>
@@ -539,7 +557,7 @@ const OrderDetail = () => {
                                     .toFixed(2)}
                                 </span>
                                 </label>
-                                <span>${order?.totalOrderQST}</span>
+                                <span>${order?.totalOrderQST.toFixed(2)}</span>
                               </div>
                               <div className="price-addon d-flex justify-content-between">
                                 <label>
@@ -559,23 +577,81 @@ const OrderDetail = () => {
                                     .toFixed(2)}
                                 </span>
                                 </label>
-                                <span>${order?.totalOrderGSTQST}</span>
+                                <span>${order?.totalOrderGSTQST.toFixed(2)}</span>
                               </div>
-                            </div>
-                            <div class="card-footer total-sum d-flex justify-content-between">
-                              <label>
-                                {t(
-                                  "retailer.order_management.order_detail.total"
-                                )}
-                              </label>
-                              <span>
-                                ${order?.finalPrice}
-                              </span>
+                              </div>
+                              <div class="card-footer total-sum d-flex justify-content-between">
+                                <label>
+                                  {t(
+                                    "retailer.order_management.order_detail.total"
+                                  )}
+                                </label>
+                                <span>${order?.finalPrice.toFixed(2)}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {/* ------new---- */}
+                      <div className="row mt-sm-5 mt-4 bottom-btn ">
+                        {/* <div class="col-12  d-flex gap-4 justify-content-sm-end justify-content-center"> */}
+                        <div className="col-md-8 d-flex">
+                          <div className="">
+                            <button className="btn btn-outline-black" title="Edit">
+                              <i className="fa-solid fa-pen-to-square" style={{ color: "blue" }}></i>
+                            </button>
+                            <button className="btn btn-outline-black mx-2" title="Print" onClick={handlePrint}>
+                              <i className="fa-solid fa-print" style={{ color: "#ffa500" }}></i>
+                            </button>
+                            <button className="btn btn-outline-black mx-2" title="Cancel">
+                              <i className="fa-solid fa-ban" style={{ color: "red" }}></i>
+                            </button>
+                          </div>
+
+                          <div className="download-buttons-container">
+                            <button className="btn btn-outline-black" title="Download" onClick={toggleButtons}>
+                              <i className="fa-solid fa-download" style={{ color: "#20c152" }}></i>
+                            </button>
+
+                            {isOpen && (
+                              <div className="slide-buttons">
+                                <button className="btn btn-outline-black my-1" title="PDF" onClick={handleClose}>
+                                  <i className="fa-solid fa-file-pdf" style={{ color: "red" }}></i>
+                                </button>
+                                <button className="btn btn-outline-black my-1" title="EXCEL" onClick={handleClose}>
+                                  <i className="fa-solid fa-file-excel" style={{ color: "green" }}></i>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="col-md-4 text-end">
+                          <button class="btn btn-purple" title="New Order">
+                            <i class="fa-solid fa-plus"></i>
+                          </button>
+                          <button
+                            class="btn btn-outline-secondary mx-2"
+                            title="Save"
+                          >
+                            <i
+                              class="fa-solid fa-file-arrow-down"
+                              style={{ color: "#fff" }}
+                            ></i>
+                          </button>
+                          <button
+                            class="btn btn-outline-success"
+                            title="Accept"
+                          >
+                            <i
+                              class="fa-solid fa-check"
+                              style={{ color: "#fff" }}
+                            ></i>
+                          </button>
+                        </div>
+                      </div>
+                      {/* -----end----- */}
                     </div>
+
                     {/* [/Details Tab] */}
 
                     {/* [History Tab] */}
@@ -596,7 +672,7 @@ const OrderDetail = () => {
                                 <div className="progress-inner d-flex align-items-center">
                                   <img src={newOrder} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
-                                    <div className="stepName">New Order</div>
+                                    <div className="stepName">{t("supplier.retailer_request.new_order")}</div>
                                     <span class="badge text-bg-orange">
                                       {t(
                                         "retailer.order_management.order_detail.pending"
@@ -623,7 +699,7 @@ const OrderDetail = () => {
                                   <img src={delivery} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                      Estimated Delivery at
+                                    {t("supplier.retailer_request.estemeted_dlivery_at")}
                                     </div>
                                     <p className="m-0">20 March 2021</p>
                                   </div>
@@ -637,7 +713,7 @@ const OrderDetail = () => {
                                   <img src={shipment} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                      Added to Shipment
+                                    {t("supplier.retailer_request.add_to_shipment")}
                                     </div>
                                     <p className="m-0">
                                       #1610-Buckle Disrtibution
@@ -653,7 +729,7 @@ const OrderDetail = () => {
                                   <img src={delivery} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                      Estimated Delivery at
+                                    {t("supplier.retailer_request.estemeted_dlivery_at")}
                                     </div>
                                     <p className="m-0">20 March 2021</p>
                                   </div>
@@ -666,7 +742,7 @@ const OrderDetail = () => {
                                 <div className="progress-inner d-flex align-items-center">
                                   <img src={orderSuccess} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
-                                    <div className="stepName">Status</div>
+                                    <div className="stepName">{t("supplier.retailer_request.status")}</div>
                                     <span class="badge text-bg-green">
                                       APPROVED
                                     </span>
@@ -684,16 +760,26 @@ const OrderDetail = () => {
                                 <div className="card-body">
                                   <form>
                                     <p>
-                                      Write Message Concerning Order #BW5522
+                                    {t("supplier.retailer_request.write_message_concerning")} #BW5522
                                     </p>
-                                    <div className="mb-3">
-                                      <textarea
-                                        className="form-control"
-                                        placeholder="Write message here..."
-                                      ></textarea>
+                                    <div className="row mb-3">
+                                      <div className="col-md-6">
+                                        <h5>{t("supplier.retailer_request.reailer")}</h5>
+                                        <textarea
+                                          className="form-control"
+                                          placeholder={t("supplier.retailer_request.write_message_ph")}
+                                        ></textarea>
+                                      </div>
+                                      <div className="col-md-6">
+                                        <h5>{t("supplier.retailer_request.distributor")}</h5>
+                                        <textarea
+                                          className="form-control"
+                                          placeholder={t("supplier.retailer_request.write_message_ph")}
+                                        ></textarea>
+                                      </div>
                                     </div>
                                     <button className="btn btn-purple width-auto">
-                                      Send
+                                      {t("supplier.retailer_request.send")}
                                     </button>
                                   </form>
                                 </div>
@@ -718,19 +804,57 @@ const OrderDetail = () => {
                           <div className="filter-row page-top-filter">
                             {/* [Page Filter Box] */}
                             <div className="filter-box justify-content-between w-100">
-                              <select className="btn btn-outline-black btn-sm text-start">
-                                <option>Invoice #BW5522</option>
-                                <option>Order #BW5522</option>
-                              </select>
+                              <div>
+                                <select className="btn btn-outline-black btn-sm text-start">
+                                  <option>Invoice #BW5522</option>
+                                  <option>Order #BW5522</option>
+                                </select>
+                              </div>
+                              <div>
+                                <button
+                                  className="btn btn-outline-black mx-2"
+                                  title="PDF"
+                                >
+                                  <i
+                                    class="fa-solid fa-file-pdf"
+                                    style={{ color: "red" }}
+                                  ></i>
+                                </button>
 
-                              <button
-                                type="button"
-                                class="btn btn-purple btn-sm"
-                                data-bs-toggle="modal"
-                                data-bs-target="#uploadFiles"
-                              >
-                                Upload
-                              </button>
+                                <button
+                                  className="btn btn-outline-black mx-2"
+                                  title="CSV"
+                                >
+                                  <i
+                                    class="fa-solid fa-file-csv"
+                                    style={{ color: "black" }}
+                                  ></i>
+                                </button>
+
+                                <button
+                                  className="btn btn-outline-black mx-2"
+                                  title="Excel"
+                                >
+                                  <i
+                                    class="
+                                  fa-solid fa-file-excel"
+                                    style={{ color: "green" }}
+                                  ></i>
+                                </button>
+
+                                <button
+                                  className="btn btn-outline-black"
+                                  type="upload"
+                                  title="Upload Document"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#uploadFiles"
+                                >
+                                  <i
+                                    class="fa-solid fa-upload"
+                                    style={{ color: "blue" }}
+                                  ></i>
+                                </button>
+                              </div>
                             </div>
                             {/* [/Page Filter Box] */}
                           </div>
@@ -768,7 +892,7 @@ const OrderDetail = () => {
         aria-hidden="true"
         se
       >
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-md">
           <div class="modal-content p-3">
             <div class="modal-header justify-content-start">
               <h6 class="modal-title">Upload Files</h6>
@@ -781,7 +905,23 @@ const OrderDetail = () => {
               ></button>
             </div>
             <div class="modal-body">
-              <p>Attach invoice form here</p>
+              <h6>Attach invoice form here</h6>
+              <div className="dropFile rounded-2">
+                <p>
+                  Drag and Drop files here or{" "}
+                  <a href="#" className="text-purpel">
+                    Browse
+                  </a>
+                </p>
+              </div>
+
+              <h6>Upload Files</h6>
+              <div className="dropFile rounded-2 border-0 p-3">
+                <img src={viewfile} />
+                <p className="opacity-50 mt-2">
+                  The files you’ll upload <br /> will appear here
+                </p>
+              </div>
             </div>
             <div class="modal-footer border-0 justify-content-center">
               <button
@@ -805,3 +945,4 @@ const OrderDetail = () => {
 };
 
 export default OrderDetail;
+

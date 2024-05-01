@@ -610,13 +610,14 @@ a {
             hsl(194deg 100% 50%) 100%);
 }
 
-.modal {
+.order-details .modal {
+
     button.btn-close {
         position: absolute;
-        right: 15px;
-        top: 15px;
-        background: url(../images/modal-close.svg) center no-repeat;
+        right: -27px;
+        top: 8px;
         opacity: 1;
+        background-color: #fff;
     }
 
     .modal-header {
@@ -1025,7 +1026,10 @@ table {
         }
 
     }
-
+    
+    li{
+        padding: 5px;
+    }
     .dropdown-menu {
         width: 350px;
         padding: 20px;
@@ -1781,6 +1785,11 @@ table {
     }
 }
 
+
+
+
+
+
 .inventory-manage {
     .titleName {
         font-size: 20px;
@@ -1887,26 +1896,6 @@ table {
         }
     }
 
-    .addBtn {
-        display: flex;
-        align-items: flex-end;
-        font-family: "ubuntumedium";
-        font-size: 16px;
-        color: #9370DB;
-        gap: 10px;
-        height: 100%;
-
-        i {
-            font-style: normal;
-            width: 25px;
-            height: 25px;
-            border: 2px solid #9370DB;
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 18px;
-            text-align: center;
-        }
-    }
 
     .accordion-button {
 
@@ -1938,6 +1927,7 @@ table {
 
 }
 
+
 .modal {
     .modal-title {
         font-size: 26px;
@@ -1968,6 +1958,134 @@ table {
         font-family: inherit;
     }
 }
+
+
+.product-manage .addProductBox {
+    .card {
+        background: rgba(97, 51, 189, 0.05);
+        border: 1.5px dashed rgba(35, 31, 32, 0.2);
+        border-radius: 10.9709px;
+        box-shadow: none;
+
+        .addBtn {
+            display: flex;
+            align-items: center;
+            font-family: "ubuntumedium";
+            font-size: 16px;
+            color: #9370DB;
+            gap: 10px;
+            height: 100%;
+
+            i {
+                font-style: normal;
+                width: 25px;
+                height: 25px;
+                border: 2px solid #9370DB;
+                font-weight: 600;
+                color: #9370DB;
+                font-size: 20px;
+                line-height: 18px;
+                text-align: center;
+                align-items: baseline;
+            }
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: none;
+            border: none;
+            cursor: pointer;
+            height: 36px;
+            background-color: #9370db57;
+        }
+
+        input {
+            border-radius: 5px;
+            // font-size: 18px;
+            border: 2px solid #9370DB;
+            height: 40px;
+            width: 230px;
+            padding: 0px 0px 0px 5px;
+        }
+
+        .error_msg {
+            color: red;
+            font-size: 13px;
+        }
+
+    }
+}
+
+.right-filter {
+
+    .search-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    input {
+        width: 100%;
+        border-radius: 10px;
+        padding: 7px;
+        border: 1px solid #000;
+    }
+
+    .search-btn {
+        background: transparent;
+    }
+
+    ul {
+        border: 1px solid;
+        overflow-x: hidden;
+    }
+
+    .form-check-input {
+        width: unset;
+    }
+
+    ul {
+        border: 1px solid;
+        overflow-x: hidden;
+        position: absolute;
+        background: #fff;
+        width: 92% !important;
+        font-size: 14px;
+    }
+
+}
+
+.create-order-dropdown-box {
+    input {
+        border-radius: 20px;
+        padding: 6px 10px;
+        font-weight: 700;
+        margin-top: 3px;
+        border: 1px solid #000;
+    }
+
+    input:focus-visible {
+        outline: none !important;
+    }
+
+    ul{
+        border: 1px solid black;
+        position: absolute;
+        background: rgb(255, 255, 255);
+        z-index: 999;
+        width: 100%;
+        max-width: 227px;   
+        padding: 5px; 
+    }
+}
+
 
 .inventory-manage {
     .formBx {
@@ -2393,7 +2511,7 @@ table {
         }
     }
 
-    button{
+    button {
         border: unset !important;
         background-color: unset !important;
     }
@@ -2418,7 +2536,8 @@ table {
         p {
             margin-bottom: 3px !important;
             color: #673BB7;
-            span{
+
+            span {
                 color: #6c757d;
             }
         }
@@ -2432,9 +2551,10 @@ table {
         .fa-eye {
             font-size: 2em;
             color: blue;
-          
+
         }
-        .fa-xmark{
+
+        .fa-xmark {
             font-size: 23px;
             color: #6c757d;
             cursor: pointer;
@@ -2489,15 +2609,17 @@ table {
         text-align: right;
         cursor: pointer;
     }
-   
-}
-.bottom-btn, .tab-pane {
 
-    .btn-outline-black:hover{
+}
+
+.bottom-btn,
+.tab-pane {
+
+    .btn-outline-black:hover {
         box-shadow: 0px 0px 6px rgb(99, 99, 99);
     }
 
-    .btn{
+    .btn {
         padding: 3px 15px !important;
     }
 
@@ -2520,8 +2642,9 @@ table {
         box-shadow: 0px 0px 6px #777676 !important;
     }
 }
-.shadow-none{
-    h5{
+
+.shadow-none {
+    h5 {
         color: #673BB7;
     }
 }
