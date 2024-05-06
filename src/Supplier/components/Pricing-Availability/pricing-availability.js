@@ -13,6 +13,7 @@ import {
 import useAuthInterceptor from "../../../utils/apis";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import { INVENTORY_EDIT, INVENTORY_VIEW, PRICING_EDIT, PRICING_VIEW } from "../../../Constants/constant";
 import LoadingOverlay from "react-loading-overlay";

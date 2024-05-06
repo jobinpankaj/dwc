@@ -291,6 +291,7 @@ const CreateOrder = () => {
 
   const searchingHandle = (e) => {
     setQ(e.target.value)
+    setSelectedRetailer("")
     const search = e.target.value;
     const filterData = retailerList.filter(
       (user) =>
@@ -436,6 +437,7 @@ const CreateOrder = () => {
                                    cursor: "pointer" // Optionally add cursor pointer for better UX
                                  }}
                                  onClick={()=>{
+                                  setSelectedRetailer(ele.id)
                                   setQ(ele.full_name);
                                   setFilterRetailre([]);
                                  }}>{ele.full_name}</li>

@@ -37,6 +37,8 @@ const Marketplace = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
   const [supplierProduct, setSupplierProduct] = useState([])
+  const [searchProd,setSearchProd]=useState("")
+  const [prodList,setProdList]=useState([])
 
  
 
@@ -101,6 +103,7 @@ const Marketplace = () => {
       .then((res) => {
         console.log('right data of a supplier---------------',res.data.data);
         setSupplierProduct(res.data.data);
+        setProdList(res.data.data)
         // setData(res.data.data);
         setLoading(false);
       })
@@ -220,6 +223,14 @@ const Marketplace = () => {
   };
   console.log(quantities, "que=antitired");
   console.log('getting data from marketplace',data);
+  const handleProductSearch=(e)=>{
+
+    setSearchProd(e)
+    const matchingStrings=prodList.filter(x=>{
+      return x.product_name.toLowerCase().includes(e.toLowerCase())
+    })
+    setSupplierProduct(matchingStrings)
+  }
 
   return (
     <div className="container-fluid page-wrap marketplace">
@@ -264,9 +275,11 @@ const Marketplace = () => {
                             {/* [Table Search] */}
                             <div className="search-table">
                               <div className="form-group">
-                                <input
+                              <input
                                   type="text"
                                   className="search-input"
+                                  value={searchProd}
+                                  onChange={(e)=>{handleProductSearch(e.target.value)}}
                                   placeholder={t(
                                     "retailer.market_place.listing.search_here"
                                   )}

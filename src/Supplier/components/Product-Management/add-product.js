@@ -2053,7 +2053,7 @@ const AddProduct = () => {
                               {stylesList &&
                                 stylesList.map((ele) => {
                                   return (
-                                    <option key={ele.id} value={ele.name}>
+                                    <option key={ele.id} value={ele.id}>
                                       {ele.name}
                                     </option>
                                   );

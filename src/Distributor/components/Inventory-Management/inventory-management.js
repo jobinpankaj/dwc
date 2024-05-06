@@ -15,6 +15,7 @@ import { Modal, Button } from "react-bootstrap";
 import useAuthInterceptor from "../../../utils/apis";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss"
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
 import {

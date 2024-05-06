@@ -18,6 +18,7 @@ import Map from "./map-retailer";
 import { useTranslation } from "react-i18next";
 import { Form, Modal } from "react-bootstrap";
 import modalIcon from "../../assets/images/modalIcon.png";
+import "../../../assets/scss/dashboard.scss";
 
 toast.configure();
 

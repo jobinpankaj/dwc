@@ -5,6 +5,7 @@ import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";

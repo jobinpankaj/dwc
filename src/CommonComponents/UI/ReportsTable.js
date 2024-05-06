@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { styled } from "@mui/system";
+import "../../assets/scss/dashboard.scss"
 import {
   TablePagination,
   tablePaginationClasses as classes,

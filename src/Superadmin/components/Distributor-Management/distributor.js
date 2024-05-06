@@ -13,6 +13,7 @@ import Header from "../../../CommonComponents/Header/header";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 
 toast.configure();

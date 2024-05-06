@@ -14,6 +14,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import '../../../assets/scss/dashboard.scss';
 import { NavLink } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
@@ -61,7 +62,7 @@ const OrderManagement = () => {
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const token = localStorage.getItem("supplier_accessToken");
-  const [orderList, setOrderList] = useState("");
+  const [orderList, setOrderList] = useState([]);
   const [targetId, setTargetId] = useState([]);
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -87,6 +88,15 @@ const OrderManagement = () => {
   const [toDate,setToDate]=useState("")
   const [selectedDistributor,setSelectedDistributor]=useState("")
   const [selectedRetailer,setSelectedRetailer]=useState("")
+
+  const [searchRetailerFilter, setSearchRetailerFilter] = useState("")
+  const [distinctRetailerInfoArray, setDistinctRetailerInfoArray] = useState([])
+  const [distinctList, setDistinctList] = useState([])
+  const [dropdownShowRetailer, setDropdownShowRetailer] = useState(false)
+  const [searchDistributor,setSearchDistributor]=useState("")
+  const [dropdownDistributor,setDropdownDistributor]=useState(false)
+  const [distinctDistributorList,setDistinctDistributorList]=useState([])
+  const [distinctArrayDist,SetDistinctArrayDist]=useState([])
 
   
   // New changes
@@ -431,10 +441,116 @@ const OrderManagement = () => {
     if(yearDiff>0){
       result=`${yearDiff} ${yearDiff>1 ? t("supplier.retailer_request.years_ago") : t("supplier.retailer_request.year_ago")}`;
     }
-    return result;
-
-    
+    return result; 
   }
+
+  const handleDistributorSearch=(e)=>{
+    setSelectedDistributor("")
+    setSearchDistributor(e)
+    const matchingStrings=distinctArrayDist.filter(x=>{
+      return x.user_profile.company_name.toLowerCase().includes(e.toLowerCase())
+    })
+    setDistinctDistributorList(matchingStrings)
+  }
+  const handleDistributorDropdown=(company_name,id)=>{
+    setSelectedDistributor(id)
+    setSearchDistributor(company_name)
+    setDropdownDistributor(false)
+  }
+
+  const handleRetailerFilterSearch = (e) => {
+    setSelectedRetailer("")
+    setSearchRetailerFilter(e)
+    const matchingStrings = distinctRetailerInfoArray.filter(str => {
+      const fullNameMatch = str.full_name.toLowerCase().includes(e.toLowerCase());
+      const addressMatch = str.user_main_address && str.user_main_address.address_1 && str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+      const businessMatch = str.user_profile && str.user_profile.business_name && str.user_profile.business_name.toLowerCase().includes(e.toLowerCase());
+      const groupMatch = str.user_profile && str.user_profile.group_name && str.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
+      return fullNameMatch || addressMatch || businessMatch || groupMatch;
+    });
+
+
+    setDistinctList(matchingStrings)
+
+  }
+  const handleRetailerFilterDropdown = (full_name, id) => {
+    setSearchRetailerFilter(full_name)
+    setSelectedRetailer(id)
+    setDropdownShowRetailer(false)
+  }
+  useEffect(() => {
+    // console.log("AAAData", orderList)
+    const uniqueRetailerIds = new Set();
+    const uniqueRetailerInfoArray = [];
+
+    orderList.forEach((x) => {
+      if (!uniqueRetailerIds.has(x.retailer_information.id)) {
+        uniqueRetailerIds.add(x.retailer_information.id);
+        uniqueRetailerInfoArray.push(x.retailer_information);
+      }
+    });
+    setDistinctRetailerInfoArray(uniqueRetailerInfoArray)
+    setDistinctList(uniqueRetailerInfoArray)
+    const uniqueDistributorIds = new Set();
+    const uniqueDistributorArray = [];
+
+    // Loop through orderList
+    orderList.forEach((x) => {
+
+      x.order_distributors.forEach((distributor) => {
+        if (!uniqueDistributorIds.has(distributor.distributor_info.id)) {
+          uniqueDistributorIds.add(distributor.distributor_info.id);
+          uniqueDistributorArray.push(distributor.distributor_info);
+        }
+      });
+    });
+    setDistinctDistributorList(uniqueDistributorArray)
+    SetDistinctArrayDist(uniqueDistributorArray)
+
+  }, [orderList])
+
+  useEffect(()=>{
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(`/supplier/orders?distributor_id=${selectedDistributor}&retailer_id=${selectedRetailer}&to_date=${toDate}&from_date=${fromDate}`, config)
+      .then((res) => {
+        setLoading(false);
+        if (res.data.success === true) {
+          setOrderList(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  },[selectedDistributor,selectedRetailer,toDate,fromDate])
+
+  const totalPrice = (arr) => {
+    let total = 0;
+    total = arr.reduce((accumulator, currentValue) => {
+      const currentValueTotal =
+        currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
+        0;
+      return accumulator + currentValueTotal;
+    }, 0);
+    return total?.toFixed(2);
+  };
 
   return (
     <div className="container-fluid page-wrap order-manage">
@@ -446,7 +562,7 @@ const OrderManagement = () => {
           <LoadingOverlay
             active={loading}
             spinner
-            className="h-100"
+            className=""
             styles={{
               overlay: (base) => ({
                 ...base,
@@ -473,6 +589,7 @@ const OrderManagement = () => {
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
+                          style={{background: '#ffffff'}}
                         >
                           <img src={calendar} alt="" />{" "}
                           {t("supplier.order_management.list.select_date")}
@@ -504,123 +621,69 @@ const OrderManagement = () => {
                         </ul>
                       </div>
 
-                     <div className="dropdown date-selector" style={{width:'160px'}}>
-                      <select
-                              className="form-select"
-                              value={selectedRetailer}
-                              onChange={(e) => {
-                                setSelectedRetailer(e.target.value)
-                              }}
-                            >
-                              <option value="" disabled={true} style={{padding:'10px'}}>
-                              {t("supplier.retailer_request.select_retailer")}
-                              </option>
-                              {retailerList &&
-                                retailerList.map((ele) => {
-                                  return (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.full_name}
-                                    </option>
-                                  );
-                                })}
-                            </select>
-                      </div>
-
-                      <div className="dropdown date-selector" style={{width:'160px'}}>
-                      <select
-                              className="form-select"
-                              value={selectedDistributor}
-                              onChange={(e) => {
-                                setSelectedDistributor(e.target.value)
-                              }}
-                            >
-                              <option value="" disabled={true}>
-                              {t("supplier.retailer_request.select_distributor")}
-                              </option>
-                              {distributorsList &&
-                                distributorsList.map((ele) => {
-                                  return (
-                                    <option key={ele.id} value={ele.id}>
-                                      {ele.comapany_name}
-                                    </option>
-                                  );
-                                })}
-                            </select>
-                      </div>
-
-                      {/* [Supplier] */}
-                      {/* <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
+                      <div className="dropdown date-selector">
+                        <input type="text"
+                          value={searchRetailerFilter}
+                          placeholder="Search retailer"
+                          onFocus={() => { setDropdownShowRetailer(true) }}
+                          onBlur={() => { setTimeout(() => { setDropdownShowRetailer(false) }, 200) }}
+                          onChange={(e) => { handleRetailerFilterSearch(e.target.value) }} />
+                      
+                      {distinctList.length > 0 && (
+                        <ul
+                          className={`w-100 searchListBx custom-scrollbar ${dropdownShowRetailer ? "d-block" : "d-none"
+                            }`}
                         >
-                          {t("supplier.order_management.list.supplier")}
-                        </button>
-                        <ul className="dropdown-menu py-0 overflow-hidden">
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Supplier 1
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Supplier 2
-                            </a>
-                          </li>
+                          {" "}
+                          {distinctList.map((s) => (
+                            <li
+                              className="dropdown-item pe-pointer"
+                              key={s.id}
+                              onClick={() =>
+                                handleRetailerFilterDropdown(
+                                  s.full_name,
+                                  s.id
+                                )
+                              }
+                            >
+                              {s.full_name}
+                            </li>
+                          ))}
                         </ul>
-                      </div>
-                      <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Retailer
-                        </button>
-                        <div className="DropdownRetailer">
-                          {retailerList.length > 0 && (
-                            <ul
-                              className="dropdown-menu py-0 overflow-y-auto w-full h-40px"
-                              style={{ height: "400px" }}
-                            >
-                              {retailerList.map((s) => (
-                                <li key={s.id}>
-                                  <a className="dropdown-item" href="#">
-                                    {s.full_name}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
+                      )}
                       </div>
 
                       <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
+                      <input type="text"
+                          value={searchDistributor}
+                          placeholder="Search Distributor"
+                          onFocus={() => { setDropdownDistributor(true) }}
+                          onBlur={() => { setTimeout(() => { setDropdownDistributor(false) }, 200) }}
+                          onChange={(e) => { handleDistributorSearch(e.target.value) }} />
+                        {distinctDistributorList.length > 0 && (
+                        <ul
+                          className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+                            }`}
                         >
-                          Distributor
-                        </button>
-                        <div className="DropdownRetailer">
-                          {distributorsList.length > 0 && (
-                            <ul className="dropdown-menu py-0 overflow-y-auto w-full h-40px">
-                              {distributorsList.map((s) => (
-                                <li key={s.id}>
-                                  <a className="dropdown-item" href="#">
-                                    {s.comapany_name}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      </div> */}
+                          {" "}
+                          {distinctDistributorList.map((s) => (
+                            <li
+                              className="dropdown-item pe-pointer"
+                              key={s.id}
+                              onClick={() =>
+                                handleDistributorDropdown(
+                                  s.user_profile.company_name,
+                                  s.id
+                                )
+                              }
+                            >
+                              {s.user_profile.company_name}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      </div>
                     </div>
                     {/* [/Page Filter Box] */}
 
@@ -1060,7 +1123,13 @@ const OrderManagement = () => {
                                               : "N/A"
                                             : "N/A"}
                                         </td>
-                                        <td>TBD</td>
+                                        <td>{ele.retailer_information.user_profile
+                                            ? ele.retailer_information
+                                                .user_profile.group_name
+                                              ? ele.retailer_information
+                                                  .user_profile.group_name
+                                              : "N/A"
+                                            : "N/A"}</td>
                                         <td>
                                           {ele.status === "Approved" ? (
                                             <span className="badge text-bg-green">
@@ -1086,14 +1155,13 @@ const OrderManagement = () => {
                                         </td>
 
                                         <td>
-                                          {ele.total_quantity
-                                            ? ele.total_quantity
-                                            : "N/A"}
+                                        {ele?.items.reduce(
+                                      (acc, item) => acc + item?.quantity,
+                                      0
+                                    )}
                                         </td>
                                         <td>
-                                          {ele.total_amount
-                                            ? ele.total_amount
-                                            : "N/A"}
+                                        {totalPrice(ele?.items)}
                                         </td>
                                         <td>
                                           {ele.order_distributors[0] &&
@@ -1289,7 +1357,7 @@ const OrderManagement = () => {
         }}
       >
         <Modal.Header>
-          <h5 class="modal-title text-purpal">Change Order Status</h5>
+          <h5 class="modal-title text-purpal">{t( "supplier.order_management.change_status.change_status_h")}</h5>
           <button
             type="button"
             class="btn-close text-purpal"
@@ -1298,9 +1366,9 @@ const OrderManagement = () => {
           ></button>
         </Modal.Header>
         <Modal.Body>
-          <p>{`Total number of selected orders : ${targetId.length}`}</p>
+          <p>{`${t( "supplier.order_management.change_status.order_selected")} : ${targetId.length}`}</p>
           <div className="border-purple p-3 rounded-2">
-            <div>Select Status</div>
+            <div>{t( "supplier.order_management.change_status.select_status")}</div>
             <div className="mt-2">
               <div className="input-group">
                 <select
@@ -1311,10 +1379,10 @@ const OrderManagement = () => {
                     setStatusError("");
                   }}
                 >
-                  <option value="">Select status</option>
-                  <option value="1">Approved</option>
-                  <option value="2">On-hold</option>
-                  <option value="5">Cancelled</option>
+                  <option value="">{t( "supplier.order_management.change_status.select_status")}</option>
+                  <option value="1">{t( "supplier.order_management.change_status.approved")}</option>
+                  <option value="2">{t( "supplier.order_management.change_status.on_hold")}</option>
+                  <option value="5">{t( "supplier.order_management.change_status.cancelled")}</option>
                 </select>
               </div>
               {statusError === "" ? (
@@ -1328,7 +1396,7 @@ const OrderManagement = () => {
             className="border-purple p-3 mt-3 rounded-2"
             style={{ display: selectedStatus === "1" ? "block" : "none" }}
           >
-            <div>Delivery Date</div>
+            <div>{t( "supplier.order_management.change_status.delivery_date")}</div>
             <div className="mt-2">
               <div className="input-group">
                 <DatePicker
@@ -1362,14 +1430,14 @@ const OrderManagement = () => {
               setShow(false);
             }}
           >
-            Cancel
+            {t( "supplier.order_management.change_status.cancel")}
           </button>
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
             onClick={() => handleUpdateStatus()}
           >
-            Save
+            {t( "supplier.order_management.change_status.save")}
           </button>
         </Modal.Footer>
       </Modal>

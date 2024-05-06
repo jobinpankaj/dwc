@@ -4,6 +4,7 @@ import filter from "../../assets/images/filter-icon.png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { useNavigate } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { Oval } from "react-loader-spinner";
