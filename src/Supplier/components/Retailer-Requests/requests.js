@@ -17,6 +17,7 @@ import LoadingOverlay from "react-loading-overlay";
 import { Button } from "react-admin";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import { GROUP_EDIT, GROUP_VIEW } from "../../../Constants/constant";
+import "../../../assets/scss/dashboard.scss";
 
 toast.configure();
 
@@ -485,7 +486,7 @@ const Requests = () => {
                                               </span>
                                             </>
                                           ) : (
-                                            "N/A"
+                                            null
                                           )}
                                         </td>
                                       </tr>

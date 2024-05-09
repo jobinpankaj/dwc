@@ -1334,6 +1334,17 @@
         "table_col2": "PRIX",
         "table_col3": "QUANTITÉ",
         "table_col4": "TOTAL"
+      },
+      "change_status":{
+        "change_status_h": "Modifier le statut de la commande",
+        "order_selected": "Nombre total de commandes sélectionnées",
+        "select_status": "Sélectionnez le statut",
+        "approved": "Approuvé",
+        "on_hold": "En attente",
+        "cancelled": "Annulé",
+        "cancel":"Annuler",
+        "save": "Sauvegarder",
+        "delivery_date": "La date de livraison"
       }
     },
     "inventory_management": {
@@ -2429,7 +2440,7 @@
         "invoice_status": "Statut de la facture",
         "name": "Nom",
         "phone_number": "No Tél.",
-        "contact_email": "Email du contact",
+        "contact_email": "Courriel",
         "consumption": "Consommation",
         "products": "Des produits",
         "sub_total_2": "Total",
@@ -2438,7 +2449,9 @@
         "on": "sur",
         "gst": "TPS",
         "qst": "TVQ",
-        "pending": "En attente"
+        "pending": "En attente",
+        "non_commercial":"Nom commercial",
+        "distributor_":"Distributeur"
       }
     },
     "dashboard": {

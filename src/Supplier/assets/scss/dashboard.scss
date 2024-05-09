@@ -1026,10 +1026,11 @@ table {
         }
 
     }
-    
-    li{
+
+    li {
         padding: 5px;
     }
+
     .dropdown-menu {
         width: 350px;
         padding: 20px;
@@ -2075,14 +2076,14 @@ table {
         outline: none !important;
     }
 
-    ul{
+    ul {
         border: 1px solid black;
         position: absolute;
         background: rgb(255, 255, 255);
         z-index: 999;
         width: 100%;
-        max-width: 227px;   
-        padding: 5px; 
+        max-width: 227px;
+        padding: 5px;
     }
 }
 
@@ -2647,4 +2648,26 @@ table {
     h5 {
         color: #673BB7;
     }
+}
+
+.date-selector {
+
+    input {
+        position: relative;
+        padding: 5px 10px;
+        border-radius: 20px;
+        border: 1px solid #c1c1c1;
+    }
+
+    ul {
+        position: absolute;
+        background: #fff;
+        padding: 5px;
+        border: 1px solid;
+    }
+   input:focus-visible {
+        outline: 1px solid !important;
+    }
+    
+
 }

@@ -1339,6 +1339,17 @@
         "table_col2": "PRICE",
         "table_col3": "QUANTITY",
         "table_col4": "SUBTOTAL"
+      },
+      "change_status":{
+        "change_status_h": "Change Order Status",
+        "order_selected": "Total number of selected orders",
+        "select_status": "Select Status",
+        "approved": "Approved",
+        "on_hold": "On-hold",
+        "cancelled": "Cancelled",
+        "cancel":"Cancel",
+        "save": "Save",
+        "delivery_date": "Delivery Date"
       }
     },
     "inventory_management": {
@@ -2440,7 +2451,9 @@
         "on": "on",
         "gst": "GST",
         "qst": "QST",
-        "pending": "Pending"
+        "pending": "Pending",
+        "non_commercial":"Business Name",
+        "distributor_":"Order Disrtibuted by"
       }
     },
     "dashboard": {

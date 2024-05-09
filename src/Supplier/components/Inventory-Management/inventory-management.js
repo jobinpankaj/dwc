@@ -16,6 +16,7 @@ import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import useAuthInterceptor from "../../../utils/apis";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import {
   INVENTORY_EDIT,
@@ -1052,7 +1053,7 @@ const SupplierInventoryManagement = () => {
                                                               PRICING_EDIT
                                                             )
                                                           ? navigate(
-                                                              `/supplier/inventory-management/configure-pricing/${ele.product_id}`,
+                                                              `/supplier/inventory-management/configure-pricing/${ele.product.id}`,
                                                               {
                                                                 state: {
                                                                   product_name:
@@ -1103,7 +1104,7 @@ const SupplierInventoryManagement = () => {
                                                               INVENTORY_EDIT
                                                             )
                                                           ? navigate(
-                                                              `/supplier/inventory-management/configure-availability/${ele.product_id}`,
+                                                              `/supplier/inventory-management/configure-availability/${ele.product.id}`,
                                                               {
                                                                 state: {
                                                                   product_name:
@@ -1146,7 +1147,7 @@ const SupplierInventoryManagement = () => {
                                                           PRODUCT_VIEW
                                                         )
                                                           ? navigate(
-                                                              `/supplier/product-management/view-product/${ele.product_id}`
+                                                              `/supplier/product-management/view-product/${ele.product.id}`
                                                             )
                                                           : toast.warn(
                                                               "You do not have permission to view product.",

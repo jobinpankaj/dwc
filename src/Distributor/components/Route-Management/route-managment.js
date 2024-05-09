@@ -11,6 +11,7 @@ import {
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import { Oval } from "react-loader-spinner";

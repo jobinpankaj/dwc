@@ -1844,3 +1844,15 @@ textarea.addNoteTextarea {
   }
 }
 
+.base-TablePagination-actions button:disabled {
+  background: #7c0a958c;
+  color: #c1c1c1;
+  border: none;
+  border-radius: 5px;
+}
+.base-TablePagination-actions button {
+  background: #673BB7;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}

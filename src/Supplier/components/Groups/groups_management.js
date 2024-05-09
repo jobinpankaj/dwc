@@ -8,7 +8,8 @@ import {
     TablePagination,
     tablePaginationClasses as classes,
   } from "@mui/base/TablePagination";
-import '../../assets/scss/dashboard.scss'
+import '../../assets/scss/dashboard.scss';
+import "../../../assets/scss/dashboard.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { hasPermission } from "../../../CommonComponents/commonMethods";

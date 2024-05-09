@@ -10,6 +10,7 @@ import delivered from "../../assets/images/delivered(1).png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { useState } from "react";
 import { useEffect } from "react";
 import useAuthInterceptor from "../../../utils/apis";

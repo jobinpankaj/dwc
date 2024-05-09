@@ -11,6 +11,7 @@ import filter from "../../assets/images/filter-icon.png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss"
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

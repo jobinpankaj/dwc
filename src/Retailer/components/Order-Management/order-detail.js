@@ -16,11 +16,15 @@ import { Oval } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { useReactToPrint } from "react-to-print";
+import html2pdf from 'html2pdf.js';
+import * as XLSX from "xlsx";
+
 
 const OrderDetail = () => {
   const componentRef = useRef();
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
+  const language = localStorage.getItem("i18nextLng");
   const navigate = useNavigate();
   const token = localStorage.getItem("retailer_accessToken");
   const [showSidebar, setShowSidebar] = useState(false);
@@ -28,23 +32,91 @@ const OrderDetail = () => {
   const [order, setOrder] = useState();
   const [isOpen, setIsOpen] = useState(false);
 
+  let subtotal1 = 0, subtotal2 = 0 ,gst = 0 , qst = 0 , grandtotal = 0 , quantity =0;
+  // ---------uplode----doc-----
 
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const handleFileSelect = (event) => {
+    const files = event.target.files;
+    const allowedFileTypes = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "text/csv",
+    ];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileType = file.type;
+
+      if (allowedFileTypes.includes(fileType)) {
+        setUploadedFiles((prevFiles) => [...prevFiles, file]);
+      } else {
+        alert("Only PDF, Excel, and CSV files are allowed.");
+      }
+    }
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    const allowedFileTypes = [
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "text/csv",
+    ];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const fileType = file.type;
+
+      if (allowedFileTypes.includes(fileType)) {
+        setUploadedFiles((prevFiles) => [...prevFiles, file]);
+      } else {
+        alert("Only PDF, Excel, and CSV files are allowed.");
+      }
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  const handleRemoveFile = (index) => {
+    setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleAttachFile = () => {
+    // Code to save or process the uploaded files
+    // For example, you can send the files to a server or perform any other action
+    console.log("Uploaded files:", uploadedFiles);
+    setUploadedFiles([]); // Clear files after saving
+  };
+
+  // -----end--------------
+
+  // ----download--toggleButtons------
   const toggleButtons = () => {
     setIsOpen(!isOpen);
   };
   const handleClose = () => {
     setIsOpen(false); // Close the slide-buttons
   };
+  // -----end------
 
-
+  // ----print-----
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  // ----end-----
+
+  // -----sidebar---data---
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
   const params = useParams();
+  // -----end---------
 
   useEffect(() => {
     setLoading(true);
@@ -70,6 +142,101 @@ const OrderDetail = () => {
         }
       });
   }, [token, params.id]);
+
+  const generateFileName = (extension) => {
+    const timestamp = Date.now();
+
+    const randomString = Math.random().toString(36).substring(2, 7);
+    return `${timestamp}_${randomString}.${extension}`;
+  };
+
+  //----download PDF------
+  const handlePDFDownload = () => {
+    const element = document.getElementById("printItem");
+    const fileName = generateFileName("pdf"); // Generate a unique file name with .pdf extension
+    html2pdf().from(element).toPdf().save(fileName);
+    setIsOpen(false); // Close the slide-buttons
+  };
+
+  //-----download excel--------
+  const handleExcelDownload = () => {
+    const wb = XLSX.utils.book_new();
+
+    // Create a new worksheet
+    const ws = XLSX.utils.aoa_to_sheet([
+      ["Item", "Price Per Unit", "Quantity", "Subtotal"],
+    ]);
+
+    // Add table data to the worksheet
+    order.items.forEach((item) => {
+      XLSX.utils.sheet_add_aoa(
+        ws,
+        [
+          [
+            item.product.product_name,
+            `$${(item.product.pricing.unit_price * item.quantity).toFixed(2)}`,
+            item.quantity,
+            `$${item.sub_total}`,
+          ],
+        ],
+        { origin: -1 }
+      );
+    });
+
+    // Add additional content to the worksheet
+    const additionalContentData = [
+      [],
+      [],
+      ["", "", "Number of Products", `${order.items.length}`],
+      ["", "", "Deposits", `$${order.totalOrderProductDeposit}`],
+      [
+        "",
+        "",
+        "Sub-Total",
+        order.items
+          .reduce((total, item) => total + parseFloat(item.sub_total), 0)
+          .toFixed(2),
+      ],
+      ["", "", "GST", `$${order.totalOrderGST.toFixed(2)}`],
+      ["", "", "QST", `$${order.totalOrderQST.toFixed(2)}`],
+      ["", "", "GST-QST", `$${order.totalOrderGSTQST.toFixed(2)}`],
+      ["", "", "Total", `$${order.finalPrice.toFixed(2)}`],
+    ];
+
+    additionalContentData.forEach((row) => {
+      XLSX.utils.sheet_add_aoa(ws, [row], { origin: -1 });
+    });
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Generate a binary string from the workbook
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+
+    // Convert string to ArrayBuffer
+    const buf = new ArrayBuffer(wbout.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < wbout.length; i++) {
+      view[i] = wbout.charCodeAt(i) & 0xff;
+    }
+
+    // Create a Blob object
+    const blob = new Blob([buf], { type: "application/octet-stream" });
+
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = generateFileName("xlsx");
+
+    // Append the link to the body and click it programmatically
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+    setIsOpen(false); // Close the slide-buttons
+  };
+
   return (
     <div class="container-fluid page-wrap order-details">
       <div class="row height-inherit">
@@ -151,8 +318,11 @@ const OrderDetail = () => {
                           <div class="card shadow-none">
                             <div class="card-body p-0">
                               <div class="row m-0">
-                                <div class="col-sm-3 d-flex justify-content-center align-items-center p-3 border-end">
-                                  <img src={logoDark} className="img-fluid" />
+                                <div class="col-sm-3 text-center p-3 border-end">
+                                  <img
+                                    src={logoDark}
+                                    style={{ width: "50%" }}
+                                  />
                                 </div>
                                 <div class="col-sm-9 p-0">
                                   {/* [Form 1] */}
@@ -198,7 +368,16 @@ const OrderDetail = () => {
                                             </label>
                                             <input
                                               type="text"
-                                              value={order && order.status}
+                                              value={
+                                                order &&
+                                                (language == "en"
+                                                  ? order.status
+                                                  : order.status == "On Hold"
+                                                  ? "En attente"
+                                                  : order.status == "Approved"
+                                                  ? "Approuvé"
+                                                  : "Annulé")
+                                              }
                                               readOnly
                                               className="form-control"
                                             />
@@ -314,7 +493,9 @@ const OrderDetail = () => {
                                           </div>
                                           <div className="col-6 col-sm-3">
                                             <label className="form-label">
-                                              Business Name
+                                              {t(
+                                                "retailer.order_management.order_detail.non_commercial"
+                                              )}
                                             </label>
                                             <input
                                               type="text"
@@ -329,7 +510,9 @@ const OrderDetail = () => {
                                           </div>
                                           <div className="col-6 col-sm-3">
                                             <label className="form-label">
-                                              order Disrtibuted by
+                                              {t(
+                                                "retailer.order_management.order_detail.distributor_"
+                                              )}
                                             </label>
                                             <input
                                               type="text"
@@ -388,8 +571,15 @@ const OrderDetail = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {order &&
-                                      order.items.map((item) => (
+                                  {order &&
+                                      order.items.map((item) => {
+                                        subtotal1 += parseFloat(item.sub_total)
+                                        subtotal2 = (parseFloat(subtotal1)+ 9).toFixed(2);
+                                        gst = (subtotal1/20).toFixed(2);
+                                        qst = ((subtotal1*9.975)/100).toFixed(2);
+                                        grandtotal = parseFloat(subtotal2) + parseFloat(gst) + parseFloat(qst);
+                                        quantity +=parseInt(item.quantity);
+                                        return (
                                         <tr>
                                           <td>
                                             <div class="prodInfo d-flex">
@@ -419,10 +609,8 @@ const OrderDetail = () => {
                                               <div className="mrp">
                                                 {console.log(item, "item")}$
                                                 {(
-                                                  item?.product?.pricing
-                                                    ?.unit_price *
-                                                  item?.quantity
-                                                ).toFixed(2)}
+                                                  item.product.pricing.price
+                                                )}
                                               </div>
                                               {/* <div className="old-price">
                                               
@@ -457,7 +645,7 @@ const OrderDetail = () => {
                                             </div>
                                           </td>
                                         </tr>
-                                      ))}
+                                    )})}
                                   </tbody>
                                 </table>
                               </div>
@@ -470,20 +658,14 @@ const OrderDetail = () => {
                               <div className="card-body p-3">
                                 <div className="price-breakage mb-2 d-flex justify-content-between">
                                   <label>
-                                    {order?.items.length}{" "}
+                                  {quantity}{" "}
                                     {t(
                                       "retailer.order_management.order_detail.products"
                                     )}
                                     {/* (22.704L) */}:
                                   </label>
                                   <span>
-                                    {order?.items
-                                      .reduce(
-                                        (total, item) =>
-                                          total + parseFloat(item.sub_total),
-                                        0
-                                      )
-                                      .toFixed(2)}
+                                  ${(subtotal1).toFixed(2)}
                                   </span>
                                 </div>
                                 <div className="price-breakage mb-2 d-flex justify-content-between">
@@ -504,81 +686,57 @@ const OrderDetail = () => {
                                     )}
                                   </label>
                                   <span>
-                                    $
-                                    {order?.items
-                                      .reduce(
-                                        (total, item) =>
-                                          total + parseFloat(item.sub_total),
-                                        0
-                                      )
-                                      .toFixed(2)}
+                                  ${subtotal2}
                                   </span>
                                 </div>
                                 <hr />
                                 <div className="price-addon mb-2 d-flex justify-content-between">
-                                <label>
-                                  {t(
-                                    "retailer.order_management.order_detail.gst"
-                                  )}{" "}
-                                  (5%){" "}
-                                  {t(
-                                    "retailer.order_management.order_detail.on"
-                                  )}{" "}
+                                  <label>
+                                    {t(
+                                      "retailer.order_management.order_detail.gst"
+                                    )}{" "}
+                                    (5%){" "}
+                                    {t(
+                                      "retailer.order_management.order_detail.on"
+                                    )}{" "}
+                                    <span>
+                                    ${(subtotal1).toFixed(2)}
+                                    </span>
+                                  </label>
+
+                                  <span>${gst}</span>
+                                </div>
+                                <div className="price-addon d-flex justify-content-between">
+                                  <label>
+                                    {t(
+                                      "retailer.order_management.order_detail.qst"
+                                    )}{" "}
+                                    (9.975%){" "}
+                                    {t(
+                                      "retailer.order_management.order_detail.on"
+                                    )}{" "}
+                                    <span>
+
+                                      ${(subtotal1).toFixed(2)}
+                                    </span>
+                                  </label>
+                                  <span>${qst}</span>
+
+                                </div>
+                                <div className="price-addon d-flex justify-content-between">
+                                  <label>
+                                    GST-QST (14.77%){" "}
+                                    {t(
+                                      "retailer.order_management.order_detail.on"
+                                    )}{" "}
+                                    <span>
+                                      ${(subtotal1).toFixed(2)}
+                                    </span>
+                                  </label>
                                   <span>
-                                  $
-                                  {order?.items
-                                    .reduce(
-                                      (total, item) =>
-                                        total + parseFloat(item.sub_total),
-                                      0
-                                    )
-                                    .toFixed(2)}
-                                </span>
-                                </label>
-                                <span>${order?.totalOrderGST.toFixed(2)}</span>
-                              </div>
-                              <div className="price-addon d-flex justify-content-between">
-                                <label>
-                                  {t(
-                                    "retailer.order_management.order_detail.qst"
-                                  )}{" "}
-                                  (9.975%){" "}
-                                  {t(
-                                    "retailer.order_management.order_detail.on"
-                                  )}{" "}
-                                  <span>
-                                  $
-                                  {order?.items
-                                    .reduce(
-                                      (total, item) =>
-                                        total + parseFloat(item.sub_total),
-                                      0
-                                    )
-                                    .toFixed(2)}
-                                </span>
-                                </label>
-                                <span>${order?.totalOrderQST.toFixed(2)}</span>
-                              </div>
-                              <div className="price-addon d-flex justify-content-between">
-                                <label>
-                                  GST-QST{" "}
-                                  (14.77%){" "}
-                                  {t(
-                                    "retailer.order_management.order_detail.on"
-                                  )}{" "}
-                                  <span>
-                                  $
-                                  {order?.items
-                                    .reduce(
-                                      (total, item) =>
-                                        total + parseFloat(item.sub_total),
-                                      0
-                                    )
-                                    .toFixed(2)}
-                                </span>
-                                </label>
-                                <span>${order?.totalOrderGSTQST.toFixed(2)}</span>
-                              </div>
+                                  <span>${(parseFloat(gst)+parseFloat(qst)).toFixed(2)}</span>
+                                  </span>
+                                </div>
                               </div>
                               <div class="card-footer total-sum d-flex justify-content-between">
                                 <label>
@@ -586,7 +744,7 @@ const OrderDetail = () => {
                                     "retailer.order_management.order_detail.total"
                                   )}
                                 </label>
-                                <span>${order?.finalPrice.toFixed(2)}</span>
+                                <span>${grandtotal}</span>
                               </div>
                             </div>
                           </div>
@@ -597,56 +755,71 @@ const OrderDetail = () => {
                         {/* <div class="col-12  d-flex gap-4 justify-content-sm-end justify-content-center"> */}
                         <div className="col-md-8 d-flex">
                           <div className="">
-                            <button className="btn btn-outline-black" title="Edit">
-                              <i className="fa-solid fa-pen-to-square" style={{ color: "blue" }}></i>
+                            <button
+                              className="btn btn-outline-black mx-2"
+                              title="Print"
+                              onClick={handlePrint}
+                            >
+                              <i
+                                className="fa-solid fa-print"
+                                style={{ color: "#ffa500" }}
+                              ></i>
                             </button>
-                            <button className="btn btn-outline-black mx-2" title="Print" onClick={handlePrint}>
-                              <i className="fa-solid fa-print" style={{ color: "#ffa500" }}></i>
-                            </button>
-                            <button className="btn btn-outline-black mx-2" title="Cancel">
-                              <i className="fa-solid fa-ban" style={{ color: "red" }}></i>
+                            <button
+                              className="btn btn-outline-black mx-2"
+                              title="Cancel"
+                              onClick={() =>
+                                order &&
+                                (order.status.toLowerCase() === "pending" ||
+                                  order.status.toLowerCase() === "on hold")
+                                  ? navigate(`/retailer/supplier-list`)
+                                  : navigate(`/retailer/order-management`)
+                              }
+                            >
+                              <i
+                                class="fa-solid fa-ban"
+                                style={{ color: "red" }}
+                              ></i>
                             </button>
                           </div>
 
                           <div className="download-buttons-container">
-                            <button className="btn btn-outline-black" title="Download" onClick={toggleButtons}>
-                              <i className="fa-solid fa-download" style={{ color: "#20c152" }}></i>
+                            <button
+                              className="btn btn-outline-black"
+                              title="Download"
+                              onClick={toggleButtons}
+                            >
+                              <i
+                                className="fa-solid fa-download"
+                                style={{ color: "#20c152" }}
+                              ></i>
                             </button>
 
                             {isOpen && (
                               <div className="slide-buttons">
-                                <button className="btn btn-outline-black my-1" title="PDF" onClick={handleClose}>
-                                  <i className="fa-solid fa-file-pdf" style={{ color: "red" }}></i>
+                                <button
+                                  className="btn btn-outline-black my-1"
+                                  title="PDF"
+                                  onClick={handlePDFDownload}
+                                >
+                                  <i
+                                    className="fa-solid fa-file-pdf"
+                                    style={{ color: "red" }}
+                                  ></i>
                                 </button>
-                                <button className="btn btn-outline-black my-1" title="EXCEL" onClick={handleClose}>
-                                  <i className="fa-solid fa-file-excel" style={{ color: "green" }}></i>
+                                <button
+                                  className="btn btn-outline-black my-1"
+                                  title="EXCEL"
+                                  onClick={handleExcelDownload}
+                                >
+                                  <i
+                                    className="fa-solid fa-file-excel"
+                                    style={{ color: "green" }}
+                                  ></i>
                                 </button>
                               </div>
                             )}
                           </div>
-                        </div>
-                        <div className="col-md-4 text-end">
-                          <button class="btn btn-purple" title="New Order">
-                            <i class="fa-solid fa-plus"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-secondary mx-2"
-                            title="Save"
-                          >
-                            <i
-                              class="fa-solid fa-file-arrow-down"
-                              style={{ color: "#fff" }}
-                            ></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-success"
-                            title="Accept"
-                          >
-                            <i
-                              class="fa-solid fa-check"
-                              style={{ color: "#fff" }}
-                            ></i>
-                          </button>
                         </div>
                       </div>
                       {/* -----end----- */}
@@ -672,7 +845,9 @@ const OrderDetail = () => {
                                 <div className="progress-inner d-flex align-items-center">
                                   <img src={newOrder} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
-                                    <div className="stepName">{t("supplier.retailer_request.new_order")}</div>
+                                    <div className="stepName">
+                                      {t("supplier.retailer_request.new_order")}
+                                    </div>
                                     <span class="badge text-bg-orange">
                                       {t(
                                         "retailer.order_management.order_detail.pending"
@@ -699,7 +874,9 @@ const OrderDetail = () => {
                                   <img src={delivery} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                    {t("supplier.retailer_request.estemeted_dlivery_at")}
+                                      {t(
+                                        "supplier.retailer_request.estemeted_dlivery_at"
+                                      )}
                                     </div>
                                     <p className="m-0">20 March 2021</p>
                                   </div>
@@ -713,7 +890,9 @@ const OrderDetail = () => {
                                   <img src={shipment} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                    {t("supplier.retailer_request.add_to_shipment")}
+                                      {t(
+                                        "supplier.retailer_request.add_to_shipment"
+                                      )}
                                     </div>
                                     <p className="m-0">
                                       #1610-Buckle Disrtibution
@@ -729,7 +908,9 @@ const OrderDetail = () => {
                                   <img src={delivery} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
                                     <div className="stepName">
-                                    {t("supplier.retailer_request.estemeted_dlivery_at")}
+                                      {t(
+                                        "supplier.retailer_request.estemeted_dlivery_at"
+                                      )}
                                     </div>
                                     <p className="m-0">20 March 2021</p>
                                   </div>
@@ -742,7 +923,9 @@ const OrderDetail = () => {
                                 <div className="progress-inner d-flex align-items-center">
                                   <img src={orderSuccess} className="me-3" />
                                   <div className="stepMeta d-flex align-items-start flex-column">
-                                    <div className="stepName">{t("supplier.retailer_request.status")}</div>
+                                    <div className="stepName">
+                                      {t("supplier.retailer_request.status")}
+                                    </div>
                                     <span class="badge text-bg-green">
                                       APPROVED
                                     </span>
@@ -760,21 +943,36 @@ const OrderDetail = () => {
                                 <div className="card-body">
                                   <form>
                                     <p>
-                                    {t("supplier.retailer_request.write_message_concerning")} #BW5522
+                                      {t(
+                                        "supplier.retailer_request.write_message_concerning"
+                                      )}{" "}
+                                      #BW5522
                                     </p>
                                     <div className="row mb-3">
                                       <div className="col-md-6">
-                                        <h5>{t("supplier.retailer_request.reailer")}</h5>
+                                        <h5>
+                                          {t(
+                                            "supplier.retailer_request.reailer"
+                                          )}
+                                        </h5>
                                         <textarea
                                           className="form-control"
-                                          placeholder={t("supplier.retailer_request.write_message_ph")}
+                                          placeholder={t(
+                                            "supplier.retailer_request.write_message_ph"
+                                          )}
                                         ></textarea>
                                       </div>
                                       <div className="col-md-6">
-                                        <h5>{t("supplier.retailer_request.distributor")}</h5>
+                                        <h5>
+                                          {t(
+                                            "supplier.retailer_request.distributor"
+                                          )}
+                                        </h5>
                                         <textarea
                                           className="form-control"
-                                          placeholder={t("supplier.retailer_request.write_message_ph")}
+                                          placeholder={t(
+                                            "supplier.retailer_request.write_message_ph"
+                                          )}
                                         ></textarea>
                                       </div>
                                     </div>
@@ -892,47 +1090,107 @@ const OrderDetail = () => {
         aria-hidden="true"
         se
       >
-        <div class="modal-dialog modal-dialog-centered modal-md">
-          <div class="modal-content p-3">
-            <div class="modal-header justify-content-start">
-              <h6 class="modal-title">Upload Files</h6>
+        <div className="modal-dialog modal-dialog-centered modal-md">
+          <div className="modal-content p-3">
+            <div className="modal-header justify-content-start">
+              <h6 className="modal-title">Upload Files</h6>
               <hr />
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <h6>Attach invoice form here</h6>
-              <div className="dropFile rounded-2">
+              <div
+                className="dropFile rounded-2"
+                id="dropArea"
+                onClick={() => document.getElementById("fileInput").click()}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                style={{ cursor: "pointer" }}
+              >
                 <p>
                   Drag and Drop files here or{" "}
                   <a href="#" className="text-purpel">
                     Browse
                   </a>
                 </p>
+                <input
+                  type="file"
+                  id="fileInput"
+                  accept=".pdf,.xlsx,.csv"
+                  style={{ display: "none" }}
+                  onChange={handleFileSelect}
+                  onClick={(event) => {
+                    event.target.value = null;
+                  }} // Clear file selection
+                />
               </div>
-
               <h6>Upload Files</h6>
               <div className="dropFile rounded-2 border-0 p-3">
-                <img src={viewfile} />
-                <p className="opacity-50 mt-2">
-                  The files you’ll upload <br /> will appear here
-                </p>
+                {!uploadedFiles.length && (
+                  <div className="empty-file">
+                    <img src={viewfile} />
+                    <p className="opacity-50 mt-2">
+                      The files you’ll upload <br /> will appear here
+                    </p>
+                  </div>
+                )}
+                {uploadedFiles.map((file, index) => (
+                  <div
+                    className="card user-card uploded-doc height-100"
+                    key={index}
+                    style={{
+                      marginBottom:
+                        index !== uploadedFiles.length - 1 ? "5px" : "0",
+                    }}
+                  >
+                    <div
+                      className="card-body d-flex p-0"
+                      style={{ background: "#c1c1c1", fontSize: "12px" }}
+                    >
+                      <div className="row px-2">
+                        <div className="col">
+                          <p className="file-name">{file.name}</p>
+                        </div>
+                        <div className="col-auto">
+                          <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() => handleRemoveFile(index)}
+                            aria-label="Remove"
+                          ></button>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <p className="file-size">
+                            {(file.size / 1024).toFixed(2)} KB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-            <div class="modal-footer border-0 justify-content-center">
+            <div className="modal-footer border-0 justify-content-center">
               <button
                 type="button"
-                class="btn btn-outline-black width-auto"
+                className="btn btn-outline-black width-auto"
                 data-bs-dismiss="modal"
               >
                 Cancel
               </button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-purple width-auto">
+              <button
+                type="button"
+                className="btn btn-purple width-auto"
+                onClick={handleAttachFile}
+              >
                 Attach File
               </button>
             </div>
@@ -945,4 +1203,3 @@ const OrderDetail = () => {
 };
 
 export default OrderDetail;
-

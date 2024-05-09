@@ -369,6 +369,17 @@ a {
   .modal-body {
     font-size: 16px;
   }
+
+  .modal-dialog .uploded-doc {
+    button.btn-close {
+        position: absolute;
+        right: -27px;
+        top: 0px;
+        opacity: 1;
+        background-color: #fff;
+    }
+}
+
 }
 
 .bg-purple {
@@ -859,6 +870,9 @@ table {
 
           &.text-bg-light {
             background-color: lighten($purple, 0.3) !important;
+            color: #fff !important;
+            padding: 5px 10px;
+            font-weight: 200;
           }
         }
       }
