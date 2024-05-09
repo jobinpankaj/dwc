@@ -14,7 +14,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
-import '../../../assets/scss/dashboard.scss';
+import "../../../assets/scss/dashboard.scss";
 import { NavLink } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
@@ -84,21 +84,22 @@ const OrderManagement = () => {
   const [render, setRender] = useState(false);
   const [distributorsList, setDistributorsList] = useState("");
 
-  const [fromDate,setFromDate]=useState("")
-  const [toDate,setToDate]=useState("")
-  const [selectedDistributor,setSelectedDistributor]=useState("")
-  const [selectedRetailer,setSelectedRetailer]=useState("")
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [selectedDistributor, setSelectedDistributor] = useState("");
+  const [selectedRetailer, setSelectedRetailer] = useState("");
 
-  const [searchRetailerFilter, setSearchRetailerFilter] = useState("")
-  const [distinctRetailerInfoArray, setDistinctRetailerInfoArray] = useState([])
-  const [distinctList, setDistinctList] = useState([])
-  const [dropdownShowRetailer, setDropdownShowRetailer] = useState(false)
-  const [searchDistributor,setSearchDistributor]=useState("")
-  const [dropdownDistributor,setDropdownDistributor]=useState(false)
-  const [distinctDistributorList,setDistinctDistributorList]=useState([])
-  const [distinctArrayDist,SetDistinctArrayDist]=useState([])
+  const [searchRetailerFilter, setSearchRetailerFilter] = useState("");
+  const [distinctRetailerInfoArray, setDistinctRetailerInfoArray] = useState(
+    []
+  );
+  const [distinctList, setDistinctList] = useState([]);
+  const [dropdownShowRetailer, setDropdownShowRetailer] = useState(false);
+  const [searchDistributor, setSearchDistributor] = useState("");
+  const [dropdownDistributor, setDropdownDistributor] = useState(false);
+  const [distinctDistributorList, setDistinctDistributorList] = useState([]);
+  const [distinctArrayDist, SetDistinctArrayDist] = useState([]);
 
-  
   // New changes
   useEffect(() => {
     const config = {
@@ -414,70 +415,95 @@ const OrderManagement = () => {
     data = orderList;
   }
 
-  const submit1=(createdDate)=>{
-    const timediifMili =  startDate - new Date(createdDate);
-    const secDiff = Math.floor(timediifMili/(1000));
-    const minDiff = Math.floor(timediifMili/(1000 *60));
-    const hourDiff = Math.floor(timediifMili/(1000 *60*60));
-    const dayDiff = Math.floor(timediifMili/(1000 *60*60*24))
-    const monthDiff = Math.floor(timediifMili/(1000 *60*60*24*30))
-    const yearDiff= Math.floor(timediifMili/(1000 *60*60*24*30*365))
-    let result="";
-    if(secDiff>0 && secDiff<60){
-      result=`${secDiff} sec ago`;
+  const submit1 = (createdDate) => {
+    const timediifMili = startDate - new Date(createdDate);
+    const secDiff = Math.floor(timediifMili / 1000);
+    const minDiff = Math.floor(timediifMili / (1000 * 60));
+    const hourDiff = Math.floor(timediifMili / (1000 * 60 * 60));
+    const dayDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24));
+    const monthDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24 * 30));
+    const yearDiff = Math.floor(
+      timediifMili / (1000 * 60 * 60 * 24 * 30 * 365)
+    );
+    let result = "";
+    if (secDiff > 0 && secDiff < 60) {
+      result = `${secDiff} sec ago`;
     }
-    if(minDiff>0 && minDiff<60){
-      result=`${minDiff} minute ago`;
+    if (minDiff > 0 && minDiff < 60) {
+      result = `${minDiff} minute ago`;
     }
-    if(hourDiff>0 && hourDiff<12){
-      result=`${hourDiff} hour ago`;
+    if (hourDiff > 0 && hourDiff < 24) {
+      result = `${hourDiff} hour ago`;
     }
-    if(dayDiff>0 && dayDiff<30){
-      result=`${dayDiff} ${dayDiff>1 ? t("supplier.retailer_request.days_ago") : t("supplier.retailer_request.day_ago")}`;
+    if (dayDiff > 0 && dayDiff < 30) {
+      result = `${dayDiff} ${
+        dayDiff > 1
+          ? t("supplier.retailer_request.days_ago")
+          : t("supplier.retailer_request.day_ago")
+      }`;
     }
-    if(monthDiff>0 && monthDiff<12){
-      result=`${monthDiff} ${monthDiff>1 ? t("supplier.retailer_request.months_ago") : t("supplier.retailer_request.month_ago")}`;
+    if (monthDiff > 0 && monthDiff < 12) {
+      result = `${monthDiff} ${
+        monthDiff > 1
+          ? t("supplier.retailer_request.months_ago")
+          : t("supplier.retailer_request.month_ago")
+      }`;
     }
-    if(yearDiff>0){
-      result=`${yearDiff} ${yearDiff>1 ? t("supplier.retailer_request.years_ago") : t("supplier.retailer_request.year_ago")}`;
+    if (yearDiff > 0) {
+      result = `${yearDiff} ${
+        yearDiff > 1
+          ? t("supplier.retailer_request.years_ago")
+          : t("supplier.retailer_request.year_ago")
+      }`;
     }
-    return result; 
-  }
+    return result;
+  };
 
-  const handleDistributorSearch=(e)=>{
-    setSelectedDistributor("")
-    setSearchDistributor(e)
-    const matchingStrings=distinctArrayDist.filter(x=>{
-      return x.user_profile.company_name.toLowerCase().includes(e.toLowerCase())
-    })
-    setDistinctDistributorList(matchingStrings)
-  }
-  const handleDistributorDropdown=(company_name,id)=>{
-    setSelectedDistributor(id)
-    setSearchDistributor(company_name)
-    setDropdownDistributor(false)
-  }
+  const handleDistributorSearch = (e) => {
+    setSelectedDistributor("");
+    setSearchDistributor(e);
+    const matchingStrings = distinctArrayDist.filter((x) => {
+      return x.user_profile.company_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+    });
+    setDistinctDistributorList(matchingStrings);
+  };
+  const handleDistributorDropdown = (company_name, id) => {
+    setSelectedDistributor(id);
+    setSearchDistributor(company_name);
+    setDropdownDistributor(false);
+  };
 
   const handleRetailerFilterSearch = (e) => {
-    setSelectedRetailer("")
-    setSearchRetailerFilter(e)
-    const matchingStrings = distinctRetailerInfoArray.filter(str => {
-      const fullNameMatch = str.full_name.toLowerCase().includes(e.toLowerCase());
-      const addressMatch = str.user_main_address && str.user_main_address.address_1 && str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
-      const businessMatch = str.user_profile && str.user_profile.business_name && str.user_profile.business_name.toLowerCase().includes(e.toLowerCase());
-      const groupMatch = str.user_profile && str.user_profile.group_name && str.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
+    setSelectedRetailer("");
+    setSearchRetailerFilter(e);
+    const matchingStrings = distinctRetailerInfoArray.filter((str) => {
+      const fullNameMatch = str.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      const addressMatch =
+        str.user_main_address &&
+        str.user_main_address.address_1 &&
+        str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+      const businessMatch =
+        str.user_profile &&
+        str.user_profile.business_name &&
+        str.user_profile.business_name.toLowerCase().includes(e.toLowerCase());
+      const groupMatch =
+        str.user_profile &&
+        str.user_profile.group_name &&
+        str.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
       return fullNameMatch || addressMatch || businessMatch || groupMatch;
     });
 
-
-    setDistinctList(matchingStrings)
-
-  }
+    setDistinctList(matchingStrings);
+  };
   const handleRetailerFilterDropdown = (full_name, id) => {
-    setSearchRetailerFilter(full_name)
-    setSelectedRetailer(id)
-    setDropdownShowRetailer(false)
-  }
+    setSearchRetailerFilter(full_name);
+    setSelectedRetailer(id);
+    setDropdownShowRetailer(false);
+  };
   useEffect(() => {
     // console.log("AAAData", orderList)
     const uniqueRetailerIds = new Set();
@@ -489,14 +515,13 @@ const OrderManagement = () => {
         uniqueRetailerInfoArray.push(x.retailer_information);
       }
     });
-    setDistinctRetailerInfoArray(uniqueRetailerInfoArray)
-    setDistinctList(uniqueRetailerInfoArray)
+    setDistinctRetailerInfoArray(uniqueRetailerInfoArray);
+    setDistinctList(uniqueRetailerInfoArray);
     const uniqueDistributorIds = new Set();
     const uniqueDistributorArray = [];
 
     // Loop through orderList
     orderList.forEach((x) => {
-
       x.order_distributors.forEach((distributor) => {
         if (!uniqueDistributorIds.has(distributor.distributor_info.id)) {
           uniqueDistributorIds.add(distributor.distributor_info.id);
@@ -504,12 +529,11 @@ const OrderManagement = () => {
         }
       });
     });
-    setDistinctDistributorList(uniqueDistributorArray)
-    SetDistinctArrayDist(uniqueDistributorArray)
+    setDistinctDistributorList(uniqueDistributorArray);
+    SetDistinctArrayDist(uniqueDistributorArray);
+  }, [orderList]);
 
-  }, [orderList])
-
-  useEffect(()=>{
+  useEffect(() => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -518,7 +542,10 @@ const OrderManagement = () => {
     };
 
     apis
-      .get(`/supplier/orders?distributor_id=${selectedDistributor}&retailer_id=${selectedRetailer}&to_date=${toDate}&from_date=${fromDate}`, config)
+      .get(
+        `/supplier/orders?distributor_id=${selectedDistributor}&retailer_id=${selectedRetailer}&to_date=${toDate}&from_date=${fromDate}`,
+        config
+      )
       .then((res) => {
         setLoading(false);
         if (res.data.success === true) {
@@ -539,17 +566,59 @@ const OrderManagement = () => {
           });
         }
       });
-  },[selectedDistributor,selectedRetailer,toDate,fromDate])
+  }, [selectedDistributor, selectedRetailer, toDate, fromDate]);
 
   const totalPrice = (arr) => {
     let total = 0;
     total = arr.reduce((accumulator, currentValue) => {
       const currentValueTotal =
-        currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
-        0;
+        currentValue?.product?.pricing?.price * currentValue?.quantity || 0;
       return accumulator + currentValueTotal;
     }, 0);
     return total?.toFixed(2);
+  };
+
+  const handlePayment = (e) => {
+    const order_id=e;
+    const status="6"
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "order-edit",
+      },
+    };
+    const bodyData = {
+      order_id: order_id,
+      action: status,
+    };
+
+    setShow(false);
+    apis
+      .post("/supplier/order/status/update", bodyData, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          setTargetId([]);
+          setUpdate(!update);
+          toast.success("Status updated for selected orders.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error("Could not update status. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not update status. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+    console.log("-----------------------payment working");
   };
 
   return (
@@ -580,8 +649,7 @@ const OrderManagement = () => {
                   <div className="filter-row page-top-filter">
                     {/* [Page Filter Box] */}
                     <div className="filter-box">
-         
-                     {/* [/Date] */}
+                      {/* [/Date] */}
 
                       <div className="dropdown date-selector">
                         <button
@@ -589,100 +657,124 @@ const OrderManagement = () => {
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
-                          style={{background: '#ffffff'}}
+                          style={{ background: "#ffffff" }}
                         >
                           <img src={calendar} alt="" />{" "}
                           {t("supplier.order_management.list.select_date")}
                         </button>
-                        <ul className="dropdown-menu" style={{padding:'5px 10px'}}>
-                        <form>
-                          <li>
-                          <label>From Date</label>
-                        
-                          <input type="date"
-                          value={fromDate}
-                          onChange={(e)=>{
-                            setFromDate(e.target.value)
-                          }}
-                         /> 
-                          
-                          </li>
-                          <li>
-                          
-                          <label>To Date</label>
-                          <input type="date"
-                          value={toDate}
-                          onChange={(e)=>{
-                            setToDate(e.target.value)
-                          }}/>
-                          
-                          </li>
+                        <ul
+                          className="dropdown-menu"
+                          style={{ padding: "5px 10px" }}
+                        >
+                          <form>
+                            <li>
+                              <label>From Date</label>
+
+                              <input
+                                type="date"
+                                value={fromDate}
+                                onChange={(e) => {
+                                  setFromDate(e.target.value);
+                                }}
+                              />
+                            </li>
+                            <li>
+                              <label>To Date</label>
+                              <input
+                                type="date"
+                                value={toDate}
+                                onChange={(e) => {
+                                  setToDate(e.target.value);
+                                }}
+                              />
+                            </li>
                           </form>
                         </ul>
                       </div>
 
                       <div className="dropdown date-selector">
-                        <input type="text"
+                        <input
+                          type="text"
                           value={searchRetailerFilter}
                           placeholder="Search retailer"
-                          onFocus={() => { setDropdownShowRetailer(true) }}
-                          onBlur={() => { setTimeout(() => { setDropdownShowRetailer(false) }, 200) }}
-                          onChange={(e) => { handleRetailerFilterSearch(e.target.value) }} />
-                      
-                      {distinctList.length > 0 && (
-                        <ul
-                          className={`w-100 searchListBx custom-scrollbar ${dropdownShowRetailer ? "d-block" : "d-none"
+                          onFocus={() => {
+                            setDropdownShowRetailer(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownShowRetailer(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleRetailerFilterSearch(e.target.value);
+                          }}
+                        />
+
+                        {distinctList.length > 0 && (
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${
+                              dropdownShowRetailer ? "d-block" : "d-none"
                             }`}
-                        >
-                          {" "}
-                          {distinctList.map((s) => (
-                            <li
-                              className="dropdown-item pe-pointer"
-                              key={s.id}
-                              onClick={() =>
-                                handleRetailerFilterDropdown(
-                                  s.full_name,
-                                  s.id
-                                )
-                              }
-                            >
-                              {s.full_name}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                          >
+                            {" "}
+                            {distinctList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s.id}
+                                onClick={() =>
+                                  handleRetailerFilterDropdown(
+                                    s.full_name,
+                                    s.id
+                                  )
+                                }
+                              >
+                                {s.full_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
 
                       <div className="dropdown date-selector">
-                      <input type="text"
+                        <input
+                          type="text"
                           value={searchDistributor}
                           placeholder="Search Distributor"
-                          onFocus={() => { setDropdownDistributor(true) }}
-                          onBlur={() => { setTimeout(() => { setDropdownDistributor(false) }, 200) }}
-                          onChange={(e) => { handleDistributorSearch(e.target.value) }} />
+                          onFocus={() => {
+                            setDropdownDistributor(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownDistributor(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleDistributorSearch(e.target.value);
+                          }}
+                        />
                         {distinctDistributorList.length > 0 && (
-                        <ul
-                          className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${
+                              dropdownDistributor ? "d-block" : "d-none"
                             }`}
-                        >
-                          {" "}
-                          {distinctDistributorList.map((s) => (
-                            <li
-                              className="dropdown-item pe-pointer"
-                              key={s.id}
-                              onClick={() =>
-                                handleDistributorDropdown(
-                                  s.user_profile.company_name,
-                                  s.id
-                                )
-                              }
-                            >
-                              {s.user_profile.company_name}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
+                          >
+                            {" "}
+                            {distinctDistributorList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s.id}
+                                onClick={() =>
+                                  handleDistributorDropdown(
+                                    s.user_profile.company_name,
+                                    s.id
+                                  )
+                                }
+                              >
+                                {s.user_profile.company_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
                     </div>
                     {/* [/Page Filter Box] */}
@@ -947,12 +1039,12 @@ const OrderManagement = () => {
                       </td>
                       <td>
                         <i class="fa-solid fa-sack-dollar"></i>
-                        <span>800</span>
+                        <span>{ordersStatusCount.paid_total_amount}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-sack-dollar cancel"></i>
                         <i class="fa-solid fa-ban"></i>
-                        <span className="count-cnl">100</span>
+                        <span className="count-cnl">{ordersStatusCount.unpaid_total_amount}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -1023,7 +1115,9 @@ const OrderManagement = () => {
                                   }}
                                   onClick={() => setShow(true)}
                                 >
-                                   {t("supplier.order_management.list.Change_Status")}
+                                  {t(
+                                    "supplier.order_management.list.Change_Status"
+                                  )}
                                 </button>
                                 {hasPermission(ORDER_EDIT) && (
                                   <NavLink
@@ -1111,8 +1205,12 @@ const OrderManagement = () => {
                                           />{" "}
                                         </td>
                                         <td>{ele.order_reference}</td>
-                                        <td>{ele.order_date}<br></br>
-                                        <span style={{color:'red'}}>{submit1(ele.created_at)}</span>
+                                        <td>
+                                          {ele.order_date}
+                                          <br></br>
+                                          <span style={{ color: "red" }}>
+                                            {submit1(ele.created_at)}
+                                          </span>
                                         </td>
                                         <td>
                                           {ele.retailer_information.user_profile
@@ -1123,13 +1221,15 @@ const OrderManagement = () => {
                                               : "N/A"
                                             : "N/A"}
                                         </td>
-                                        <td>{ele.retailer_information.user_profile
+                                        <td>
+                                          {ele.retailer_information.user_profile
                                             ? ele.retailer_information
                                                 .user_profile.group_name
                                               ? ele.retailer_information
                                                   .user_profile.group_name
                                               : "N/A"
-                                            : "N/A"}</td>
+                                            : "N/A"}
+                                        </td>
                                         <td>
                                           {ele.status === "Approved" ? (
                                             <span className="badge text-bg-green">
@@ -1149,20 +1249,21 @@ const OrderManagement = () => {
                                             <span className="badge text-bg-blue">
                                               {ele.status}
                                             </span>
-                                          ) : (
-                                            "TBD"
-                                          )}
+                                          ) : ele.status === "Paid"? (
+                                            <span className="badge text-bg-purple" style={{color: '#79018c ', padding:'5px'}}>
+                                              {ele.status}
+                                            </span>
+                                          ):"tbd"
+                                        }
                                         </td>
 
                                         <td>
-                                        {ele?.items.reduce(
-                                      (acc, item) => acc + item?.quantity,
-                                      0
-                                    )}
+                                          {ele?.items.reduce(
+                                            (acc, item) => acc + item?.quantity,
+                                            0
+                                          )}
                                         </td>
-                                        <td>
-                                        {totalPrice(ele?.items)}
-                                        </td>
+                                        <td>{totalPrice(ele?.items)}</td>
                                         <td>
                                           {ele.order_distributors[0] &&
                                           ele.order_distributors[0]
@@ -1173,6 +1274,7 @@ const OrderManagement = () => {
                                                 .company_name
                                             : "N/A"}
                                         </td>
+
                                         <td
                                           align="center"
                                           style={{
@@ -1191,6 +1293,12 @@ const OrderManagement = () => {
                                                   ? "#000"
                                                   : ele.status === "Cancelled"
                                                   ? "red"
+                                                  : ele.status === "Delivered"
+                                                  ? "#27C26C"
+                                                  : ele.status === "Shipped"
+                                                  ? "#27C26C"
+                                                  :ele.status === "Paid"
+                                                  ? "#27C26C"
                                                   : undefined, // No default color
                                             }}
                                           ></i>
@@ -1204,9 +1312,13 @@ const OrderManagement = () => {
                                             className="fa-solid fa-truck-fast"
                                             style={{
                                               color:
-                                                ele.status === "Received"
+                                                ele.status === "Shipped"
+                                                  ? "red"
+                                                  : ele.status === "Delivered"
                                                   ? "#27C26C"
-                                                  : "red", // No default color
+                                                  : ele.status === "Paid"
+                                                  ? "#27C26C"
+                                                  : undefined, // No default color
                                             }}
                                           ></i>
                                         </td>
@@ -1218,9 +1330,11 @@ const OrderManagement = () => {
                                             class="fa-solid fa-shop"
                                             style={{
                                               color:
-                                                ele.status === "Delivered "
+                                                ele.status === "Delivered"
                                                   ? "#27C26C"
-                                                  : "black", // No default color
+                                                  : ele.status === "Paid"
+                                                  ? "#27C26C"
+                                                  : undefined, // No default color
                                             }}
                                           ></i>
                                         </td>
@@ -1228,8 +1342,30 @@ const OrderManagement = () => {
                                           align="center"
                                           style={{ width: "100px" }}
                                         >
-                                          <i class="fa-solid fa-sack-dollar"></i>
+                                          <span
+                                            onClick={() => {
+                                              if (ele.status === "Delivered") {
+                                                handlePayment(ele.id);
+                                              }
+                                              else{
+                                                toast.error("Could not update status before Delivery.", {
+                                                  autoClose: 3000,
+                                                  position: toast.POSITION.TOP_CENTER,
+                                                });
+                                              }
+                                            }}
+                                          >
+                                            <i
+                                              class="fa-solid fa-sack-dollar"
+                                              style={{ cursor: "pointer", color:
+                                                ele.status === "Paid"
+                                                ? "#27C26C"
+                                                : undefined,  }}
+                                            ></i>
+                                          </span>
                                         </td>
+
+                                        {/* -------------- */}
                                         <td>
                                           <div class="btn-group dropstart table-action">
                                             <button
@@ -1357,7 +1493,9 @@ const OrderManagement = () => {
         }}
       >
         <Modal.Header>
-          <h5 class="modal-title text-purpal">{t( "supplier.order_management.change_status.change_status_h")}</h5>
+          <h5 class="modal-title text-purpal">
+            {t("supplier.order_management.change_status.change_status_h")}
+          </h5>
           <button
             type="button"
             class="btn-close text-purpal"
@@ -1366,9 +1504,13 @@ const OrderManagement = () => {
           ></button>
         </Modal.Header>
         <Modal.Body>
-          <p>{`${t( "supplier.order_management.change_status.order_selected")} : ${targetId.length}`}</p>
+          <p>{`${t(
+            "supplier.order_management.change_status.order_selected"
+          )} : ${targetId.length}`}</p>
           <div className="border-purple p-3 rounded-2">
-            <div>{t( "supplier.order_management.change_status.select_status")}</div>
+            <div>
+              {t("supplier.order_management.change_status.select_status")}
+            </div>
             <div className="mt-2">
               <div className="input-group">
                 <select
@@ -1379,10 +1521,18 @@ const OrderManagement = () => {
                     setStatusError("");
                   }}
                 >
-                  <option value="">{t( "supplier.order_management.change_status.select_status")}</option>
-                  <option value="1">{t( "supplier.order_management.change_status.approved")}</option>
-                  <option value="2">{t( "supplier.order_management.change_status.on_hold")}</option>
-                  <option value="5">{t( "supplier.order_management.change_status.cancelled")}</option>
+                  <option value="">
+                    {t("supplier.order_management.change_status.select_status")}
+                  </option>
+                  <option value="1">
+                    {t("supplier.order_management.change_status.approved")}
+                  </option>
+                  <option value="2">
+                    {t("supplier.order_management.change_status.on_hold")}
+                  </option>
+                  <option value="5">
+                    {t("supplier.order_management.change_status.cancelled")}
+                  </option>
                 </select>
               </div>
               {statusError === "" ? (
@@ -1396,7 +1546,9 @@ const OrderManagement = () => {
             className="border-purple p-3 mt-3 rounded-2"
             style={{ display: selectedStatus === "1" ? "block" : "none" }}
           >
-            <div>{t( "supplier.order_management.change_status.delivery_date")}</div>
+            <div>
+              {t("supplier.order_management.change_status.delivery_date")}
+            </div>
             <div className="mt-2">
               <div className="input-group">
                 <DatePicker
@@ -1430,14 +1582,14 @@ const OrderManagement = () => {
               setShow(false);
             }}
           >
-            {t( "supplier.order_management.change_status.cancel")}
+            {t("supplier.order_management.change_status.cancel")}
           </button>
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
             onClick={() => handleUpdateStatus()}
           >
-            {t( "supplier.order_management.change_status.save")}
+            {t("supplier.order_management.change_status.save")}
           </button>
         </Modal.Footer>
       </Modal>

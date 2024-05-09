@@ -66,10 +66,55 @@ const Requests = () => {
   const [loading, setLoading] = useState(true);
   const [openModal, setModalopen] = useState(false);
   const [groupModal, setGroupModal] = useState(false);
-  const [groupList, setGroupsList] = useState("");
-  const [selectedGroupName , setSelectedGroupName] = useState('')
-  const [requestRetailerData , setRequestRtailerData] = useState({})
+  const [groupList, setGroupList] = useState("");
+  const [selectedGroupName, setSelectedGroupName] = useState("");
+  const [requestRetailerData, setRequestRtailerData] = useState({});
   const apis = useAuthInterceptor();
+  const [asiDistributorPopup, setAsiDistributorPopup] = useState(false);
+  const [assignDistributor, setAssignDistributor] = useState();
+  const [emailError, setEmailError] = useState();
+  const [invoiceModal, setInvoiceModal] = useState(false);
+  const [selectedInvoiceType, setSelectedInvoiceType] = useState("1");
+  const [formState, setFormState] = useState({
+    distributorName: "",
+    distributorEmail: "",
+  });
+  const handleInputChange = (e) => {
+    setEmailError("");
+    const { name, value } = e.target;
+    setFormState({
+      ...formState, // Retain other properties in the object
+      [name]: value, // Update the relevant field by its name
+    });
+  };
+
+  const handleSubmitForInvoice = () => {
+    console.log("invoive type selecetd", selectedInvoiceType);
+    setInvoiceModal(false);
+    setSelectedInvoiceType("1");
+  };
+
+  const handleSubmit = (e) => {
+    if (assignDistributor !== "other") {
+      setAsiDistributorPopup(false);
+      setInvoiceModal(true);
+    } else {
+      let emailregex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      e.preventDefault();
+      if (
+        !emailregex.test(formState.distributorEmail) ||
+        formState.distributorEmail == ""
+      ) {
+        setEmailError(t("retailer.profile.not_a_valid_email"));
+      } else {
+        console.log("Distributor Information:", formState);
+        setAsiDistributorPopup(false);
+        setInvoiceModal(true);
+      }
+    }
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -80,7 +125,6 @@ const Requests = () => {
   };
 
   const handleAction = (action, target) => {
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -157,38 +201,66 @@ const Requests = () => {
   }, [updateList]);
 
   //another useeffect to get all group
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        permission: "groups-view",
-      },
-    };
-
-    if (hasPermission(GROUP_VIEW)) {
+  const handleGroupSubmit = () => {
+    // console.log("Datataaa",requestRetailerData.retailer_id)
+    // console.log("datatatta",selectedGroupName)
+    if (selectedGroupName == "" || selectedGroupName == null) {
+      toast.error("Select Group", {
+        autoClose: 3000,
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const bodyData = {
+        user_id: requestRetailerData.retailer_id,
+        group_name: selectedGroupName,
+      };
       apis
-        .get("/supplier/groups", config)
+        .post(`/supplier/createSupplierGroupName`, bodyData, config)
         .then((res) => {
-          setLoading(false);
           if (res.data.success === true) {
-            setGroupsList(res.data.data);
+            let message = "Group has been assigned";
+            setGroupModal(false);
+            setAsiDistributorPopup(true);
+            toast.success(message, {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
           } else {
-            toast.error("Could not fetch groups. Please try again later.", {
-              autoClose: 2000,
+            toast.error("Could not take action. Please try again later.", {
+              autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
           }
         })
         .catch((error) => {
-          setLoading(false);
           if (error.message !== "revoke") {
-            toast.error("Could not fetch groups. Please try again later.", {
-              autoClose: 2000,
+            toast.error("Could not take action. Please try again later.", {
+              autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
           }
         });
     }
+  };
+
+  useEffect(() => {
+    apis
+      .get("getSubCategories")
+      .then((res) => {
+        console.log("Sub categories dara", res.data.data);
+        setGroupList(res.data.data);
+      })
+      .catch((err) => {
+        toast.error("Could not Sub Categories list. Please try again later.", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
   }, []);
 
   let data;
@@ -307,10 +379,16 @@ const Requests = () => {
                                             <>
                                               <span
                                                 className="m-r-8px "
-                                                onClick={() =>
-                                                  {setModalopen(true);setRequestRtailerData(ele);
-                                                  console.log("this is the whole object i which retailer is getting",ele ,requestRetailerData,"fkk" )}
-                                                }
+                                                onClick={() => {
+                                                  setModalopen(true);
+                                                  setRequestRtailerData(ele);
+                                                  console.log(
+                                                    "this is the whole object i which retailer is getting",
+                                                    ele,
+                                                    requestRetailerData,
+                                                    "fkk"
+                                                  );
+                                                }}
                                               >
                                                 <i
                                                   class="fa-solid fa-eye-slash"
@@ -346,15 +424,23 @@ const Requests = () => {
                                                   <div className="address mt-2">
                                                     <FontAwesomeIcon icon="fa-solid fa-store" />
                                                     &nbsp;
-                                                    <span>
-                                                    N/A
-                                                    </span>
+                                                    <span>N/A</span>
                                                   </div>
 
                                                   <div className="mx-3 mt-2 custom-list">
                                                     <div className="text-center group-n">
-                                                    {t("supplier.retailer_request.group")}:{" "}
-                                                      <span>{requestRetailerData.retailer_information.user_profile.group_name}</span>
+                                                      {t(
+                                                        "supplier.retailer_request.group"
+                                                      )}
+                                                      :{" "}
+                                                      <span>
+                                                        {
+                                                          requestRetailerData
+                                                            .retailer_information
+                                                            .user_profile
+                                                            .group_name
+                                                        }
+                                                      </span>
                                                     </div>
                                                     <ul className="mt-2">
                                                       <li>
@@ -363,45 +449,119 @@ const Requests = () => {
                                                           aria-hidden="true"
                                                         ></i>
                                                         <span>
-                                                        {requestRetailerData.retailer_information.phone_number? (requestRetailerData.retailer_information.phone_number) : requestRetailerData.retailer_information.user_profile.phone_number ? (requestRetailerData.retailer_information.user_profile.phone_number) : ("N/A") }
+                                                          {requestRetailerData
+                                                            .retailer_information
+                                                            .phone_number
+                                                            ? requestRetailerData
+                                                                .retailer_information
+                                                                .phone_number
+                                                            : requestRetailerData
+                                                                .retailer_information
+                                                                .user_profile
+                                                                .phone_number
+                                                            ? requestRetailerData
+                                                                .retailer_information
+                                                                .user_profile
+                                                                .phone_number
+                                                            : "N/A"}
                                                         </span>
                                                       </li>
                                                       <li>
                                                         <i class="fa-regular fa-envelope"></i>
                                                         <span>
-                                                        {requestRetailerData.retailer_information.email? (requestRetailerData.retailer_information.email):("N/A")}
+                                                          {requestRetailerData
+                                                            .retailer_information
+                                                            .email
+                                                            ? requestRetailerData
+                                                                .retailer_information
+                                                                .email
+                                                            : "N/A"}
                                                         </span>
                                                       </li>
                                                       <li>
                                                         <i class="fa-regular fa-envelope-open"></i>
                                                         <span>
-                                                        {requestRetailerData.retailer_information.user_main_address.address_1 ? (requestRetailerData.retailer_information.user_main_address.address_1):("N/A")}
+                                                          {requestRetailerData
+                                                            .retailer_information
+                                                            .user_main_address
+                                                            .address_1
+                                                            ? requestRetailerData
+                                                                .retailer_information
+                                                                .user_main_address
+                                                                .address_1
+                                                            : "N/A"}
                                                         </span>
                                                       </li>
                                                     </ul>
                                                     <p>
-                                                    {t("supplier.retailer_request.postal_code")}:{""}
-                                                      <span>{requestRetailerData.retailer_information.user_main_address.postal_code ? (requestRetailerData.retailer_information.user_main_address.postal_code):("N/A")}</span>
+                                                      {t(
+                                                        "supplier.retailer_request.postal_code"
+                                                      )}
+                                                      :{""}
+                                                      <span>
+                                                        {requestRetailerData
+                                                          .retailer_information
+                                                          .user_main_address
+                                                          .postal_code
+                                                          ? requestRetailerData
+                                                              .retailer_information
+                                                              .user_main_address
+                                                              .postal_code
+                                                          : "N/A"}
+                                                      </span>
                                                     </p>
                                                     <p>
-                                                    {t("supplier.retailer_request.country_name")}:{" "}
-                                                      <span>{requestRetailerData.retailer_information.user_main_address.country ?(requestRetailerData.retailer_information.user_main_address.country):("N/A")}</span>
+                                                      {t(
+                                                        "supplier.retailer_request.country_name"
+                                                      )}
+                                                      :{" "}
+                                                      <span>
+                                                        {requestRetailerData
+                                                          .retailer_information
+                                                          .user_main_address
+                                                          .country
+                                                          ? requestRetailerData
+                                                              .retailer_information
+                                                              .user_main_address
+                                                              .country
+                                                          : "N/A"}
+                                                      </span>
                                                     </p>
 
                                                     <p>
-                                                    {t("supplier.retailer_request.Alcohol_permit")}:{" "}
-                                                      <span>{requestRetailerData.retailer_information.user_profile.alcohol_permit ? (requestRetailerData.retailer_information.user_profile.alcohol_permit):("N/A")}</span>
+                                                      {t(
+                                                        "supplier.retailer_request.Alcohol_permit"
+                                                      )}
+                                                      :{" "}
+                                                      <span>
+                                                        {requestRetailerData
+                                                          .retailer_information
+                                                          .user_profile
+                                                          .alcohol_permit
+                                                          ? requestRetailerData
+                                                              .retailer_information
+                                                              .user_profile
+                                                              .alcohol_permit
+                                                          : "N/A"}
+                                                      </span>
                                                     </p>
                                                     <p>
-                                                    {t("supplier.retailer_request.category")}: <span>CAD</span>
+                                                      {t(
+                                                        "supplier.retailer_request.category"
+                                                      )}
+                                                      : <span>CAD</span>
                                                     </p>
                                                     <p>
-                                                    {t("supplier.retailer_request.gst")}:{" "}
-                                                      <span>N/A</span>
+                                                      {t(
+                                                        "supplier.retailer_request.gst"
+                                                      )}
+                                                      : <span>N/A</span>
                                                     </p>
                                                     <p>
-                                                    {t("supplier.retailer_request.qst")}:{" "}
-                                                      <span>N/A</span>
+                                                      {t(
+                                                        "supplier.retailer_request.qst"
+                                                      )}
+                                                      : <span>N/A</span>
                                                     </p>
                                                   </div>
 
@@ -421,6 +581,10 @@ const Requests = () => {
                                                             .group_name === null
                                                         ) {
                                                           setGroupModal(true);
+                                                        } else {
+                                                          setAsiDistributorPopup(
+                                                            true
+                                                          );
                                                         }
                                                       }}
                                                     >
@@ -457,17 +621,21 @@ const Requests = () => {
                                               &emsp;
                                               <span
                                                 className="badge action"
-                                                onClick={() =>
-                                                  {handleAction("1", ele.id)
+                                                onClick={() => {
+                                                  handleAction("1", ele.id);
                                                   if (
-                                                    ele
-                                                      .retailer_information
+                                                    ele.retailer_information
                                                       .user_profile
                                                       .group_name === null
                                                   ) {
+                                                    setRequestRtailerData(ele);
                                                     setGroupModal(true);
-                                                  }}
-                                                }
+                                                  } else {
+                                                    setAsiDistributorPopup(
+                                                      true
+                                                    );
+                                                  }
+                                                }}
                                                 style={{ color: "#27c26c" }}
                                               >
                                                 <i
@@ -485,9 +653,7 @@ const Requests = () => {
                                                 <FontAwesomeIcon icon="fa-solid fa-circle-xmark" />
                                               </span>
                                             </>
-                                          ) : (
-                                            null
-                                          )}
+                                          ) : null}
                                         </td>
                                       </tr>
                                     );
@@ -562,25 +728,29 @@ const Requests = () => {
                     }}
                   >
                     <Modal.Header closeButton>
-                      <Modal.Title> {t("supplier.retailer_request.assign_group")}</Modal.Title>
+                      <Modal.Title>
+                        {" "}
+                        {t("supplier.retailer_request.assign_group")}
+                      </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <select
-                        className="rounded-pill" style={{width:'100%', height: '40px'}}
+                        className="rounded-pill"
+                        style={{ width: "100%", height: "40px" }}
                         value={selectedGroupName}
                         onChange={(e) => {
                           setSelectedGroupName(e.target.value);
-                          
                         }}
                       >
-                        <option value=""> {t("supplier.retailer_request.assign_group")}</option>
+                        <option value="">
+                          {" "}
+                          {t("supplier.retailer_request.assign_group")}
+                        </option>
                         {groupList && groupList.length > 0 ? (
                           groupList.map((ele) => {
                             return (
                               <>
-                                <option value={ele.id}>
-                                  {ele.name}
-                                </option>
+                                <option value={ele.name}>{ele.name}</option>
                               </>
                             );
                           })
@@ -595,7 +765,7 @@ const Requests = () => {
                         className="btn btn-outline-black me-2"
                         onClick={() => {
                           setGroupModal(false);
-                          setSelectedGroupName('');
+                          setSelectedGroupName("");
                         }}
                       >
                         {t("retailer.dashboard.cancel")}
@@ -605,9 +775,231 @@ const Requests = () => {
                         type="submit"
                         // making api call for aet the group name of retailer for now we jus close his modal
                         onClick={() => {
-                          setGroupModal(false);
-                          setSelectedGroupName("");
+                          handleGroupSubmit();
                         }}
+                      >
+                        {t("landing.contact.verify_btn")}
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
+
+                  {/* Modal for assigning distributor */}
+                  <Modal
+                    className="modal fade"
+                    show={asiDistributorPopup}
+                    centered
+                    backdrop="static"
+                    onHide={() => {
+                      setAsiDistributorPopup(false);
+                    }}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        {t("supplier.retailer_request.selectDistributor")}
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div className="w-100">
+                        <select
+                          className="rounded-pill w-100"
+                          value={assignDistributor}
+                          style={{ height: "8vh" }}
+                          onChange={(e) => {
+                            setAssignDistributor(e.target.value);
+                          }}
+                        >
+                          <option value="Bucké">Bucké</option>
+                          <option value="selfDistribution">
+                            {t("supplier.retailer_request.selfDistribuor")}
+                          </option>
+                          <option value="otherBlpDistribuor">
+                            {t("supplier.retailer_request.otheBplDistributor")}
+                          </option>
+                          <option value="other">
+                            {t("supplier.retailer_request.other")}
+                          </option>
+                        </select>
+                      </div>
+
+                      {assignDistributor == "other" ? (
+                        <>
+                          <form onSubmit={handleSubmit}>
+                            <div>
+                              <div className="mt-4">
+                                {/* Input for distributor name */}
+                                <label className="form-label">
+                                  {"Distributor Name"}
+                                  <sup>*</sup>
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="text"
+                                  name="distributorName"
+                                  value={formState.distributorName}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                              </div>
+
+                              <div>
+                                <label className="form-label">
+                                  {"Enter Distribuor Email"}
+                                  <sup>*</sup>
+                                </label>
+                                <input
+                                  className="form-control "
+                                  type="email"
+                                  name="distributorEmail"
+                                  value={formState.distributorEmail}
+                                  onChange={handleInputChange}
+                                  required
+                                />
+                                {emailError ? emailError : ""}
+                              </div>
+                            </div>
+                          </form>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        type="button"
+                        className="btn btn-outline-black me-2"
+                        onClick={() => {
+                          setAsiDistributorPopup(false);
+                        }}
+                      >
+                        {t("retailer.dashboard.cancel")}
+                      </button>
+                      <button
+                        className="btn btn-purple rounded-pill "
+                        type="submit"
+                        onClick={handleSubmit}
+                      >
+                        {t("landing.contact.verify_btn")}
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
+
+                  {/* Modal for Assign invoice */}
+                  <Modal
+                    className="modal fade"
+                    show={invoiceModal}
+                    centered
+                    backdrop="static"
+                    onHide={() => {
+                      setInvoiceModal(false);
+                    }}
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>
+                        {" "}
+                        {t("supplier.retailer_request.invoice")}
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <form>
+                        <label>
+                          <input
+                            type="radio"
+                            value="1"
+                            checked={selectedInvoiceType === "1"}
+                            onChange={(e) => {
+                              setSelectedInvoiceType(e.target.value);
+                            }}
+                          />
+                          <span
+                            className="mt-3"
+                            style={{ padding: "10px 20px" }}
+                          >
+                            {t("supplier.retailer_request.invoice1")}
+                          </span>
+                        </label>
+
+                        <label>
+                          <input
+                            type="radio"
+                            value="2"
+                            checked={selectedInvoiceType === "2"}
+                            onChange={(e) => {
+                              setSelectedInvoiceType(e.target.value);
+                            }}
+                          />
+                          <span
+                            className="mt-3"
+                            style={{ padding: "10px 20px" }}
+                          >
+                            {t("supplier.retailer_request.invoice2")}
+                          </span>
+                        </label>
+                        <label>
+                          <input
+                            type="radio"
+                            value="3"
+                            checked={selectedInvoiceType === "3"}
+                            onChange={(e) => {
+                              setSelectedInvoiceType(e.target.value);
+                            }}
+                          />
+                          <span
+                            className="mt-3"
+                            style={{ padding: "10px 20px" }}
+                          >
+                            {t("supplier.retailer_request.invoice3")}
+                          </span>
+                        </label>
+
+                        <label>
+                          <input
+                            type="radio"
+                            value="4"
+                            checked={selectedInvoiceType === "4"}
+                            onChange={(e) => {
+                              setSelectedInvoiceType(e.target.value);
+                            }}
+                          />
+                          <span
+                            className="mt-3"
+                            style={{ padding: "10px 20px" }}
+                          >
+                            {t("supplier.retailer_request.invoice4")}
+                          </span>
+                        </label>
+
+                        <label>
+                          <input
+                            type="radio"
+                            value="5"
+                            checked={selectedInvoiceType === "5"}
+                            onChange={(e) => {
+                              setSelectedInvoiceType(e.target.value);
+                            }}
+                          />
+                          <span
+                            className="mt-3"
+                            style={{ padding: "10px 20px" }}
+                          >
+                            {t("supplier.retailer_request.invoice5")}
+                          </span>
+                        </label>
+                      </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        type="button"
+                        className="btn btn-outline-black me-2"
+                        onClick={() => {
+                          setInvoiceModal(false);
+                        }}
+                      >
+                        {t("retailer.dashboard.cancel")}
+                      </button>
+                      <button
+                        className="btn btn-purple rounded-pill "
+                        type="submit"
+                        onClick={handleSubmitForInvoice}
                       >
                         {t("landing.contact.verify_btn")}
                       </button>
@@ -624,4 +1016,3 @@ const Requests = () => {
 };
 
 export default Requests;
-

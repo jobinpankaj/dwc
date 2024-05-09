@@ -239,7 +239,7 @@ const Marketplace = () => {
 
         <div className="col main p-0">
           <Header
-            title={t("retailer.market_place.listing.title")}
+            title={supplierProduct[0]?.user_information?.full_name}
             updateSidebar={updateSidebar}
           />
           {loading ? (

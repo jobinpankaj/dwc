@@ -14,7 +14,7 @@ import SalesLists from "./Partials/SalesLists";
 import InvoiceLists from "./Partials/InvoiceLists";
 import CustomMade from "./Partials/CustomMade";
 import SuperInvoice from "./Partials/SuperInvoice";
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 //const token = localStorage.getItem("supplier_accessToken");
 
 const Reports = () => {
@@ -42,9 +42,9 @@ const Reports = () => {
                   <div className="card">
                     <div className="card-body centere-align">
                       <div className="row">
-                      <Breadcrumb>
-                        <Breadcrumb.Item href="#">Products</Breadcrumb.Item>
-                      </Breadcrumb>
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="#">Products</Breadcrumb.Item>
+                        </Breadcrumb>
                         <div className="col-2 width-9rem">
                           <ProductLists
                             img={generateReportImage}
@@ -52,40 +52,34 @@ const Reports = () => {
                           />
                         </div>
                         <div className="col-2 width-9rem">
-          <InventoryLists
-          img={generateReportImage}
-          token={token}
-        />
-                        </div>
-                        <div className="col-2 width-9rem">
-          <CustomMade
-          img={generateReportImage}
-          token={token}
-        />
-                        </div>
-                      </div>
-                      <br />
-                      <div className="row">
-                      <Breadcrumb>
-                        <Breadcrumb.Item href="#">Sales</Breadcrumb.Item>
-                      </Breadcrumb>
-                        <div className="col-2 width-9rem">
-                          <SalesLists
+                          <InventoryLists
                             img={generateReportImage}
                             token={token}
                           />
                         </div>
                         <div className="col-2 width-9rem">
-                    <InvoiceLists
-                    img={generateReportImage}
-                    token={token}
-                    />
+                          <CustomMade img={generateReportImage} token={token} />
+                        </div>
+                      </div>
+                      <br />
+                      <div className="row">
+                        <Breadcrumb>
+                          <Breadcrumb.Item href="#">Sales</Breadcrumb.Item>
+                        </Breadcrumb>
+                        <div className="col-2 width-9rem">
+                          <SalesLists img={generateReportImage} token={token} />
                         </div>
                         <div className="col-2 width-9rem">
-                    <SuperInvoice
-                    img={generateReportImage}
-                    token={token}
-                    />
+                          <InvoiceLists
+                            img={generateReportImage}
+                            token={token}
+                          />
+                        </div>
+                        <div className="col-2 width-9rem">
+                          <SuperInvoice
+                            img={generateReportImage}
+                            token={token}
+                          />
                         </div>
                       </div>
 
