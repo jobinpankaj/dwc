@@ -1394,6 +1394,7 @@
         "batch_number": "Numéro de lot"
       },
       "create_transfer": {
+        "create_transfer": "Créer un transfert",
         "create_new": "Créer un transfert",
         "sender": "Expéditeur",
         "receipient": "Destinataire",
@@ -1616,7 +1617,17 @@
       "months_ago":"il y a des mois",
       "year_ago":"il y'a un an",
       "years_ago":"il y a des années",
-      "write_message_concerning":"Écrire un message concernant la commande"
+      "write_message_concerning":"Écrire un message concernant la commande",
+      "selfDistribuor":" Auto-distribution",
+      "selectDistributor":"Attribuer un Distributeur",
+      "otheBplDistributor":"Autre distributeur BLP",
+      "other":"Autre Distributuer hors BLP",
+      "invoice":"Facturation",
+      "invoice1":"Nous fabriquons notre produit dans nos installations mais il est distribué par un autre distributeur",
+      "invoice2":"Nous avons un produit, mais nous ne le produisons pas dans notre propre établissement",
+      "invoice3":"Nous sommes une agence et nous vendons et collectons les paiements au nom d'autres fournisseurs",
+      "invoice4":"Nous produisons notre produit dans notre établissement, mais nous autorisons Distribution Bucké à distribuer et à collecter les paiements en notre nom.",
+      "invoice5":"Nous produisons notre produit dans notre établissement et nous nous auto-distribuons."
     }
   },
   "distributor": {

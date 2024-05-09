@@ -292,6 +292,49 @@ const OrderDetail = () => {
         }
       });
 }
+// const sumitHandler = ()  => {
+//   //api calling for upadte the quantity of item 
+//   const config2 ={
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       permission: "order-edit",
+//     }
+//   }
+//   const data ={
+//     "quantity":`${eachItemQuantity}`
+//   }
+//   apis
+//   .post(`/supplier/order/${order_id}/${masterEditForID}/updateQuantity`, data, config2)
+//   .then((res) => {
+//     if (res) {
+//       fetchOrderDetail();
+//       toast.success(
+//         "Order update Sucessfully .",
+//         { autoClose: 3000, position: toast.POSITION.TOP_CENTER }  
+//       );  
+//     } else {
+//       toast.error(
+//         "Could not update order . Please try again later.",
+//         { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+//       );
+//     }
+//   })
+//   .catch((error) => {
+//     if (error.message !== "revoke") {
+//       toast.error(
+//         "Could not update order . Please try again later.",
+//         {
+//           autoClose: 3000,
+//           position: toast.POSITION.TOP_CENTER,
+//         }
+//       );
+//     }
+//   });
+  
+//   setMasterEditForID(null)
+//   setEditFunctionality(true)
+// }
+//Changing Functionality 6th May :)
 const sumitHandler = ()  => {
   //api calling for upadte the quantity of item 
   const config2 ={
@@ -301,10 +344,13 @@ const sumitHandler = ()  => {
     }
   }
   const data ={
+    "order_id":order_id,
+     "id":masterEditForID,
     "quantity":`${eachItemQuantity}`
+
   }
   apis
-  .post(`/supplier/order/${order_id}/${masterEditForID}/updateQuantity`, data, config2)
+  .post(`/supplier/order/updatequantity`, data, config2)
   .then((res) => {
     if (res) {
       fetchOrderDetail();
@@ -334,7 +380,6 @@ const sumitHandler = ()  => {
   setMasterEditForID(null)
   setEditFunctionality(true)
 }
-
   return (
     <div class="container-fluid page-wrap order-details">
       {/* <div>

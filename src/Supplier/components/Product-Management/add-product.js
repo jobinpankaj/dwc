@@ -1247,6 +1247,7 @@ const AddProduct = () => {
   const [currentCode, setCurrentCode] = useState("");
   const [codePic, setCodePic] = useState("");
   const [codeError, setCodedError] = useState("");
+  const [bottleType, setBottleType]= useState("");
   // const previewCanvasRef = useRef(null);
   // const previewCanvasRefProduct = useRef(null);
   // const imgRef = useRef(null);
@@ -1800,6 +1801,16 @@ const AddProduct = () => {
   };
 
   const handleFormatChange = (e) => {
+
+    const formatId=e.target.value;
+    const ab=formatList.filter((x)=>{
+      return x.id==formatId
+    })
+    let formatName = ab[0].name.split(' ')[0];
+    setBottleType(formatName);
+    console.log("adda---------------------------",formatName);
+
+
     setShowNewFormat(false)
     setOtherFormat("")
     setSelectedFormat(e.target.value);
@@ -1914,6 +1925,10 @@ const AddProduct = () => {
   //     });
   //   }
   // };
+
+  function getFormat(e){
+      console.log('--------------------------------------------',e);
+  }
 
   return (
     <div class="container-fluid page-wrap product-detail">
@@ -2157,7 +2172,7 @@ const AddProduct = () => {
                               {formatList &&
                                 formatList.map((ele) => {
                                   return (
-                                    <option key={ele.id} value={ele.id}>
+                                    <option key={ele.id} value={ele.id} >
                                       {ele.name}
                                     </option>
                                   );

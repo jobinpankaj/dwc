@@ -1399,6 +1399,7 @@
         "batch_number": "Batch Number"
       },
       "create_transfer": {
+        "create_transfer":"Create Transfer",
         "create_new": "",
         "sender": "Sender",
         "receipient": "Recipient",
@@ -1621,7 +1622,17 @@
       "months_ago":"months ago",
       "year_ago":"year ago",
       "years_ago":"years ago",
-      "write_message_concerning":"Write Message Concerning Order"
+      "write_message_concerning":"Write Message Concerning Order",
+      "selfDistribuor":"Self Distribution",
+      "selectDistributor":"Select the distributor",
+      "otheBplDistributor":"Other BLP Distributor",
+      "other":"Other Distributor outside BLP",
+      "invoice":"Invoicing",
+      "invoice1":"We produce our product in our facility but it is distributed by Other Distributor",
+      "invoice2":"We have a product but we do not produce in our own facility",
+      "invoice3":"We are an agency and we sell and collect payments on behalf of other suppliers",
+      "invoice4":"We produce our product in our facility but we authorize Distribution Bucké pay b to distribute and collect ments on our behalf",
+      "invoice5":"We produce our product in our facility and Self-Distribute"
     }
   },
   "distributor": {
