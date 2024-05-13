@@ -530,6 +530,9 @@ if(selectedDistributor === "custom" && !emailregex.test(customDistributorEmail))
                     <button
                       type="button"
                       className="btn btn-outline-black"
+                      onClick={() => {
+                        window.location.href = "/supplier/inventory-management";
+                      }}
                     >
                       {t("supplier.inventory_management.create_transfer.cancelled")}
                     </button>

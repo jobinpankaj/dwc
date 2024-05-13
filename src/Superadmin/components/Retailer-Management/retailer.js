@@ -355,7 +355,7 @@ const Retailer = () => {
                             >
                               {t("admin.retailer_management.list.add_button")}{" "}
                             </button>
-                            <button
+                            {/* <button
                               type="button"
                               className={`btn dropdown-toggle ${hideFilter}`}
                               data-bs-toggle="dropdown"
@@ -367,8 +367,8 @@ const Retailer = () => {
                               {t(
                                 "admin.retailer_management.list.filter_button"
                               )}
-                            </button>
-                            <form
+                            </button> */}
+                            {/* <form
                               className={`dropdown-menu p-3 ${hideFilter}`}
                               data-popper-placement="bottom-end"
                               style={{
@@ -421,7 +421,7 @@ const Retailer = () => {
                                   Reset
                                 </button>
                               </div>
-                            </form>
+                            </form> */}
                           </div>
                           {/* Right Filter */}
                         </div>

@@ -424,7 +424,8 @@ const Cart = () => {
         </Modal.Header>
         <Modal.Body>
           {t("retailer.market_place.cart.order_successfully_placed")}
-          <button onClick={handlePrint}>Print</button>
+          <button class="btn btn-purple rounded-pill btn-sm"
+            type="button" onClick={handlePrint}>Print</button>
         </Modal.Body>
       </Modal>
       {/* [/Modal] */}

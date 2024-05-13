@@ -328,9 +328,9 @@ const Supplier = () => {
                                   return (
                                     <tr key={ele.id}>
                                       <td>
-                                        {!ele?.user_profile?.company_name || ele?.user_profile?.company_name == ""
+                                        {!ele?.full_name || ele?.full_name == ""
                                           ? "N/A"
-                                          : ele?.user_profile?.company_name}
+                                          : ele?.full_name}
                                       </td>
 
                                       <td>

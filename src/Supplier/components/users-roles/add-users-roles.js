@@ -194,7 +194,8 @@ const SuppliearAddUsersRoles = () => {
       formdata.append("first_name", firstName);
       formdata.append("last_name", lastName);
       formdata.append("email", email);
-      formdata.append("password", pass2);
+      formdata.append("password", pass1);
+      formdata.append("confirm_password",pass2);
       formdata.append("phone_number", mobile);
       formdata.append("is_enable", status);
       formdata.append("role", role);

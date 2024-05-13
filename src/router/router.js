@@ -31,6 +31,7 @@ import EditDistributorGeneralInfo from "../Superadmin/components/Distributor-Man
 import EditDistributorAddress from "../Superadmin/components/Distributor-Management/ViewEditAddress";
 import EditRetailer from "../Superadmin/components/Retailer-Management/EditRetailer";
 import EditRetailerAddress from "../Superadmin/components/Retailer-Management/EditRetailerAddress";
+import ChangePassword from "../Superadmin/components/Profile/ChangePassword";
 
 // Retailer Imports
 import RetailerLogin from "../CommonComponents/Login/login";
@@ -256,6 +257,20 @@ en:t("router.admindashboard"),
             </Protected>
           }
         />
+        {/* Admin Additinal routes */}
+
+        <Route
+          exact
+          path="/admin/change-password"
+          // path={admindash[currentLanguage]}
+          element={
+            <Protected>
+              <ChangePassword />
+            </Protected>
+          }
+        />
+
+
         <Route
           exact
           path="/supplier-management"

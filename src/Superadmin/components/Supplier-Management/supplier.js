@@ -68,8 +68,8 @@ const Supplier = () => {
   const [updateList, setUpdateList] = useState(false);
   const [hideFilter, setHideFilter] = useState("");
   const [status, setStatus] = useState("");
-  const [show, setShow] = useState(false)
-  const [targetDelete, setTargetDelete] = useState("")
+  const [show, setShow] = useState(false);
+  const [targetDelete, setTargetDelete] = useState("");
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -211,9 +211,16 @@ const Supplier = () => {
           let dashboard_url = "/" + result.usertype + "/dashboard";
           navigate(dashboard_url);
           localStorage.setItem("supplier_accessToken", res.data.data.token);
-          localStorage.setItem("userPermissions", JSON.stringify(res.data.data.permissions))
-          let name = res.data.data.userProfile ? res.data.data.userProfile.company_name ? res.data.data.userProfile.company_name : "N/A" : "N/A"
-          localStorage.setItem(`supplier_fullName`, name)
+          localStorage.setItem(
+            "userPermissions",
+            JSON.stringify(res.data.data.permissions)
+          );
+          let name = res.data.data.userProfile
+            ? res.data.data.userProfile.company_name
+              ? res.data.data.userProfile.company_name
+              : "N/A"
+            : "N/A";
+          localStorage.setItem(`supplier_fullName`, name);
           localStorage.setItem(`supplier_userImg`, res.data.data.user_image);
         } else {
           toast.error("Something went wrong. Please try again later.", {
@@ -273,34 +280,40 @@ const Supplier = () => {
   };
 
   const handleDeleteClick = (targetId) => {
-    setTargetDelete(targetId)
-    setShow(true)
-  }
+    setTargetDelete(targetId);
+    setShow(true);
+  };
 
   const handleDeleteUser = () => {
-    setShow(false)
+    setShow(false);
     const config = {
-      headers : {
-        Authorization : `Bearer ${token}`,
-        permission : 'user-edit'
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "user-edit",
       },
       params: {
-        id: targetDelete
-      }
-    }
+        id: targetDelete,
+      },
+    };
 
-    apis.get('/deleteUser', config)
-    .then((res) => {
-      if(res.data.success === true){
-        setUpdateList(!updateList)
-        toast.success("User deleted successfully.", {autoClose: 3000, position: toast.POSITION.TOP_CENTER,})
-      }
-    })
-    .catch((error) => {
-      toast.error("Could not delete user. Please try again later.", {autoClose: 3000, position: toast.POSITION.TOP_CENTER});
-    })
-    
-  }
+    apis
+      .get("/deleteUser", config)
+      .then((res) => {
+        if (res.data.success === true) {
+          setUpdateList(!updateList);
+          toast.success("User deleted successfully.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error("Could not delete user. Please try again later.", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      });
+  };
 
   let data;
   if (rowsPerPage > 0) {
@@ -355,7 +368,7 @@ const Supplier = () => {
                             >
                               {t("admin.supplier_management.list.add_button")}
                             </button>
-                            <button
+                            {/* <button
                               type="button"
                               className={`btn dropdown-toggle ${hideFilter}`}
                               data-bs-toggle="dropdown"
@@ -367,8 +380,8 @@ const Supplier = () => {
                               {t(
                                 "admin.supplier_management.list.filter_button"
                               )}
-                            </button>
-                            <form
+                            </button> */}
+                            {/* <form
                               className={`dropdown-menu p-3 ${hideFilter}`}
                               data-popper-placement="bottom-end"
                               style={{
@@ -419,7 +432,7 @@ const Supplier = () => {
                                   Reset
                                 </button>
                               </div>
-                            </form>
+                            </form> */}
                           </div>
                           {/* Right Filter */}
                         </div>
@@ -433,12 +446,12 @@ const Supplier = () => {
                               <tr>
                                 <th className="tableNameBox">
                                   {t(
-                                    "admin.supplier_management.list.table_col1"
+                                    "admin.supplier_management.list.table_col2"
                                   )}
                                 </th>
                                 <th className="tableNameBox">
                                   {t(
-                                    "admin.supplier_management.list.table_col2"
+                                    "admin.supplier_management.list.table_col1"
                                   )}
                                 </th>
                                 <th className="tableNameBox">
@@ -495,15 +508,15 @@ const Supplier = () => {
                                   return (
                                     <tr key={ele.id}>
                                       <td>
-                                        {!ele.full_name || ele.full_name == ""
-                                          ? "N/A"
-                                          : ele.full_name}
-                                      </td>
-                                      <td>
                                         {ele.user_profile &&
                                         ele.user_profile.company_name
                                           ? ele.user_profile.company_name
                                           : "N/A"}
+                                      </td>
+                                      <td>
+                                        {!ele.full_name || ele.full_name == ""
+                                          ? "N/A"
+                                          : ele.full_name}
                                       </td>
                                       <td>
                                         {ele.user_main_address
@@ -684,9 +697,12 @@ const Supplier = () => {
               </Modal.Header>
               <Modal.Body>
                 <div className="mb-2">
-                  <p>Once you delete the selected user, the user will be removed from system and you won't be able to perform any action on the selected user anymore.</p>
+                  <p>
+                    Once you delete the selected user, the user will be removed
+                    from system and you won't be able to perform any action on
+                    the selected user anymore.
+                  </p>
                 </div>
-                
               </Modal.Body>
               <Modal.Footer
                 style={{

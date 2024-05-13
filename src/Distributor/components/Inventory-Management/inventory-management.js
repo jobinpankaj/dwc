@@ -130,6 +130,9 @@ const SupplierInventoryManagement = () => {
   const [recieveSupplierFilter, setRecieveSupplierFilter] = useState("");
   const [transerList, setTranserList] = useState([]);
   const [transferList, setTransferList] = useState([]);
+  const [q, setQ] = useState("")
+  const [allData , setallData] = useState([]);
+  const[reload,setReload]=useState(false);
 
   const generateAisleOptions = () => {
     let items = [];
@@ -244,6 +247,7 @@ const SupplierInventoryManagement = () => {
       .then((res) => {
         if (res.data.success === true) {
           setRecieveList(res.data.data);
+          setallData(res.data.data);
         } else {
           toast.error(
             "Could not fetch inventory list. Please try again later.",
@@ -259,7 +263,7 @@ const SupplierInventoryManagement = () => {
         });
       }
       });
-  }, [updateInventory]);
+  }, [updateInventory, reload]);
 
   const handleRecieveFilter = () => {
     const config = {
@@ -848,6 +852,27 @@ const SupplierInventoryManagement = () => {
   } else {
     data = inventoryList;
   }
+  const handleInputChange = (e)=>{
+    setQ(e.target.value);
+    console.log("value to search", e.target.value)
+    const valueTosearch =e.target.value;
+    const filterData = allData.filter(
+      (recieve) =>
+        recieve?.senderName.toLowerCase().includes(valueTosearch.toLowerCase())
+    );
+    setRecieveList(filterData);  
+  }
+
+  
+  const handleRecieveFilter2=()=>{
+    console.log("exxxaad",recieveSupplierFilter)
+    const filterData = allData.filter(
+      (recieve) =>
+        recieve?.sender==recieveSupplierFilter
+    );
+    setRecieveList(filterData);
+  }
+
   return (
     <div class="container-fluid page-wrap inventory-manage">
       <div class="row height-inherit">
@@ -1327,10 +1352,8 @@ const SupplierInventoryManagement = () => {
                               <div className="search-table">
                                 <div className="form-group">
                                   <input
-                                    value={recieveKeyword}
-                                    onChange={(e) =>
-                                      setRecieveKeyword(e.target.value)
-                                    }
+                                    value={q}
+                                    onChange={(e)=>handleInputChange(e)}
                                     type="text"
                                     className="search-input"
                                     placeholder={t("distributor.inventory_management.listing.search_here")}
@@ -1415,10 +1438,11 @@ const SupplierInventoryManagement = () => {
                                         </div>
 
                                         <div className="d-flex justify-content-end">
-                                          <button
+                                        <button
                                             type="button"
                                             class="btn btn-purple width-auto me-2"
-                                            onClick={handleRecieveFilter}
+                                            // onClick={handleRecieveFilter}
+                                            onClick={handleRecieveFilter2}
                                           >
                                             {t(
                                               "distributor.inventory_management.listing.apply"
@@ -1427,6 +1451,10 @@ const SupplierInventoryManagement = () => {
                                           <button
                                             type="reset"
                                             class="btn btn-outline-black width-auto"
+                                            onClick={()=>{setRecieveSupplierFilter("")
+                                              setReload(!reload)
+                                              setQ("")
+                                            }}
                                           >
                                             {t("distributor.inventory_management.listing.reset")}
                                           </button>

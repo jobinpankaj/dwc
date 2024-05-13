@@ -88,6 +88,43 @@ const SupplierRetailerDetail = () => {
   const [connectedRetailer,setConnectedRetailer]=useState("");
   const [notConnectedRetailer,setNotConnectedRetailer]=useState("");
 
+  const [routeList,setRouteList]=useState([])
+  const [routeId,setRouteId]=useState("")
+  const [allRetailerList,setAllRetailerList]=useState([])
+
+  const handleApplyFilter=()=>{
+    const filter= allRetailerList.filter((x)=>{
+       const retailerMatch= x.id==selectedRetailer
+       if (x.user_routes && Array.isArray(x.user_routes)) {
+         const routeMatch = x.user_routes.some(route => route && route.id === routeId);
+         return retailerMatch || routeMatch;
+       }
+       return retailerMatch;
+ 
+     })
+     setRetailerList(filter)
+   }
+ 
+   useEffect(()=>{
+     const uniqueRoutes = [];
+ 
+   allRetailerList.forEach(retailer => {
+     if (retailer.user_routes && Array.isArray(retailer.user_routes)) {
+       retailer.user_routes.forEach(route => {
+         if (route && route.id) {
+           if (!uniqueRoutes.some(uniqueRoute => uniqueRoute.id === route.id)) {
+             uniqueRoutes.push(route);
+           }
+         }
+       });
+     }
+   });
+ 
+   console.log("Unique routes",uniqueRoutes)
+   setRouteList(uniqueRoutes)
+   },[allRetailerList])
+
+
   const handleSendNote=()=>{
     if(notes.trim()!=="")
     {
@@ -239,6 +276,7 @@ const SupplierRetailerDetail = () => {
         setLoading(false);
         if (res.data.success === true) {
           setRetailerList(res.data.data);
+          setAllRetailerList(res.data.data)
           console.log("Textttttt", res.data.data);
           const p = res.data.data.map((obj) => {
             return { id: obj.id, full_name: obj.full_name };
@@ -279,11 +317,11 @@ const SupplierRetailerDetail = () => {
           list.sort((a, b) => {
             let firstNameA = a.first_name;
             let firstNameB = b.first_name;
-            if (a.first_name === null) {
-              firstNameA = "";
+            if (a.first_name === null || a.first_name === "") {
+              firstNameA = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzz";
             }
-            if (b.first_name === null) {
-              firstNameB = "";
+            if (b.first_name === null || b.first_name==="") {
+              firstNameB = "zzzzzzzzzzzzzzzzzzzzzzzzzzz";
             }
 
             return firstNameA.localeCompare(firstNameB);
@@ -321,8 +359,8 @@ const SupplierRetailerDetail = () => {
     let connectRetailer = 0;
     let notConnectRetailer = 0;
     
-    if (Array.isArray(retailerList) && retailerList.length > 0) {
-      retailerList.forEach(x => {
+    if (Array.isArray(allRetailerList) && allRetailerList.length > 0) {
+      allRetailerList.forEach(x => {
         if (x.supplier_data && x.supplier_data.status && x.supplier_data.status === '1') {
           connectRetailer++;
         } else {
@@ -422,7 +460,7 @@ const SupplierRetailerDetail = () => {
                                 }}
                               >
                                 <div class="mb-3">
-                                  <label class="form-label">
+                                <label class="form-label">
                                     Retailer Name
                                   </label>
                                   <select
@@ -445,10 +483,20 @@ const SupplierRetailerDetail = () => {
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label">Route Name</label>
-                                  <select className="form-select">
-                                    <option selected disabled>
+                                  <select className="form-select"
+                                  value={routeId}
+                                  onChange={(e)=>{setRouteId(e.target.value)}}>
+                                    <option value="">
                                       Choose Route
                                     </option>
+                                    {routeList &&
+                                      routeList.map((ele) => {
+                                        return (
+                                          <option key={ele.id} value={ele.id}>
+                                            {ele.name}
+                                          </option>
+                                        );
+                                      })}
                                   </select>
                                 </div>
 
@@ -456,7 +504,7 @@ const SupplierRetailerDetail = () => {
                                   <button
                                     type="button"
                                     class="btn btn-purple width-auto me-2"
-                                    onClick={() => setUpdateList(!updateList)}
+                                    onClick={() => {handleApplyFilter()}}
                                   >
                                     Apply
                                   </button>
@@ -782,9 +830,9 @@ const SupplierRetailerDetail = () => {
                       </div>
                       <div className="map-area">
                         <div className="w-100 map-box">
-                          {retailerList.length > 0 && (
+                          {allRetailerList.length > 0 && (
                             <Map
-                            userInformation={retailerList}
+                            userInformation={allRetailerList}
                             setReatilerId1={setReatilerId}
                             showModal={setShowNoteModal}
                           />

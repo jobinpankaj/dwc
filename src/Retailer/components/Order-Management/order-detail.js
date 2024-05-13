@@ -16,9 +16,10 @@ import { Oval } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import { useReactToPrint } from "react-to-print";
-import html2pdf from 'html2pdf.js';
+import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx";
-
+// import { Document, Page, pdfjs } from 'react-pdf';
+// import { toBase64 } from 'file-base64';
 
 const OrderDetail = () => {
   const componentRef = useRef();
@@ -31,8 +32,16 @@ const OrderDetail = () => {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState();
   const [isOpen, setIsOpen] = useState(false);
-
-  let subtotal1 = 0, subtotal2 = 0 ,gst = 0 , qst = 0 , grandtotal = 0 , quantity =0;
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [retailerId, setRetailerId] = useState();
+  const [pdfUrls, setPdfUrls] = useState([]);
+  const [reload,setReload]=useState(false)
+  let subtotal1 = 0,
+    subtotal2 = 0,
+    gst = 0,
+    qst = 0,
+    grandtotal = 0,
+    quantity = 0;
   // ---------uplode----doc-----
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -86,16 +95,117 @@ const OrderDetail = () => {
     setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
-  const handleAttachFile = () => {
-    // Code to save or process the uploaded files
-    // For example, you can send the files to a server or perform any other action
-    console.log("Uploaded files:", uploadedFiles);
-    setUploadedFiles([]); // Clear files after saving
-  };
+  // const handleAttachFile = () => {
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       permission: `order-view`,
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   };
+  //   if (selectedFile) {
+      
+  //     // and use callback to return the data which you get.
+  //     function getBase64(selectedFile, cb) {
+  //       let reader = new FileReader();
+  //       reader.readAsDataURL(selectedFile);
+  //       reader.onload = function () {
+  //         cb(reader.result);
+  //       };
+  //       reader.onerror = function (error) {
+  //         console.log("Error: ", error);
+  //       };
+  //     }
 
+  //     let idCardBase64 = "";
+  //     getBase64(selectedFile, (result) => {
+  //       idCardBase64 = result;
+  //       console.log("------------------------------", idCardBase64);
+  //     });
+
+
+  //     const formData = new FormData();
+  //     // let baseFile= btoa(selectedFile)
+  //     // console.log(baseFile);
+  //     formData.append("file", idCardBase64);
+  //     formData.append("order_id", retailerId);
+  //     console.log(">>>", formData);
+
+  //     apis
+  //       .post("/retailer/uploadOrderFile", formData, config)
+  //       .then((res) => {
+  //         console.log("File Uploaded");
+  //         setSelectedFile(null);
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error uploading file", err);
+  //       });
+  //   } else {
+  //     console.log("No file selected");
+  //   }
+  // };
   // -----end--------------
 
   // ----download--toggleButtons------
+  
+  const handleAttachFile = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    if (selectedFile) {
+      
+      // and use callback to return the data which you get.
+      function getBase64(selectedFile, cb) {
+        let reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onload = function () {
+          cb(reader.result);
+        };
+        reader.onerror = function (error) {
+          console.log("Error: ", error);
+        };
+      }
+
+      getBase64(selectedFile, (idCardBase64) => {
+        console.log("Base64 data:", idCardBase64);
+        
+        const formData = new FormData();
+        formData.append("file", idCardBase64); // Append base64 data instead of selectedFile
+        formData.append("order_id", params.id);
+        console.log("FormData:", formData);
+
+        apis
+          .post("/retailer/uploadOrderFile", formData, config)
+          .then((res) => {
+            console.log("File Uploaded");
+            setSelectedFile(null);
+            toast.success("File update Sucessfully .", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            })
+            setReload(!reload)
+
+          })
+          .catch((err) => {
+            if (err.message !== "revoke") {
+              toast.error("Could not update order . Please try again later.", {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              });
+            }
+            console.log("Error uploading file", err);
+          });
+      });
+    } else {
+      console.log("No file selected");
+    }
+  };
+
+  
   const toggleButtons = () => {
     setIsOpen(!isOpen);
   };
@@ -116,6 +226,7 @@ const OrderDetail = () => {
     setShowSidebar(!showSidebar);
   };
   const params = useParams();
+  console.log('#########################', params);
   // -----end---------
 
   useEffect(() => {
@@ -131,6 +242,7 @@ const OrderDetail = () => {
       .then((res) => {
         setLoading(false);
         setOrder(res.data.data);
+        setRetailerId(res.data.data.retailer_id);
       })
       .catch((err) => {
         if (err.message !== "revoke") {
@@ -236,6 +348,36 @@ const OrderDetail = () => {
     document.body.removeChild(link);
     setIsOpen(false); // Close the slide-buttons
   };
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("retailer_accessToken");
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          permission: "order-view",
+        },
+      };
+
+      apis     
+        .get(`/retailer/getUploadFileList/${params.id}`, config)
+        .then((res) => {
+          if (res.data.success === true) {
+            setPdfUrls(res.data.data);
+            console.log("<<<", res.data.data);
+            // setSupplierId(res.data.data.supplier_id);
+          } else {
+            console.log("No files available for this supplier.");
+          }
+        })
+        .catch((error) => console.error("Error fetching PDF URLs:", error));
+    } else {
+      // Handle case when token is missing or invalid
+      console.error("Access token not found or invalid");
+      // Optionally, redirect to login page or display an error message
+    }
+  }, [reload]);
 
   return (
     <div class="container-fluid page-wrap order-details">
@@ -571,48 +713,58 @@ const OrderDetail = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                  {order &&
+                                    {order &&
                                       order.items.map((item) => {
-                                        subtotal1 += parseFloat(item.sub_total)
-                                        subtotal2 = (parseFloat(subtotal1)+ 9).toFixed(2);
-                                        gst = (subtotal1/20).toFixed(2);
-                                        qst = ((subtotal1*9.975)/100).toFixed(2);
-                                        grandtotal = parseFloat(subtotal2) + parseFloat(gst) + parseFloat(qst);
-                                        quantity +=parseInt(item.quantity);
+                                        subtotal1 += parseFloat(item.sub_total);
+                                        subtotal2 = (
+                                          parseFloat(subtotal1) + 9
+                                        ).toFixed(2);
+                                        gst = (subtotal1 / 20).toFixed(2);
+                                        qst = (
+                                          (subtotal1 * 9.975) /
+                                          100
+                                        ).toFixed(2);
+                                        grandtotal =
+                                          parseFloat(subtotal2) +
+                                          parseFloat(gst) +
+                                          parseFloat(qst);
+                                        quantity += parseInt(item.quantity);
                                         return (
-                                        <tr>
-                                          <td>
-                                            <div class="prodInfo d-flex">
-                                              <div class="prod-img p-2">
-                                                <img
-                                                  src={
-                                                    item?.product?.product_image
-                                                  }
-                                                  className="img-fluid"
-                                                />
-                                              </div>
-                                              <div class="desc d-flex flex-column align-items-start">
-                                                <div className="proName">
-                                                  {item?.product?.product_name}
+                                          <tr>
+                                            <td>
+                                              <div class="prodInfo d-flex">
+                                                <div class="prod-img p-2">
+                                                  <img
+                                                    src={
+                                                      item?.product
+                                                        ?.product_image
+                                                    }
+                                                    className="img-fluid"
+                                                  />
                                                 </div>
-                                                <div className="prodMeta badge text-bg-light rounded-pill">
-                                                  {
-                                                    item?.product
-                                                      ?.product_format?.name
-                                                  }
+                                                <div class="desc d-flex flex-column align-items-start">
+                                                  <div className="proName">
+                                                    {
+                                                      item?.product
+                                                        ?.product_name
+                                                    }
+                                                  </div>
+                                                  <div className="prodMeta badge text-bg-light rounded-pill">
+                                                    {
+                                                      item?.product
+                                                        ?.product_format?.name
+                                                    }
+                                                  </div>
                                                 </div>
                                               </div>
-                                            </div>
-                                          </td>
-                                          <td class="">
-                                            <div className="price-box ">
-                                              <div className="mrp">
-                                                {console.log(item, "item")}$
-                                                {(
-                                                  item.product.pricing.price
-                                                )}
-                                              </div>
-                                              {/* <div className="old-price">
+                                            </td>
+                                            <td class="">
+                                              <div className="price-box ">
+                                                <div className="mrp">
+                                                  {console.log(item, "item")}$
+                                                  {item.product.pricing.price}
+                                                </div>
+                                                {/* <div className="old-price">
                                               
                                                <span className="price-cut d-inline-block me-2">
                                                 ${item?.product?.pricing.price}
@@ -621,20 +773,20 @@ const OrderDetail = () => {
                                                -0%
                                                  </span>
                                              </div> */}
-                                            </div>
-                                          </td>
-                                          <td className="qty">
-                                            {item?.quantity}
-                                          </td>
-                                          {/* <td className="qty">
+                                              </div>
+                                            </td>
+                                            <td className="qty">
+                                              {item?.quantity}
+                                            </td>
+                                            {/* <td className="qty">
                                             {item.tax}
                                           </td> */}
-                                          <td class="">
-                                            <div className="price-box">
-                                              <div className="mrp">
-                                                ${item?.sub_total}
-                                              </div>
-                                              {/* <div className="old-price">
+                                            <td class="">
+                                              <div className="price-box">
+                                                <div className="mrp">
+                                                  ${item?.sub_total}
+                                                </div>
+                                                {/* <div className="old-price">
                                                   <span className="price-cut d-inline-block me-2">
                                                  $50.00
                                                   </span>
@@ -642,10 +794,11 @@ const OrderDetail = () => {
                                                   -12%
                                                   </span>
                                                 </div> */}
-                                            </div>
-                                          </td>
-                                        </tr>
-                                    )})}
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
                                   </tbody>
                                 </table>
                               </div>
@@ -658,15 +811,13 @@ const OrderDetail = () => {
                               <div className="card-body p-3">
                                 <div className="price-breakage mb-2 d-flex justify-content-between">
                                   <label>
-                                  {quantity}{" "}
+                                    {quantity}{" "}
                                     {t(
                                       "retailer.order_management.order_detail.products"
                                     )}
                                     {/* (22.704L) */}:
                                   </label>
-                                  <span>
-                                  ${(subtotal1).toFixed(2)}
-                                  </span>
+                                  <span>${subtotal1.toFixed(2)}</span>
                                 </div>
                                 <div className="price-breakage mb-2 d-flex justify-content-between">
                                   <label>
@@ -685,9 +836,7 @@ const OrderDetail = () => {
                                       "retailer.order_management.order_detail.sub_total_2"
                                     )}
                                   </label>
-                                  <span>
-                                  ${subtotal2}
-                                  </span>
+                                  <span>${subtotal2}</span>
                                 </div>
                                 <hr />
                                 <div className="price-addon mb-2 d-flex justify-content-between">
@@ -699,9 +848,7 @@ const OrderDetail = () => {
                                     {t(
                                       "retailer.order_management.order_detail.on"
                                     )}{" "}
-                                    <span>
-                                    ${(subtotal1).toFixed(2)}
-                                    </span>
+                                    <span>${subtotal1.toFixed(2)}</span>
                                   </label>
 
                                   <span>${gst}</span>
@@ -715,13 +862,9 @@ const OrderDetail = () => {
                                     {t(
                                       "retailer.order_management.order_detail.on"
                                     )}{" "}
-                                    <span>
-
-                                      ${(subtotal1).toFixed(2)}
-                                    </span>
+                                    <span>${subtotal1.toFixed(2)}</span>
                                   </label>
                                   <span>${qst}</span>
-
                                 </div>
                                 <div className="price-addon d-flex justify-content-between">
                                   <label>
@@ -729,12 +872,15 @@ const OrderDetail = () => {
                                     {t(
                                       "retailer.order_management.order_detail.on"
                                     )}{" "}
-                                    <span>
-                                      ${(subtotal1).toFixed(2)}
-                                    </span>
+                                    <span>${subtotal1.toFixed(2)}</span>
                                   </label>
                                   <span>
-                                  <span>${(parseFloat(gst)+parseFloat(qst)).toFixed(2)}</span>
+                                    <span>
+                                      $
+                                      {(
+                                        parseFloat(gst) + parseFloat(qst)
+                                      ).toFixed(2)}
+                                    </span>
                                   </span>
                                 </div>
                               </div>
@@ -1056,17 +1202,48 @@ const OrderDetail = () => {
                             </div>
                             {/* [/Page Filter Box] */}
                           </div>
+
                         </div>
                       </div>
 
                       {/* [Card] */}
                       <div className="card user-card height-100">
                         <div className="card-body p-0">
-                          <div className="row">
-                            <div className="col"></div>
-                          </div>
-                          <div className="row">
-                            <div className="col"></div>
+                           <div className="pdf-download mt-4">
+                            <div className="row">
+                            {pdfUrls.map((ele, index) => {
+                              let path = ele.file_path;
+                              // let pathId= path.slice('/')
+                              const filename = path.substring(
+                                path.lastIndexOf("/") + 1
+                              );
+                              
+                              return (
+                                <div className="col-md-3">
+                                  <div class="card-pdf">
+                                    <span class="file-type">
+                                      <i
+                                        class="fa-solid fa-file-pdf"
+                                        style={{
+                                          color: "red",
+                                          fontSize: "25px",
+                                        }}
+                                      ></i>
+                                    </span>
+                                    <p class="file-name m-0">
+                                      Invoice #{filename}
+                                    </p>
+                                    <p class="file-size"></p>
+                                    <span class="lock-icon">
+                                      <a href={path} download={path}>
+                                        <i class="fa-solid fa-download"></i>
+                                      </a>
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1108,15 +1285,35 @@ const OrderDetail = () => {
                 className="dropFile rounded-2"
                 id="dropArea"
                 onClick={() => document.getElementById("fileInput").click()}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const file = e.dataTransfer.files[0];
+                  setSelectedFile(file);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                }}
                 style={{ cursor: "pointer" }}
               >
                 <p>
                   Drag and Drop files here or{" "}
-                  <a href="#" className="text-purpel">
+                  <label htmlFor="fileInput" className="text-purple">
                     Browse
-                  </a>
+                  </label>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      setSelectedFile(e.target.files[0]);
+                    }}
+                  />
                 </p>
                 <input
                   type="file"
@@ -1131,57 +1328,21 @@ const OrderDetail = () => {
               </div>
               <h6>Upload Files</h6>
               <div className="dropFile rounded-2 border-0 p-3">
-                {!uploadedFiles.length && (
-                  <div className="empty-file">
-                    <img src={viewfile} />
-                    <p className="opacity-50 mt-2">
-                      The files you’ll upload <br /> will appear here
-                    </p>
-                  </div>
+                {selectedFile && <div>{selectedFile.name}</div>}
+                {!selectedFile && (
+                  <p className="opacity-50 mt-2">No file selected</p>
                 )}
-                {uploadedFiles.map((file, index) => (
-                  <div
-                    className="card user-card uploded-doc height-100"
-                    key={index}
-                    style={{
-                      marginBottom:
-                        index !== uploadedFiles.length - 1 ? "5px" : "0",
-                    }}
-                  >
-                    <div
-                      className="card-body d-flex p-0"
-                      style={{ background: "#c1c1c1", fontSize: "12px" }}
-                    >
-                      <div className="row px-2">
-                        <div className="col">
-                          <p className="file-name">{file.name}</p>
-                        </div>
-                        <div className="col-auto">
-                          <button
-                            type="button"
-                            className="btn-close"
-                            onClick={() => handleRemoveFile(index)}
-                            aria-label="Remove"
-                          ></button>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <p className="file-size">
-                            {(file.size / 1024).toFixed(2)} KB
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
             <div className="modal-footer border-0 justify-content-center">
               <button
+                onClick={() => {
+                  setSelectedFile(null);
+                }}
                 type="button"
                 className="btn btn-outline-black width-auto"
                 data-bs-dismiss="modal"
+                accept=".pdf"
               >
                 Cancel
               </button>
@@ -1190,6 +1351,8 @@ const OrderDetail = () => {
                 type="button"
                 className="btn btn-purple width-auto"
                 onClick={handleAttachFile}
+                data-bs-dismiss="modal"
+                accept=".pdf"
               >
                 Attach File
               </button>

@@ -60,7 +60,9 @@ const SupplierGroupsManagement = () => {
     const [groupsList, setGroupsList] = useState("")
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [allData,setAllData] = useState(true);
+    const [q, setQ] = useState("");
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -84,7 +86,8 @@ const SupplierGroupsManagement = () => {
             .then((res) => {
                 setLoading(false)
                 if(res.data.success === true){
-                    setGroupsList(res.data.data)
+                    setGroupsList(res.data.data);
+                    setAllData(res.data.data);
                 }else{
                     toast.error("Could not fetch groups. Please try again later.", {autoClose: 2000, position: toast.POSITION.TOP_CENTER,});
                 }
@@ -100,6 +103,16 @@ const SupplierGroupsManagement = () => {
         
 
     }, [])
+
+    const handleInputChange = (e)=>{
+        setQ(e.target.value);
+        const valueTosearch =e.target.value;
+        const filterData = allData.filter(
+          (group) =>
+            group.name.toLowerCase().includes(valueTosearch.toLowerCase())
+        );
+        setGroupsList(filterData);  
+      }
 
     let data;
     if (rowsPerPage > 0) {
@@ -145,19 +158,18 @@ const SupplierGroupsManagement = () => {
                                     <div className="row">
                                         <div className="col">
                                             <div className="card-top-filter-box p-3">
-                                                {/* [Table Search] */}
+                            
                                                 <div className="search-table">
                                                     <div className="form-group">
-                                                        <input type="text" className="search-input"></input>
+                                                    <input type="text" className="search-input"  value={q} onChange={(e)=>handleInputChange(e)}></input>
                                                     </div>
                                                 </div>  
-                                                {/* [/End Table Search] */}
+                                               
                                                 <div className="filter-row page-top-filter">
-                                                    {/* Creat Group */} 
+                                                   
                                                     {hasPermission(GROUP_EDIT) && <NavLink to="/supplier/groups-management/create-groups" className="btn btn-purple btn-sm">Create Group</NavLink>}
-                                                    {/* End Creat Group */}
-                                                    {/* Right Filter */}
-                                                    <div class="dropdown right-filter">
+                                                  
+                                                    {/* <div class="dropdown right-filter">
                                                         <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                                                             <img src={filter} /> Filter
                                                         </button>
@@ -185,8 +197,8 @@ const SupplierGroupsManagement = () => {
                                                                 <input type="reset" class="btn btn-outline-black width-auto" value="Reset" />
                                                             </div>                                       
                                                         </form>
-                                                        </div>
-                                                    {/* Right Filter */}
+                                                        </div> */}
+                                                   
                                                 </div>
                                             </div>                          
                                         </div>
