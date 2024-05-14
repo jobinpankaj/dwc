@@ -49,6 +49,9 @@ const CreateOrder = () => {
     distributorName: "",
     distributorEmail: "",
   });
+  const [poductList,setProductList] = useState([])
+  const [other,setOther]=useState("")
+  
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
@@ -158,6 +161,7 @@ const CreateOrder = () => {
         items: finalArray,
         total_quantity: 100,
         total_amount: grandTot,
+        other:other
       };
 
       if(hasPermission(ORDER_EDIT)){
@@ -239,6 +243,30 @@ const CreateOrder = () => {
           });
         }
       });
+    
+      const config2 = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          permission: `product-view`,
+        },
+      };
+      if (hasPermission(PRODUCT_VIEW)) {
+        apis
+          .get("supplier/products", config2)
+          .then((res) => {
+            setProductList(res.data.data);
+            console.log("all product---------++++++++++++++++++++++++++++++", res.data.data);
+          })
+          .catch((err) => {
+            if (err.message !== "revoke") {
+              toast.error("Something went wrong!.Please try again later.", {
+                autoClose: 1000,
+                position: toast.POSITION.TOP_CENTER,
+              });
+            }
+          });
+      }
+
   }, []);
 
   useEffect(() => {
@@ -280,9 +308,40 @@ const CreateOrder = () => {
     e.preventDefault();
 
     console.log("Distributor Information:", formState);
+    console.log("Select dist",selectedDistributor)
+    const config1 = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission:"supplier-edit"
+      },
+      
+    };
+    const bodyData={
+      distributor_name: formState.distributorName,
+    distributor_email: formState.distributorEmail
+    }
+    apis
+      .post("/supplier/createGroupDistributor",bodyData ,config1)
+      .then((res) => {
+        setOther("1")
+        setSelectedDistributor(res.data.data.id)
+        console.log("Item",res.data.data.id)
+        toast.success("Email ID added succesfully",{
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      })
+      .catch((error) => {
+        if(error.message !== "revoke"){
+          toast.error("Could not  Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
 
     // toast.success("Distributor Information Submitted")
-    setSelectedDistributor("");
+    // setSelectedDistributor("");
     setEmailNameModal(false);
     // setFormState(null);
     // form.reset()
@@ -475,7 +534,7 @@ const CreateOrder = () => {
                               value={selectedDistributor}
                               onChange={(e) => {
                                 setSelectedDistributor(e.target.value);
-                                if (e.target.value === "other") {
+                                if (e.target.value === "0") {
                                   setEmailNameModal(true);
                                 }
                                 setDistributorError("");
@@ -494,7 +553,7 @@ const CreateOrder = () => {
                               ) : (
                                 <></>
                               )}
-                               <option value="other">Other</option>
+                               <option value="0">Other</option>
                             </select>
                             {distributorError !== "" ? (
                               <p className="error-label">{distributorError}</p>
@@ -673,18 +732,18 @@ const CreateOrder = () => {
                             >
                               <span></span>
                               <option value="">Select Item</option>
-                              {editableItem && editableItem.length > 0 ? (
-                                editableItem.map((ele) => {
+                              {poductList && poductList.length > 0 ? (
+                                poductList.map((ele) => {
                                   return (
                                     <option
                                       value={JSON.stringify({
-                                        productId: ele.pricing.product_id,
+                                        productId: ele?.pricing?.product_id,
                                         productUnitPrice:
-                                          ele.pricing.unit_price,
-                                        productTax: ele.pricing.tax_amount,
-                                        productName: ele.product_name,
-                                        productFormatId: ele.product_format.id,
-                                        productStyleId: ele.style,
+                                          ele?.pricing?.unit_price,
+                                        productTax: ele.pricing?.tax_amount,
+                                        productName: ele?.product_name,
+                                        productFormatId: ele?.product_format?.id,
+                                        productStyleId: ele?.style,
                                       })}
                                     >
                                       {ele.product_name}

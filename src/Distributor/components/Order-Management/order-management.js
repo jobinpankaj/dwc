@@ -92,6 +92,8 @@ const OrderManagement = () => {
   const [selectedStatus, setSelectedStatus] = useState();
   const [selectedInvoiceStatus, setSelectedInvoiceStatus] = useState();
   const [retailerList, setRetailerList] = useState([]);
+  const [q, setQ] = useState("")
+  const [allData , setallData] = useState([]);
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -117,6 +119,7 @@ const OrderManagement = () => {
       .then((res) => {
         setLoading(false);
         setOrders(res.data.data);
+        setallData(res.data.data);
       })
       .catch((err) => {
         if(err.message !== "revoke"){
@@ -374,6 +377,18 @@ const OrderManagement = () => {
       .padStart(2, "0")}-${formattedDate.getFullYear()}`;
     return formattedDateString;
   };
+  const handleInputChange = (e)=>{
+    setQ(e.target.value);
+    console.log("value to search", e.target.value)
+    const valueTosearch =e.target.value;
+    const filterData = allData.filter(
+      (product) =>
+        product.order_reference.toLowerCase().includes(valueTosearch.toLowerCase()) ||
+      product?.supplier_information?.user_profile?.company_name.toLowerCase().includes(valueTosearch.toLowerCase()) ||
+      product?.retailer_information?.user_main_address?.address_1.toLowerCase().includes(valueTosearch.toLowerCase())
+    );
+    setOrders(filterData);  
+  }
   console.log(selectedSupplier);
   return (
     <div className="container-fluid page-wrap order-manage">
@@ -608,13 +623,15 @@ const OrderManagement = () => {
                             {/* [Table Search] */}
                             <div className="search-table">
                               <div className="form-group">
-                                <input
-                                  type="text"
-                                  className="search-input"
-                                  placeholder={t(
-                                    "distributor.order_management.listing.search_here"
-                                  )}
-                                ></input>
+                              <input
+                                      type="text"
+                                      className="search-input"
+                                      value={q}
+                                      placeholder={t(
+                                        "supplier.inventory_management.list.search_here"
+                                      )}
+                                      onChange={(e)=>handleInputChange(e)}
+                                    ></input>
                               </div>
                             </div>
                             {/* [/Table Search] */}

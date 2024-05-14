@@ -655,122 +655,122 @@ const Marketplace = () => {
                           <div className="row product-list m-0">
                             {/* [Product Box] */}
                             {supplierProduct?.map((product) => (
-                              <div className="col-md-4 col-xxl-3 mb-3 productBox">
-                                <div class="card">
-                                  <a
-                                    onClick={() =>
-                                      navigate(
-                                        `/retailer/marketplace/product-details?product_id=${product.id}&supplier_id=${product.user_id}`
-                                      )
-                                    }
-                                    class="imageFix text-center bg-white"
-                                  >
-                                    <img
-                                      src={
-                                        product.combined_image ||
-                                        imageNotAvailable
-                                      }
-                                      onError={(e) => {
-                                        e.target.src = imageNotAvailable; // Replace with the default image source
-                                      }}
-                                      className="card-img-top"
-                                      alt=""
-                                    />
-                                  </a>
-                                  <div class="card-body px-0">
-                                    <h5 class="card-title">
-                                      {product.product_name}
-                                    </h5>
-                                    <h6 class="card-subtitle mb-2 text-body-secondary">
-                                      {product.product_type}
-                                    </h6>
-                                    <hr />
-                                    <div class="productMeta">
-                                      <div className="prodInfo mb-2">
-                                        {`${product?.product_type} (${product?.alcohol_percentage}%)`}{" "}
-                                      </div>
-                                      <div className="prodDesc mb-3">
-                                        {product?.product_format?.name}{" "}
-                                      </div>
-                                      <div className="distributorInfo text-uppercase">
-                                        {product?.user_profile?.company_name}
-                                      </div>
-                                      <div className="row my-3 justify-content-between">
-                                        <div className="col-auto">
-                                          <div className="prodPrice h-100 d-flex align-items-center">
-                                            {`$ ${(
-                                              product?.pricing?.unit_price *
-                                              quantities[product.id]
-                                            ).toFixed(2)}`}
-                                          </div>
-                                        </div>
-                                        <div className="col-auto">
-                                          <div className="qty-box hstack gap-1">
-                                            <label>
-                                              {t(
-                                                "retailer.market_place.listing.qty"
-                                              )}
-                                            </label>
-                                            <button
-                                              class="btn btn-purple rounded-circle d-flex align-items-center justify-content-center"
-                                              type="button"
-                                              onClick={() =>
-                                                handleDecrement(product.id)
-                                              }
-                                            >
-                                              -
-                                            </button>
-                                            <input
-                                              type="text"
-                                              onChange={(e) =>
-                                                handleCartQuantity(
-                                                  product.id,
-                                                  e.target.value
-                                                )
-                                              }
-                                              class="form-control rounded-0"
-                                              value={
-                                                quantities[product.id] || 1
-                                              }
-                                            />
-                                            <button
-                                              class="btn btn-purple rounded-circle  d-flex align-items-center justify-content-center"
-                                              type="button"
-                                              onClick={() =>
-                                                handleIncrement(product.id)
-                                              }
-                                            >
-                                              +
-                                            </button>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <a
-                                      onClick={() =>
-                                        handleAddToCart(
-                                          product.id,
-                                          product.product_name,
-                                          product.combined_image,
-                                          product.product_format.id,
-                                          product.product_format.name,
-                                          product.pricing.total_price,
-                                          product.user_information.id,
-                                          product.user_information.full_name,
-                                          product.product_format.unit *
-                                            product.pricing.total_price *
-                                            quantities[product.id]
-                                        )
-                                      }
-                                      class="btn btn-sm btn-purple w-auto"
-                                    >
-                                      {t(
-                                        "retailer.market_place.listing.add_to_cart"
-                                      )}
-                                    </a>
-                                  </div>
-                                </div>
-                              </div>
+                               <div className=" col-sm-4 col-lg-4 col-xxl-2 col-xl-3 mb-3 productBox">
+                               <div class="card">
+                                 <a
+                                   onClick={() =>
+                                     navigate(
+                                       `/retailer/marketplace/product-details?product_id=${product.id}&supplier_id=${product.user_id}`
+                                     )
+                                   }
+                                   class="imageFix text-center bg-white"
+                                 >
+                                   <img
+                                     src={
+                                       product.combined_image ||
+                                       imageNotAvailable
+                                     }
+                                     onError={(e) => {
+                                       e.target.src = imageNotAvailable; // Replace with the default image source
+                                     }}
+                                     className="card-img-top"
+                                     alt=""
+                                   />
+                                 </a>
+                                 <div class="card-body px-0">
+                                   <h5 class="card-title">
+                                     {product.product_name}
+                                   </h5>
+                                   <h6 class="card-subtitle text-body-secondary">
+                                     {product.product_type}
+                                   </h6>
+                                   <hr className="my-2" />
+                                   <div class="productMeta">
+                                     <div className="prodInfo d-flex justify-content-between mb-3">
+                                       <span>{`${product?.product_type} (${product?.alcohol_percentage}%)`}{" "}</span>
+                                       <span className="prodDesc">
+                                         {product?.product_format?.name}{" "}
+                                       </span>
+                                     </div>
+                                     <div className="distributorInfo text-uppercase">
+                                       {product?.user_profile?.company_name}
+                                     </div>
+                                     <div className="d-flex my-3 justify-content-between">
+                                       <div className="">
+                                         <div className="qty-box hstack p-0 gap-1">
+                                           <label>
+                                             {t(
+                                               "retailer.market_place.listing.qty"
+                                             )}
+                                           </label>
+                                           <button
+                                             class="btn btn-purple rounded-circle d-flex align-items-center justify-content-center"
+                                             type="button"
+                                             onClick={() =>
+                                               handleDecrement(product.id)
+                                             }
+                                           >
+                                             -
+                                           </button>
+                                           <input
+                                             type="text"
+                                             onChange={(e) =>
+                                               handleCartQuantity(
+                                                 product.id,
+                                                 e.target.value
+                                               )
+                                             }
+                                             class="form-control rounded-0"
+                                             value={
+                                               quantities[product.id] || 1
+                                             }
+                                           />
+                                           <button
+                                             class="btn btn-purple rounded-circle  d-flex align-items-center justify-content-center"
+                                             type="button"
+                                             onClick={() =>
+                                               handleIncrement(product.id)
+                                             }
+                                           >
+                                             +
+                                           </button>
+                                         </div>
+                                       </div>
+                                       <div className="">
+                                         <div className="prodPrice h-100 d-flex align-items-center">
+                                           {`$ ${(
+                                             product?.pricing?.unit_price *
+                                             quantities[product.id]
+                                           ).toFixed(2)}`}
+                                         </div>
+                                       </div>
+                                     </div>
+                                   </div>
+                                   <a
+                                     onClick={() =>
+                                       handleAddToCart(
+                                         product.id,
+                                         product.product_name,
+                                         product.combined_image,
+                                         product.product_format.id,
+                                         product.product_format.name,
+                                         product.pricing.total_price,
+                                         product.user_information.id,
+                                         product.user_information.full_name,
+                                         product.product_format.unit *
+                                         product.pricing.total_price *
+                                         quantities[product.id]
+                                       )
+                                     }
+                                     class="btn btn-sm btn-purple w-auto"
+                                   >
+                                     {t(
+                                       "retailer.market_place.listing.add_to_cart"
+                                     )}
+                                   </a>
+                                 </div>
+                               </div>
+                             </div>
                             ))}
                           </div>
                           {/* [/Product List] */}

@@ -1535,6 +1535,15 @@
       "edit": {
         "title": "Edit Product",
         "save_btn": "Save"
+      },
+      "Product_type":{
+        "product_type_lable": "Product Type",
+        "select_product":"Select Product",
+        "Beer":"Beer",
+        "Wine":"Wine",
+        "Cider":"Cider",
+        "Non-Alcohol":"Non-Alcohol",
+        "Beverage":"Beverage"
       }
     },
     "pricing": {

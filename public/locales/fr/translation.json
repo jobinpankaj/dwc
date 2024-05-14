@@ -1530,6 +1530,15 @@
       "edit": {
         "title": "Modifier le produit",
         "save_btn": "Sauvegarder"
+      },
+      "Product_type":{
+        "product_type_lable": "Type de Produit",
+        "select_product":"Sélectionner un produit",
+        "Beer":"Biere",
+        "Wine":"Vin",
+        "Cider":"Cidre",
+        "Non-Alcohol":"Non alcoolisé",
+        "Beverage":"Breuvage"
       }
     },
     "pricing": {

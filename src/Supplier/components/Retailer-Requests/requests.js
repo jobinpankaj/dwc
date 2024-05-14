@@ -311,7 +311,7 @@ const Requests = () => {
                     <div className="card-body p-0">
                       <div className="row">
                         <div className="col">
-                          <div className="table-responsive">
+                          <div className="table-responsive table-request">
                             <table className="table table-striped m-0">
                               <thead>
                                 <tr>

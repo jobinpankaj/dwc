@@ -34,14 +34,181 @@
         }
     }
 
-    img {
-        width: auto !important;
+    // -----------clipbox-bottle---
+    .clipBox img {
+        width: 120px !important;
         height: 100% !important;
-        max-height: inherit;
-        max-width: 100% !important;
-        object-fit: contain;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+
     }
+
+    .clipBox img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+    @keyframes moveRightLeft {
+
+        0%,
+        100% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        25% {
+            transform: translateX(-5px);
+            /* Gradually move left */
+        }
+
+        75% {
+            transform: translateX(5px);
+            /* Gradually move right */
+        }
+    }
+
+    // -----lable-Bottle----
+
+    .lable-bottle {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 145px;
+        left: 74px;
+        cursor: pointer;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .lable-bottle img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBox:hover+.lable-bottle .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+        width: 60px !important;
+    }
+
+
+    @keyframes moveLeftRight {
+
+        0% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        50% {
+            transform: translateX(-0px);
+            /* Gradually move left */
+        }
+
+        100% {
+            transform: translateX(0px);
+            /* Gradually move right */
+        }
+    }
+
+
+
+
+    // -----------clipbox--cane---------------------
+
+    .clipBoxcane img {
+        width: 450px !important;
+        height: 100% !important;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+    }
+
+    .clipBoxcane img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+    // -----lable-Cane----
+
+    .lable-cane {
+        width: 86px;
+        height: 135px;
+        position: absolute;
+        top: 97px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .lable-cane img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBoxcane:hover+.lable-cane .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+    }
+
+
+
+
+    // --------lable-keg---
+
+    .clipBoxkeg img {
+        width: 90px !important;
+        height: 100% !important;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+    }
+
+    .clipBoxkeg img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+
+    .lable-keg {
+        width: 66px;
+        height: 73px;
+        position: absolute;
+        top: 147px;
+        border-radius: 7px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .lable-keg img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBoxkeg:hover+.lable-keg .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+    }
+
+
+    @keyframes moveLeftRight {
+
+        0%,
+        100% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        25% {
+            transform: translateX(-25px);
+            /* Gradually move left */
+        }
+
+        75% {
+            transform: translateX(25px);
+            /* Gradually move right */
+        }
+    }
+
 }
+
 
 body {
     font-family: $font-regular;
@@ -1003,6 +1170,7 @@ table {
             width: 100%;
             height: 36px;
             padding: 5px 10px 5px 30px;
+            background-color: #fff !important;
         }
     }
 }
@@ -2368,6 +2536,37 @@ table {
 }
 
 
+@media only screen and (max-width: 600px) {
+    .notificaiton-panel {
+        width: 80% !important;
+    }
+
+    .notificaiton-panel .account-info .one-component span {
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+
+    .user-card {
+        .cmd-data {
+            table {
+                td {
+                    min-width: 140px !important;
+                }
+            }
+        }
+    }
+    .btn.btn-outline-black {
+      margin-top: 10px;
+    }
+    
+}
+
+@media only screen and (max-width: 768px) {
+    .notificaiton-panel {
+        width: 50%;
+    }
+}
 
 
 
@@ -2436,6 +2635,7 @@ table {
                 border-right: 2px solid #fff;
                 background: #f6f0f9;
                 font-size: 25px;
+                min-width: 65px;
 
                 span {
                     font-size: 15px;
@@ -2665,148 +2865,219 @@ table {
         padding: 5px;
         border: 1px solid;
     }
-   input:focus-visible {
+
+    input:focus-visible {
         outline: 1px solid !important;
     }
-    
+
 
 }
 
 // / -----Invoice--Pdf-scss-- /
 .invoice-grid table {
-  border: 1px solid #9370db;
+    border: 1px solid #9370db;
 }
 
 .invoice-grid th,
 .invoice-grid td {
-  padding: 3px 10px;
-//   / Padding for all table cells /
+    padding: 3px 10px;
+    //   / Padding for all table cells /
 }
 
 .invoice-grid tr {
-  border-bottom: 1px solid #9370db;
+    border-bottom: 1px solid #9370db;
 }
 
 .invoice .text-area {
-  width: 100%;
-  height: 100%;
-  background: #ededed;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    background: #ededed;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .invoice-grid {
-  overflow: auto;
-  border: 1px solid #765bff;
+    overflow: auto;
+    border: 1px solid #765bff;
 }
 
 .invoice strong {
-  font-size: 13px;
+    font-size: 13px;
 }
 
 .total-count {
 
-  label,
-  span {
-    font-weight: 600;
-  }
+    label,
+    span {
+        font-weight: 600;
+    }
 
-  .sub-t {
-    font-size: 16px;
-  }
+    .sub-t {
+        font-size: 16px;
+    }
 
-  .tax-num {
-    font-size: 16px;
-  }
+    .tax-num {
+        font-size: 16px;
+    }
 
-  .gst-num {
-    font-size: 16px;
-  }
+    .gst-num {
+        font-size: 16px;
+    }
 
-  .ca-num {
-    font-size: 16px;
-  }
+    .ca-num {
+        font-size: 16px;
+    }
 
-  .qst-num {
-    font-size: 16px;
-  }
+    .qst-num {
+        font-size: 16px;
+    }
 }
 
 .bank-info {
-  padding: 10px;
-  height: 150px;
-  background-color: #efefef;
+    padding: 10px;
+    height: 150px;
+    background-color: #efefef;
 
-  .bank-details {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    font-weight: 600;
-  }
+    .bank-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
 
-  .fa-hand-point-right {
-    color: #765bff;
-  }
+    .fa-hand-point-right {
+        color: #765bff;
+    }
 }
 
 .blp-logo {
-  background-color: #1e0046;
-  padding: 5px;
-  border-radius: 5px;
+    background-color: #1e0046;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .bank-info p {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .signature {
 
-  .signature-line {
-    border-bottom: 1px solid #000;
-    width: 60%;
-  }
+    .signature-line {
+        border-bottom: 1px solid #000;
+        width: 60%;
+    }
 }
 
 // --------invoice---2---
 
 .due-details {
-  border: 1px solid;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 200 !important;
-  border-radius: 5px;
+    border: 1px solid;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 200 !important;
+    border-radius: 5px;
 
-  .sub-t {
-    font-weight: 400 !important;
-    font-size: 11px;
-    margin-top: 20px;
-  }
+    .sub-t {
+        font-weight: 400 !important;
+        font-size: 11px;
+        margin-top: 20px;
+    }
 }
 
 // ----------------invoice-4--------
 .invoice-4 {
-  .invoice-grid {
-    overflow: auto;
-    border: 1px solid #6d8976;
+    .invoice-grid {
+        overflow: auto;
+        border: 1px solid #6d8976;
 
-    table,
-    tr {
-      border: 1px solid #6d8976;
+        table,
+        tr {
+            border: 1px solid #6d8976;
+        }
     }
-  }
 }
 
 .invoice-5 {
-  .invoice-grid {
-    overflow: auto;
-    border: 1px solid #79018c;
+    .invoice-grid {
+        overflow: auto;
+        border: 1px solid #79018c;
 
-    table,
-    tr {
-      border: 1px solid #79018c;
+        table,
+        tr {
+            border: 1px solid #79018c;
+        }
     }
-  }
+}
+
+
+.pdf-download {
+    .card-pdf {
+        background-color: #f9f9f9;
+        padding: 16px;
+        position: relative;
+        border: 1px solid #eee;
+    }
+
+    .card-pdf::before {
+        position: absolute;
+        bottom: -1px;
+        right: -2px;
+        margin: 0 auto;
+        content: "";
+        display: block;
+        background: #fff;
+        transform: rotate(87deg);
+        border-top: 40px solid #fff;
+        border-left: 40px solid #eee;
+    }
+
+
+    .file-name {
+        font-weight: bold;
+    }
+
+    .file-size {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .lock-icon {
+        font-size: 20px;
+        color: gray;
+    }
+}
+
+.table-request table td {
+    min-width: 130px !important;
+}
+
+
+.product-page .lable-content img {
+    max-width: 100% !important;
+}
+
+.product-page .productImg .lable-bottle {
+    position: absolute;
+    top: 184px !important;
+    left: 86px !important;
+}
+
+.product-page .productImg .lable-cane {
+    position: absolute;
+    top: 142px !important;
+    left: 74px !important;
+}
+
+.product-page .productImg .lable-keg {
+    position: absolute;
+    top: 181px !important;
+    left: 82px !important;
+}
+
+.product-card,
+.page-content-box .top-image img {
+    width: 100% !important;
 }
 
 // / ---------end----------- /

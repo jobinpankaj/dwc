@@ -68,6 +68,7 @@ const ProductManagement = () => {
   const [hideFilter, setHideFilter] = useState("");
 
   const [showSidebar, setShowSidebar] = useState(false);
+  const [reload,setReload]=useState(false)
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -97,7 +98,7 @@ const ProductManagement = () => {
         setLoading(false);
       }
       });
-  }, [token]);
+  }, [token,reload]);
   useEffect(() => {
     if (hasPermission(SUPPLIER_VIEW)) {
       setLoading(true);
@@ -298,7 +299,8 @@ const ProductManagement = () => {
                                   <div className="d-flex justify-content-end">
                                     <button
                                       type="submit"
-                                      onClick={(e) => filteredProduct(e)}
+                                      onClick={(e) => filteredProduct(e)
+                                      }
                                       class="btn btn-purple  btn-sm me-2"
                                     >
                                       {t(
@@ -307,7 +309,8 @@ const ProductManagement = () => {
                                     </button>
                                     <button
                                       type="reset"
-                                      onClick={() => handleSupplierDropdown(0)}
+                                      onClick={() => {handleSupplierDropdown(0)
+                                        setReload(!reload)}}
                                       class="btn btn-sm btn-outline-black width-auto"
                                     >
                                       {t(

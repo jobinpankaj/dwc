@@ -185,27 +185,27 @@ const ProductDetail = () => {
                           </div>
                         </div>
                         <div className="col-sm-6 px-0 pe-sm-0 ps-sm-3">
-                          <div className="mb-3 prodImg">
-                            <div>
+                          <div className="row mb-3">
+                            <div className="col-sm-6">
                               <label className="form-label">
                                 {"Lable Image"}
                               </label>
                               <>
-                                <div className="mb-3 prodImg position-relative">
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
+                                <div className="mb-3  position-relative">
+                                  <div className="productImg min-square-width top-image border mb-3">
                                     <img src={labelImage === "" || labelImage === null ? noImage : labelImage}></img>
                                   </div>
                                 </div>
                               </>
                             </div>
 
-                            <div>
+                            <div className="col-sm-6">
                               <label className="form-label">
                                 {"Product Image"}
                               </label>
                               <>
-                                <div className="mb-3 prodImg position-relative">
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
+                                <div className="mb-3 position-relative">
+                                  <div className="productImg min-square-width top-image border  mb-3 ">
                                     <img src={productImage === "" || productImage === null ? noImage : productImage}></img>
                                   </div>
                                 </div>

@@ -80,6 +80,17 @@ const OrderManagement = () => {
   const [dropdownDistributor, setDropdownDistributor] = useState(false);
   const [distinctDistributorList, setDistinctDistributorList] = useState([]);
   const [distinctArrayDist, SetDistinctArrayDist] = useState([]);
+  const [count, setCount] = useState(0)
+
+  const [searchValue,setSearchValue]=useState("")
+  const [allOrderList,setAllOrderList]=useState([])
+  const [statusValue,setStatusValue]=useState("")
+  const [supplierList,setSupplierList]=useState([])
+  const [filterSupplierList,setFilterSupplierList]=useState([])
+  const [searchSupplier,setSearchSupplier]=useState("")
+  const [supplierID,setSupplierID]=useState("")
+  const [dropdownShow,setDropdownShow]=useState(false)
+  const [reload,setReload]=useState(false)
 
 
   const sigma = "\u03A3";
@@ -101,6 +112,7 @@ const OrderManagement = () => {
         if (res.data) {
           // console.log(object)
           setOrders(res.data.data);
+          setAllOrderList(res.data.data)
         }
       })
       .catch((err) => {
@@ -127,7 +139,7 @@ const OrderManagement = () => {
           });
         }
       });
-  }, []);
+  }, [reload]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -182,7 +194,7 @@ const OrderManagement = () => {
       //   str.user_profile &&
       //   str.user_profile.group_name &&
       //   str.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
-      return fullNameMatch  || companyMatch ;
+      return fullNameMatch || companyMatch;
     });
 
     setDistinctList(matchingStrings);
@@ -193,7 +205,7 @@ const OrderManagement = () => {
     setDropdownShowSupplier(false);
   };
 
-    const handleDistributorSearch = (e) => {
+  const handleDistributorSearch = (e) => {
     setSelectedDistributor("");
     setSearchDistributor(e);
     const matchingStrings = distinctArrayDist.filter((x) => {
@@ -215,9 +227,9 @@ const OrderManagement = () => {
     const uniqueSupplierInfoArray = [];
 
     orders.forEach((x) => {
-      if (!uniqueSupplierIds.has(x.supplier_information.id)) {
-        uniqueSupplierIds.add(x.supplier_information.id);
-        uniqueSupplierInfoArray.push(x.supplier_information);
+      if (!uniqueSupplierIds.has(x?.supplier_information?.id)) {
+        uniqueSupplierIds.add(x?.supplier_information?.id);
+        uniqueSupplierInfoArray.push(x?.supplier_information);
       }
     });
     setDistinctSupplierInfoArray(uniqueSupplierInfoArray);
@@ -236,7 +248,7 @@ const OrderManagement = () => {
     });
     setDistinctDistributorList(uniqueDistributorArray);
     SetDistinctArrayDist(uniqueDistributorArray);
-    console.log("Dattaaaa",uniqueDistributorArray,uniqueSupplierInfoArray)
+    console.log("Dattaaaa", uniqueDistributorArray, uniqueSupplierInfoArray)
   }, [orders]);
 
 
@@ -274,6 +286,130 @@ const OrderManagement = () => {
   }, [selectedDistributor, selectedSupplier, toDate, fromDate]);
 
 
+  useEffect(()=>{
+    if(orders && orders.length > 0){
+      let newCount = 0;
+      orders.forEach((ele)=>{
+        if(ele.status == 'Unpaid'){
+          const createdDate = new Date(ele.created_at);
+          const currentDate = new Date();
+          const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
+                    if (monthDiff >= 2) {
+                        newCount++; // Increment newCount if conditions are met
+                    }
+        }
+      });
+      setCount(newCount);
+    }
+
+  },[orders])
+
+
+  const applyFilter=()=>{
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(
+        `/retailer/orderListing?supplier_id=${supplierID}&status=${statusValue}`,
+        config
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          setOrders(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }
+
+  const handleSupplierSearch = (e) => {
+    setSupplierID("");
+    setSearchSupplier(e);
+
+    const matchingStrings = supplierList.filter((str) => {
+      const fullNameMatch = str.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      const companyMatch =  str.company_name
+      .toLowerCase()
+      .includes(e.toLowerCase());
+ 
+      return fullNameMatch  || companyMatch ;
+    });
+
+    setFilterSupplierList(matchingStrings);
+    setDropdownShow(true);
+  };
+  const handleSupplierDropDown = (company_name, id) => {
+    setSearchSupplier(company_name);
+    console.log("Dtaaaxss",company_name,id)
+    setSupplierID(id);
+    setDropdownShow(false);
+    // setShowNote(true);
+  };
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "supplier-view",
+      },
+    };
+    apis
+      .get(`/retailer/suppliersAllList`, config)
+      .then((res) => {
+        setSupplierList(res.data.data);
+        setFilterSupplierList(res.data.data)
+      })
+      .catch((err) => {});
+  }, []);
+
+
+  const handleSearching=(e)=>{
+    console.log("Dataaaa",e)
+    setSearchValue(e)
+    const searchKey=e
+    const filteredOrder=allOrderList.filter((x)=>{
+      const matchBuisnnesName=
+      x.supplier_information &&
+      x.supplier_information.user_profile &&
+      x.supplier_information.user_profile.company_name &&
+      x.supplier_information.user_profile.company_name.toLowerCase().includes(searchKey.toLowerCase());
+      const addressMatching=
+      x.retailer_information &&
+      x.retailer_information.user_main_address &&
+      x.retailer_information.user_main_address.address_1 &&
+      x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
+
+      const orderReference=
+      x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
+
+      const statusMatching=
+      x.status.toLowerCase().includes(searchKey.toLowerCase())
+      return matchBuisnnesName || addressMatching || orderReference || statusMatching
+    })
+    console.log("==================================", filteredOrder);
+    setOrders(filteredOrder);
+  }
+
+
+
 
   return (
     <div className="container-fluid page-wrap order-manage">
@@ -285,7 +421,142 @@ const OrderManagement = () => {
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row mb-3">
               <div className="col">
-                <div className="filter-row page-top-filter justify-content-end">
+                <div className="filter-row page-top-filter justify-content-between">
+                  {/* new div */}
+                  <div className="filter-box">
+                    {/* [/Date] */}
+
+                    <div className="dropdown date-selector">
+                      <button
+                        className="btn btn-outline-black btn-sm dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{ background: "#ffffff" }}
+                      >
+                        <img src={calendar} alt="" />{" "}
+                        {t("supplier.order_management.list.select_date")}
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        style={{ padding: "5px 10px" }}
+                      >
+                        <form>
+                          <li>
+                            <label>From Date</label>
+
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => {
+                                setFromDate(e.target.value);
+                              }}
+                            />
+                          </li>
+                          <li>
+                            <label>To Date</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => {
+                                setToDate(e.target.value);
+                              }}
+                            />
+                          </li>
+                        </form>
+                      </ul>
+                    </div>
+
+                    <div className="dropdown date-selector card-top-filter-box">
+                      <div className="search-table form-group">
+                        <input
+                          type="text"
+                          className="search-input"
+                          value={searchSupplierFilter}
+                          placeholder="Search Supplier"
+                          onFocus={() => {
+                            setDropdownShowSupplier(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownShowSupplier(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleSupplierFilterSearch(e.target.value);
+                          }}
+                        />
+
+                        {distinctList.length > 0 && (
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${dropdownShowSupplier ? "d-block" : "d-none"
+                              }`}
+                          >
+                            {" "}
+                            {distinctList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s?.id}
+                                onClick={() =>
+                                  handleSupplierFilterDropdown(
+                                    s?.user_profile?.company_name,
+                                    s?.id
+                                  )
+                                }
+                              >
+                                {s?.user_profile?.company_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="dropdown date-selector card-top-filter-box">
+                      <div className="search-table form-group">
+                        <input
+                          type="text"
+                          className="search-input"
+                          value={searchDistributor}
+                          placeholder="Search Distributor"
+                          onFocus={() => {
+                            setDropdownDistributor(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownDistributor(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleDistributorSearch(e.target.value);
+                          }}
+                        />
+                        {distinctDistributorList.length > 0 && (
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+                              }`}
+                          >
+                            {" "}
+                            {distinctDistributorList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s.id}
+                                onClick={() =>
+                                  handleDistributorDropdown(
+                                    s?.user_profile?.company_name,
+                                    s.id
+                                  )
+                                }
+                              >
+                                {s?.user_profile?.company_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {/* close div */}
                   {/* Right Filter */}
                   <div class="dropdown right-filter">
                     <button
@@ -303,32 +574,39 @@ const OrderManagement = () => {
                         <label class="form-label">
                           {t("retailer.order_management.listing.order_status")}
                         </label>
-                        <select className="form-select">
-                          <option selected disabled>
+                        <select className="form-select"
+                         value={statusValue}
+                         onChange={(e)=>{
+                           setStatusValue(e.target.value)
+                         }}>
+                          <option value="">
                             {t(
                               "retailer.order_management.listing.choose_status"
                             )}
                           </option>
-                          <option value="">
+                          <option value="1">
                             {t("retailer.order_management.listing.approved")}
                           </option>
-                          <option value="">
+                          <option value="5">
                             {t("retailer.order_management.listing.cancelled")}
                           </option>
-                          <option value="">
+                          <option value="4">
                             {t("retailer.order_management.listing.delivered")}
                           </option>
-                          <option value="">
+                          <option value="6">
                             {t("retailer.order_management.listing.payment")}
                           </option>
-                          <option value="">
+                          <option value="2">
                             {t("retailer.order_management.listing.on_hold")}
                           </option>
-                          <option value="">
+                          <option value="0">
                             {t("retailer.order_management.listing.pending")}
                           </option>
-                          <option value="">
+                          <option value="3">
                             {t("retailer.order_management.listing.shipped")}
+                          </option>
+                          <option value="7">
+                            Unpaid
                           </option>
                         </select>
                       </div>
@@ -336,18 +614,60 @@ const OrderManagement = () => {
                         <label class="form-label">
                           {t("retailer.order_management.listing.supplier")}
                         </label>
-                        <select className="form-select">
-                          <option selected disabled>
-                            {t(
-                              "retailer.order_management.listing.choose_supplier"
-                            )}
-                          </option>
-                          <option value="">Supplier 1</option>
-                          <option value="">Supplier 2</option>
-                          <option value="">Supplier 3</option>
-                        </select>
+                        <div style={{ position: "relative" }}>
+                            <button
+                              className="search-btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                            >
+                              <i className="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <input
+                              type="text"
+                              value={searchSupplier}
+                              placeholder="Search Supplier"
+                              onChange={(e) =>
+                                handleSupplierSearch(e.target.value)
+                              }
+                              onFocus={() => {
+                                setDropdownShow(true);
+                              }}
+                              onBlur={()=>{
+                                setTimeout(() => {
+                                  setDropdownShow(false)
+                                }, 200);
+                              }}
+                            />
+                          </div>
+                          {filterSupplierList.length > 0 && (
+                            <ul
+                              className={`w-100 searchListBx custom-scrollbar ${
+                                dropdownShow ? "d-block" : "d-none"
+                              }`}
+                            >
+                              {" "}
+                              {filterSupplierList.map((s) => (
+                                <li
+                                  className="dropdown-item pe-pointer"
+                                  key={s.id}
+                                  style={{
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    cursor: "pointer", // Optionally add cursor pointer for better UX
+                                  }}
+                                  onClick={() =>
+                                    handleSupplierDropDown(s.company_name, s.id)
+                                  }
+                                >
+                                  {s.company_name}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                       </div>
-                      <div class="mb-3">
+                      {/* <div class="mb-3">
                         <div class="form-check form-check-inline">
                           <input
                             class="form-check-input"
@@ -381,18 +701,31 @@ const OrderManagement = () => {
                             {t("retailer.order_management.listing.paid")}
                           </label>
                         </div>
-                      </div>
+                      </div> */}
                       <div className="d-flex justify-content-end">
                         <button
                           type="button"
                           class="btn btn-purple width-auto me-2"
+                          onClick={()=>{applyFilter()}}
                         >
                           {t("retailer.order_management.listing.apply")}
                         </button>
                         <input
-                          type="reset"
+                          type="button"
                           class="btn btn-outline-black width-auto"
                           value="Clear"
+                          onClick={()=>{
+                            setSearchSupplier("")
+                            setStatusValue("")
+                            setSupplierID("")
+                            setSelectedDistributor("")
+                            setSelectedSupplier("")
+                            setToDate("")
+                            setFromDate("")
+                            setSearchSupplierFilter("")
+                            setSearchDistributor("")
+                            setReload(!reload)
+                          }}
                         />
                       </div>
                     </form>
@@ -400,147 +733,6 @@ const OrderManagement = () => {
                   {/* Right Filter */}
                 </div>
               </div>
-
-
-
-
-              {/* new div */}
-              <div className="filter-box">
-                      {/* [/Date] */}
-
-                      <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          style={{ background: "#ffffff" }}
-                        >
-                          <img src={calendar} alt="" />{" "}
-                          {t("supplier.order_management.list.select_date")}
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          style={{ padding: "5px 10px" }}
-                        >
-                          <form>
-                            <li>
-                              <label>From Date</label>
-
-                              <input
-                                type="date"
-                                value={fromDate}
-                                onChange={(e) => {
-                                  setFromDate(e.target.value);
-                                }}
-                              />
-                            </li>
-                            <li>
-                              <label>To Date</label>
-                              <input
-                                type="date"
-                                value={toDate}
-                                onChange={(e) => {
-                                  setToDate(e.target.value);
-                                }}
-                              />
-                            </li>
-                          </form>
-                        </ul>
-                      </div>
-
-                      <div className="dropdown date-selector">
-                        <input
-                          type="text"
-                          value={searchSupplierFilter}
-                          placeholder="Search Supplier"
-                          onFocus={() => {
-                            setDropdownShowSupplier(true);
-                          }}
-                          onBlur={() => {
-                            setTimeout(() => {
-                              setDropdownShowSupplier(false);
-                            }, 200);
-                          }}
-                          onChange={(e) => {
-                            handleSupplierFilterSearch(e.target.value);
-                          }}
-                        />
-
-                        {distinctList.length > 0 && (
-                          <ul
-                            className={`w-100 searchListBx custom-scrollbar ${
-                              dropdownShowSupplier ? "d-block" : "d-none"
-                            }`}
-                          >
-                            {" "}
-                            {distinctList.map((s) => (
-                              <li
-                                className="dropdown-item pe-pointer"
-                                key={s.id}
-                                onClick={() =>
-                                  handleSupplierFilterDropdown(
-                                    s.user_profile?.company_name,
-                                    s.id
-                                  )
-                                }
-                              >
-                                {s.user_profile?.company_name}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-
-                      <div className="dropdown date-selector">
-                        <input
-                          type="text"
-                          value={searchDistributor}
-                          placeholder="Search Distributor"
-                          onFocus={() => {
-                            setDropdownDistributor(true);
-                          }}
-                          onBlur={() => {
-                            setTimeout(() => {
-                              setDropdownDistributor(false);
-                            }, 200);
-                          }}
-                          onChange={(e) => {
-                            handleDistributorSearch(e.target.value);
-                          }}
-                        />
-                        {distinctDistributorList.length > 0 && (
-                          <ul
-                            className={`w-100 searchListBx custom-scrollbar ${
-                              dropdownDistributor ? "d-block" : "d-none"
-                            }`}
-                          >
-                            {" "}
-                            {distinctDistributorList.map((s) => (
-                              <li
-                                className="dropdown-item pe-pointer"
-                                key={s.id}
-                                onClick={() =>
-                                  handleDistributorDropdown(
-                                    s.user_profile.company_name,
-                                    s.id
-                                  )
-                                }
-                              >
-                                {s.user_profile.company_name}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    </div>
-              {/* close div */}
-
-
-
-
-
-
             </div>
 
             {/* ------Commandes----- */}
@@ -575,7 +767,7 @@ const OrderManagement = () => {
                     </td>
                     <td>
                       <i class="fa-solid fa-triangle-exclamation"></i>
-                      <span>35</span>
+                      <span>{count}</span>
                     </td>
                   </tr>
                 </table>
@@ -597,7 +789,13 @@ const OrderManagement = () => {
                               <input
                                 type="text"
                                 className="search-input"
+                                placeholder="Searching...."
+                                value={searchValue}
+                                onChange={(e)=>{
+                                  handleSearching(e.target.value)
+                                }}
                               ></input>
+
                             </div>
                           </div>
                           {/* [/Table Search] */}
@@ -605,14 +803,14 @@ const OrderManagement = () => {
                           {/* [Right Filter] */}
                           <div className="filter-row text-end">
                             {/* [Page Filter Box] */}
-                            <div className="filter-box">
+                            {/* <div className="filter-box">
                               <a
                                 href="#"
                                 className="btn btn-outline-black btn-sm"
                               >
                                 PDF <img src={downloadPDF} />
                               </a>
-                            </div>
+                            </div> */}
                             {/* [/Page Filter Box] */}
                           </div>
                           {/* [/Right Filter] */}
@@ -690,7 +888,7 @@ const OrderManagement = () => {
                                       <div className="daysCount">{`${Math.floor(
                                         (new Date() -
                                           new Date(order?.created_at)) /
-                                          (1000 * 60 * 60 * 24)
+                                        (1000 * 60 * 60 * 24)
                                       )} Days ago`}</div>
                                     </div>
                                   </td>
@@ -706,10 +904,9 @@ const OrderManagement = () => {
                                     <div className="order-group-box">
                                       <ul class="list-group list-group-horizontal">
                                         <li
-                                          class={`list-group-item border-0 text-center ${
-                                            order.status === "Approved" &&
+                                          class={`list-group-item border-0 text-center ${order.status === "Approved" &&
                                             "active"
-                                          }`}
+                                            }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={approveTick} alt="" />
@@ -721,10 +918,9 @@ const OrderManagement = () => {
                                           </p>
                                         </li>
                                         <li
-                                          class={`list-group-item border-0 text-center ${
-                                            order.status === "Transit" &&
+                                          class={`list-group-item border-0 text-center ${order.status === "Transit" &&
                                             "active"
-                                          }`}
+                                            }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={Transit} alt="" />
@@ -736,10 +932,9 @@ const OrderManagement = () => {
                                           </p>
                                         </li>
                                         <li
-                                          class={`list-group-item border-0 text-center ${
-                                            order.status === "Delivered" &&
+                                          class={`list-group-item border-0 text-center ${order.status === "Delivered" &&
                                             "active"
-                                          }`}
+                                            }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={delivered} alt="" />
@@ -752,10 +947,9 @@ const OrderManagement = () => {
                                         </li>
 
                                         <li
-                                          class={`list-group-item border-0 text-center ${
-                                            order.status === "Payment" &&
+                                          class={`list-group-item border-0 text-center ${order.status === "Payment" &&
                                             "active"
-                                          }`}
+                                            }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             {/* <img src={payment} alt="" /> */}
@@ -774,8 +968,8 @@ const OrderManagement = () => {
                                     </div>
                                   </td>
                                   <td>
-                                  {order.status === "Approved" ||
-                                    order.status === "Paid" ? (
+                                    {order.status === "Approved" ||
+                                      order.status === "Paid" ? (
                                       <span className="badge text-bg-green">
                                         {order.status}
                                       </span>
@@ -793,7 +987,11 @@ const OrderManagement = () => {
                                       <span className="badge text-bg-blue">
                                         {order.status}
                                       </span>
-                                    ) : (
+                                    ): order.status === "Unpaid"? (
+                                      <span className="badge text-bg-purple" style={{color: '#79018c ', padding:'5px'}}>
+                                        {order.status}
+                                      </span>
+                                    ): (
                                       "tbd"
                                     )}
                                   </td>

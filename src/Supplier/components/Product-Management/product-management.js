@@ -333,6 +333,9 @@ import useAuthInterceptor from "../../../utils/apis";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import { PRODUCT_EDIT, PRODUCT_VIEW } from "../../../Constants/constant";
 import LoadingOverlay from "react-loading-overlay";
+import beerBottle from "../../assets/images/beer-bottle.png";
+import beerCane from "../../assets/images/beer_cane.png";
+import beerKeg from "../../assets/images/beer_keg.png";
 
 const ProductManagement = () => {
   const apis = useAuthInterceptor();
@@ -609,52 +612,80 @@ const ProductManagement = () => {
                     {/* [/Add Product] */}
                     {/* [Product Box] */}
                     {productList && productList.length > 0 ? (
-                      productList.map((product) => (
-                        <div className="col-sm-4 col-xl-3 mb-3 productBox">
-                          <div class="card product-card">
-                            <div className="title-holder">
-                              <h5 class="card-title text-center">
-                                {product.product_name}
-                              </h5>
-                            </div>
-                            <div
-                              className="productImg"
-                              onClick={() => handleViewProduct(product.id)}
-                            >
-                              <img
-                                src={
-                                  // product.product_image &&
-                                  // product.product_image !== ""
-                                  //   ? product.product_image
-                                  //   : product.label_image
-                                  product.product_image
-                                  
-                                }
-                                class="card-img-top"
-                                alt=""
-                              />
-                              {/* {product.product_name} */}
-                            </div>
-                            <div class="card-body px-0 pb-0">
-                              <div className="custom-deactive">
-                                <p
-                                  onClick={() => {
-                                    setShow(true);
-                                    setTargetDelete(product.id);
-                                  }}
-                                >
-                                  <span class="badge text-bg-red">
-                                    <i class="fa-solid fa-trash"></i>
-                                  </span>
-                                </p>
+                      productList.map((product) => {
+                        let productType = product.product_format.name;
+                        const prodyctFType = productType.split(' ')[0];
+                        let productFType = productType
+                        return (
+                          <div className="col-sm-4 col-xl-3 mb-3 productBox">
+                            <div class="card product-page product-card">
+                              <div className="title-holder">
+                                <h5 class="card-title text-center">
+                                  {product.product_name}
+                                </h5>
                               </div>
-                              <h6 class="card-subtitle text-body-secondary">
-                                {product.product_type}
-                              </h6>
+                              <div
+                                className="productImg"
+                                onClick={() => handleViewProduct(product.id)}
+                              >
+                                {prodyctFType === "Bottle" && (
+                                  <>
+                                    <div class="clipBox">
+                                      <img src={beerBottle} alt="Bottle" />
+                                    </div>
+                                    <div class="lable-bottle">
+                                      <div class="lable-content">
+                                        {product.label_image ? <img src={product.label_image} /> : null}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                                {prodyctFType === "Can" && (
+                                  <>
+                                    <div class="clipBoxcane">
+                                      <img src={beerCane} alt="Can" />
+                                    </div>
+                                    <div className="lable-cane">
+                                      <div class="lable-content">
+                                        {product.label_image ? <img src={product.label_image} /> : null}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                                {prodyctFType === "Keg" && (
+                                  <>
+                                    <div class="clipBoxkeg">
+                                      <img src={beerKeg} alt="Keg" />
+                                    </div>
+                                    <div className="lable-keg">
+                                      <div class="lable-content">
+                                        {product.label_image ? <img src={product.label_image} /> : null}
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                              <div class="card-body px-0 pb-0">
+                                <div className="custom-deactive">
+                                  <p
+                                    onClick={() => {
+                                      setShow(true);
+                                      setTargetDelete(product.id);
+                                    }}
+                                  >
+                                    <span class="badge text-bg-red">
+                                      <i class="fa-solid fa-trash"></i>
+                                    </span>
+                                  </p>
+                                </div>
+                                <h6 class="card-subtitle text-body-secondary">
+                                  {product.product_type}
+                                </h6>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     ) : (
                       <></>
                     )}

@@ -543,7 +543,7 @@ const Dashboard = (userType) => {
                                     className="list-group-item dropdown-item pe-pointer"
                                     onClick={() =>
                                       navigate(
-                                        `/retailer/marketplace/product-details?product_id=${7}&supplier_id=${9}`
+                                        `/retailer/marketplace/product-details?product_id=${product.id}&supplier_id=${product.user_information.id}`
                                       )
                                     }
                                   >
@@ -691,8 +691,11 @@ const Dashboard = (userType) => {
                                                   #{order.order_reference}
                                                 </span>{" "}
                                                 {
-                                                  order.supplier_information
-                                                    .full_name
+                                                  // {ele?.supplier_info
+                                                  //   ? ele?.supplier_info?.full_name
+                                                  //   : "N/A"}
+                                                  order?.supplier_information? order?.supplier_information?.full_name: "N/A"
+                                                    
                                                 }
                                               </div>
                                             </div>
