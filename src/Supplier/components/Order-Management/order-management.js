@@ -466,7 +466,7 @@ const OrderManagement = () => {
     setSelectedDistributor("");
     setSearchDistributor(e);
     const matchingStrings = distinctArrayDist.filter((x) => {
-      return x.user_profile.company_name
+      return x?.user_profile?.company_name
         .toLowerCase()
         .includes(e.toLowerCase());
     });
@@ -1431,14 +1431,14 @@ const OrderManagement = () => {
                                         </td>
                                         <td>{totalPrice(ele?.items)}</td>
                                         <td>
-                                          {ele.order_distributors[0] &&
-                                            ele.order_distributors[0]
+                                          {ele?.order_distributors[0] &&
+                                            ele?.order_distributors[0]
                                               ?.distributor_info?.user_profile
-                                              .company_name
-                                            ? ele.order_distributors[0]
+                                              ?.company_name
+                                            ? ele?.order_distributors[0]
                                               ?.distributor_info?.user_profile
-                                              .company_name
-                                            : ele.order_distributors[0]?.other_distributor==1?"Other":"N/A"}
+                                              ?.company_name
+                                            : ele?.order_distributors[0]?.other_distributor==1?"Other":"N/A"}
                                         </td>
 
                                         <td

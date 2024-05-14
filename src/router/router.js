@@ -189,6 +189,8 @@ import { useTranslation } from "react-i18next";
 import DeliveryMeainFest from "../LandingPage/DeliveryMainFest";
 import DistributorTransferDetail from "../Distributor/components/Inventory-Management/transfer-detail";
 // import { routePaths } from './routePaths'; // Import the route path mapping
+//Context Api import
+import { XProvider } from "../ContxtApi/HeaderContext";
 
 const Router = () => {
   // const { t } = useTranslation();
@@ -208,6 +210,7 @@ en:t("router.admindashboard"),
 
   return (
     <main>
+      <XProvider>
       <Routes>
         {/* Superadmin Routes */}
         <Route
@@ -1669,6 +1672,7 @@ en:t("router.admindashboard"),
           }
         />{" "}
       </Routes>
+      </XProvider>
     </main>
   );
 };

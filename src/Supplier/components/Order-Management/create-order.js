@@ -50,7 +50,8 @@ const CreateOrder = () => {
     distributorEmail: "",
   });
   const [poductList,setProductList] = useState([])
-  const [other,setOther]=useState("")
+  const [other,setOther]=useState("0")
+  const [distributorId,setdistributorId]=useState("")
   
 
   const handleItemSelect = (e) => {
@@ -156,7 +157,7 @@ const CreateOrder = () => {
 
       const bodyData = {
         retailer_id: selectedRetailer,
-        distributor_id: selectedDistributor,
+        distributor_id: other=="0"?selectedDistributor:distributorId,
         note: note,
         items: finalArray,
         total_quantity: 100,
@@ -324,7 +325,8 @@ const CreateOrder = () => {
       .post("/supplier/createGroupDistributor",bodyData ,config1)
       .then((res) => {
         setOther("1")
-        setSelectedDistributor(res.data.data.id)
+        // setSelectedDistributor(res.data.data.id)
+        setdistributorId(res.data.data.id)
         console.log("Item",res.data.data.id)
         toast.success("Email ID added succesfully",{
           autoClose: 3000,
@@ -534,6 +536,7 @@ const CreateOrder = () => {
                               value={selectedDistributor}
                               onChange={(e) => {
                                 setSelectedDistributor(e.target.value);
+                                setOther("0")
                                 if (e.target.value === "0") {
                                   setEmailNameModal(true);
                                 }

@@ -1209,15 +1209,21 @@ const OrderDetail = () => {
                       {/* [Card] */}
                       <div className="card user-card height-100">
                         <div className="card-body p-0">
-                           <div className="pdf-download mt-4">
-                            <div className="row">
-                            {pdfUrls.map((ele, index) => {
+                        { pdfUrls.length==0?<>"No such data found</>:
+                       <>
+                       <div className="pdf-download mt-4">
+                          
+                          <div className="row">
+                            { pdfUrls.map((ele, index) => {
                               let path = ele.file_path;
                               // let pathId= path.slice('/')
                               const filename = path.substring(
                                 path.lastIndexOf("/") + 1
                               );
-                              
+                              console.log(
+                                "-------------------------",
+                                filename
+                              );
                               return (
                                 <div className="col-md-3">
                                   <div class="card-pdf">
@@ -1240,11 +1246,13 @@ const OrderDetail = () => {
                                       </a>
                                     </span>
                                   </div>
-                                </div>
+                                </div> 
                               );
-                            })}
-                            </div>
+                            }) }
                           </div>
+                        </div>
+                       </>
+                       }
                         </div>
                       </div>
                       {/* [/Card] */}

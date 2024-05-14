@@ -205,7 +205,7 @@ const ProductDetail = () => {
                               </label>
                               <>
                                 <div className="mb-3 position-relative">
-                                  <div className="productImg min-square-width top-image border  mb-3 ">
+                                  <div className="productImg prodtImg min-square-width border  mb-3 ">
                                     <img src={productImage === "" || productImage === null ? noImage : productImage}></img>
                                   </div>
                                 </div>

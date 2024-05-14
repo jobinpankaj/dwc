@@ -516,7 +516,9 @@ const Retailer = () => {
                                                 }
                                                 className="dropdown-item"
                                               >
-                                                View
+                                                {t(
+                                    "admin.retailer_management.list.view"
+                                  )}
                                               </p>
                                               <p
                                                 className="dropdown-item"
@@ -524,7 +526,9 @@ const Retailer = () => {
                                                   handleEditRetailer(ele.id)
                                                 }
                                               >
-                                                Edit
+                                                {t(
+                                    "admin.retailer_management.list.edit"
+                                  )}
                                               </p>
                                               <p
                                                 className="dropdown-item"
@@ -532,7 +536,9 @@ const Retailer = () => {
                                                   handleDeleteClick(ele.id)
                                                 }
                                               >
-                                                Delete User
+                                               {t(
+                                    "admin.retailer_management.list.delete"
+                                  )}
                                               </p>
                                               <p
                                                 className="dropdown-item"
@@ -540,7 +546,9 @@ const Retailer = () => {
                                                   handleRetailerLogin(ele.id)
                                                 }
                                               >
-                                                Login with this user
+                                                {t(
+                                    "admin.retailer_management.list.login"
+                                  )}
                                               </p>
                                             </li>
                                           </ul>

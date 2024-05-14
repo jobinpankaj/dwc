@@ -670,6 +670,7 @@ const AddProduct = () => {
     // Clear current image when format changes
     if (currentImage !== "") {
       setCurrentImage("");
+      document.getElementById('upload1').value = null;
     }
   };
 
@@ -1181,7 +1182,7 @@ const AddProduct = () => {
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
+                                  <div className="productImg min-square-width proImg border px-2 mb-3 ">
                                     <img
                                       src={
                                         currentImageProduct === ""

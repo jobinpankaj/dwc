@@ -132,10 +132,10 @@ const Signup = () => {
   }, [token, navigate, next_path]);
   return (
     <div className="page-wrap">
-      <div className="container-fluid p-2">
+      <div className="container-fluid p-1">
         <div className="row m-0 login-setup">
           <LoginLeftSidebar />
-          <div className="col-sm-8 login-setup-right">
+          <div className="col-sm-8 col-md-6 login-setup-right">
             <div className="form-box col col-sm-12 col-md-10 col-lg-8">
               <h3>{t("retailer.login.welcome")}</h3>
               <p className="sub-head">{t("retailer.login.signup_p")}</p>

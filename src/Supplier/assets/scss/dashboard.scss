@@ -14,6 +14,7 @@
     overflow: hidden;
     box-sizing: content-box;
 
+
     @media screen and (max-width:$tablet-lg) {
         min-height: 245px;
         max-height: 180px;
@@ -2129,6 +2130,64 @@ table {
 }
 
 
+// .product-manage .addProductBox {
+//     .card {
+//         background: rgba(97, 51, 189, 0.05);
+//         border: 1.5px dashed rgba(35, 31, 32, 0.2);
+//         border-radius: 10.9709px;
+//         box-shadow: none;
+
+//         .addBtn {
+//             display: flex;
+//             align-items: center;
+//             font-family: "ubuntumedium";
+//             font-size: 16px;
+//             color: #9370DB;
+//             gap: 10px;
+//             height: 100%;
+
+//             i {
+//                 font-style: normal;
+//                 width: 25px;
+//                 height: 25px;
+//                 border: 2px solid #9370DB;
+//                 font-weight: 600;
+//                 color: #9370DB;
+//                 font-size: 20px;
+//                 line-height: 18px;
+//                 text-align: center;
+//                 align-items: baseline;
+//             }
+//         }
+
+//         .search-btn {
+//             position: absolute;
+//             right: 2px;
+//             top: 50%;
+//             transform: translateY(-50%);
+//             background-color: none;
+//             border: none;
+//             cursor: pointer;
+//             height: 36px;
+//             background-color: #9370db57;
+//         }
+
+//         input {
+//             border-radius: 5px;
+//             // font-size: 18px;
+//             border: 2px solid #9370DB;
+//             height: 40px;
+//             width: 230px;
+//             padding: 0px 0px 0px 5px;
+//         }
+
+//         .error_msg {
+//             color: red;
+//             font-size: 13px;
+//         }
+
+//     }
+// }
 .product-manage .addProductBox {
     .card {
         background: rgba(97, 51, 189, 0.05);
@@ -2136,14 +2195,33 @@ table {
         border-radius: 10.9709px;
         box-shadow: none;
 
-        .addBtn {
-            display: flex;
+        .addBtn-sup {
             align-items: center;
             font-family: "ubuntumedium";
             font-size: 16px;
             color: #9370DB;
-            gap: 10px;
-            height: 100%;
+
+            .new-btn, .format-btn{
+                background: #470f89;
+                color: #fff;
+                padding: 5px;
+                border-radius: 20px;
+                transition: background-color 0.4s ease;
+            }
+            .new-btn:hover, .format-btn:hover {
+                box-shadow: 0 0 10px rgba(71, 15, 137, 0.7);
+            }
+            
+
+            button.active {
+                background-color: #dacef3;
+                color: #470f89;
+            }
+            button {
+                border: none;
+                cursor: pointer;
+            }
+
 
             i {
                 font-style: normal;
@@ -2173,16 +2251,16 @@ table {
 
         input {
             border-radius: 5px;
-            // font-size: 18px;
             border: 2px solid #9370DB;
             height: 40px;
-            width: 230px;
+            width: 100%;
             padding: 0px 0px 0px 5px;
         }
 
         .error_msg {
             color: red;
             font-size: 13px;
+            margin: 0px;
         }
 
     }
@@ -2369,6 +2447,7 @@ table {
 .prod-img img {
     width: 50px;
     height: 50px;
+    object-fit: contain;
 }
 
 .transfer-table {
@@ -2556,9 +2635,9 @@ table {
             }
         }
     }
-    .btn.btn-outline-black {
-      margin-top: 10px;
-    }
+    // .btn.btn-outline-black {
+    //   margin-top: 10px;
+    // }
     
 }
 
@@ -3078,6 +3157,32 @@ table {
 .product-card,
 .page-content-box .top-image img {
     width: 100% !important;
+    object-fit: contain;
+}
+
+.page-content-box .prodtImg img {
+    width: 100% !important;
+    height: 250px !important;
+}
+
+
+@media only screen and (max-width: 450px) {
+    .btn.btn-outline-black.btn-sm {
+        font-size: 10px;
+        padding: 6px 4px !important;
+
+    }
+    header .header-right .profile-option .profile-drop-btn img {
+        max-width: 25px !important;
+        max-height: 25px !important;
+    }
+    header .header-right .profile-option hr.seperator {
+        margin-inline: 5px !important;
+    }
+    header .header-right .toolbar .notification-bell {
+        font-size: 16px;
+        margin-left: 4px;
+    }
 }
 
 // / ---------end----------- /

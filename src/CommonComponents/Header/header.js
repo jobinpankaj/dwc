@@ -14,6 +14,8 @@ import { Popup } from "../NotificationPopup/notification";
 import RetailerRequest from "../../Supplier/components/Dashboard/retailer-request";
 //import { RetailerRequest } from "../../Supplier/components/Dashboard/retailer-request";
 // src\Supplier\components\Dashboard\retailer-request.js
+//New changes import context 
+import { useX } from "../../ContxtApi/HeaderContext";
 
 toast.configure();
 
@@ -31,6 +33,8 @@ const Header = ({ title, updateSidebar, userType }) => {
   const retailertoken = localStorage.getItem("retailer_accessToken");
   const dispatch = useDispatch();
   const apis = useAuthInterceptor();
+  //new 
+  const { x, setX } = useX();
 
   if (
     currentUser == "retailer" ||
@@ -122,7 +126,9 @@ const Header = ({ title, updateSidebar, userType }) => {
           <h5 className="page-title p-3">{title}</h5>
         </div>
         <div className="col-12 col-sm-8 header-right">
-          <div className="mobile-menu" id="menu" onClick={updateSidebar}>
+          {/* <div className="mobile-menu" id="menu" onClick={()=>{updateSidebar(true)}}> */}
+          <div className="mobile-menu" id="menu" onClick={()=>{setX(true)}}>
+
             {/* <img src="images/menu.svg" alt=""/>  */}
             <svg
               height="100%"
@@ -263,7 +269,7 @@ const Header = ({ title, updateSidebar, userType }) => {
                   style={{ borderRadius: "50%" }}
                   alt=""
                 />
-                <p className="page-title m-0 ps-2 pe-1">{username}</p>
+                <p className="page-title m-0 ps-1">{username}</p>
               </button>
               <ul className="dropdown-menu">
                 <li>

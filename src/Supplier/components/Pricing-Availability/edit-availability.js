@@ -691,7 +691,7 @@ const EditAvailability = () => {
                           </div>
                           <div className="formBx mt-0 px-4 pb-4">
                             <div className="row">
-                              <div class="col-sm-6 col-xl-3 col-7 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <label class="form-label">
                                   {t(
                                     "supplier.inventory_management.config_availability.add_group"
@@ -724,7 +724,7 @@ const EditAvailability = () => {
                                   )}
                                 </select>
                               </div>
-                              <div class="col-sm-6 col-xl-3 col-7 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <label class="form-label">
                                   {t(
                                     "supplier.inventory_management.config_availability.add_quantity"
@@ -741,9 +741,9 @@ const EditAvailability = () => {
                                   strict
                                 />
                               </div>
-                              <div class="col-sm-6 col-xl-3 col-5 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <a
-                                  class="addBtn"
+                                  class="btn btn-purple mt-3"
                                   onClick={() => handleAddAllocation()}
                                 >
                                   <i className="rounded-circle">+</i>
@@ -819,7 +819,7 @@ const EditAvailability = () => {
                           </div>
                           <div className="formBx mt-0 px-4 pb-4">
                             <div className="row">
-                              <div class="col-sm-6 col-xl-3 col-8 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <label class="form-label">
                                   {t(
                                     "supplier.inventory_management.config_availability.add_group_2"
@@ -852,7 +852,7 @@ const EditAvailability = () => {
                                   )}
                                 </select>
                               </div>
-                              <div class="col-sm-6 col-xl-3 col-7 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <label class="form-label">
                                   {t(
                                     "supplier.inventory_management.config_availability.add_max"
@@ -869,9 +869,9 @@ const EditAvailability = () => {
                                   strict
                                 />
                               </div>
-                              <div class="col-sm-6 col-xl-3 col-4 mb-3">
+                              <div class="col-sm-6 col-xl-4 mb-3">
                                 <a
-                                  class="addBtn"
+                                  class="btn btn-purple mt-3"
                                   onClick={() => handleAddMaximum()}
                                 >
                                   <i className="rounded-circle">+</i>

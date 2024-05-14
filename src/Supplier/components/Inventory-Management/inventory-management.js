@@ -457,6 +457,14 @@ const SupplierInventoryManagement = () => {
   };
 
   const handleUpdateStock = () => {
+    if(stockReason===""|| stockReason==null)
+      {
+        toast.error("Please select the reason", {
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return;
+      }
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -500,12 +508,19 @@ const SupplierInventoryManagement = () => {
       });
   };
 
+  // const openStockUpdate = (ele) => {
+  //   setShow4(true);
+  //   setStockBatch(ele.batch);
+  //   setStockId(ele.id);
+  //   setStockProduct(ele.product_id);
+  // };
   const openStockUpdate = (ele) => {
     setShow4(true);
-    setStockBatch(ele.batch);
-    setStockId(ele.id);
-    setStockProduct(ele.product_id);
+    setStockBatch(ele?.batch_number);
+    setStockId(ele?.id);
+    setStockProduct(ele?.product?.id);
   };
+
 
   useEffect(() => {
     if (hasPermission(INVENTORY_VIEW)) {
@@ -952,7 +967,7 @@ const SupplierInventoryManagement = () => {
                                             </option>
                                           </select>
                                         </div>
-                                        <div class="mb-3">
+                                        {/* <div class="mb-3">
                                           <label class="form-label">
                                             {t(
                                               "supplier.inventory_management.list.producer"
@@ -965,7 +980,7 @@ const SupplierInventoryManagement = () => {
                                               )}
                                             </option>
                                           </select>
-                                        </div>
+                                        </div> */}
 
                                         <div className="d-flex justify-content-end">
                                           <button
@@ -1462,7 +1477,7 @@ const SupplierInventoryManagement = () => {
                                         + Create New
                                       </button>
                                     )}
-                                    <div class="dropdown right-filter">
+                                    {/* <div class="dropdown right-filter">
                                       <button
                                         type="button"
                                         class="btn dropdown-toggle"
@@ -1537,7 +1552,7 @@ const SupplierInventoryManagement = () => {
                                           </button>
                                         </div>
                                       </form>
-                                    </div>
+                                    </div> */}
                                   </div>
                                   {/* [/Page Filter Box] */}
                                 </div>
@@ -1558,7 +1573,7 @@ const SupplierInventoryManagement = () => {
                                       <th>SENT</th>
                                       <th>RECEIVED</th>
                                       <th>BROKEN</th>
-                                      <th></th>
+                                      {/* <th></th> */}
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -1582,7 +1597,7 @@ const SupplierInventoryManagement = () => {
                                             <td>{ele.send}</td>
                                             <td>{ele.recieved}</td>
                                             <td>{ele.broken}</td>
-                                            <td>
+                                            {/* <td>
                                               <div class="btn-group dropstart table-action">
                                                 <button
                                                   type="button"
@@ -1610,7 +1625,7 @@ const SupplierInventoryManagement = () => {
                                                   </li>
                                                 </ul>
                                               </div>
-                                            </td>
+                                            </td> */}
                                           </tr>
                                         );
                                       })

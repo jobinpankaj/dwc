@@ -232,7 +232,7 @@ const Cart = () => {
                                         <div className="prodOtherInfo">
                                           <div className="badge text-bg-light OtherInfo-in">
                                             <label className="OtherInfoHead">
-                                              Supplier
+                                            {t("retailer.market_place.cart.supplier")}
                                             </label>
                                             <div className="OtherInfoDesc">
                                               {item?.attributes?.user_profile?.company_name}
@@ -425,7 +425,7 @@ const Cart = () => {
         <Modal.Body>
           {t("retailer.market_place.cart.order_successfully_placed")}
           <button class="btn btn-purple rounded-pill btn-sm"
-            type="button" onClick={handlePrint}>Print</button>
+            type="button" onClick={handlePrint}>{t("retailer.market_place.cart.print")}</button>
         </Modal.Body>
       </Modal>
       {/* [/Modal] */}

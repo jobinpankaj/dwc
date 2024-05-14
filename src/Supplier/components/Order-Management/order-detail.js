@@ -20,7 +20,6 @@ import * as XLSX from "xlsx";
 import { Modal } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-// import { useNavigate, useParams } from "react-router-dom";
 
 // class ComponentToPrint extends React.Component {
 // constructor(props) {
@@ -433,7 +432,7 @@ const OrderDetail = () => {
 
         const formData = new FormData();
         formData.append("file", idCardBase64); // Append base64 data instead of selectedFile
-        formData.append("order_id", params.id);
+        formData.append("order_id", params.order_id);
         console.log("FormData:", formData);
 
         apis
@@ -473,7 +472,7 @@ const OrderDetail = () => {
       };
 
       apis
-        .get(`/supplier/getUploadFileList/${params.id}`, config)
+        .get(`/supplier/getUploadFileList/${params.order_id}`, config)
         .then((res) => {
           if (res.data.success === true) {
             setPdfUrls(res.data.data);
@@ -1220,10 +1219,10 @@ const OrderDetail = () => {
                           {/* [Page Filter Box] */}
                           <div className="filter-box justify-content-between w-100">
                             <div>
-                              <select className="btn btn-outline-black btn-sm text-start">
+                              {/* <select className="btn btn-outline-black btn-sm text-start">
                                 <option>Invoice #BW5522</option>
                                 <option>Order #BW5522</option>
-                              </select>
+                              </select> */}
                             </div>
                             <div>
                               <button
@@ -1279,9 +1278,12 @@ const OrderDetail = () => {
                     {/* [Card] */}
                     <div className="card user-card height-100">
                       <div className="card-body p-0">
-                        <div className="pdf-download mt-4">
+                      { pdfUrls.length==0?<>"No such data found</>:
+                       <>
+                       <div className="pdf-download mt-4">
+                          
                           <div className="row">
-                            {pdfUrls.map((ele, index) => {
+                            { pdfUrls.map((ele, index) => {
                               let path = ele.file_path;
                               // let pathId= path.slice('/')
                               const filename = path.substring(
@@ -1313,11 +1315,13 @@ const OrderDetail = () => {
                                       </a>
                                     </span>
                                   </div>
-                                </div>
+                                </div> 
                               );
-                            })}
+                            }) }
                           </div>
                         </div>
+                       </>
+                       }
                       </div>
                     </div>
                     {/* [/Card] */}

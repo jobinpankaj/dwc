@@ -19,6 +19,7 @@
         @include transition;
         
         .sidebar-inner{
+            overflow-y: scroll;
             max-width: 280px;
             transform: translateX(-280px);
             @include transition;
@@ -26,8 +27,8 @@
             .closeMenu {
                 cursor: pointer;
                 height: 40px;
-                position: absolute;
-                right: -40px;
+                position: relative !important;
+                right: -228px !important;
                 top: 0px;
                 width: 40px;
                 background: #3e2278;
@@ -44,7 +45,7 @@
                         position: absolute;
                         width: 100%;
                         height: 2px;
-                        background-color: $white;
+                        background-color: #ffffff !important;
                         top: 0;
                         left: 0;
                         transform: translate(0px,13px) rotate(45deg);

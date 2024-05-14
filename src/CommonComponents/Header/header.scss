@@ -17,6 +17,7 @@ header {
 
         .page-title {
             @include dashboard-heading;
+
         }
     }
 
@@ -124,4 +125,36 @@ header {
         }
     }
 
+}
+
+@media only screen and (max-width: 450px) {
+   
+
+    .nav-tabs .nav-item .nav-link {
+        font-size: 12px !important;
+    }
+    .profile-drop-btn {
+        width: 180px !important;
+
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .profile-drop-btn {
+        width: 110px !important;
+
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .profile-drop-btn {
+        width: 215px;
+
+        .page-title {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+           
+        }
+    }
 }

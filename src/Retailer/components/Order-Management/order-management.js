@@ -179,7 +179,7 @@ const OrderManagement = () => {
     setSelectedSupplier("");
     setSearchSupplierFilter(e);
     const matchingStrings = distinctSupplierInfoArray.filter((str) => {
-      const fullNameMatch = str.full_name
+      const fullNameMatch = str?.full_name
         .toLowerCase()
         .includes(e.toLowerCase());
       // const addressMatch =
@@ -187,9 +187,9 @@ const OrderManagement = () => {
       //   str.user_main_address.address_1 &&
       //   str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
       const companyMatch =
-        str.user_profile &&
-        str.user_profile.company_name &&
-        str.user_profile.company_name.toLowerCase().includes(e.toLowerCase());
+        str?.user_profile &&
+        str?.user_profile?.company_name &&
+        str?.user_profile?.company_name.toLowerCase().includes(e.toLowerCase());
       // const groupMatch =
       //   str.user_profile &&
       //   str.user_profile.group_name &&
@@ -209,7 +209,7 @@ const OrderManagement = () => {
     setSelectedDistributor("");
     setSearchDistributor(e);
     const matchingStrings = distinctArrayDist.filter((x) => {
-      return x.user_profile.company_name
+      return x?.user_profile?.company_name
         .toLowerCase()
         .includes(e.toLowerCase());
     });
@@ -240,9 +240,9 @@ const OrderManagement = () => {
     // Loop through orderList
     orders.forEach((x) => {
       x.order_distributors.forEach((distributor) => {
-        if (!uniqueDistributorIds.has(distributor.distributor_info.id)) {
-          uniqueDistributorIds.add(distributor.distributor_info.id);
-          uniqueDistributorArray.push(distributor.distributor_info);
+        if (!uniqueDistributorIds.has(distributor?.distributor_info?.id)) {
+          uniqueDistributorIds.add(distributor?.distributor_info?.id);
+          uniqueDistributorArray.push(distributor?.distributor_info);
         }
       });
     });
@@ -473,7 +473,7 @@ const OrderManagement = () => {
                           type="text"
                           className="search-input"
                           value={searchSupplierFilter}
-                          placeholder="Search Supplier"
+                          placeholder={t("supplier.order_management.list.search_supplier")}
                           onFocus={() => {
                             setDropdownShowSupplier(true);
                           }}
@@ -518,7 +518,7 @@ const OrderManagement = () => {
                           type="text"
                           className="search-input"
                           value={searchDistributor}
-                          placeholder="Search Distributor"
+                          placeholder={t("supplier.order_management.list.search_distributor")}
                           onFocus={() => {
                             setDropdownDistributor(true);
                           }}
@@ -540,11 +540,11 @@ const OrderManagement = () => {
                             {distinctDistributorList.map((s) => (
                               <li
                                 className="dropdown-item pe-pointer"
-                                key={s.id}
+                                key={s?.id}
                                 onClick={() =>
                                   handleDistributorDropdown(
                                     s?.user_profile?.company_name,
-                                    s.id
+                                    s?.id
                                   )
                                 }
                               >
@@ -713,7 +713,7 @@ const OrderManagement = () => {
                         <input
                           type="button"
                           class="btn btn-outline-black width-auto"
-                          value="Clear"
+                          value={t("supplier.order_management.list.clear1")}
                           onClick={()=>{
                             setSearchSupplier("")
                             setStatusValue("")
@@ -789,7 +789,7 @@ const OrderManagement = () => {
                               <input
                                 type="text"
                                 className="search-input"
-                                placeholder="Searching...."
+                                placeholder={t("supplier.order_management.list.searching")}
                                 value={searchValue}
                                 onChange={(e)=>{
                                   handleSearching(e.target.value)
