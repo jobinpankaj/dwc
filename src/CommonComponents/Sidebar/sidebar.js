@@ -143,6 +143,19 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                         </NavLink>
                       </Nav.Item>
                     )}
+                    {true && (
+                      <Nav.Item as="li">
+                        <NavLink
+                          to="#"
+                          className="invoice-manage"
+                          exact
+                          activeClassname="active"
+                        >
+                          <span className=""></span>
+                          {t("admin.sidebar.invoice")}
+                        </NavLink>
+                      </Nav.Item>
+                    )}
                     <Nav.Item as="li">
                       <a className="logout" onClick={() => doLogout()}>
                         <span></span>
@@ -279,6 +292,19 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
                         >
                           <span class=""></span>
                           {t("supplier.sidebar.reports")}
+                        </NavLink>
+                      </NavItem>
+                    )}
+                    {hasPermission(REPORTS_VIEW) && (
+                      <NavItem as="li">
+                        <NavLink
+                          to="/supplier/invoice"
+                          className="report"
+                          exact
+                          activeClassname="active"
+                        >
+                          <span class=""></span>
+                          {t("supplier.sidebar.invoice")}
                         </NavLink>
                       </NavItem>
                     )}

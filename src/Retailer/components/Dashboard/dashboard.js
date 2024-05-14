@@ -19,13 +19,14 @@ import Autocomplete from "react-autocomplete";
 import TextInput from "react-autocomplete-input";
 import useAuthInterceptor from "../../../utils/apis";
 import { useTranslation } from "react-i18next";
-import Info from "../../../CommonComponents/Dashboard/Info";
+import Info from "../../../CommonComponents/Dashboard/RetailorInfo";
 import imageNotAvailable from "../../../assets/images/Image_not_available.png";
 import { Link } from 'react-router-dom';
 import { Popup } from "../../../CommonComponents/NotificationPopup/notification";
 import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
-
+import RadialChart from "../../../CommonComponents/Charts/RadialChartR";
+import LineChart from "./Partials/LineChart";
 
 
 
@@ -342,6 +343,67 @@ const Dashboard = (userType) => {
                     {username}
                   </div>
                   <Info accessToken={accessToken} />
+                  <div className="row mb-3">
+                    <div className="col-sm-5 mb-3 mb-sm-0">
+                      <div className="card user-card height-100">
+                        <div className="card-body">
+                          <h6 className="card-title mb-3">
+                            {t("supplier.sidebar.users")}
+                          </h6>
+                          <div className="row">
+                            <RadialChart accessToken={accessToken} />
+                          </div>
+                          <hr />
+                          <div className="row">
+                            <div className="col">
+                              <div className="badge text-bg-light w-100 sales-data p-3 text-start">
+                                <label>{t("supplier.sidebar.sales")}</label>
+                                <div className="amount">CA$2,491.82</div>
+                              </div>
+                            </div>
+                            <div className="col">
+                              <div className="badge text-bg-light w-100 sales-data p-3 text-start">
+                                <label>
+                                  {t("supplier.sidebar.Per_Order_Average")}
+                                </label>
+                                <div className="amount">CA$2,491.82</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-7">
+                      <div className="card graph-card height-100">
+                        <div className="card-body">
+                          <div className="row mb-3">
+                            <div className="col">
+                              <h6 className="card-title">
+                                {t("supplier.sidebar.heading")}
+                              </h6>
+                            </div>
+                            <div className="col text-end">
+                              <select
+                                name=""
+                                id=""
+                                className="btn btn-outline-black btn-sm text-start"
+                              >
+                                <option value="" selected>
+                                  {t("supplier.sidebar.yearly")}
+                                </option>
+                                <option value="">
+                                  {t("supplier.sidebar.monthly")}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <LineChart />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   {/* [Card 1] */}
                   {orders.length < 1 && (
                     // <div class="card retailer-Meta-Info mb-3">
@@ -353,7 +415,7 @@ const Dashboard = (userType) => {
                     //       <li class="list-group-item">
                     //         {t("retailer.dashboard.dashboard_card_p")}
                     //         <p className="custom-atag">
-                           
+
                     //           {t("retailer.dashboard.dashboard_card_pp")}
                     //         </p>{" "}
                     //         {t("retailer.dashboard.dashboard_card_ppp")}
@@ -384,21 +446,21 @@ const Dashboard = (userType) => {
                         {t("retailer.dashboard.dashboard_card1")}
                       </div>
                       <ul class="list-group list-group-flush">
-                     
+
                       <li class="list-group-item">
                           {t("retailer.dashboard.dashboard_card_p4")}
                           <p className="custom-atag" >
-                         
+
                           <Link className="custom-atag" to="/retailer/my-account">
                          {t("retailer.dashboard.dashboard_card_p44")}
-                          </Link>                            
-                          </p>{" "}                          
+                          </Link>
+                          </p>{" "}
                         </li>
 
                         {/* <li class="list-group-item">
                           {t("retailer.dashboard.dashboard_card_p")}
                           <p className="custom-atag">
-                         
+
                             {t("retailer.dashboard.dashboard_card_pp")}
                           </p>{" "}
                           {t("retailer.dashboard.dashboard_card_ppp")}
@@ -422,10 +484,10 @@ const Dashboard = (userType) => {
                         <li class="list-group-item">
                           {t("retailer.dashboard.dashboard_card_p3")}
                           <p className="custom-atag">
-                           
+
                             <Link className="custom-atag" to="/retailer/supplier-list">
                             {t("retailer.dashboard.dashboard_card_p33")}
-                          </Link>           
+                          </Link>
                           </p>
                         </li>
                       </ul>
@@ -481,7 +543,7 @@ const Dashboard = (userType) => {
                                     className="list-group-item dropdown-item pe-pointer"
                                     onClick={() =>
                                       navigate(
-                                        `/retailer/marketplace/product-details?product_id=${product.id}&supplier_id=${product.user_information.id}`
+                                        `/retailer/marketplace/product-details?product_id=${7}&supplier_id=${9}`
                                       )
                                     }
                                   >
@@ -629,11 +691,8 @@ const Dashboard = (userType) => {
                                                   #{order.order_reference}
                                                 </span>{" "}
                                                 {
-                                                  // {ele?.supplier_info
-                                                  //   ? ele?.supplier_info?.full_name
-                                                  //   : "N/A"}
-                                                  order?.supplier_information? order?.supplier_information?.full_name: "N/A"
-                                                    
+                                                  order.supplier_information
+                                                    .full_name
                                                 }
                                               </div>
                                             </div>
@@ -679,7 +738,7 @@ const Dashboard = (userType) => {
                   >
                     <div className="card-body">
                       <div className="card-title" id="suggested-supplier">
-                      
+
                         {t("retailer.dashboard.suggested_supplier")}
                       </div>
                       <div className="supplier_logoBox" >
@@ -705,15 +764,15 @@ const Dashboard = (userType) => {
                                 style={{ zIndex: '100'}}>
                                <Box>
                                 <span className="close-popper" onClick={() => setIsPopupOpen(false)}>X</span>
-                                 
+
                                 <p className="name-tag mb-1">
                                   <span>{selectedSupplier.first_name}</span>&nbsp;<b></b>&nbsp;<span>{selectedSupplier.last_name}</span></p>
                                 <span>2389 Rue Principale, Dunham, QC J0E 1M0, Canada</span>
-                            
+
                                   <div className="text-center">
                                     <button
                                       type="button"
-                                      class="btn btn-purple"                                    
+                                      class="btn btn-purple"
                                       onClick={() => {setShowNoteModal(true);setIsPopupOpen(false)}}
                                     >
                                       {t("retailer.dashboard.send_request")}
@@ -723,10 +782,10 @@ const Dashboard = (userType) => {
 
                                 <Box
                                   sx={{
-                                    content: '""', 
-                                    position: "absolute", 
-                                    bottom: "-12px", 
-                                    left: "45%", 
+                                    content: '""',
+                                    position: "absolute",
+                                    bottom: "-12px",
+                                    left: "45%",
                                     height: "12px",
                                     width: "25px",
                                     backgroundColor: "#fff",

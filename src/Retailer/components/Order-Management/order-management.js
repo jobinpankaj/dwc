@@ -10,7 +10,6 @@ import delivered from "../../assets/images/delivered(1).png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import { useState } from "react";
 import { useEffect } from "react";
 import useAuthInterceptor from "../../../utils/apis";
@@ -64,33 +63,6 @@ const OrderManagement = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const token = localStorage.getItem("retailer_accessToken");
-  const [orderList, setOrderList] = useState("");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [selectedDistributor, setSelectedDistributor] = useState("");
-  const [selectedSupplier, setSelectedSupplier] = useState("");
-
-  const [searchSupplierFilter, setSearchSupplierFilter] = useState("");
-  const [distinctSupplierInfoArray, setDistinctSupplierInfoArray] = useState(
-    []
-  );
-  const [distinctList, setDistinctList] = useState([]);
-  const [dropdownShowSupplier, setDropdownShowSupplier] = useState(false);
-  const [searchDistributor, setSearchDistributor] = useState("");
-  const [dropdownDistributor, setDropdownDistributor] = useState(false);
-  const [distinctDistributorList, setDistinctDistributorList] = useState([]);
-  const [distinctArrayDist, SetDistinctArrayDist] = useState([]);
-  const [count, setCount] = useState(0)
-
-  const [searchValue,setSearchValue]=useState("")
-  const [allOrderList,setAllOrderList]=useState([])
-  const [statusValue,setStatusValue]=useState("")
-  const [supplierList,setSupplierList]=useState([])
-  const [filterSupplierList,setFilterSupplierList]=useState([])
-  const [searchSupplier,setSearchSupplier]=useState("")
-  const [supplierID,setSupplierID]=useState("")
-  const [dropdownShow,setDropdownShow]=useState(false)
-  const [reload,setReload]=useState(false)
 
 
   const sigma = "\u03A3";
@@ -98,6 +70,7 @@ const OrderManagement = () => {
   function MyComponent() {
     return <div>{sigma}</div>;
   }
+
 
   useEffect(() => {
     const config = {
@@ -112,7 +85,6 @@ const OrderManagement = () => {
         if (res.data) {
           // console.log(object)
           setOrders(res.data.data);
-          setAllOrderList(res.data.data)
         }
       })
       .catch((err) => {
@@ -123,23 +95,7 @@ const OrderManagement = () => {
           });
         }
       });
-
-    apis
-      .get("retailer/orderListingStatusCount", config)
-      .then((res) => {
-        if (res.data) {
-          setOrderList(res.data.data);
-        }
-      })
-      .catch((err) => {
-        if (err.message !== "revoke") {
-          toast.error(err.response.data.message, {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
-      });
-  }, [reload]);
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -157,23 +113,22 @@ const OrderManagement = () => {
   }
 
   const totalPrice = (arr) => {
-    let total = 0;
+    let total = 0
     // if (arr.length) {
-    total = arr.reduce((accumulator, currentValue) => {
-      // const accumulatorTotal =
-      //   accumulator?.product?.pricing?.unit_price * accumulator?.quantity ||
-      //   0;
-      const currentValueTotal =
-        currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
-        0;
-      return accumulator + currentValueTotal;
-    }, 0);
-    return total?.toFixed(2);
+      total = arr.reduce((accumulator, currentValue) => {
+        // const accumulatorTotal =
+        //   accumulator?.product?.pricing?.unit_price * accumulator?.quantity ||
+        //   0;
+        const currentValueTotal =
+          currentValue?.product?.pricing?.unit_price * currentValue?.quantity ||
+          0;
+        return accumulator + currentValueTotal;
+      },0);
+      return total?.toFixed(2);
     // } else {
-    // return "0.00"; // or any default value if cartItems is empty
+      // return "0.00"; // or any default value if cartItems is empty
     // }
   };
-
 
   const handleSupplierFilterSearch = (e) => {
     setSelectedSupplier("");
@@ -407,10 +362,6 @@ const OrderManagement = () => {
     console.log("==================================", filteredOrder);
     setOrders(filteredOrder);
   }
-
-
-
-
   return (
     <div className="container-fluid page-wrap order-manage">
       <div className="row height-inherit">
@@ -557,6 +508,7 @@ const OrderManagement = () => {
                     </div>
                   </div>
                   {/* close div */}
+                <div className="filter-row page-top-filter justify-content-end">
                   {/* Right Filter */}
                   <div class="dropdown right-filter">
                     <button
@@ -574,39 +526,32 @@ const OrderManagement = () => {
                         <label class="form-label">
                           {t("retailer.order_management.listing.order_status")}
                         </label>
-                        <select className="form-select"
-                         value={statusValue}
-                         onChange={(e)=>{
-                           setStatusValue(e.target.value)
-                         }}>
-                          <option value="">
+                        <select className="form-select">
+                          <option selected disabled>
                             {t(
                               "retailer.order_management.listing.choose_status"
                             )}
                           </option>
-                          <option value="1">
+                          <option value="">
                             {t("retailer.order_management.listing.approved")}
                           </option>
-                          <option value="5">
+                          <option value="">
                             {t("retailer.order_management.listing.cancelled")}
                           </option>
-                          <option value="4">
+                          <option value="">
                             {t("retailer.order_management.listing.delivered")}
                           </option>
-                          <option value="6">
+                          <option value="">
                             {t("retailer.order_management.listing.payment")}
                           </option>
-                          <option value="2">
+                          <option value="">
                             {t("retailer.order_management.listing.on_hold")}
                           </option>
-                          <option value="0">
+                          <option value="">
                             {t("retailer.order_management.listing.pending")}
                           </option>
-                          <option value="3">
+                          <option value="">
                             {t("retailer.order_management.listing.shipped")}
-                          </option>
-                          <option value="7">
-                            Unpaid
                           </option>
                         </select>
                       </div>
@@ -614,60 +559,18 @@ const OrderManagement = () => {
                         <label class="form-label">
                           {t("retailer.order_management.listing.supplier")}
                         </label>
-                        <div style={{ position: "relative" }}>
-                            <button
-                              className="search-btn"
-                              onClick={(e) => {
-                                e.preventDefault();
-                              }}
-                            >
-                              <i className="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                            <input
-                              type="text"
-                              value={searchSupplier}
-                              placeholder="Search Supplier"
-                              onChange={(e) =>
-                                handleSupplierSearch(e.target.value)
-                              }
-                              onFocus={() => {
-                                setDropdownShow(true);
-                              }}
-                              onBlur={()=>{
-                                setTimeout(() => {
-                                  setDropdownShow(false)
-                                }, 200);
-                              }}
-                            />
-                          </div>
-                          {filterSupplierList.length > 0 && (
-                            <ul
-                              className={`w-100 searchListBx custom-scrollbar ${
-                                dropdownShow ? "d-block" : "d-none"
-                              }`}
-                            >
-                              {" "}
-                              {filterSupplierList.map((s) => (
-                                <li
-                                  className="dropdown-item pe-pointer"
-                                  key={s.id}
-                                  style={{
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                    cursor: "pointer", // Optionally add cursor pointer for better UX
-                                  }}
-                                  onClick={() =>
-                                    handleSupplierDropDown(s.company_name, s.id)
-                                  }
-                                >
-                                  {s.company_name}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+                        <select className="form-select">
+                          <option selected disabled>
+                            {t(
+                              "retailer.order_management.listing.choose_supplier"
+                            )}
+                          </option>
+                          <option value="">Supplier 1</option>
+                          <option value="">Supplier 2</option>
+                          <option value="">Supplier 3</option>
+                        </select>
                       </div>
-                      {/* <div class="mb-3">
+                      <div class="mb-3">
                         <div class="form-check form-check-inline">
                           <input
                             class="form-check-input"
@@ -701,17 +604,16 @@ const OrderManagement = () => {
                             {t("retailer.order_management.listing.paid")}
                           </label>
                         </div>
-                      </div> */}
+                      </div>
                       <div className="d-flex justify-content-end">
                         <button
                           type="button"
                           class="btn btn-purple width-auto me-2"
-                          onClick={()=>{applyFilter()}}
                         >
                           {t("retailer.order_management.listing.apply")}
                         </button>
                         <input
-                          type="button"
+                          type="reset"
                           class="btn btn-outline-black width-auto"
                           value={t("supplier.order_management.list.clear1")}
                           onClick={()=>{
@@ -726,6 +628,7 @@ const OrderManagement = () => {
                             setSearchDistributor("")
                             setReload(!reload)
                           }}
+                          value="Clear"
                         />
                       </div>
                     </form>
@@ -735,39 +638,39 @@ const OrderManagement = () => {
               </div>
             </div>
 
-            {/* ------Commandes----- */}
-            <div className="card user-card my-2 height-100">
+ {/* ------Commandes----- */}
+ <div className="card user-card my-2 height-100">
               <div className="cmd-data">
                 <table>
                   <tr>
                     <td>
                       {sigma}
-                      <span>{orderList.total_order}</span>
+                      <span>1000</span>
                     </td>
                     <td>
                       <i class="fa-regular fa-clock"></i>
-                      <span>{orderList.pending_order}</span>
+                      <span>60</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-check"></i>
-                      <span>{orderList.approved_order}</span>
+                      <span>990</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-xmark"></i>
-                      <span>{orderList.cancelled_order}</span>
+                      <span>40</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-sack-dollar"></i>
-                      <span>{orderList.paid_total_amount}</span>
+                      <span>800</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-sack-dollar cancel"></i>
                       <i class="fa-solid fa-ban"></i>
-                      <span className="count-cnl">{orderList.unpaid_total_amount}</span>
+                      <span className="count-cnl">100</span>
                     </td>
                     <td>
                       <i class="fa-solid fa-triangle-exclamation"></i>
-                      <span>{count}</span>
+                      <span>35</span>
                     </td>
                   </tr>
                 </table>
@@ -795,7 +698,6 @@ const OrderManagement = () => {
                                   handleSearching(e.target.value)
                                 }}
                               ></input>
-
                             </div>
                           </div>
                           {/* [/Table Search] */}
@@ -803,14 +705,14 @@ const OrderManagement = () => {
                           {/* [Right Filter] */}
                           <div className="filter-row text-end">
                             {/* [Page Filter Box] */}
-                            {/* <div className="filter-box">
+                            <div className="filter-box">
                               <a
                                 href="#"
                                 className="btn btn-outline-black btn-sm"
                               >
                                 PDF <img src={downloadPDF} />
                               </a>
-                            </div> */}
+                            </div>
                             {/* [/Page Filter Box] */}
                           </div>
                           {/* [/Right Filter] */}
@@ -888,7 +790,7 @@ const OrderManagement = () => {
                                       <div className="daysCount">{`${Math.floor(
                                         (new Date() -
                                           new Date(order?.created_at)) /
-                                        (1000 * 60 * 60 * 24)
+                                          (1000 * 60 * 60 * 24)
                                       )} Days ago`}</div>
                                     </div>
                                   </td>
@@ -904,9 +806,10 @@ const OrderManagement = () => {
                                     <div className="order-group-box">
                                       <ul class="list-group list-group-horizontal">
                                         <li
-                                          class={`list-group-item border-0 text-center ${order.status === "Approved" &&
+                                          class={`list-group-item border-0 text-center ${
+                                            order.status === "Approved" &&
                                             "active"
-                                            }`}
+                                          }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={approveTick} alt="" />
@@ -918,9 +821,10 @@ const OrderManagement = () => {
                                           </p>
                                         </li>
                                         <li
-                                          class={`list-group-item border-0 text-center ${order.status === "Transit" &&
+                                          class={`list-group-item border-0 text-center ${
+                                            order.status === "Transit" &&
                                             "active"
-                                            }`}
+                                          }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={Transit} alt="" />
@@ -932,9 +836,10 @@ const OrderManagement = () => {
                                           </p>
                                         </li>
                                         <li
-                                          class={`list-group-item border-0 text-center ${order.status === "Delivered" &&
+                                          class={`list-group-item border-0 text-center ${
+                                            order.status === "Delivered" &&
                                             "active"
-                                            }`}
+                                          }`}
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             <img src={delivered} alt="" />
@@ -953,10 +858,7 @@ const OrderManagement = () => {
                                         >
                                           <span className="d-inline-flex align-items-center justify-content-center">
                                             {/* <img src={payment} alt="" /> */}
-                                            <i
-                                              class="fa-solid fa-sack-dollar"
-                                              style={{ color: "#bababa" }}
-                                            ></i>
+                                            <i class="fa-solid fa-sack-dollar" style={{color: '#bababa'}}></i>
                                           </span>
                                           <p>
                                             {t(
@@ -964,36 +866,22 @@ const OrderManagement = () => {
                                             )}
                                           </p>
                                         </li>
+
                                       </ul>
                                     </div>
                                   </td>
                                   <td>
-                                    {order.status === "Approved" ||
-                                      order.status === "Paid" ? (
-                                      <span className="badge text-bg-green">
-                                        {order.status}
-                                      </span>
-                                    ) : order.status === "Pending" ||
-                                      order.status === "On Hold" ? (
-                                      <span className="badge text-bg-orange">
-                                        {order.status}
-                                      </span>
-                                    ) : order.status === "Cancelled" ? (
-                                      <span className="badge text-bg-red">
-                                        {order.status}
-                                      </span>
-                                    ) : order.status === "Delivered" ||
-                                      order.status === "Shipped" ? (
-                                      <span className="badge text-bg-blue">
-                                        {order.status}
-                                      </span>
-                                    ): order.status === "Unpaid"? (
-                                      <span className="badge text-bg-purple" style={{color: '#79018c ', padding:'5px'}}>
-                                        {order.status}
-                                      </span>
-                                    ): (
-                                      "tbd"
-                                    )}
+                                    <span className="badge text-bg-purple text-uppercase">
+                                      {t(
+                                        "retailer.order_management.listing.invoiced"
+                                      )}
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    <span className="badge text-bg-green text-uppercase">
+                                      {t(
+                                        "retailer.order_management.listing.paid"
+                                      )}
+                                    </span>
                                   </td>
                                   <td>
                                     {order?.items.reduce(
@@ -1035,10 +923,7 @@ const OrderManagement = () => {
                                             }
                                             className="dropdown-item"
                                           >
-                                            <i
-                                              class="fa-solid fa-eye"
-                                              style={{ color: "blue" }}
-                                            ></i>
+                                            <i class="fa-solid fa-eye" style={{ color: 'blue' }}></i>
 
                                             {/* {t(
                                               "retailer.order_management.listing.view_details"
@@ -1047,22 +932,13 @@ const OrderManagement = () => {
                                         </li>
                                         <li className="seperator d-flex">
                                           <a className="dropdown-item">
-                                            <i
-                                              class="fa-solid fa-file-pdf"
-                                              style={{ color: "red" }}
-                                            ></i>
+                                            <i class="fa-solid fa-file-pdf" style={{ color: 'red' }}></i>
                                           </a>
                                           <a className="dropdown-item">
-                                            <i
-                                              class="fa-solid fa-file-csv"
-                                              style={{ color: "black" }}
-                                            ></i>
+                                            <i class="fa-solid fa-file-csv" style={{ color: 'black' }}></i>
                                           </a>
                                           <a className="dropdown-item">
-                                            <i
-                                              class="fa-solid fa-file-excel"
-                                              style={{ color: "green" }}
-                                            ></i>
+                                            <i class="fa-solid fa-file-excel" style={{ color: 'green' }}></i>
                                           </a>
                                           <i class=""></i>
                                         </li>

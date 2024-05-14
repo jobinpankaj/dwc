@@ -36,7 +36,7 @@ const CreateOrder = () => {
   const [editableItem, setEditableItem] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
   const [update, setUpdate] = useState(false);
-  const [includeTax, setIncludeTax] = useState(true);
+  const [includeTax, setIncludeTax] = useState(false);
   const [grandSubTot, setGrandSubTot] = useState("0");
   const [grandTot, setGrandTot] = useState("0");
   const [retailerError, setRetailerError] = useState("");
@@ -52,7 +52,6 @@ const CreateOrder = () => {
   const [poductList,setProductList] = useState([])
   const [other,setOther]=useState("0")
   const [distributorId,setdistributorId]=useState("")
-  
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
@@ -162,7 +161,6 @@ const CreateOrder = () => {
         items: finalArray,
         total_quantity: 100,
         total_amount: grandTot,
-        other:other
       };
 
       if(hasPermission(ORDER_EDIT)){
@@ -244,30 +242,6 @@ const CreateOrder = () => {
           });
         }
       });
-    
-      const config2 = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          permission: `product-view`,
-        },
-      };
-      if (hasPermission(PRODUCT_VIEW)) {
-        apis
-          .get("supplier/products", config2)
-          .then((res) => {
-            setProductList(res.data.data);
-            console.log("all product---------++++++++++++++++++++++++++++++", res.data.data);
-          })
-          .catch((err) => {
-            if (err.message !== "revoke") {
-              toast.error("Something went wrong!.Please try again later.", {
-                autoClose: 1000,
-                position: toast.POSITION.TOP_CENTER,
-              });
-            }
-          });
-      }
-
   }, []);
 
   useEffect(() => {
@@ -452,8 +426,8 @@ const CreateOrder = () => {
                           <label>
                             {t("supplier.order_management.new_order.retailer")}
                           </label>
-                          <div className="w-100 mt-2">
-                            {/* <select
+                          <div className="w-100">
+                            <select
                               className="rounded-pill"
                               value={selectedRetailer}
                               onChange={(e) => {
@@ -473,40 +447,7 @@ const CreateOrder = () => {
                               ) : (
                                 <></>
                               )}
-                            </select> */}
-                            <input
-                              type="search"
-                              name="search-form"
-                              id="search-form"
-                              className="search-input w-100"
-                              placeholder="Search for Retailer..."
-                              value={q}
-                              onChange={(e) => {
-                                searchingHandle(e);
-                              }}
-                            ></input>
-                            <ul style={{ border: filterRetailer.length > 0 ? "1px solid black" : "none" }}>
-                            {filterRetailer && filterRetailer.length > 0 ? (
-                              filterRetailer.map((ele) => {
-                                return (
-                                 <li
-                                 key={ele.id} // Assuming ele.id exists and is unique
-                                 style={{
-                                   overflow: "hidden",
-                                   whiteSpace: "nowrap",
-                                   textOverflow: "ellipsis",
-                                   cursor: "pointer" // Optionally add cursor pointer for better UX
-                                 }}
-                                 onClick={()=>{
-                                  setSelectedRetailer(ele.id)
-                                  setQ(ele.full_name);
-                                  setFilterRetailre([]);
-                                 }}>{ele.full_name}</li>
-                                );
-                              })
-                            ) : (
-                              <></>
-                            )}</ul>
+                            </select>
                             {retailerError !== "" ? (
                               <p className="error-label">{retailerError}</p>
                             ) : (
@@ -532,7 +473,7 @@ const CreateOrder = () => {
                           </label>
                           <div className="w-100">
                             <select
-                              className="rounded-pill w-100"
+                              className="rounded-pill"
                               value={selectedDistributor}
                               onChange={(e) => {
                                 setSelectedDistributor(e.target.value);
@@ -556,7 +497,6 @@ const CreateOrder = () => {
                               ) : (
                                 <></>
                               )}
-                               <option value="0">Other</option>
                             </select>
                             {distributorError !== "" ? (
                               <p className="error-label">{distributorError}</p>
@@ -571,117 +511,13 @@ const CreateOrder = () => {
                             </button>
                         </div> */}
                       </div>
-                      {/* Additional Field */}
-                      {/* {selectedDistributor === "other" && (
-                        <>
-                          <div className="col-sm-4 col-xl-3 mb-4 mb-sm-0">
-                            <div className="create-order-dropdown-box mb-3">
-                              <div className="w-100">
-                                <form onSubmit={handleSubmit}>
-                                  <div>
-                                    
-                                    <input
-                                      type="text"
-                                      name="distributorName" // Corresponds to state object key
-                                      placeholder="Enter Distributor Name"
-                                      value={formState.distributorName} // Access from the state object
-                                      onChange={handleInputChange} // Use a single handler
-                                    />
-                                  </div>
-                                  <div>
-                                    
-                                    <input
-                                      type="email"
-                                      name="distributorEmail" // Corresponds to state object key
-                                      placeholder="Enter Distributor Email ID"
-                                      value={formState.distributorEmail} // Access from the state object
-                                      onChange={handleInputChange} // Same handler for both fields
-                                    />
-                                  </div>
-
-                                  <button
-                                    className="btn btn-purple rounded-pill "
-                                    type="submit"
-                                  >
-                                    {t("landing.contact.verify_btn")}
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )} */}
                       {/* [/Distributor] */}
-
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             {/* [/Card 1] */}
-
-            <Modal
-                className="modal fade"
-                show={emailNameModal}
-                centered
-                onHide={() => {
-                  setEmailNameModal(false);
-                  setSelectedDistributor("")
-                }}
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>{"fill the Detail"}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <form onSubmit={handleSubmit}>
-                    <div>
-                      {/* Input for distributor name */}
-                      <label className="form-label">
-                          {"Distributor Name"}<sup>*</sup>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="distributorName" // Corresponds to state object key
-                        value={formState.distributorName} // Access from the state object
-                        onChange={handleInputChange} // Use a single handler
-                      />
-                    </div>
-
-                    <div>
-                      {/* Input for distributor email */}
-                      <label className="form-label">
-                                  {"Enter Distribuor Email"}<sup>*</sup>
-                      </label>
-                      <input
-                        className="form-control "
-                        type="email"
-                        name="distributorEmail"
-                        value={formState.distributorEmail} 
-                        onChange={handleInputChange} 
-                      />
-                    </div>
-
-                  </form>
-                </Modal.Body>
-                <Modal.Footer>
-                  <button
-            type="button"
-            className="btn btn-outline-black me-2"
-            onClick={()=>{setEmailNameModal(false);
-              setSelectedDistributor("")}}
-          >
-            {t("retailer.dashboard.cancel")}
-          </button>
-                  <button
-                    className="btn btn-purple rounded-pill "
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    {t("landing.contact.verify_btn")}
-                  </button>
-                </Modal.Footer>
-              </Modal>
 
             {/* [Card 2] */}
 
@@ -735,18 +571,18 @@ const CreateOrder = () => {
                             >
                               <span></span>
                               <option value="">Select Item</option>
-                              {poductList && poductList.length > 0 ? (
-                                poductList.map((ele) => {
+                              {editableItem && editableItem.length > 0 ? (
+                                editableItem.map((ele) => {
                                   return (
                                     <option
                                       value={JSON.stringify({
-                                        productId: ele?.pricing?.product_id,
+                                        productId: ele.pricing.product_id,
                                         productUnitPrice:
-                                          ele?.pricing?.unit_price,
-                                        productTax: ele.pricing?.tax_amount,
-                                        productName: ele?.product_name,
-                                        productFormatId: ele?.product_format?.id,
-                                        productStyleId: ele?.style,
+                                          ele.pricing.unit_price,
+                                        productTax: ele.pricing.tax_amount,
+                                        productName: ele.product_name,
+                                        productFormatId: ele.product_format.id,
+                                        productStyleId: ele.style,
                                       })}
                                     >
                                       {ele.product_name}
@@ -868,23 +704,21 @@ const CreateOrder = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-12 bottom-btn">
+              <div className="col-12">
                 <button
                   type="button"
                   onClick={() => navigate("/supplier/order-management")}
-                  className="btn btn-outline-black" style={{width: '70px'}}
+                  className="btn btn-outline-black"
                 >
-                  <i class="fa-solid fa-ban" style={{ color: "red" }}></i>
+                  {t("supplier.order_management.new_order.cancel_btn")}
                 </button>
-                
                 &nbsp;&nbsp;&nbsp;
                 <button
                   type="button"
                   onClick={() => handleCreate()}
-                  className="btn btn-purple" style={{color: '#fff', background: '#23cd0e',border: '1px solid #23cd0e'}}
+                  className="btn btn-purple"
                 >
-                  <i class="fa-solid fa-check"></i>&emsp;<i class="fa-solid fa-plus">
-                    </i>&emsp;<i class="fa-solid fa-file-circle-check"></i>
+                  {t("supplier.order_management.new_order.create_btn")}
                 </button>
               </div>
             </div>

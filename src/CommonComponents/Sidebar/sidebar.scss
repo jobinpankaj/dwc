@@ -4,7 +4,7 @@
 .sidebar-menu{
     max-width: 280px;
     padding: 0;
-    
+
     @media screen and (max-width:$tablet-lg){
         width: 30%;
     }
@@ -17,7 +17,7 @@
         max-width: unset;
         background-color: transparent;
         @include transition;
-        
+
         .sidebar-inner{
             overflow-y: scroll;
             max-width: 280px;
@@ -69,7 +69,7 @@
                 transform: translateX(0px);
             }
         }
-        
+
     }
     .logo-box{
         padding: 20px;
@@ -77,10 +77,10 @@
         .logo{
             width: 90px;
             @media screen and (max-width:$tablet-lg) {
-                width: 70px;                
+                width: 70px;
             }
             @media screen and (max-width:$mobile) {
-                width: 50px;                
+                width: 50px;
             }
         }
     }
@@ -95,7 +95,7 @@
                 font-family: $font-medium;
                 border-left: 3px solid transparent;
                 display: flex;
-                align-items: center; 
+                align-items: center;
                 @include transition;
                 &:hover,&.active{
                     background-color: $purple-light;
@@ -110,7 +110,7 @@
                         span{
                             background-position: -42px -38px;
                         }
-                    }  
+                    }
                     &.inventory-manage{
                         span{
                             background-position: -42px -80px;
@@ -120,42 +120,47 @@
                         span{
                             background-position: -42px -124px;
                         }
-                    }  
+                    }
                     &.routes-manage{
                         span{
                             background-position: -39px -165px;
                         }
-                    }  
+                    }
                     &.shipment{
                         span{
                             background-position: -41px -209px;
                         }
-                    }    
+                    }
                     &.supplier-manage{
                         span{
                             background-position: -40px -252px;
                         }
-                    }   
+                    }
                     &.retailer-manage{
                         span{
                             background-position: -40px -252px;
                         }
-                    }  
+                    }
+                    &.invoice-manage{
+                        span{
+                            background-position: -40px -252px;
+                        }
+                    }
                     &.report{
                         span{
                             background-position: -38px -340px;
                         }
-                    } 
+                    }
                     &.user-manage{
                         span{
                             background-position: -42px -382px;
                         }
-                    } 
+                    }
                     &.logout{
                         span{
                             background-position: -40px -425px;
                         }
-                    } 
+                    }
                 }
                 &.active{
                     font-family: $font-bold;
@@ -165,13 +170,13 @@
                     height: 25px;
                     margin-right: 10px;
                     text-align: center;
-                    background: url(./assets/images/nav-icons.png) no-repeat;                      
+                    background: url(./assets/images/nav-icons.png) no-repeat;
                 }
                 &.dashboard{
                     span{
                         background-position: 6px 4px;
                     }
-                }  
+                }
                 &.order-manage{
                     span{
                         background-position: 5px -39px;
@@ -181,37 +186,37 @@
                     span{
                         background-position: 5px -81px;
                     }
-                }  
+                }
                 &.product-manage{
                     span{
                         background-position: 5px -125px;
                     }
-                } 
+                }
                 &.routes-manage{
                     span{
                         background-position: 8px -166px;
                     }
-                } 
+                }
                 &.shipment{
                     span{
                         background-position: 6px -210px;
                     }
-                } 
+                }
                 &.supplier-manage{
                     span{
                         background-position: 7px -253px;
                     }
-                } 
+                }
                 &.retailer-manage{
                     span{
                         background-position: 7px -253px;
                     }
-                } 
+                }
                 &.report{
                     span{
                         background-position: 9px -341px;
                     }
-                } 
+                }
                 &.user-manage{
                     span{
                         background-position: 5px -383px;
@@ -221,9 +226,9 @@
                     span{
                         background-position: 7px -426px;
                     }
-                } 
+                }
             }
-            
+
         }
     }
 }

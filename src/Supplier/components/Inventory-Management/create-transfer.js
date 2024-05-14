@@ -242,9 +242,7 @@ if(selectedDistributor === "custom" && !emailregex.test(customDistributorEmail))
         />
 
         <div class="col main p-0">
-          <Header title={t(
-                              "supplier.inventory_management.create_transfer.create_transfer"
-                            )} updateSidebar={updateSidebar} />
+          <Header title="Create Transfer" updateSidebar={updateSidebar} />
           <div class="container-fluid page-content-box px-3 px-sm-4">
             <div class="row">
               <div class="col">
@@ -530,9 +528,6 @@ if(selectedDistributor === "custom" && !emailregex.test(customDistributorEmail))
                     <button
                       type="button"
                       className="btn btn-outline-black"
-                      onClick={() => {
-                        window.location.href = "/supplier/inventory-management";
-                      }}
                     >
                       {t("supplier.inventory_management.create_transfer.cancelled")}
                     </button>

@@ -25,15 +25,26 @@ export const Popup = ({ text, closePopup, userType }) => {
   return (
     <div className="popup-container">
       <div className="popup-body">
-      <header className="pop-header d-flex justify-content-between px-2">
+        <header className="pop-header">
           {t("notification_settings.heading")}
-
-          <button className="cancel-btn" onClick={closePopup}>
-            <i class="fa-solid fa-x"></i>
-          </button>
         </header>
+        <button className="cancel-btn" onClick={closePopup}>
+        <i class="fa-solid fa-x"></i>
+        </button>
         <div className="switch-area">
-          
+          <div className="switch-icon">
+            <div class="row">
+              <div className="col-md-8"></div>
+              <div className="col-md-4 switch-btn-icons">
+                <div class="icon1">
+                  <i class="fa-solid fa-computer"></i>
+                </div>
+                <div class="icon1">
+                  <i class="fa-solid fa-message"></i>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* <>
           {notificationList.map(function(data){
             return(
@@ -68,21 +79,6 @@ export const Popup = ({ text, closePopup, userType }) => {
               case "admin":
                 return (
                   <>
-                    <div class="switch-container my-3">
-                      <span class="switch-label">
-                      </span>
-                      <label class="switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-computer"></i>
-                        </div>
-                      </label>
-                      <label class="switch switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-message"></i>
-                        </div>
-                      </label>
-                    </div>
-
                     <div class="switch-container">
                       <span class="switch-label">
                         {t(
@@ -288,21 +284,6 @@ export const Popup = ({ text, closePopup, userType }) => {
               case "supplier":
                 return (
                   <>
-                    <div class="switch-container my-3">
-                      <span class="switch-label">
-                      </span>
-                      <label class="switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-computer"></i>
-                        </div>
-                      </label>
-                      <label class="switch switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-message"></i>
-                        </div>
-                      </label>
-                    </div>
-
                     <div class="switch-container">
                       <span class="switch-label">
                         {t(
@@ -533,21 +514,6 @@ export const Popup = ({ text, closePopup, userType }) => {
               case "retailer":
                 return (
                   <>
-                    <div class="switch-container my-3">
-                      <span class="switch-label">
-                      </span>
-                      <label class="switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-computer"></i>
-                        </div>
-                      </label>
-                      <label class="switch switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-message"></i>
-                        </div>
-                      </label>
-                    </div>
-
                   <div class="switch-container">
                       <span class="switch-label">
                         {t(
@@ -778,20 +744,6 @@ export const Popup = ({ text, closePopup, userType }) => {
               case "distributor":
                 return (
                   <>
-                    <div class="switch-container my-3">
-                      <span class="switch-label">
-                      </span>
-                      <label class="switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-computer"></i>
-                        </div>
-                      </label>
-                      <label class="switch switch switch-btn-icons">
-                        <div class="icon1">
-                          <i class="fa-solid fa-message"></i>
-                        </div>
-                      </label>
-                    </div>
                   <div class="switch-container">
                       <span class="switch-label">
                         {t(

@@ -187,8 +187,7 @@ const ProductDetails = (props) => {
 
         <div className="col main p-0">
           <Header
-            // title={t("retailer.market_place.product_detail.title")}
-            title={product.product_name}
+            title={t("retailer.market_place.product_detail.title")}
             updateSidebar={updateSidebar}
           />
           {loading ? (
