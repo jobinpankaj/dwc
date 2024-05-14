@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,6 @@ import { Popup } from "../../../CommonComponents/NotificationPopup/notification"
 toast.configure();
 
 const Header = ({ title, updateSidebar, }) => {
-  const apis= useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const token = localStorage.getItem("admin_accessToken");
@@ -100,7 +99,7 @@ const Header = ({ title, updateSidebar, }) => {
           </div>
           <div className="toolbar">
             <div className="notification icon-wrap" style={{ display: "block" }}>
-            <button onClick={() => setOpen(true)} className="notification_btn" >
+            <button onClick={() => setOpen(true, notification, supplier)} className="notification_btn" >
               <span className="icon">
                 <svg
                   width="18"

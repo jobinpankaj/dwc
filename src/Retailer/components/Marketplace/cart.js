@@ -16,24 +16,8 @@ import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import {useNavigate} from 'react-router-dom';
-import { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 
 const Cart = () => {
-  const componentRef = useRef();
-  //Handle Print function
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    onAfterPrint: () => {
-    console.log("Printed PDF successfully!");
-    // handleClearCart();
-    // navigate('retailer/supplier-list')
-    }
-
-  });
-
-  const navigate = useNavigate();
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const token = localStorage.getItem("retailer_accessToken");
@@ -51,17 +35,6 @@ const Cart = () => {
 
     setQuantities(quantities);
   }, []);
-  
-  useEffect(()=>{
-    setTimeout(() => {
-      if(show==true)
-      {
-        setShow(false);
-        handleClearCart();
-        navigate('/retailer/supplier-list');
-      }
-    }, 3000);
-  },[show])
   const handleIncrement = (itemId) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -114,7 +87,7 @@ const Cart = () => {
       .then((res) => {
         if (res.data.success === true) {
           setShow(true);
-          // handleClearCart();
+          handleClearCart();
         } else {
           toast.error(res.data.data.message, {
             autoClose: 1000,
@@ -204,7 +177,7 @@ const Cart = () => {
               <div className="row mb-4">
                 <div className="col-sm-12 col-xl-12 col-xxl-11">
                   <div className="row">
-                    <div ref={componentRef} id="toPrint" className="col-sm-8">
+                    <div className="col-sm-8">
                       {/* [Cart Tile] */}
                       {cartItems?.map((item) => {
                         console.log(item, "wjfvreyufguifhreuifhrejkfref");
@@ -413,8 +386,6 @@ const Cart = () => {
         centered
         onHide={() => {
           setShow(false);
-          handleClearCart();
-          navigate('/retailer/supplier-list');
         }}
       >
         <Modal.Header closeButton>
@@ -424,8 +395,6 @@ const Cart = () => {
         </Modal.Header>
         <Modal.Body>
           {t("retailer.market_place.cart.order_successfully_placed")}
-          <button class="btn btn-purple rounded-pill btn-sm"
-            type="button" onClick={handlePrint}>Print</button>
         </Modal.Body>
       </Modal>
       {/* [/Modal] */}
@@ -434,4 +403,3 @@ const Cart = () => {
 };
 
 export default Cart;
-

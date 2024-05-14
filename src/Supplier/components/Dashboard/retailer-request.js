@@ -88,7 +88,7 @@ const RetailerRequest = (props) => {
 
       <div className="notification-footer">
         <button className="delete_btn">Delete All</button>
-        <button className="send_btn"> Read All</button>
+        <button className="send_btn"> Send All</button>
       </div>
     </div>
   );

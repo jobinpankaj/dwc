@@ -16,7 +16,6 @@ import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
 const ViewEditSupplierAddress = () => {
-  const apis = useAuthInterceptor();
   const navigate = useNavigate();
   const { user_id } = useParams();
   const token = localStorage.getItem("admin_accessToken");

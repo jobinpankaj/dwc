@@ -9,7 +9,6 @@ import filter from "../../assets/images/filter-icon.png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -60,11 +59,7 @@ const DistributorUsersRoles = () => {
   const navigate = useNavigate()
   const [showSidebar, setShowSidebar] = useState(false);
   const [rolesList, setRolesList] = useState("")
-  const [userList,setUserList] = useState("");
-  const [q, setQ] = useState("")
-  const [allData , setallData] = useState([]);
-  const [p, setP] = useState("");
-  const [allData2 , setallData2] = useState([]);
+  const [userList,setUserList] = useState("")
 
   useEffect(() => {
     const config = {
@@ -77,8 +72,7 @@ const DistributorUsersRoles = () => {
     apis.get("/distributor/DistributorrRoleList", config)
     .then((res) => {
       if(res.data.success === true){
-        setRolesList(res.data.data);
-        setallData2(res.data.data);
+        setRolesList(res.data.data)
       }else{
         toast.error("Something went wrong. Please try again later.", {autoClose: 3000, position: toast.POSITION.TOP_CENTER,});
       }
@@ -101,8 +95,7 @@ const DistributorUsersRoles = () => {
     apis.get("/distributor/getUserList", config)
     .then((res) => {
       if(res.data.success === true){
-        setUserList(res.data.data);
-        setallData(res.data.data);
+        setUserList(res.data.data)
       }else{
         toast.error("Something went wrong. Please try again later.", {autoClose: 3000, position: toast.POSITION.TOP_CENTER,});
       }
@@ -116,30 +109,6 @@ const DistributorUsersRoles = () => {
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
-  const handleInputChange = (e)=>{
-    setQ(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = allData.filter(
-      (recieve) =>
-        recieve?.full_name.toLowerCase().includes(valueTosearch.toLowerCase()) || 
-        recieve?.email.toLowerCase().includes(valueTosearch.toLowerCase()) ||
-        recieve?.phone_number.toLowerCase().includes(valueTosearch.toLowerCase()) 
-    );
-    setUserList(filterData);  
-  }
-
-  const handleInputChange2 = (e)=>{
-    setP(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = allData2.filter(
-      (recieve) =>
-        recieve?.name.toLowerCase().includes(valueTosearch.toLowerCase()) 
-    );
-    setRolesList(filterData);  
-  }
-
 
   return (
     <div class="container-fluid page-wrap product-manage">
@@ -208,8 +177,6 @@ const DistributorUsersRoles = () => {
                                   <input
                                     type="text"
                                     className="search-input"
-                                    value={q}
-                                    onChange={(e)=>handleInputChange(e)}
                                     placeholder={t("distributor.user_roles.search")}
                                   ></input>
                                 </div>
@@ -367,8 +334,6 @@ const DistributorUsersRoles = () => {
                                   <input
                                     type="text"
                                     className="search-input"
-                                    value={p}
-                                    onChange={(e)=>handleInputChange2(e)}
                                     placeholder={t("distributor.user_roles.search_by_role_name")}
                                   ></input>
                                 </div>

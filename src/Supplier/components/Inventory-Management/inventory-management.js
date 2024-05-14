@@ -16,7 +16,6 @@ import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import useAuthInterceptor from "../../../utils/apis";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import {
   INVENTORY_EDIT,
@@ -123,12 +122,7 @@ const SupplierInventoryManagement = () => {
   const [shelfNameError, setShelfNameError] = useState("");
   // Transfer List states
   const [transerList, setTransferList] = useState("");
-  const [q, setQ] = useState("")
-  const [allData , setallData] = useState([]);
-  const [p,setP] = useState("");
-  const [alldata2 ,setAlldata2] = useState([])
-  const [selectFormatName,setSelectFormatName]=useState("")
-  const [reload,setReload]=useState(false)
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -521,9 +515,8 @@ const SupplierInventoryManagement = () => {
         .then((res) => {
           setLoading(false);
           if (res.data.success === true) {
-            console.log("Wareee", res.data.data);
+            console.log("Wareee",res.data.data);
             setInventoryList(res.data.data);
-            setallData(res.data.data);
           } else {
             toast.error(
               "Could not fetch inventory list. Please try again later.",
@@ -544,7 +537,7 @@ const SupplierInventoryManagement = () => {
           }
         });
     }
-  }, [updateInventory,reload]);
+  }, [updateInventory]);
 
   useEffect(() => {
     if (true) {
@@ -560,7 +553,6 @@ const SupplierInventoryManagement = () => {
         .then((res) => {
           if (res.data.success === true) {
             setWarehouseList(res.data.data);
-            console.log("=============", res.data.data);
             setWarehouseCount(res.data.data.length);
             if (res.data.data.length < 1) {
               setShow3(true);
@@ -697,7 +689,6 @@ const SupplierInventoryManagement = () => {
       .then((res) => {
         if (res.data.success === true) {
           setTransferList(res.data.data);
-          setAlldata2(res.data.data);
         } else {
           toast.error(
             "Could not fetch inventory list. Please try again later.",
@@ -723,37 +714,6 @@ const SupplierInventoryManagement = () => {
     );
   } else {
     data = inventoryList;
-  }
-
-  const handleInputChange = (e)=>{
-    setQ(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = allData.filter(
-      (product) =>
-        product.product_name.toLowerCase().includes(valueTosearch.toLowerCase())
-    );
-    setInventoryList(filterData);  
-  }
-  const handleInputChange2 = (e)=>{
-    setP(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = alldata2.filter(
-      (product) =>
-        product?.senderName?.toLowerCase().includes(valueTosearch.toLowerCase())
-         ||
-        product?.recipentName?.toLowerCase().includes(valueTosearch.toLowerCase())
-    );
-    setTransferList(filterData);  
-  }
-
-  const applyFilter=()=>{
-    const filterData = allData.filter(
-      (product) =>
-        product.format.toLowerCase().includes(selectFormatName.toLowerCase())
-    );
-    setInventoryList(filterData);   
   }
 
   return (
@@ -811,7 +771,7 @@ const SupplierInventoryManagement = () => {
                       </li>
                     </ul>
 
-                    {/* <div class="filter-box position-abs">
+                    <div class="filter-box position-abs">
                       <div class="dropdown date-selector">
                         <button
                           class="btn btn-outline-black btn-sm dropdown-toggle"
@@ -845,7 +805,7 @@ const SupplierInventoryManagement = () => {
                           </li>
                         </ul>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
 
                   <div class="tab-content" id="myTabContent">
@@ -865,14 +825,12 @@ const SupplierInventoryManagement = () => {
                                 {/* [Table Search] */}
                                 <div className="search-table">
                                   <div className="form-group">
-                                  <input
+                                    <input
                                       type="text"
                                       className="search-input"
-                                      value={q}
                                       placeholder={t(
                                         "supplier.inventory_management.list.search_here"
                                       )}
-                                      onChange={(e)=>handleInputChange(e)}
                                     ></input>
                                   </div>
                                 </div>
@@ -924,31 +882,26 @@ const SupplierInventoryManagement = () => {
                                           <label class="form-label">
                                             Format
                                           </label>
-                                         <select className="form-select"
-                                          value={selectFormatName}
-                                          onChange={(e)=>{setSelectFormatName(e.target.value)}}>
-                                            <option value="">
+                                          <select className="form-select">
+                                            <option selected disabled>
                                               {t(
                                                 "supplier.inventory_management.list.select_format"
                                               )}
                                             </option>
-                                            <option value="bottle">
+                                            <option value="">
                                               {t(
                                                 "supplier.inventory_management.list.bottle"
                                               )}
                                             </option>
-                                            <option value="can">
+                                            <option value="">
                                               {t(
                                                 "supplier.inventory_management.list.can"
                                               )}
                                             </option>
-                                            <option value="keg">
+                                            <option value="">
                                               {t(
                                                 "supplier.inventory_management.list.keg"
                                               )}
-                                            </option>
-                                            <option value="cask">
-                                              Cask
                                             </option>
                                           </select>
                                         </div>
@@ -969,21 +922,16 @@ const SupplierInventoryManagement = () => {
 
                                         <div className="d-flex justify-content-end">
                                           <button
-                                            type="button"
+                                            type="submit"
                                             class="btn btn-purple width-auto me-2"
-                                            onClick={()=>{applyFilter()}}
                                           >
                                             {t(
                                               "supplier.inventory_management.list.apply"
                                             )}
                                           </button>
                                           <button
-                                            type="button"
+                                            type="reset"
                                             class="btn btn-outline-black width-auto"
-                                            onClick={()=>{
-                                              setSelectFormatName("")
-                                              setReload(!reload)
-                                            }}
                                           >
                                             {t(
                                               "supplier.inventory_management.list.reset"
@@ -1036,21 +984,11 @@ const SupplierInventoryManagement = () => {
                                     </th>
                                     <th className="text-center">{t("supplier.inventory_management.list.intransit")}</th>
                                     <th className="text-center">{t("supplier.inventory_management.list.delivery")}</th> */}
-                                      {/* <th>
+                                      <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col3"
                                         )}
-                                      </th> */}
-                                      {/* {warehouseList &&
-                                      warehouseList.length > 0 ? (
-                                        warehouseList.map((ele) => {
-                                          return (
-                                            <th key={ele.id}>{ele.name}</th>
-                                          );
-                                        })
-                                      ) : (
-                                        <></>
-                                      )} */}
+                                      </th>
                                       {/* <th>
                                         {t(
                                           "supplier.inventory_management.list.table_col4"
@@ -1103,7 +1041,7 @@ const SupplierInventoryManagement = () => {
                                                               PRICING_EDIT
                                                             )
                                                           ? navigate(
-                                                              `/supplier/inventory-management/configure-pricing/${ele.product.id}`,
+                                                              `/supplier/inventory-management/configure-pricing/${ele.product_id}`,
                                                               {
                                                                 state: {
                                                                   product_name:
@@ -1154,7 +1092,7 @@ const SupplierInventoryManagement = () => {
                                                               INVENTORY_EDIT
                                                             )
                                                           ? navigate(
-                                                              `/supplier/inventory-management/configure-availability/${ele.product.id}`,
+                                                              `/supplier/inventory-management/configure-availability/${ele.product_id}`,
                                                               {
                                                                 state: {
                                                                   product_name:
@@ -1197,7 +1135,7 @@ const SupplierInventoryManagement = () => {
                                                           PRODUCT_VIEW
                                                         )
                                                           ? navigate(
-                                                              `/supplier/product-management/view-product/${ele.product.id}`
+                                                              `/supplier/product-management/view-product/${ele.product_id}`
                                                             )
                                                           : toast.warn(
                                                               "You do not have permission to view product.",
@@ -1219,25 +1157,19 @@ const SupplierInventoryManagement = () => {
                                               </div>
                                             </td>
                                             <td className="text-center">
-                                              {ele.product
-                                                ? ele.product.product_format
-                                                  ? ele.product.product_format
-                                                      .name
-                                                    ? ele.product.product_format
-                                                        .name
-                                                    : "N/A"
-                                                  : "N/A"
-                                                : "N/A"}
+                                            {
+                                            ele.product?(ele.product.product_format?(ele.product.product_format.name?(ele.product.product_format.name):("N/A")):"N/A"):"N/A"
+                                          }
                                             </td>
 
                                             <td className="text-center">
-                                              {ele.batch_number}
+                                              {ele.batch}
                                             </td>
                                             <td>
-                                              {ele.total
-                                                ? ele.total
-                                                  ? ele.total
-                                                      
+                                              {ele.user_profile
+                                                ? ele.user_profile.company_name
+                                                  ? ele.user_profile
+                                                      .company_name
                                                   : "N/A"
                                                 : "N/A"}
                                             </td>
@@ -1263,26 +1195,14 @@ const SupplierInventoryManagement = () => {
                                                         )
                                                   }
                                                 >
-                                                  {ele.at_warehouse}
+                                                  {ele.quantity}
                                                 </button>
                                               </div>
                                             </td>
                                             {/* <td className="text-center">0</td>
                                           <td className="text-center">0</td>
                                           <td className="text-center">0</td> */}
-                                            {/* {warehouseList &&
-                                            warehouseList.length > 0 ? (
-                                              warehouseList.map((el) => {
-                                                return (
-                                                  <td key={el.id}>
-                                                    {ele.id}
-                                                    {ele.id}
-                                                  </td>
-                                                );
-                                              })
-                                            ) : (
-                                              <></>
-                                            )} */}
+                                            <td>{ele.warehouse.name}</td>
                                             {/* <td>{ele.aisle}</td>
                                             <td>{ele.shelf}</td> */}
                                             <td>
@@ -1434,12 +1354,10 @@ const SupplierInventoryManagement = () => {
                                 {/* [Table Search] */}
                                 <div className="search-table">
                                   <div className="form-group">
-                                  <input
+                                    <input
                                       type="text"
                                       className="search-input"
                                       placeholder="Search Here..."
-                                      value={p}
-                                      onChange={(e)=>handleInputChange2(e)}
                                     ></input>
                                   </div>
                                 </div>

@@ -78,7 +78,7 @@ const Dashboard = () => {
                         {t("supplier.sidebar.value")}
                       </button>
                     </li>
-                    {/* <li className="nav-item" role="presentation">
+                    <li className="nav-item" role="presentation">
                       <button
                         className="nav-link"
                         id="order-tab"
@@ -91,10 +91,10 @@ const Dashboard = () => {
                       >
                         {t("supplier.sidebar.order1")}
                       </button>
-                    </li> */}
+                    </li>
                   </ul>
 
-                  {/* <div className="filter-box position-abs">
+                  <div className="filter-box position-abs">
                     <div className="dropdown date-selector">
                       <button
                         className="btn btn-outline-black btn-sm dropdown-toggle"
@@ -141,7 +141,7 @@ const Dashboard = () => {
                         </li>
                       </ul>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className="tab-content" id="myTabContent">

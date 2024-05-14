@@ -239,11 +239,6 @@ form {
   bottom: 5px !important;
   padding: 0px !important;
   margin: 0px !important;
-  border: 1px solid #c1c1c1 !important;
-}
-.react-numeric-input{
-  border: 1px solid #c1c1c1 !important;
-  border-bottom: unset !important;
 }
 
 .css-13cymwt-control:focus {
@@ -374,17 +369,6 @@ a {
   .modal-body {
     font-size: 16px;
   }
-
-  .modal-dialog .uploded-doc {
-    button.btn-close {
-        position: absolute;
-        right: -27px;
-        top: 0px;
-        opacity: 1;
-        background-color: #fff;
-    }
-}
-
 }
 
 .bg-purple {
@@ -875,9 +859,6 @@ table {
 
           &.text-bg-light {
             background-color: lighten($purple, 0.3) !important;
-            color: #fff !important;
-            padding: 5px 10px;
-            font-weight: 200;
           }
         }
       }
@@ -1473,14 +1454,12 @@ textarea.addNoteTextarea {
     // color: $black;
     background: rgb(105 1 127 / 5%);
     border: 1.05666px solid rgb(0 0 0 / 7%);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 10.5666px;
-    padding: 8px !important;
+    padding: 14px;
     font-family: $font-medium;
     font-weight: 500;
     color: $black;
-    // height: 480px;
-    height: auto;
+    height: 480px;
 
     .card-title {
       font-size: 17.3367px;
@@ -1996,17 +1975,12 @@ textarea.addNoteTextarea {
 }
 
 .imageFix {
-  height: 150px;
+  height: 200px;
 
   .card-img-top {
     height: 100% !important;
-    object-fit: contain;
+    object-fit: cover;
     width: 100% !important;
-    transition: transform 0.2s;
-  }
-  
-  .card-img-top:hover {
-    transform: scale(1.1);
   }
 }
 
@@ -2162,92 +2136,4 @@ textarea.addNoteTextarea {
 .name-tag{
   font-size: 22px;
   font-family: "ubunturegular";
-}
-
-.download-buttons-container {
-
-  position: relative;
-
-  .slide-buttons {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      transition: transform 0.3s ease;
-      transform: translateY(-150%);
-  }
-
-  .download-buttons-container:hover .slide-buttons {
-      transform: translateX(0);
-  }
-}
-
-
-
-@media print {
-  @page {
-    size: 50mm 150mm;
-  }
-  #printItem{
-    padding-top: 40px !important;
-  }
-}
-
-
-.showpdf{
-  border: 1px solid red;
-  width: auto;
-  height: 200px;
-  position: relative;
-  .download-btn{
-    position: absolute;
-    top: 170px;
-    button{
-      border: none;
-      background: #800080c4;
-      color: white;
-    }
-  }
-}
-
-
-
-.pdf-download {
-  .card-pdf {
-    background-color: #f9f9f9;
-    padding: 16px;
-    position: relative;
-    border: 1px solid #eee;
-    margin: 10px;
-  }
-
-  .card-pdf::before {
-    position: absolute;
-    bottom: -1px;
-    right: -2px;
-    margin: 0 auto;
-    content: "";
-    display: block;
-    background: #fff;
-    transform: rotate(87deg);
-    border-top: 40px solid #fff;
-    border-left: 40px solid #eee;
-  }
-
-
-.file-name {
-  font-weight: bold;
-}
-
-.file-size {
-  font-size: 14px;
-  color: #777;
-}
-
-.lock-icon {
-  font-size: 20px;
-  color: gray;
-  cursor: pointer;
-}
 }
