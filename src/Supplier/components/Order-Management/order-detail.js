@@ -14,6 +14,26 @@ import { toast } from "react-toastify";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import { useReactToPrint } from "react-to-print";
+import html2pdf from "html2pdf.js";
+import * as XLSX from "xlsx";
+import { Modal } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+// class ComponentToPrint extends React.Component {
+// constructor(props) {
+//   super(props);
+//   this.componentRef = React.createRef(); // Initialize componentRef
+// }
+//   render() {
+//     return (
+//       <div>
+//         Content that you want to print
+//       </div>
+//     );
+//   }
+// }
 
 const OrderDetail = () => {
   const apis = useAuthInterceptor();
@@ -50,6 +70,175 @@ const OrderDetail = () => {
           });
         }
       });
+
+  };
+  // const sumitHandler = ()  => {
+  //   //api calling for upadte the quantity of item
+  //   const config2 ={
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       permission: "order-edit",
+  //     }
+  //   }
+  //   const data ={
+  //     "quantity":`${eachItemQuantity}`
+  //   }
+  //   apis
+  //   .post(`/supplier/order/${order_id}/${masterEditForID}/updateQuantity`, data, config2)
+  //   .then((res) => {
+  //     if (res) {
+  //       fetchOrderDetail();
+  //       toast.success(
+  //         "Order update Sucessfully .",
+  //         { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+  //       );
+  //     } else {
+  //       toast.error(
+  //         "Could not update order . Please try again later.",
+  //         { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+  //       );
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     if (error.message !== "revoke") {
+  //       toast.error(
+  //         "Could not update order . Please try again later.",
+  //         {
+  //           autoClose: 3000,
+  //           position: toast.POSITION.TOP_CENTER,
+  //         }
+  //       );
+  //     }
+  //   });
+
+  //   setMasterEditForID(null)
+  //   setEditFunctionality(true)
+  // }
+  //Changing Functionality 6th May :)
+  const sumitHandler = () => {
+    //api calling for upadte the quantity of item
+    const config2 = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "order-edit",
+      },
+    };
+    const data = {
+      order_id: order_id,
+      id: masterEditForID,
+      quantity: `${eachItemQuantity}`,
+    };
+    apis
+      .post(`/supplier/order/updatequantity`, data, config2)
+      .then((res) => {
+        if (res) {
+          fetchOrderDetail();
+          toast.success("Order update Sucessfully .", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error("Could not update order . Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not update order . Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+
+    setMasterEditForID(null);
+    setEditFunctionality(true);
+  };
+
+  const handleAttachFile = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    if (selectedFile) {
+      // and use callback to return the data which you get.
+      function getBase64(selectedFile, cb) {
+        let reader = new FileReader();
+        reader.readAsDataURL(selectedFile);
+        reader.onload = function () {
+          cb(reader.result);
+        };
+        reader.onerror = function (error) {
+          console.log("Error: ", error);
+        };
+      }
+
+      getBase64(selectedFile, (idCardBase64) => {
+        console.log("Base64 data:", idCardBase64);
+
+        const formData = new FormData();
+        formData.append("file", idCardBase64); // Append base64 data instead of selectedFile
+        formData.append("order_id", params.order_id);
+        console.log("FormData:", formData);
+
+        apis
+          .post("/retailer/uploadOrderFile", formData, config)
+          .then((res) => {
+            console.log("File Uploaded");
+            setSelectedFile(null);
+            toast.success("File update Sucessfully .", {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            });
+          })
+          .catch((err) => {
+            if (err.message !== "revoke") {
+              toast.error("Could not update order . Please try again later.", {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              });
+            }
+            console.log("Error uploading file", err);
+          });
+      });
+    } else {
+      console.log("No file selected");
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("supplier_accessToken");
+    // Check if token exists
+    if (token) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          permission: "order-view",
+        },
+      };
+
+      apis
+        .get(`/supplier/getUploadFileList/${params.order_id}`, config)
+        .then((res) => {
+          if (res.data.success === true) {
+            setPdfUrls(res.data.data);
+            console.log("<<<", res.data.data);
+            // setSupplierId(res.data.data.supplier_id);
+          } else {
+            console.log("No files available for this supplier.");
+          }
+        })
+        .catch((error) => console.error("Error fetching PDF URLs:", error));
+    } else {
+      // Handle case when token is missing or invalid
+      console.error("Access token not found or invalid");
+      // Optionally, redirect to login page or display an error message
+    }
   }, []);
   return (
     <div class="container-fluid page-wrap order-details">
@@ -697,10 +886,10 @@ const OrderDetail = () => {
                           {/* [Page Filter Box] */}
                           <div className="filter-box justify-content-between w-100">
                             <div>
-                              <select className="btn btn-outline-black btn-sm text-start">
+                              {/* <select className="btn btn-outline-black btn-sm text-start">
                                 <option>Invoice #BW5522</option>
                                 <option>Order #BW5522</option>
-                              </select>
+                              </select> */}
                             </div>
                             <div>
                               <button
@@ -747,6 +936,46 @@ const OrderDetail = () => {
                     {/* [Card] */}
                     <div className="card user-card height-100">
                       <div className="card-body p-0">
+                      { pdfUrls.length==0?<>"No such data found</>:
+                       <>
+                       <div className="pdf-download mt-4">
+                          
+                          <div className="row">
+                            { pdfUrls.map((ele, index) => {
+                              let path = ele.file_path;
+                              // let pathId= path.slice('/')
+                              const filename = path.substring(
+                                path.lastIndexOf("/") + 1
+                              );
+                              console.log(
+                                "-------------------------",
+                                filename
+                              );
+                              return (
+                                <div className="col-md-3">
+                                  <div class="card-pdf">
+                                    <span class="file-type">
+                                      <i
+                                        class="fa-solid fa-file-pdf"
+                                        style={{
+                                          color: "red",
+                                          fontSize: "25px",
+                                        }}
+                                      ></i>
+                                    </span>
+                                    <p class="file-name m-0">
+                                      Invoice #{filename}
+                                    </p>
+                                    <p class="file-size"></p>
+                                    <span class="lock-icon">
+                                      <a href={path} download={path}>
+                                        <i class="fa-solid fa-download"></i>
+                                      </a>
+                                    </span>
+                                  </div>
+                                </div> 
+                              );
+                            }) }
                         <div className="row">
                           <div className="col">
                             <div className="pdfBox">
@@ -759,6 +988,8 @@ const OrderDetail = () => {
                             </div>
                           </div>
                         </div>
+                       </>
+                       }
                       </div>
                     </div>
                     {/* [/Card] */}

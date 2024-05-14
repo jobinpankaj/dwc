@@ -428,7 +428,7 @@
 //       if (codePic !== "") {
 //         formData.append("barcode_image", codePic);
 //       }
-      
+
 //       if(formPicProduct !== ""){
 //         formData.append("product_image", formPicProduct);
 //       }
@@ -466,7 +466,7 @@
 //               });
 //             }
 //           }
-          
+
 //         });
 //     }
 //   };
@@ -1202,6 +1202,9 @@ import useAuthInterceptor from "../../../utils/apis";
 import noImage from "../../assets/images/no-image.png";
 
 import { useLocation } from 'react-router-dom';
+import beerBottle from "../../assets/images/beer-bottle.png";
+import beerKeg from "../../assets/images/beer_keg.png";
+import beerCane from "../../assets/images/beer_cane.png";
 
 toast.configure();
 
@@ -1231,7 +1234,7 @@ const EditProduct = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const optionalParam = searchParams.get('optionalParam');
-  console.log(optionalParam,"adda")
+  console.log(optionalParam, "adda")
   const [disableInputs, setDisableInputs] = useState(false);
   useEffect(() => {
     // Check the condition based on product_id
@@ -1239,7 +1242,7 @@ const EditProduct = () => {
       setDisableInputs(true);
     }
   }, [product_id]);
-  console.log(disableInputs,"assa")
+  console.log(disableInputs, "assa")
   // new
   const navigate = useNavigate();
   const [productName, setProductName] = useState("");
@@ -1278,35 +1281,35 @@ const EditProduct = () => {
   const [codePic, setCodePic] = useState("");
   const [codeError, setCodedError] = useState("");
 
-  const [showStyleModal,setShowStyleModal]=useState(false);
-  const [otherStyle,setOtherStyle]=useState("");
-  const [showOther,setShowOther]=useState(false);
+  const [showStyleModal, setShowStyleModal] = useState(false);
+  const [otherStyle, setOtherStyle] = useState("");
+  const [showOther, setShowOther] = useState(false);
 
-  const [showFormatModal,setShowFormatModal]=useState(false);
-  const [otherFormat,setOtherFormat]=useState("");
-  const [showNewFormat,setShowNewFormat]=useState(false);
-  const [formatUnit,setFormatUnit]=useState(0);
+  const [showFormatModal, setShowFormatModal] = useState(false);
+  const [otherFormat, setOtherFormat] = useState("");
+  const [showNewFormat, setShowNewFormat] = useState(false);
+  const [formatUnit, setFormatUnit] = useState(0);
+  const [formatType, setFormatType] = useState("")
   // console.log("saddddd",otherStyle)
-  const submit=()=>{
-    console.log(otherStyle,"sdagsajkjksa")
-    if( otherStyle.trim()==="" || otherStyle===null ||otherStyle.toLowerCase().trim()=="other")
-    {
-      
+  const submit = () => {
+    console.log(otherStyle, "sdagsajkjksa")
+    if (otherStyle.trim() === "" || otherStyle === null || otherStyle.toLowerCase().trim() == "other") {
+
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
 
     }
-    else{
+    else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           permission: "product-edit",
         },
       };
-      const formDataStyle=new FormData();
-      formDataStyle.append("style",otherStyle)
+      const formDataStyle = new FormData();
+      formDataStyle.append("style", otherStyle)
       apis
         .post("/supplier/createProductStyles", formDataStyle, config)
         .then((res) => {
@@ -1321,7 +1324,7 @@ const EditProduct = () => {
             setShowOther(true);
             setShowStyleModal(false);
           } else {
-            
+
             toast.error("Could not add Style. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1330,38 +1333,37 @@ const EditProduct = () => {
         })
         .catch((error) => {
           // setDisable(false);
-              toast.error("Could not add style. Please try again later.", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER,
-              });
-          
+          toast.error("Could not add style. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+
         });
 
-    
-    
+
+
+    }
   }
-  }
-  const submitFormat=()=>{
+  const submitFormat = () => {
     // console.log(otherStyle,"sdagsajkjksa")
-    if( otherFormat.trim()==="" || otherFormat===null ||formatUnit<=0 ||formatUnit===null)
-    {
-      
+    if (otherFormat.trim() === "" || otherFormat === null || formatUnit <= 0 || formatUnit === null) {
+
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
 
     }
-    else{
+    else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           permission: "product-edit",
         },
       };
-      const formDataFormat=new FormData();
-      formDataFormat.append("name",otherFormat)
-      formDataFormat.append("unit",formatUnit)
+      const formDataFormat = new FormData();
+      formDataFormat.append("name", otherFormat)
+      formDataFormat.append("unit", formatUnit)
       apis
         .post("/supplier/createProductFormats", formDataFormat, config)
         .then((res) => {
@@ -1375,7 +1377,7 @@ const EditProduct = () => {
             setShowNewFormat(true);
             setShowFormatModal(false);
           } else {
-            
+
             toast.error("Could not add Format. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1384,20 +1386,20 @@ const EditProduct = () => {
         })
         .catch((error) => {
           // setDisable(false);
-              toast.error("Could not add Format. Please try again later.", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER,
-              });
-          
+          toast.error("Could not add Format. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+
         });
 
-    // setSelectedFormat("")
-    // setShowNewFormat(true);
-    // setShowFormatModal(false);
-    
+      // setSelectedFormat("")
+      // setShowNewFormat(true);
+      // setShowFormatModal(false);
+
+    }
   }
-  }
-  
+
   // const previewCanvasRef = useRef(null);
   // const previewCanvasRefProduct = useRef(null);
   // const [completedCrop, setCompletedCrop] = useState("");
@@ -1746,12 +1748,12 @@ const EditProduct = () => {
       if (codePic !== "") {
         formData.append("barcode_image", codePic);
       }
-      
-      if(formPicProduct !== ""){
+
+      if (formPicProduct !== "") {
         formData.append("product_image", formPicProduct);
       }
 
-      if(formPic !== ""){
+      if (formPic !== "") {
         formData.append("product_label", formPic);
       }
 
@@ -1772,7 +1774,7 @@ const EditProduct = () => {
           }
         })
         .catch((error) => {
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             if (error.response.data.message === "validation_error") {
               // if(error.response.data.data.product_image){
               //     setImageError("The image size can not be greater than 2mb.")
@@ -1784,7 +1786,7 @@ const EditProduct = () => {
               });
             }
           }
-          
+
         });
     }
   };
@@ -1828,7 +1830,7 @@ const EditProduct = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [selectedStyle,selectedFormat]);
+  }, [selectedStyle, selectedFormat]);
 
   useEffect(() => {
     const config = {
@@ -1837,7 +1839,7 @@ const EditProduct = () => {
         permission: "product-view",
       },
     };
-    
+
 
     apis
       .get(`/supplier/product/${product_id}`, config)
@@ -1851,16 +1853,16 @@ const EditProduct = () => {
           setSelectedSubCat(res.data.data.product_category.id);
           setOrganic(res.data.data.is_organic);
           setCurrentImageProduct(res.data.data.product_image)
-          if(disableInputs==false)
-          {
-          setCurrentImage(res.data.data.label_image)
-          setSelectedFormat(res.data.data.product_format.id);
-          setLowbla(res.data.data.sap_lowbla ? res.data.data.sap_lowbla : "");
-          setShowbay(res.data.data.sap_showbay ? res.data.data.sap_lowbla : "");
-          setMetro(res.data.data.sap_metro ? res.data.data.sap_metro : "");
-          if(res.data.data.barcode_image_url !== null || res.data.data.barcode_image_url !== ""){
-            setCurrentCode(res.data.data.barcode_image_url)
-          }}
+          if (disableInputs == false) {
+            setCurrentImage(res.data.data.label_image)
+            setSelectedFormat(res.data.data.product_format.id);
+            setLowbla(res.data.data.sap_lowbla ? res.data.data.sap_lowbla : "");
+            setShowbay(res.data.data.sap_showbay ? res.data.data.sap_lowbla : "");
+            setMetro(res.data.data.sap_metro ? res.data.data.sap_metro : "");
+            if (res.data.data.barcode_image_url !== null || res.data.data.barcode_image_url !== "") {
+              setCurrentCode(res.data.data.barcode_image_url)
+            }
+          }
         } else {
           toast.error(
             "Could not fetch product information. Please try again later.",
@@ -1869,7 +1871,7 @@ const EditProduct = () => {
         }
       })
       .catch((error) => {
-        if(error.message !== "revoke"){
+        if (error.message !== "revoke") {
           toast.error(
             "Could not fetch product information. Please try again later.",
             { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
@@ -1912,21 +1914,21 @@ const EditProduct = () => {
     setShowOther(false)
     setSelectedStyle(e.target.value);
     console.log(e.target.value);
-    if(e.target.value==='other'){
+    if (e.target.value === 'other') {
       console.log("NO entry")
       handleStylePopup()
     }
-    else if(e.target.value==='Other'){
+    else if (e.target.value === 'Other') {
       handleStylePopup()
     }
     setStyleError("");
 
   };
-  const handleStylePopup=()=>{
+  const handleStylePopup = () => {
     setOtherStyle("")
     console.log('done');
     setShowStyleModal(true);
-       
+
   }
 
   const handleSubCatChange = (e) => {
@@ -1942,18 +1944,41 @@ const EditProduct = () => {
   };
 
   const handleFormatChange = (e) => {
+    const formatId = e.target.value;
+    const ab = formatList.filter((x) => {
+      return x.id == formatId
+    });
+
+    let formatName = ab[0].name.split(' ')[0];
+    setFormatType(formatName);
+    setShowNewFormat(false);
+    setOtherFormat("");
+    setSelectedFormat(e.target.value);
+    if (e.target.value === "other") {
+      handleFormatPopup();
+    }
+    setFormatError("");
+
+    // Clear current image when format changes
+    if (currentImage !== "") {
+      setCurrentImage("");
+      document.getElementById('upload1').value = null;
+    }
+
+
+
+
     setShowNewFormat(false)
     setSelectedFormat(e.target.value);
-    if(e.target.value==="other")
-    {
+    if (e.target.value === "other") {
       console.log("xaaa");
       handleFormatPopup()
     }
     setFormatError("");
   };
-  const handleFormatPopup=()=>{
-      setOtherFormat("")
-      setShowFormatModal(true)
+  const handleFormatPopup = () => {
+    setOtherFormat("")
+    setShowFormatModal(true)
   }
   const handleOrganicChange = (e) => {
     if (e.target.checked === true) {
@@ -2097,7 +2122,7 @@ const EditProduct = () => {
                               disabled={disableInputs}
                               onChange={(e) => handleStyleChange(e)}
                             >
-                               <option value="">
+                              <option value="">
                                 {t(
                                   "supplier.product_management.add.select_style"
                                 )}
@@ -2110,14 +2135,14 @@ const EditProduct = () => {
                                     </option>
                                   );
                                 })}
-                                {/* New style */}
-                                {/* {showOther==true?(<option value={otherStyle}>
+                              {/* New style */}
+                              {/* {showOther==true?(<option value={otherStyle}>
                                 {otherStyle}
                                 </option>):(<></>)} */}
-                                <option value="other">
+                              <option value="other">
                                 {t("supplier.product_management.add.other")}
-                                </option>
-                                
+                              </option>
+
                             </select>
                             {styleError === "" ? (
                               <></>
@@ -2199,12 +2224,12 @@ const EditProduct = () => {
                                     </option>
                                   );
                                 })}
-                                {/* {showNewFormat==true?(<option value={otherFormat}>
+                              {/* {showNewFormat==true?(<option value={otherFormat}>
                                 {otherFormat}
                                 </option>):(<></>)} */}
-                                <option value="other">
+                              <option value="other">
                                 {t("supplier.product_management.add.other")}
-                                </option>
+                              </option>
                             </select>
                             {formatError === "" ? (
                               <></>
@@ -2255,36 +2280,52 @@ const EditProduct = () => {
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-                                  {/* {completedCrop && (
-                                    <>
-                                      <div style={{ display: "block" }}>
-                                        <canvas
-                                          ref={previewCanvasRef}
-                                          style={{
-                                            border: "1px solid black",
-                                            width: "200px",
-                                            height: "200px",
-                                          }}
-                                        />
-                                      </div> */}
-                                      {/* <div>
-                                                            <button onClick={onDownloadCropClick}>Download Crop</button>
-                                                            <a
-                                                            ref={hiddenAnchorRef}
-                                                            download
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: '-200vh',
-                                                                visibility: 'hidden',
-                                                            }}
-                                                            >
-                                                            Hidden download
-                                                            </a>
-                                                        </div> */}
-                                    {/* </>
-                                  )} */}
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
+
+                                  {/* <div className="productImg min-square-width border px-2 mb-3 ">
                                     <img src={currentImage === "" || !currentImage ? noImage : currentImage}></img>
+                                  </div> */}
+
+                                  <div className="productImg min-square-width border px-2 mb-3">
+                                    {formatType === "Bottle" && (
+                                      <>
+                                        <div class="clipBox">
+                                          <img src={beerBottle} alt="Bottle" />
+                                        </div>
+                                        <div class="lable-bottle">
+                                          <div class="lable-content">
+                                            {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {formatType === "Can" && (
+                                      <>
+                                        <div class="clipBoxcane">
+                                          <img src={beerCane} alt="Can" />
+                                        </div>
+                                        <div className="lable-cane">
+                                          <div class="lable-content">
+                                            {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {formatType === "Keg" && (
+                                      <>
+                                        <div class="clipBoxkeg">
+                                          <img src={beerKeg} alt="Keg" />
+                                        </div>
+                                        <div className="lable-keg">
+                                          <div class="lable-content">
+                                            {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {(formatType !== "Bottle" && formatType !== "Can" && formatType !== "Keg") && (
+                                      <img src={noImage} alt="No Image" />
+                                    )}
+
                                   </div>
                                   {imageError === "" ? (
                                     <></>
@@ -2317,34 +2358,7 @@ const EditProduct = () => {
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-                                  {/* {completedCropProduct && (
-                                    <>
-                                      <div style={{ display: "block" }}>
-                                        <canvas
-                                          ref={previewCanvasRefProduct}
-                                          style={{
-                                            border: "1px solid black",
-                                            width: "200px",
-                                            height: "200px",
-                                          }}
-                                        />
-                                      </div> */}
-                                      {/* <div>
-                                                            <button onClick={onDownloadCropClick}>Download Crop</button>
-                                                            <a
-                                                            ref={hiddenAnchorRef}
-                                                            download
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: '-200vh',
-                                                                visibility: 'hidden',
-                                                            }}
-                                                            >
-                                                            Hidden download
-                                                            </a>
-                                                        </div> */}
-                                    {/* </>
-                                  )} */}
+
                                   <div className="productImg min-square-width border px-2 mb-3 ">
                                     <img src={currentImageProduct === "" || !currentImageProduct ? noImage : currentImageProduct}></img>
                                   </div>
@@ -2425,7 +2439,7 @@ const EditProduct = () => {
         className="modal fade"
         show={show}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Lable Image</h5>
@@ -2478,7 +2492,7 @@ const EditProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-            // onClick={() => handleLableCrop()}
+          // onClick={() => handleLableCrop()}
           >
             Crop
           </button>
@@ -2489,7 +2503,7 @@ const EditProduct = () => {
         className="modal fade"
         show={show2}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Product Image</h5>
@@ -2538,19 +2552,19 @@ const EditProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-            // onClick={() => handleProductCrop()}
+          // onClick={() => handleProductCrop()}
           >
             Crop
           </button>
         </Modal.Footer>
       </Modal>
       {/* new stylemodal */}
-      
+
       <Modal
         className="modal fade"
         show={showStyleModal}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Style</h5>
@@ -2563,13 +2577,13 @@ const EditProduct = () => {
             background: "black",
           }}
         >
-               
-             <input
-              type="text"
-              className="form-control"
-              value={otherStyle}
-              placeholder="Enter Style"
-              onChange={(e) => setOtherStyle(e.target.value)}/>
+
+          <input
+            type="text"
+            className="form-control"
+            value={otherStyle}
+            placeholder="Enter Style"
+            onChange={(e) => setOtherStyle(e.target.value)} />
         </Modal.Body>
 
         <Modal.Footer
@@ -2604,34 +2618,34 @@ const EditProduct = () => {
         className="modal fade"
         show={showFormatModal}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Format</h5>
           {/* <button type="button" class="btn-close text-purpal" aria-label="Close" onClick={closeAgeConfirm}></button> */}
         </Modal.Header>
         <Modal.Body
-          // style={{
-          //   display: "flex",
-          //   justifyContent: "center",
-          //   background: "black",
-          // }}
+        // style={{
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   background: "black",
+        // }}
         >
-             <label>Format name</label>
-             <input
-              type="text"
-              className="form-control"
-              value={otherFormat}
-              placeholder="Enter Format Name"
-              onChange={(e) => setOtherFormat(e.target.value)}/>
-              <br/>
-              <label>Format Unit</label>
-              <input
-              type="number"
-              className="form-control"
-              value={formatUnit}
-              placeholder="Enter Unit"
-              onChange={(e) => setFormatUnit(e.target.value)}/>
+          <label>Format name</label>
+          <input
+            type="text"
+            className="form-control"
+            value={otherFormat}
+            placeholder="Enter Format Name"
+            onChange={(e) => setOtherFormat(e.target.value)} />
+          <br />
+          <label>Format Unit</label>
+          <input
+            type="number"
+            className="form-control"
+            value={formatUnit}
+            placeholder="Enter Unit"
+            onChange={(e) => setFormatUnit(e.target.value)} />
 
         </Modal.Body>
 

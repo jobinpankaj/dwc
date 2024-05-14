@@ -886,7 +886,7 @@ const SupplierInventoryManagement = () => {
                         {t("distributor.inventory_management.listing.recieve")}
                       </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {/* <li class="nav-item" role="presentation">
                       <button
                         class="nav-link"
                         id="transfer-tab"
@@ -897,12 +897,12 @@ const SupplierInventoryManagement = () => {
                         aria-controls="transfer-tab-pane"
                         aria-selected="false"
                       >
-                        {/* {t("distributor.inventory_management.listing.stock")} */}
+                        
                         Transfer
                       </button>
-                    </li>
+                    </li> */}
                   </ul>
-
+                    {/* {t("distributor.inventory_management.listing.stock")} */}
                   {/* <div class="filter-box position-abs">
                     <div class="dropdown date-selector">
                       <button

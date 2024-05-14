@@ -42,6 +42,16 @@ const CreateOrder = () => {
   const [retailerError, setRetailerError] = useState("");
   const [distributorError, setDistributorError] = useState("");
   const [note, setNote] = useState("");
+  const [q, setQ] = useState("");
+  const [filterRetailer, setFilterRetailre] = useState([]);
+  const [emailNameModal, setEmailNameModal] = useState(false);
+  const [formState, setFormState] = useState({
+    distributorName: "",
+    distributorEmail: "",
+  });
+  const [poductList,setProductList] = useState([])
+  const [other,setOther]=useState("0")
+  const [distributorId,setdistributorId]=useState("")
 
   const handleItemSelect = (e) => {
     setSelectedItem(e.target.value);
@@ -146,7 +156,7 @@ const CreateOrder = () => {
 
       const bodyData = {
         retailer_id: selectedRetailer,
-        distributor_id: selectedDistributor,
+        distributor_id: other=="0"?selectedDistributor:distributorId,
         note: note,
         items: finalArray,
         total_quantity: 100,
@@ -261,6 +271,73 @@ const CreateOrder = () => {
       }
     }
   }, [update, includeTax]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState, // Retain other properties in the object
+      [name]: value, // Update the relevant field by its name
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("Distributor Information:", formState);
+    console.log("Select dist",selectedDistributor)
+    const config1 = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission:"supplier-edit"
+      },
+      
+    };
+    const bodyData={
+      distributor_name: formState.distributorName,
+    distributor_email: formState.distributorEmail
+    }
+    apis
+      .post("/supplier/createGroupDistributor",bodyData ,config1)
+      .then((res) => {
+        setOther("1")
+        // setSelectedDistributor(res.data.data.id)
+        setdistributorId(res.data.data.id)
+        console.log("Item",res.data.data.id)
+        toast.success("Email ID added succesfully",{
+          autoClose: 3000,
+          position: toast.POSITION.TOP_CENTER,
+        });
+      })
+      .catch((error) => {
+        if(error.message !== "revoke"){
+          toast.error("Could not  Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+
+    // toast.success("Distributor Information Submitted")
+    // setSelectedDistributor("");
+    setEmailNameModal(false);
+    // setFormState(null);
+    // form.reset()
+
+  };
+
+  const searchingHandle = (e) => {
+    setQ(e.target.value)
+    setSelectedRetailer("")
+    const search = e.target.value;
+    const filterData = retailerList.filter(
+      (user) =>
+        user.full_name.toLowerCase().includes(search.toLowerCase()) ||
+        user.user_main_address.address_1.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilterRetailre(filterData);
+    if(search.trim().length==0){
+      setFilterRetailre([]);
+    }
+  };
 
   useEffect(() => {
     if (selectedDistributor !== "") {
@@ -400,6 +477,10 @@ const CreateOrder = () => {
                               value={selectedDistributor}
                               onChange={(e) => {
                                 setSelectedDistributor(e.target.value);
+                                setOther("0")
+                                if (e.target.value === "0") {
+                                  setEmailNameModal(true);
+                                }
                                 setDistributorError("");
                                 setAddedItem([]);
                               }}

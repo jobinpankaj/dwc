@@ -130,6 +130,238 @@ const OrderManagement = () => {
     // }
   };
 
+  const handleSupplierFilterSearch = (e) => {
+    setSelectedSupplier("");
+    setSearchSupplierFilter(e);
+    const matchingStrings = distinctSupplierInfoArray.filter((str) => {
+      const fullNameMatch = str?.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      // const addressMatch =
+      //   str.user_main_address &&
+      //   str.user_main_address.address_1 &&
+      //   str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+      const companyMatch =
+        str?.user_profile &&
+        str?.user_profile?.company_name &&
+        str?.user_profile?.company_name.toLowerCase().includes(e.toLowerCase());
+      // const groupMatch =
+      //   str.user_profile &&
+      //   str.user_profile.group_name &&
+      //   str.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
+      return fullNameMatch || companyMatch;
+    });
+
+    setDistinctList(matchingStrings);
+  };
+  const handleSupplierFilterDropdown = (company_name, id) => {
+    setSearchSupplierFilter(company_name);
+    setSelectedSupplier(id);
+    setDropdownShowSupplier(false);
+  };
+
+  const handleDistributorSearch = (e) => {
+    setSelectedDistributor("");
+    setSearchDistributor(e);
+    const matchingStrings = distinctArrayDist.filter((x) => {
+      return x?.user_profile?.company_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+    });
+    setDistinctDistributorList(matchingStrings);
+  };
+  const handleDistributorDropdown = (company_name, id) => {
+    setSelectedDistributor(id);
+    setSearchDistributor(company_name);
+    setDropdownDistributor(false);
+  };
+
+
+  useEffect(() => {
+    const uniqueSupplierIds = new Set();
+    const uniqueSupplierInfoArray = [];
+
+    orders.forEach((x) => {
+      if (!uniqueSupplierIds.has(x?.supplier_information?.id)) {
+        uniqueSupplierIds.add(x?.supplier_information?.id);
+        uniqueSupplierInfoArray.push(x?.supplier_information);
+      }
+    });
+    setDistinctSupplierInfoArray(uniqueSupplierInfoArray);
+    setDistinctList(uniqueSupplierInfoArray);
+    const uniqueDistributorIds = new Set();
+    const uniqueDistributorArray = [];
+
+    // Loop through orderList
+    orders.forEach((x) => {
+      x.order_distributors.forEach((distributor) => {
+        if (!uniqueDistributorIds.has(distributor?.distributor_info?.id)) {
+          uniqueDistributorIds.add(distributor?.distributor_info?.id);
+          uniqueDistributorArray.push(distributor?.distributor_info);
+        }
+      });
+    });
+    setDistinctDistributorList(uniqueDistributorArray);
+    SetDistinctArrayDist(uniqueDistributorArray);
+    console.log("Dattaaaa", uniqueDistributorArray, uniqueSupplierInfoArray)
+  }, [orders]);
+
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(
+        `/retailer/orderListing?distributor_id=${selectedDistributor}&supplier_id=${selectedSupplier}&to_date=${toDate}&from_date=${fromDate}`,
+        config
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          setOrders(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }, [selectedDistributor, selectedSupplier, toDate, fromDate]);
+
+
+  useEffect(()=>{
+    if(orders && orders.length > 0){
+      let newCount = 0;
+      orders.forEach((ele)=>{
+        if(ele.status == 'Unpaid'){
+          const createdDate = new Date(ele.created_at);
+          const currentDate = new Date();
+          const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
+                    if (monthDiff >= 2) {
+                        newCount++; // Increment newCount if conditions are met
+                    }
+        }
+      });
+      setCount(newCount);
+    }
+
+  },[orders])
+
+
+  const applyFilter=()=>{
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(
+        `/retailer/orderListing?supplier_id=${supplierID}&status=${statusValue}`,
+        config
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          setOrders(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }
+
+  const handleSupplierSearch = (e) => {
+    setSupplierID("");
+    setSearchSupplier(e);
+
+    const matchingStrings = supplierList.filter((str) => {
+      const fullNameMatch = str.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      const companyMatch =  str.company_name
+      .toLowerCase()
+      .includes(e.toLowerCase());
+ 
+      return fullNameMatch  || companyMatch ;
+    });
+
+    setFilterSupplierList(matchingStrings);
+    setDropdownShow(true);
+  };
+  const handleSupplierDropDown = (company_name, id) => {
+    setSearchSupplier(company_name);
+    console.log("Dtaaaxss",company_name,id)
+    setSupplierID(id);
+    setDropdownShow(false);
+    // setShowNote(true);
+  };
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "supplier-view",
+      },
+    };
+    apis
+      .get(`/retailer/suppliersAllList`, config)
+      .then((res) => {
+        setSupplierList(res.data.data);
+        setFilterSupplierList(res.data.data)
+      })
+      .catch((err) => {});
+  }, []);
+
+
+  const handleSearching=(e)=>{
+    console.log("Dataaaa",e)
+    setSearchValue(e)
+    const searchKey=e
+    const filteredOrder=allOrderList.filter((x)=>{
+      const matchBuisnnesName=
+      x.supplier_information &&
+      x.supplier_information.user_profile &&
+      x.supplier_information.user_profile.company_name &&
+      x.supplier_information.user_profile.company_name.toLowerCase().includes(searchKey.toLowerCase());
+      const addressMatching=
+      x.retailer_information &&
+      x.retailer_information.user_main_address &&
+      x.retailer_information.user_main_address.address_1 &&
+      x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
+
+      const orderReference=
+      x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
+
+      const statusMatching=
+      x.status.toLowerCase().includes(searchKey.toLowerCase())
+      return matchBuisnnesName || addressMatching || orderReference || statusMatching
+    })
+    console.log("==================================", filteredOrder);
+    setOrders(filteredOrder);
+  }
   return (
     <div className="container-fluid page-wrap order-manage">
       <div className="row height-inherit">
@@ -140,6 +372,142 @@ const OrderManagement = () => {
           <div className="container-fluid page-content-box px-3 px-sm-4">
             <div className="row mb-3">
               <div className="col">
+                <div className="filter-row page-top-filter justify-content-between">
+                  {/* new div */}
+                  <div className="filter-box">
+                    {/* [/Date] */}
+
+                    <div className="dropdown date-selector">
+                      <button
+                        className="btn btn-outline-black btn-sm dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{ background: "#ffffff" }}
+                      >
+                        <img src={calendar} alt="" />{" "}
+                        {t("supplier.order_management.list.select_date")}
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        style={{ padding: "5px 10px" }}
+                      >
+                        <form>
+                          <li>
+                            <label>From Date</label>
+
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => {
+                                setFromDate(e.target.value);
+                              }}
+                            />
+                          </li>
+                          <li>
+                            <label>To Date</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => {
+                                setToDate(e.target.value);
+                              }}
+                            />
+                          </li>
+                        </form>
+                      </ul>
+                    </div>
+
+                    <div className="dropdown date-selector card-top-filter-box">
+                      <div className="search-table form-group">
+                        <input
+                          type="text"
+                          className="search-input"
+                          value={searchSupplierFilter}
+                          placeholder={t("supplier.order_management.list.search_supplier")}
+                          onFocus={() => {
+                            setDropdownShowSupplier(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownShowSupplier(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleSupplierFilterSearch(e.target.value);
+                          }}
+                        />
+
+                        {distinctList.length > 0 && (
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${dropdownShowSupplier ? "d-block" : "d-none"
+                              }`}
+                          >
+                            {" "}
+                            {distinctList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s?.id}
+                                onClick={() =>
+                                  handleSupplierFilterDropdown(
+                                    s?.user_profile?.company_name,
+                                    s?.id
+                                  )
+                                }
+                              >
+                                {s?.user_profile?.company_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="dropdown date-selector card-top-filter-box">
+                      <div className="search-table form-group">
+                        <input
+                          type="text"
+                          className="search-input"
+                          value={searchDistributor}
+                          placeholder={t("supplier.order_management.list.search_distributor")}
+                          onFocus={() => {
+                            setDropdownDistributor(true);
+                          }}
+                          onBlur={() => {
+                            setTimeout(() => {
+                              setDropdownDistributor(false);
+                            }, 200);
+                          }}
+                          onChange={(e) => {
+                            handleDistributorSearch(e.target.value);
+                          }}
+                        />
+                        {distinctDistributorList.length > 0 && (
+                          <ul
+                            className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+                              }`}
+                          >
+                            {" "}
+                            {distinctDistributorList.map((s) => (
+                              <li
+                                className="dropdown-item pe-pointer"
+                                key={s?.id}
+                                onClick={() =>
+                                  handleDistributorDropdown(
+                                    s?.user_profile?.company_name,
+                                    s?.id
+                                  )
+                                }
+                              >
+                                {s?.user_profile?.company_name}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {/* close div */}
                 <div className="filter-row page-top-filter justify-content-end">
                   {/* Right Filter */}
                   <div class="dropdown right-filter">
@@ -247,6 +615,19 @@ const OrderManagement = () => {
                         <input
                           type="reset"
                           class="btn btn-outline-black width-auto"
+                          value={t("supplier.order_management.list.clear1")}
+                          onClick={()=>{
+                            setSearchSupplier("")
+                            setStatusValue("")
+                            setSupplierID("")
+                            setSelectedDistributor("")
+                            setSelectedSupplier("")
+                            setToDate("")
+                            setFromDate("")
+                            setSearchSupplierFilter("")
+                            setSearchDistributor("")
+                            setReload(!reload)
+                          }}
                           value="Clear"
                         />
                       </div>
@@ -311,6 +692,11 @@ const OrderManagement = () => {
                               <input
                                 type="text"
                                 className="search-input"
+                                placeholder={t("supplier.order_management.list.searching")}
+                                value={searchValue}
+                                onChange={(e)=>{
+                                  handleSearching(e.target.value)
+                                }}
                               ></input>
                             </div>
                           </div>

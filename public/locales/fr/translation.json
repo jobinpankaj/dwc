@@ -1003,6 +1003,10 @@
     },
     "retailer_management": {
       "list": {
+        "view": "Voir",
+        "edit": "Modifier",
+        "delete": "Supprimer l'utilisateur", 
+        "login": "Connectez-vous avec cet utilisateur",
         "title": "Gestion des détaillants",
         "search_label": "Recherche par nom de revendeur..",
         "add_button": "Ajouter un détaillant",
@@ -1277,6 +1281,10 @@
         "choose_client": "Choisir un client",
         "choose_routes": "Choisir une route",
         "issues": "Problématique",
+        "search_supplier": "Rechercher un fournisseur",         
+        "search_distributor": "Rechercher un distributeur",
+        "clear1": "Claire",
+        "searching": "Recherche...",
         "choose_issues": "Choisir un problème",
         "order_without_warning": "Commande sans avertissement",
         "approval_is_overdue": "Approbation expirée",
@@ -2337,7 +2345,7 @@
     "market_place": {
       "listing": {
         "title": "Marché",
-        "search_here": "Rechercher...",
+        "search_here": "Cherche ici...",
         "sort_by": "Trier par",
         "product_asc_sort": "Produits (A à Z)",
         "product_desc_sort": "Produits (Z à A)",
@@ -2384,6 +2392,8 @@
         "similar_products": "produits similaires"
       },
       "cart": {
+        "supplier": "Fournisseur",
+        "print": "Imprimer",
         "title": "Chariot",
         "format": "Format",
         "update_quantity": "La quantité de mise à jour",

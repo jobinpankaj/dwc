@@ -30,6 +30,9 @@ import {
   PRICING_VIEW,
 } from "../../Constants/constant";
 
+//import context
+import { useX } from "../../ContxtApi/HeaderContext";
+
 toast.configure();
 
 const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
@@ -37,6 +40,7 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
   const { t } = useTranslation();
   const adminToken = localStorage.getItem("admin_accessToken");
   const navigate = useNavigate();
+  const { x, setX } = useX();
 
   const doLogout = () => {
     const res = handleLogout();
@@ -67,9 +71,12 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
   };
 
   return (
-    <div className={showSidebar ? "sidebar-menu show" : "sidebar-menu"}>
+    <div className={x ? "sidebar-menu show" : "sidebar-menu"}>
+      {/* <div className={showSidebar ? "sidebar-menu show" : "sidebar-menu"}> */}
       <div class="sidebar-inner bg-purple height-100">
-        <div class="closeMenu" onClick={updateSidebar}>
+        {/* <div class="closeMenu" onClick={()=>{updateSidebar(false)}}> */}
+        <div class="closeMenu" onClick={()=>{setX(false)}}>
+
           <span></span>
         </div>
 
@@ -82,7 +89,8 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
             case "admin":
               return (
                 <nav>
-                  <Nav as="ul">
+                  <Nav as="ul"
+                  onClick={()=>{setX(false)}}>
                     {true && (
                       <Nav.Item as="li">
                         <NavLink
@@ -160,7 +168,8 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
             case "supplier":
               return (
                 <nav>
-                  <Nav as="ul">
+                  <Nav as="ul"
+                  onClick={()=>{setX(false)}}>
                     {adminToken ? (
                       <>
                         <NavItem
@@ -339,7 +348,8 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
             case "retailer":
               return (
                 <nav>
-                  <Nav as="ul">
+                  <Nav as="ul"
+                  onClick={()=>{setX(false)}}>
                     {adminToken ? (
                       <>
                         <NavItem as="li" exact onClick={() => doLogout()}>
@@ -455,7 +465,8 @@ const Sidebar = ({ showSidebar, updateSidebar, userType }) => {
             case "distributor":
               return (
                 <nav>
-                  <Nav as="ul">
+                  <Nav as="ul"
+                  onClick={()=>{setX(false)}}>
                     {adminToken ? (
                       <>
                         <NavItem as="li" exact onClick={() => doLogout()}>

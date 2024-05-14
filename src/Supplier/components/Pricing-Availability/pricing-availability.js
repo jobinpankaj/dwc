@@ -1112,13 +1112,13 @@ const PricingAvailability = () => {
                               {/* [Table Search] */}
                               <div className="search-table">
                                 <div className="form-group">
-                                  <input
+                                  {/* <input
                                     type="text"
                                     className="search-input"
                                     placeholder={t(
                                       "supplier.pricing.pricing_list.search_here"
                                     )}
-                                  ></input>
+                                  ></input> */}
                                 </div>
                               </div>
                               {/* [/Table Search] */}

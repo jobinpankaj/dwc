@@ -518,6 +518,85 @@ const ProductManagement = () => {
                         <div className="card h-100">
                           {/* changes adding tabindex */}
                           {/* tabIndex="1" onBlur={()=>{setDropdownShow(false)}} */}
+                          <div className="card-body" >
+                          <div className="addBtn-sup">
+                              <div>
+                                <button
+                                  className="new-btn w-100"
+                                  onClick={() => {
+                                    handleAddProduct();
+                                  }}
+                                >
+                                 <span><i class="fa-solid fa-plus"></i>&nbsp;New</span>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button
+                                  className={`format-btn w-100 mt-3 ${showFormat ? 'active' : ''}`}
+                                  onClick={() => {
+                                    setShowFormat(true);
+                                    setDropdownShow(true);
+                                  }}
+                                >
+                               
+                                 <span><i class="fa-solid fa-pen-to-square"></i>&nbsp;Format</span>
+                                </button>
+                              </div>
+                              <div>
+                                {showFormat === true ? (
+                                  <>
+                                    <div style={{ position: "relative", marginTop: '10px' }}>
+                                      <input
+                                        type="text"
+                                        placeholder="Name"
+                                        value={productName}
+                                        onChange={(e) => {
+                                          handleProductNameChange(e);
+                                        }}
+                                        onFocus={(e) => {
+                                          setDropdownShow(true);
+                                        }}
+                                        onBlur={()=>{setTimeout(() => {
+                                          setDropdownShow(false)
+                                        }, 250);}}
+                                      />
+                                      <button
+                                        className="search-btn"
+                                        onClick={() => {
+                                          handleSubmit();
+                                        }}
+                                      >
+                                        <i className="fa-solid fa-magnifying-glass"></i>
+                                      </button>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </div>
+
+                              <p className="error_msg">
+                                {productNameError == "" ? (
+                                  <></>
+                                ) : (
+                                  <>{productNameError}</>
+                                )}
+                              </p>
+
+                              {newProducList && newProducList.length > 0 && showFormat == true ? (
+                                <>
+                                  <ul
+                                    className={`w-100 searchListBx custom-scrollbar ${dropdownShow ? "d-block" : "d-none"}`}
+                                    style={{
+                                      backgroundColor: dropdownShow ? "#fff" : "transparent",
+                                      padding: "8px 10px",
+                                      color: "#3c3c3c",
+                                      borderRadius: "5px",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+
                           <div className="card-body" >     
                             {/* <a className="addBtn" > */}
                             <a className="xy" onClick={() => handleAddProduct()} >
@@ -548,11 +627,13 @@ const ProductManagement = () => {
                                     }`}
                                   >
                                     {" "}
+
                                     {newProducList.map((s) => (
                                       <li
                                         className="dropdown-item pe-pointer"
                                         key={s.id}
                                         onClick={() =>
+                                          handleProductDropdown(s.product_name, s.id)
                                           handleProductDropdown(
                                             s.product_name,
                                             s.id
@@ -563,6 +644,11 @@ const ProductManagement = () => {
                                       </li>
                                     ))}
                                   </ul>
+                                </>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
                             </div>):(<></>)}
                           </div>
                         </div>

@@ -1177,6 +1177,307 @@ const OrderManagement = () => {
     data = orderList;
   }
 
+  useEffect(() => {
+    // Perform the count calculation when data changes
+    if (orderList && orderList.length > 0) {
+        let newCount = 0;
+        orderList.forEach((ele) => {
+            if (ele.status === 'Unpaid') {
+                const createdDate = new Date(ele.created_at);
+                const currentDate = new Date();
+                const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
+                if (monthDiff >= 2) {
+                    newCount++; // Increment newCount if conditions are met
+                }
+            }
+        });
+        setCount(newCount); // Update count state variable
+    }
+}, [orderList]); 
+
+
+  const submit1 = (createdDate) => {
+    const timediifMili = startDate - new Date(createdDate);
+    const secDiff = Math.floor(timediifMili / 1000);
+    const minDiff = Math.floor(timediifMili / (1000 * 60));
+    const hourDiff = Math.floor(timediifMili / (1000 * 60 * 60));
+    const dayDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24));
+    const monthDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24 * 30));
+    const yearDiff = Math.floor(
+      timediifMili / (1000 * 60 * 60 * 24 * 30 * 365)
+    );
+    let result = "";
+    if (secDiff > 0 && secDiff < 60) {
+      result = `${secDiff} sec ago`;
+    }
+    if (minDiff > 0 && minDiff < 60) {
+      result = `${minDiff} minute ago`;
+    }
+    if (hourDiff > 0 && hourDiff < 24) {
+      result = `${hourDiff} hour ago`;
+    }
+    if (dayDiff > 0 && dayDiff < 30) {
+      result = `${dayDiff} ${dayDiff > 1
+        ? t("supplier.retailer_request.days_ago")
+        : t("supplier.retailer_request.day_ago")
+        }`;
+    }
+    if (monthDiff > 0 && monthDiff < 12) {
+      result = `${monthDiff} ${monthDiff > 1
+        ? t("supplier.retailer_request.months_ago")
+        : t("supplier.retailer_request.month_ago")
+        }`;
+    }
+    if (yearDiff > 0) {
+      result = `${yearDiff} ${yearDiff > 1
+        ? t("supplier.retailer_request.years_ago")
+        : t("supplier.retailer_request.year_ago")
+        }`;
+    }
+    return result;
+  };
+
+  const handleDistributorSearch = (e) => {
+    setSelectedDistributor("");
+    setSearchDistributor(e);
+    const matchingStrings = distinctArrayDist.filter((x) => {
+      return x?.user_profile?.company_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+    });
+    setDistinctDistributorList(matchingStrings);
+  };
+  const handleDistributorDropdown = (company_name, id) => {
+    setSelectedDistributor(id);
+    setSearchDistributor(company_name);
+    setDropdownDistributor(false);
+  };
+
+  const handleRetailerFilterSearch = (e) => {
+    setSelectedRetailer("");
+    setSearchRetailerFilter(e);
+    const matchingStrings = distinctRetailerInfoArray.filter((str) => {
+      const fullNameMatch = str?.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      const addressMatch =
+        str?.user_main_address &&
+        str?.user_main_address.address_1 &&
+        str?.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+      const businessMatch =
+        str?.user_profile &&
+        str?.user_profile.business_name &&
+        str?.user_profile.business_name.toLowerCase().includes(e.toLowerCase());
+      const groupMatch =
+        str?.user_profile &&
+        str?.user_profile.group_name &&
+        str?.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
+      return fullNameMatch || addressMatch || businessMatch || groupMatch;
+    });
+
+    setDistinctList(matchingStrings);
+  };
+  const handleRetailerFilterDropdown = (full_name, id) => {
+    setSearchRetailerFilter(full_name);
+    setSelectedRetailer(id);
+    setDropdownShowRetailer(false);
+  };
+  useEffect(() => {
+    // console.log("AAAData", orderList)
+    const uniqueRetailerIds = new Set();
+    const uniqueRetailerInfoArray = [];
+
+    orderList.forEach((x) => {
+      if (!uniqueRetailerIds.has(x.retailer_information?.id)) {
+        uniqueRetailerIds.add(x.retailer_information?.id);
+        uniqueRetailerInfoArray.push(x?.retailer_information);
+      }
+    });
+    setDistinctRetailerInfoArray(uniqueRetailerInfoArray);
+    setDistinctList(uniqueRetailerInfoArray);
+    const uniqueDistributorIds = new Set();
+    const uniqueDistributorArray = [];
+
+    // Loop through orderList
+    orderList.forEach((x) => {
+      x.order_distributors.forEach((distributor) => {
+        if (!uniqueDistributorIds.has(distributor?.distributor_info?.id)) {
+          uniqueDistributorIds.add(distributor?.distributor_info?.id);
+          uniqueDistributorArray.push(distributor?.distributor_info);
+        }
+      });
+    });
+    setDistinctDistributorList(uniqueDistributorArray);
+    SetDistinctArrayDist(uniqueDistributorArray);
+  }, [orderList]);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(
+        `/supplier/orders?distributor_id=${selectedDistributor}&retailer_id=${selectedRetailer}&to_date=${toDate}&from_date=${fromDate}`,
+        config
+      )
+      .then((res) => {
+        setLoading(false);
+        if (res.data.success === true) {
+          setOrderList(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }, [selectedDistributor, selectedRetailer, toDate, fromDate]);
+
+  const totalPrice = (arr) => {
+    let total = 0;
+    total = arr.reduce((accumulator, currentValue) => {
+      const currentValueTotal =
+        currentValue?.product?.pricing?.price * currentValue?.quantity || 0;
+      return accumulator + currentValueTotal;
+    }, 0);
+    return total?.toFixed(2);
+  };
+
+  const handlePayment = (e) => {
+    const order_id = e;
+    const status = "6"
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "order-edit",
+      },
+    };
+    const bodyData = {
+      order_id: order_id,
+      action: status,
+    };
+
+    setShow(false);
+    apis
+      .post("/supplier/order/status/update", bodyData, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          setTargetId([]);
+          setUpdate(!update);
+          toast.success("Status updated for selected orders.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error("Could not update status. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not update status. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+    console.log("-----------------------payment working");
+  };
+ // ---search--event------
+  const handleSearchChange = (e) => {
+    const searchKey = e.target.value;
+    setSearching(searchKey);
+    console.log("dsfa",allOrderList)
+    const filteredOrder=allOrderList.filter((x)=>{
+      const matchBuisnnesName=
+      x.retailer_information &&
+      x.retailer_information.user_profile &&
+      x.retailer_information.user_profile.business_name &&
+      x.retailer_information.user_profile.business_name.toLowerCase().includes(searchKey.toLowerCase());
+      const addressMatching=
+      x.retailer_information &&
+      x.retailer_information.user_main_address &&
+      x.retailer_information.user_main_address.address_1 &&
+      x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
+
+      const orderReference=
+      x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
+
+      const statusMatching=
+      x.status.toLowerCase().includes(searchKey.toLowerCase())
+      return matchBuisnnesName || addressMatching || orderReference || statusMatching
+    })
+    console.log("==================================", filteredOrder);
+    setOrderList(filteredOrder);
+  };
+
+  const handleRFilterDistSearch=(e)=>{
+    setRDistId("")
+    SetrFilterSearchDistributor(e)
+    const matchingStrings = distributorsList.filter((x) => {
+      return x.user_profile?.company_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+    });
+    setFilterDistributorList(matchingStrings);
+  }
+
+  const handleRDistDropdown=(companyName,id)=>{
+    setRDistId(id)
+    SetrFilterSearchDistributor(companyName)
+  }
+
+  const applyRightFilter=()=>{
+    console.log("Showwwwww")
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: `order-view`,
+      },
+    };
+
+    apis
+      .get(
+        `/supplier/orders?distributor_id=${rDistId}&retailer_id=${retailerId}&status=${statusValue}`,
+        config
+      )
+      .then((res) => {
+        setLoading(false);
+        if (res.data.success === true) {
+          setOrderList(res.data.data);
+        } else {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.message !== "revoke") {
+          toast.error("Could not fetch order list. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }
+
   return (
     <div className="container-fluid page-wrap order-manage">
       <div className="row height-inherit">
@@ -1670,6 +1971,15 @@ const OrderManagement = () => {
                                         <td>{ele.total_quantity?ele.total_quantity : "N/A"}</td>
                                         <td>{ele.total_amount?ele.total_amount:"N/A"}</td>
                                         <td>
+                                          {ele?.order_distributors[0] &&
+                                            ele?.order_distributors[0]
+                                              ?.distributor_info?.user_profile
+                                              ?.company_name
+                                            ? ele?.order_distributors[0]
+                                              ?.distributor_info?.user_profile
+                                              ?.company_name
+                                            : ele?.order_distributors[0]?.other_distributor==1?"Other":"N/A"}
+
                                           {ele.order_distributors[0] &&
                                           ele.order_distributors[0]
                                             .distributor_info.user_profile

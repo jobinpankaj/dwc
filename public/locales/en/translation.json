@@ -1007,6 +1007,10 @@
     },
     "retailer_management": {
       "list": {
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete User", 
+        "login": "Login With this User",
         "title": "Retailer Management",
         "search_label": "Search by retailer name..",
         "add_button": "+ Add Retailer",
@@ -1277,6 +1281,10 @@
         "table_col8": "Distributor",
         "select_date": "Select Date",
         "supplier": "Supplier",
+        "search_supplier": "Search Supplier",
+        "search_distributor": "Search Distributor",
+        "clear1": "Clear",
+        "searching": "Searching...",   
         "filter": "Filter",
         "no_data_to_show": "No data to show",
         "choose_client": "Choose Client",
@@ -2385,6 +2393,8 @@
         "similar_products": "Similar Products"
       },
       "cart": {
+        "supplier": "Supplier",
+        "print": "Print",
         "title": "Cart",
         "format": "Format",
         "update_quantity": "Update Quantity",
