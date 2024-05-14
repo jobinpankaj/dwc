@@ -15,7 +15,11 @@ import InvoiceLists from "./Partials/InvoiceLists";
 import CustomMade from "./Partials/CustomMade";
 import SuperInvoice from "./Partials/SuperInvoice";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import apis from "../../../CommonComponents/apis";
 //const token = localStorage.getItem("supplier_accessToken");
+
+const getFormDataSupplierName = "/supplier/reportSuppliername";
+const getFormDataUsersList = "/supplier/reportFormdataUsersList";
 
 const Reports = () => {
   const token = localStorage.getItem("supplier_accessToken");
@@ -26,7 +30,51 @@ const Reports = () => {
     },
   };
 
-  const [showModal2, setShowModal2] = useState(false);
+  const [supplierName, setSupplierName] = useState([]);
+  const [usersData, setUsersData] = useState([]);
+
+  const fetchSupplierName = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    apis
+      .get(getFormDataSupplierName, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          setSupplierName(res.data.data ? res.data.data[0]?.company_name : "");
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        if (error) {
+          console.log({ error });
+        }
+      });
+  };
+
+  const fetchUserList = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    apis
+      .get(getFormDataUsersList, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          setUsersData(res.data.data ?? []);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        if (error) {
+          console.log({ error });
+        }
+      });
+  };
+
+  useEffect(() => {
+    fetchSupplierName();
+    fetchUserList();
+  }, []);
 
   return (
     <>
@@ -49,12 +97,16 @@ const Reports = () => {
                           <ProductLists
                             img={generateReportImage}
                             token={token}
+                            supplierName={supplierName}
+                            usersData={usersData}
                           />
                         </div>
                         <div className="col-2 width-9rem">
                           <InventoryLists
                             img={generateReportImage}
                             token={token}
+                            supplierName={supplierName}
+                            usersData={usersData}
                           />
                         </div>
                         <div className="col-2 width-9rem">
@@ -67,7 +119,12 @@ const Reports = () => {
                           <Breadcrumb.Item href="#">Sales</Breadcrumb.Item>
                         </Breadcrumb>
                         <div className="col-2 width-9rem">
-                          <SalesLists img={generateReportImage} token={token} />
+                          <SalesLists
+                            img={generateReportImage}
+                            token={token}
+                            supplierName={supplierName}
+                            usersData={usersData}
+                          />
                         </div>
                         <div className="col-2 width-9rem">
                           <InvoiceLists
@@ -82,7 +139,6 @@ const Reports = () => {
                           />
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>

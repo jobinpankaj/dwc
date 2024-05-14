@@ -11,7 +11,6 @@ import filter from "../../assets/images/filter-icon.png";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss"
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -355,7 +354,7 @@ const Retailer = () => {
                             >
                               {t("admin.retailer_management.list.add_button")}{" "}
                             </button>
-                            {/* <button
+                            <button
                               type="button"
                               className={`btn dropdown-toggle ${hideFilter}`}
                               data-bs-toggle="dropdown"
@@ -367,8 +366,8 @@ const Retailer = () => {
                               {t(
                                 "admin.retailer_management.list.filter_button"
                               )}
-                            </button> */}
-                            {/* <form
+                            </button>
+                            <form
                               className={`dropdown-menu p-3 ${hideFilter}`}
                               data-popper-placement="bottom-end"
                               style={{
@@ -421,7 +420,7 @@ const Retailer = () => {
                                   Reset
                                 </button>
                               </div>
-                            </form> */}
+                            </form>
                           </div>
                           {/* Right Filter */}
                         </div>

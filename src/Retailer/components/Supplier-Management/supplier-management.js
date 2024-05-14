@@ -17,8 +17,6 @@ const SupplierManagement = () => {
   const [view, setView] = useState("All Suppliers");
   const [keyword, setKeyword] = useState("");
   const [supplierList, setSupplierList] = useState([]);
-  const [q,setQ]= useState('');
-  const [alldata, setAllData] = useState([]);
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -28,18 +26,6 @@ const SupplierManagement = () => {
   const handleSetView = (e) => {
     setView(e);
   };
-
-  const handleInputChange = (e)=>{
-    setQ(e.target.value);
-    const valueToseatch = e.target.value;
-    const filterData = alldata.filter((singleObj)=>(
-      singleObj?.supplier_information?.full_name.toLowerCase().includes(valueToseatch.toLowerCase()) ||
-      singleObj?.supplier_information?.user_main_address?.address_1.toLowerCase().includes(valueToseatch.toLowerCase())
-
-    ))
-    setSupplierList(filterData)
-  }
-
   useEffect(() => {
     const config = {
       headers: {
@@ -49,11 +35,10 @@ const SupplierManagement = () => {
     };
 
     apis
-      .get(`/retailer/suppliersList`, config)
+      .get(`/retailer/suppliersList?search=${keyword}`, config)
       .then((res) => {
         if (res.data.success === true) {
           setSupplierList(res.data.data);
-          setAllData(res.data.data);
         } else {
           toast.error(
             "Could not fetch supplier list. Please try again later.",
@@ -154,8 +139,8 @@ const SupplierManagement = () => {
                               <div className="search-table">
                                 <div className="form-group">
                                   <input
-                                    value={q}
-                                    onChange={(e)=>handleInputChange(e)}
+                                    value={keyword}
+                                    onChange={(e) => setKeyword(e.target.value)}
                                     type="text"
                                     className="search-input"
                                     placeholder={t(

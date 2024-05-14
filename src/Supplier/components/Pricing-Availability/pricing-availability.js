@@ -13,7 +13,6 @@ import {
 import useAuthInterceptor from "../../../utils/apis";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import { INVENTORY_EDIT, INVENTORY_VIEW, PRICING_EDIT, PRICING_VIEW } from "../../../Constants/constant";
 import LoadingOverlay from "react-loading-overlay";
@@ -75,15 +74,7 @@ const PricingAvailability = () => {
   const [show, setShow] = useState(false)
   const [targetFormat, setTargetFormat] = useState("")
   const [deposit, setDeposit] = useState(0)
-  const [update, setUpdate] = useState(false);
-  const [q,setQ] = useState("");
-  const [allData , setAllData] = useState([])
-  const [p,setP] = useState("");
-  const [allData2 , setAllData2] = useState([]);
-
-  const [selectBottle,setSelectBottle]=useState("")
-  const [reload,setReload]=useState(false)
-  const [selectFormatName,setSelectFormatName]=useState("")
+  const [update, setUpdate] = useState(false)
 
   const handleChangePage1 = (event, newPage) => {
     setPage1(newPage);
@@ -166,7 +157,6 @@ const PricingAvailability = () => {
         setLoading(false)
         if (res.data.success === true) {
           setPricingList(res.data.data);
-          setAllData(res.data.data);
         } else {
           toast.error("Could not fetch pricing list. Please try again later.", {
             autoClose: 3000,
@@ -198,7 +188,6 @@ const PricingAvailability = () => {
       .then((res) => {
         if (res.data.success === true) {
           setAvailabilityList(res.data.data);
-          setAllData2(res.data.data);
         } else {
           toast.error(
             "Could not fetch availability list. Please try again later.",
@@ -236,7 +225,7 @@ const PricingAvailability = () => {
         );
       }
     });
-  }, [update,reload]);
+  }, [update]);
 
   let data1;
   if (rowsPerPage1 > 0) {
@@ -267,47 +256,6 @@ const PricingAvailability = () => {
   } else {
     data3 = formatList;
   }
-
-  const handleInputChange = (e)=>{
-    setQ(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = allData.filter(
-      (product) =>
-        product.product_name.toLowerCase().includes(valueTosearch.toLowerCase())
-    );
-    setPricingList(filterData);  
-  }
-
-  const handleInputChange2 = (e)=>{
-    setP(e.target.value);
-    console.log("value to search", e.target.value)
-    const valueTosearch =e.target.value;
-    const filterData = allData2.filter(
-      (ele) =>
-        ele.product.product_name.toLowerCase().includes(valueTosearch.toLowerCase())
-    );
-    setAvailabilityList(filterData);  
-  }
-
-  const applyFilterPricing=()=>{
-    const filterData = allData.filter(
-      (product) =>
-        product.product_format?.name.toLowerCase().includes(selectBottle.toLowerCase())
-    );
-    setPricingList(filterData);
-
-  }
-
-  const applyFilterAvailability=()=>{
-    const filterData = allData2.filter(
-      (product) =>
-        product.product.product_format?.name.toLowerCase().includes(selectFormatName.toLowerCase())
-    );
-    setAvailabilityList(filterData);
-  }
-
-  
 
   return (
     <div class="container-fluid page-wrap inventory-manage">
@@ -378,7 +326,7 @@ const PricingAvailability = () => {
                     </li>
                   </ul>
 
-                  {/* <div class="filter-box position-abs">
+                  <div class="filter-box position-abs">
                     <div class="dropdown date-selector">
                       <button
                         class="btn btn-outline-black btn-sm dropdown-toggle"
@@ -408,7 +356,7 @@ const PricingAvailability = () => {
                         </li>
                       </ul>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
 
                 <div class="tab-content" id="myTabContent">
@@ -428,14 +376,12 @@ const PricingAvailability = () => {
                               {/* [Table Search] */}
                               <div className="search-table">
                                 <div className="form-group">
-                                <input
+                                  <input
                                     type="text"
                                     className="search-input"
-                                    value={q}
                                     placeholder={t(
                                       "supplier.pricing.pricing_list.search_here"
                                     )}
-                                    onChange={(e)=>handleInputChange(e)}
                                   ></input>
                                 </div>
                               </div>
@@ -464,32 +410,26 @@ const PricingAvailability = () => {
                                     <form class="dropdown-menu p-3 ">
                                       <div class="mb-3">
                                         <label class="form-label">Format</label>
-                                        <select className="form-select"
-                                        value={selectBottle}
-                                        onChange={(e)=>{setSelectBottle(e.target.value)
-                                        }}>
-                                          <option value="">
+                                        <select className="form-select">
+                                          <option selected disabled>
                                             {t(
                                               "supplier.pricing.pricing_list.select_format"
                                             )}
                                           </option>
-                                          <option value="bottle">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.bottle"
                                             )}
                                           </option>
-                                          <option value="can">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.can"
                                             )}
                                           </option>
-                                          <option value="keg">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.keg"
                                             )}
-                                          </option>
-                                          <option value="cask">
-                                            Cask
                                           </option>
                                         </select>
                                       </div>
@@ -510,21 +450,16 @@ const PricingAvailability = () => {
 
                                       <div className="d-flex justify-content-end">
                                         <button
-                                          type="button"
+                                          type="submit"
                                           class="btn btn-purple width-auto me-2"
-                                          onClick={()=>{applyFilterPricing()}}
                                         >
                                           {t(
                                             "supplier.pricing.pricing_list.apply"
                                           )}
                                         </button>
                                         <button
-                                          type="button"
+                                          type="reset"
                                           class="btn btn-outline-black width-auto"
-                                          onClick={()=>{
-                                            setSelectBottle("")
-                                            setReload(!reload)
-                                          }}
                                         >
                                           {t(
                                             "supplier.pricing.pricing_list.reset"
@@ -725,11 +660,9 @@ const PricingAvailability = () => {
                               {/* [Table Search] */}
                               <div className="search-table">
                                 <div className="form-group">
-                                <input
+                                  <input
                                     type="text"
                                     className="search-input"
-                                    value={p}
-                                    onChange={(e)=>handleInputChange2(e)}
                                     placeholder={t(
                                       "supplier.pricing.pricing_list.search_here"
                                     )}
@@ -740,8 +673,9 @@ const PricingAvailability = () => {
 
                               {/* [Right Filter] */}
                               <div className="filter-row text-end">
+                                {/* [Page Filter Box] */}
                                 <div className="filter-box">
-                                  {/* <div class="dropdown right-filter">
+                                  <div class="dropdown right-filter">
                                     <button
                                       type="button"
                                       class="dropdown-toggle btn btn-sm btn-purple"
@@ -780,8 +714,8 @@ const PricingAvailability = () => {
                                         </button>
                                       </div>
                                     </form>
-                                  </div> */}
-                                  {/* <div class="dropdown right-filter">
+                                  </div>
+                                  <div class="dropdown right-filter">
                                     <button
                                       type="button"
                                       class="dropdown-toggle btn btn-sm btn-outline-black"
@@ -837,8 +771,8 @@ const PricingAvailability = () => {
                                         </button>
                                       </div>
                                     </form>
-                                  </div> */}
-                                  {/* <div class="dropdown right-filter">
+                                  </div>
+                                  <div class="dropdown right-filter">
                                     <button
                                       type="button"
                                       class="dropdown-toggle btn btn-sm btn-outline-black"
@@ -868,8 +802,8 @@ const PricingAvailability = () => {
                                         </label>
                                       </div>
                                     </form>
-                                  </div> */}
-                                  {/* <div class="dropdown right-filter">
+                                  </div>
+                                  <div class="dropdown right-filter">
                                     <button
                                       type="button"
                                       class="dropdown-toggle btn btn-sm btn-outline-black border"
@@ -962,7 +896,7 @@ const PricingAvailability = () => {
                                         </button>
                                       </div>
                                     </form>
-                                  </div> */}
+                                  </div>
                                   <div class="dropdown right-filter">
                                     <button
                                       type="button"
@@ -976,32 +910,26 @@ const PricingAvailability = () => {
                                     <form class="dropdown-menu p-3 ">
                                       <div class="mb-3">
                                         <label class="form-label">Format</label>
-                                        <select className="form-select"
-                                        value={selectFormatName}
-                                        onChange={(e)=>{setSelectFormatName(e.target.value)
-                                        }}>
-                                          <option value="">
+                                        <select className="form-select">
+                                          <option selected disabled>
                                             {t(
                                               "supplier.pricing.pricing_list.select_format"
                                             )}
                                           </option>
-                                          <option value="bottle">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.bottle"
                                             )}
                                           </option>
-                                          <option value="can">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.can"
                                             )}
                                           </option>
-                                          <option value="keg">
+                                          <option value="">
                                             {t(
                                               "supplier.pricing.pricing_list.keg"
                                             )}
-                                          </option>
-                                          <option value="cask">
-                                            Cask
                                           </option>
                                         </select>
                                       </div>
@@ -1022,20 +950,16 @@ const PricingAvailability = () => {
 
                                       <div className="d-flex justify-content-end">
                                         <button
-                                          type="button"
+                                          type="submit"
                                           class="btn btn-sm btn-purple width-auto me-2"
-                                          onClick={()=>{applyFilterAvailability()}}
                                         >
                                           {t(
                                             "supplier.pricing.pricing_list.apply"
                                           )}
                                         </button>
                                         <button
-                                          type="button"
+                                          type="reset"
                                           class="btn btn-sm btn-outline-black width-auto"
-                                          onClick={()=>{setSelectFormatName("")
-                                            setReload(!reload)
-                                          }}
                                         >
                                           {t(
                                             "supplier.pricing.pricing_list.reset"

@@ -31,7 +31,6 @@ import EditDistributorGeneralInfo from "../Superadmin/components/Distributor-Man
 import EditDistributorAddress from "../Superadmin/components/Distributor-Management/ViewEditAddress";
 import EditRetailer from "../Superadmin/components/Retailer-Management/EditRetailer";
 import EditRetailerAddress from "../Superadmin/components/Retailer-Management/EditRetailerAddress";
-import ChangePassword from "../Superadmin/components/Profile/ChangePassword";
 
 // Retailer Imports
 import RetailerLogin from "../CommonComponents/Login/login";
@@ -88,6 +87,8 @@ import SupplierRetailerDetail from "../Supplier/components/Retailer-Management/r
 
 // Reports import
 import SupplierReports from "../Supplier/components/Reports/reports";
+// Invoice
+import SupplierInvoice from "../Supplier/components/Invoice/invoice";
 
 import SupplierLogin from "../CommonComponents/Login/login";
 import SupplierForgotPassword from "../Supplier/components/Login/forgotpass";
@@ -199,7 +200,7 @@ const Router = () => {
     en: t("router.adminLogin"),
     fr: t("router.adminLogin"),
 
-    
+
   };
   const admindash={
 en:t("router.admindashboard"),
@@ -257,20 +258,6 @@ en:t("router.admindashboard"),
             </Protected>
           }
         />
-        {/* Admin Additinal routes */}
-
-        <Route
-          exact
-          path="/admin/change-password"
-          // path={admindash[currentLanguage]}
-          element={
-            <Protected>
-              <ChangePassword />
-            </Protected>
-          }
-        />
-
-
         <Route
           exact
           path="/supplier-management"
@@ -623,7 +610,7 @@ en:t("router.admindashboard"),
             </Protected>
           }
         />
-        
+
         <Route
           exact
           path="/retailer/marketplace/product-details"
@@ -1077,6 +1064,15 @@ en:t("router.admindashboard"),
           element={
             <Protected>
               <SupplierReports />
+            </Protected>
+          }
+        />
+        <Route
+          exact
+          path="/supplier/invoice"
+          element={
+            <Protected>
+              <SupplierInvoice />
             </Protected>
           }
         />

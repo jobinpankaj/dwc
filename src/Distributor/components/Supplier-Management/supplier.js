@@ -9,7 +9,6 @@ import Header from "../../../CommonComponents/Header/header";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 toast.configure();
 
@@ -328,9 +327,9 @@ const Supplier = () => {
                                   return (
                                     <tr key={ele.id}>
                                       <td>
-                                        {!ele?.full_name || ele?.full_name == ""
+                                        {!ele?.user_profile?.company_name || ele?.user_profile?.company_name == ""
                                           ? "N/A"
-                                          : ele?.full_name}
+                                          : ele?.user_profile?.company_name}
                                       </td>
 
                                       <td>

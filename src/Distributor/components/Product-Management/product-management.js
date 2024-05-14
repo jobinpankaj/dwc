@@ -9,7 +9,6 @@ import {
   tablePaginationClasses as classes,
 } from "@mui/base/TablePagination";
 import "../../assets/scss/dashboard.scss";
-import "../../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import { Oval } from "react-loader-spinner";
 import { toast } from "react-toastify";
@@ -68,7 +67,6 @@ const ProductManagement = () => {
   const [hideFilter, setHideFilter] = useState("");
 
   const [showSidebar, setShowSidebar] = useState(false);
-  const [reload,setReload]=useState(false)
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -98,7 +96,7 @@ const ProductManagement = () => {
         setLoading(false);
       }
       });
-  }, [token,reload]);
+  }, [token]);
   useEffect(() => {
     if (hasPermission(SUPPLIER_VIEW)) {
       setLoading(true);
@@ -299,8 +297,7 @@ const ProductManagement = () => {
                                   <div className="d-flex justify-content-end">
                                     <button
                                       type="submit"
-                                      onClick={(e) => filteredProduct(e)
-                                      }
+                                      onClick={(e) => filteredProduct(e)}
                                       class="btn btn-purple  btn-sm me-2"
                                     >
                                       {t(
@@ -309,8 +306,7 @@ const ProductManagement = () => {
                                     </button>
                                     <button
                                       type="reset"
-                                      onClick={() => {handleSupplierDropdown(0)
-                                        setReload(!reload)}}
+                                      onClick={() => handleSupplierDropdown(0)}
                                       class="btn btn-sm btn-outline-black width-auto"
                                     >
                                       {t(
