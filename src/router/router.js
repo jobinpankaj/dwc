@@ -64,6 +64,10 @@ import RetailerCompleteBillingAdd from "../Retailer/components/Login/AddCompanyB
 import RetailerChangePassword from "../Retailer/components/Profile/ChangePassword";
 import RetailerOrderDetail from "../Retailer/components/Order-Management/order-detail";
 import RetailerReports from "../Retailer/components/Reports/reports";
+import RetailerInvoice from "../Retailer/components/Invoice/invoice";
+import RetailerInvoiceList from "../Retailer/components/Invoice/invoice_list";
+import RetailerCreateInvoice from "../Retailer/components/Invoice/new_invoice";
+
 import RetailerAddUsersRoles from "../Retailer/components/users-roles/add-users-roles";
 import AddRoleRetailer from "../Retailer/components/users-roles/add-role";
 // import RetailerUsersRoles from "../Retailer/components/users-roles/users-roles-management";
@@ -89,6 +93,8 @@ import SupplierRetailerDetail from "../Supplier/components/Retailer-Management/r
 import SupplierReports from "../Supplier/components/Reports/reports";
 // Invoice
 import SupplierInvoice from "../Supplier/components/Invoice/invoice";
+import SupplierInvoiceList from "../Supplier/components/Invoice/invoice_list";
+import SupplierCreateInvoice from "../Supplier/components/Invoice/new_invoice";
 
 import SupplierLogin from "../CommonComponents/Login/login";
 import SupplierForgotPassword from "../Supplier/components/Login/forgotpass";
@@ -146,7 +152,9 @@ import DistributorCompleteBillingAdd from "../Distributor/components/Login/AddCo
 // import UserRollsManagment from "../Distributor/components/User-Rolls-Managment/userrolls-management";
 // import AddUserRoll from "../Distributor/components/User-Rolls-Managment/add-user";
 import Reports from "../Distributor/components/Reports/reports";
-
+import DistributorInvoice from "../Distributor/components/Invoice/invoice";
+import DistributorInvoiceList from "../Distributor/components/Invoice/invoice_list";
+import DistributorCreateInvoice from "../Distributor/components/Invoice/new_invoice";
 import DistributorUsersRoles from "../Distributor/components/User-Rolls-Managment/userrolls-management";
 import DistributorAddUsersRoles from "../Distributor/components/User-Rolls-Managment/add-users-roles";
 import DistributorAddRole from "../Distributor/components/User-Rolls-Managment/add-role";
@@ -190,8 +198,6 @@ import { useTranslation } from "react-i18next";
 import DeliveryMeainFest from "../LandingPage/DeliveryMainFest";
 import DistributorTransferDetail from "../Distributor/components/Inventory-Management/transfer-detail";
 // import { routePaths } from './routePaths'; // Import the route path mapping
-//Context Api import
-import { XProvider } from "../ContxtApi/HeaderContext";
 
 const Router = () => {
   // const { t } = useTranslation();
@@ -211,13 +217,12 @@ en:t("router.admindashboard"),
 
   return (
     <main>
-      <XProvider>
       <Routes>
         {/* Superadmin Routes */}
         <Route
           exact
-          // path={routePaths[currentLanguage]}
-           path="/admin/login"
+          path={routePaths[currentLanguage]}
+           //path="/admin/login"
           element={
             <Protected>
               <Login />
@@ -733,7 +738,25 @@ en:t("router.admindashboard"),
               <RetailerReports />
             </Protected>
           }
-        />
+                  />
+          <Route
+            exact
+            path="/retailer/invoice"
+            element={
+              <Protected>
+                <RetailerInvoice />
+              </Protected>
+            }
+          />
+          <Route
+            exact
+            path="/retailer/invoice_list"
+            element={
+              <Protected>
+<RetailerInvoiceList />
+</Protected>
+}
+/>
         {/* <Route
           exact
           path="/retailer/user-role"
@@ -1081,6 +1104,24 @@ en:t("router.admindashboard"),
         />
         <Route
           exact
+          path="/supplier/invoice_list"
+          element={
+            <Protected>
+        <SupplierInvoiceList />
+        </Protected>
+      }
+    />
+    <Route
+      exact
+      path="/supplier/create_invoice"
+      element={
+        <Protected>
+    <SupplierCreateInvoice />
+    </Protected>
+  }
+/>
+        <Route
+          exact
           path="/supplier/user-role-management"
           element={
             <Protected>
@@ -1406,6 +1447,33 @@ en:t("router.admindashboard"),
         />
         <Route
           exact
+          path="/distributor/invoice"
+          element={
+            <Protected>
+        <DistributorInvoice />
+        </Protected>
+      }
+    />
+    <Route
+      exact
+      path="/distributor/invoice_list"
+      element={
+        <Protected>
+    <DistributorInvoiceList />
+    </Protected>
+  }
+/>
+<Route
+  exact
+  path="/distributor/create_invoice"
+  element={
+    <Protected>
+<DistributorCreateInvoice />
+</Protected>
+}
+/>
+        <Route
+          exact
           path="/distributor/user-role"
           element={
             <Protected>
@@ -1668,7 +1736,6 @@ en:t("router.admindashboard"),
           }
         />{" "}
       </Routes>
-      </XProvider>
     </main>
   );
 };
