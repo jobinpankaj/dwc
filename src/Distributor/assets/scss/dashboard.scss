@@ -962,16 +962,123 @@ table {
 }
 // invoice
 .row-card1{
-  background-color: #56e37c;
+  background-color: #66d9e8;
   color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
 }
 .row-card2{
-  background-color: #484de8;
+  background-color: #00bfff;
   color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
 }
 .row-card3{
-  background-color: #e88d48;
+  background-color: #009acd;
   color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+  height: 3em;
+}
+}
+.row-card4{
+  background-color: #4c6ef5;
+  color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
+}
+.row-card5{
+  background-color: #4c566a;
+  color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
+}
+.row-card6{
+  background-color: #868e96;
+  color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
+}
+.row-card7{
+  background-color: #ffb300;
+  color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
+}
+.row-card8{
+  background-color: #ff7256;
+  color: #fff;
+  padding:5px 10px;
+  p {
+  margin-top: 9px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+  .svg-inline--fa {
+  display: var(--fa-display,inline-block);
+height: 3em;
+}
+}
+.row-card8:hover,.row-card7:hover,.row-card6:hover,.row-card5:hover {opacity: .75}
+.float-left{ float:left;}
+.float-right{float:right;}
+.button-invoice{
+font-size:14px;
+float: right;
 }
 .productInfo {
   width: 100%;
@@ -1231,8 +1338,3 @@ table {
   background-color: #9370DB;
   border-radius: 5px;
 }
-.uploadBtn img{
-  width: 20px;
-  height: 16px;
-}
-
