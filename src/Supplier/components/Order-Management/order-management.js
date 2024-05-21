@@ -14,6 +14,7 @@
 // import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 // import Header from "../../../CommonComponents/Header/header";
 // import "../../assets/scss/dashboard.scss";
+// import "../../../assets/scss/dashboard.scss";
 // import { NavLink } from "react-router-dom";
 // import useAuthInterceptor from "../../../utils/apis";
 // import { toast } from "react-toastify";
@@ -61,10 +62,11 @@
 //   const apis = useAuthInterceptor();
 //   const { t, i18n } = useTranslation();
 //   const token = localStorage.getItem("supplier_accessToken");
-//   const [orderList, setOrderList] = useState("");
+//   const [orderList, setOrderList] = useState([]);
 //   const [targetId, setTargetId] = useState([]);
 //   const [show, setShow] = useState(false);
 //   const [selectedStatus, setSelectedStatus] = useState("");
+//   const [ordersStatusCount, setOrdersStatusCount] = useState({});
 //   const [statusError, setStatusError] = useState("");
 //   const [startDate, setStartDate] = useState(new Date());
 //   const [dateError, setDateError] = useState("");
@@ -72,9 +74,120 @@
 //   const [rowsPerPage, setRowsPerPage] = useState(10);
 //   const [update, setUpdate] = useState(false);
 //   const [loading, setLoading] = useState(true);
+//   const [search, setSearch] = useState("");
+//   const [selectedSupplier, setSelectedSupplier] = useState("");
 //   const [retailerList, setRetailerList] = useState("");
-//   const [fullNameRetailerList, setFullNameRetailerList] = useState([]);
-//   const [hideFilter, setHideFilter] = useState("");
+//   const [searchRetailer, setSearchRetailer] = useState("");
+//   const [nameList, setNameList] = useState("");
+//   const [retailerId, setReatilerId] = useState(0);
+//   const [dropdownShow, setDropdownShow] = useState(false);
+//   const [render, setRender] = useState(false);
+//   const [distributorsList, setDistributorsList] = useState("");
+
+//   const [fromDate, setFromDate] = useState("");
+//   const [toDate, setToDate] = useState("");
+//   const [selectedDistributor, setSelectedDistributor] = useState("");
+//   const [selectedRetailer, setSelectedRetailer] = useState("");
+
+//   const [searchRetailerFilter, setSearchRetailerFilter] = useState("");
+//   const [distinctRetailerInfoArray, setDistinctRetailerInfoArray] = useState(
+//     []
+//   );
+//   const [distinctList, setDistinctList] = useState([]);
+//   const [dropdownShowRetailer, setDropdownShowRetailer] = useState(false);
+//   const [searchDistributor, setSearchDistributor] = useState("");
+//   const [dropdownDistributor, setDropdownDistributor] = useState(false);
+//   const [distinctDistributorList, setDistinctDistributorList] = useState([]);
+//   const [distinctArrayDist, SetDistinctArrayDist] = useState([]);
+//   const [count, setCount] = useState(0);
+//   const [allOrderList, setAllOrderList] = useState([])
+//   const [searching, setSearching] = useState("")
+
+//   const [rFilterSearchDistributor, SetrFilterSearchDistributor] = useState("")
+//   const [distDropDown, setDistDropDown] = useState(false)
+//   const [rDistId, setRDistId] = useState("")
+//   const [filterDistributorList, setFilterDistributorList] = useState([])
+//   const [statusValue, setstatusValue] = useState("")
+//   const [reload, setReload] = useState(false)
+
+//   // New changes
+//   useEffect(() => {
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         permission: "retailer-view",
+//       },
+//     };
+
+//     // let paramObj = {};
+
+//     // if (search !== "") {
+//     //   paramObj["search"] = search;
+//     // }
+
+//     // if (selectedRetailer !== "") {
+//     //   paramObj["filter_user_id"] = selectedRetailer;
+//     // }
+
+//     // config["params"] = paramObj;
+
+//     apis
+//       .get("/supplier/retailerList", config)
+//       .then((res) => {
+//         setLoading(false);
+//         if (res.data.success === true) {
+//           setRetailerList(res.data.data);
+//           console.log("Retailer", res.data.data);
+//           if (render == false) {
+//             setNameList(res.data.data);
+//             setRender(true);
+//           }
+//         } else {
+//           toast.error("Something went wrong. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         setLoading(false);
+//         if (error.message !== "revoke") {
+//           toast.error("Something went wrong. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       });
+//   }, [nameList]);
+//   const handleRetailerSearch = (e) => {
+//     setReatilerId(0);
+//     // setInvitationStatus(false)
+//     // setDropdownShow(false)
+//     setSearchRetailer(e);
+
+//     const matchingStrings = retailerList.filter((str) => {
+//       const fullNameMatch = str.full_name
+//         .toLowerCase()
+//         .includes(e.toLowerCase());
+//       const addressMatch =
+//         str.user_main_address &&
+//         str.user_main_address.address_1 &&
+//         str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+//       return fullNameMatch || addressMatch;
+//     });
+
+//     setNameList(matchingStrings);
+//     console.log(matchingStrings, "dada");
+//     setDropdownShow(true);
+//   };
+//   const handleRetailerDropdown = (full_name, id) => {
+//     setSearchRetailer(full_name);
+//     // setInvitationStatus(true)
+//     setReatilerId(id);
+//     // setShowNote(true);
+//     setDropdownShow(false);
+//     // setShowNote(true);
+//   };
 
 //   const handleChangePage = (event, newPage) => {
 //     setPage(newPage);
@@ -84,6 +197,11 @@
 //     setRowsPerPage(parseInt(event.target.value, 10));
 //     setPage(0);
 //   };
+//   const sigma = "\u03A3";
+
+//   function MyComponent() {
+//     return <div>{sigma}</div>;
+//   }
 
 //   const handleOrderSelect = (e) => {
 //     if (e.target.checked) {
@@ -160,6 +278,45 @@
 //   };
 
 //   useEffect(() => {
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         Projectlanguageid: 1,
+//       },
+//     };
+
+//     apis
+//       .get("/getAllDistributors", config)
+//       .then((res) => {
+//         if (res.data.success === true) {
+//           let newData = [];
+//           // console.log("new dist",res.data.data)
+//           for (let i = 0; i < res.data.data.length; i++) {
+//             if (res.data.data[i].comapany_name) {
+//               newData.push(res.data.data[i]);
+//             }
+//           }
+//           console.log("Distributor data", newData);
+//           setDistributorsList(newData);
+//           setFilterDistributorList(newData)
+//         } else {
+//           toast.error(
+//             "Could not fetch distributors list. Please try again later.",
+//             { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+//           );
+//         }
+//       })
+//       .catch((error) => {
+//         if (error.message !== "revoke") {
+//           toast.error(
+//             "Could not fetch distributors list. Please try again later.",
+//             { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+//           );
+//         }
+//       });
+//   }, []);
+
+//   useEffect(() => {
 //     if (hasPermission(ORDER_VIEW)) {
 //       const config = {
 //         headers: {
@@ -168,12 +325,25 @@
 //         },
 //       };
 
+//       let paramObj = {};
+
+//       if (search !== "") {
+//         paramObj["search"] = search;
+//       }
+
+//       if (selectedSupplier !== "") {
+//         paramObj["filter_user_id"] = selectedSupplier;
+//       }
+
+//       config["params"] = paramObj;
+
 //       apis
 //         .get("/supplier/orders", config)
 //         .then((res) => {
 //           setLoading(false);
 //           if (res.data.success === true) {
 //             setOrderList(res.data.data);
+//             setAllOrderList(res.data.data) // In useffect ("/supplier/orders")
 //           } else {
 //             toast.error("Could not fetch order list. Please try again later.", {
 //               autoClose: 3000,
@@ -190,8 +360,37 @@
 //             });
 //           }
 //         });
+
+//       apis
+//         .get("/supplier/ordersStatusCount", config)
+//         .then((res) => {
+//           setLoading(false);
+//           if (res.data.success === true) {
+//             setOrdersStatusCount(res.data.data);
+//           } else {
+//             toast.error(
+//               "Could not fetch order status count. Please try again later.",
+//               {
+//                 autoClose: 3000,
+//                 position: toast.POSITION.TOP_CENTER,
+//               }
+//             );
+//           }
+//         })
+//         .catch((error) => {
+//           setLoading(false);
+//           if (error.message !== "revoke") {
+//             toast.error(
+//               "Could not fetch order status count. Please try again later.",
+//               {
+//                 autoClose: 3000,
+//                 position: toast.POSITION.TOP_CENTER,
+//               }
+//             );
+//           }
+//         });
 //     }
-//   }, [update]);
+//   }, [search, update, reload]);
 
 //   let data;
 //   if (rowsPerPage > 0) {
@@ -203,59 +402,309 @@
 //     data = orderList;
 //   }
 
-//   // const handleResetFilter = () => {
-//   //   setSelectedRetailer("");
-//   //   setUpdateList(!updateList);
-//   // };
+//   useEffect(() => {
+//     // Perform the count calculation when data changes
+//     if (orderList && orderList.length > 0) {
+//       let newCount = 0;
+//       orderList.forEach((ele) => {
+//         if (ele.status === 'Unpaid') {
+//           const createdDate = new Date(ele.created_at);
+//           const currentDate = new Date();
+//           const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
+//           if (monthDiff >= 2) {
+//             newCount++; // Increment newCount if conditions are met
+//           }
+//         }
+//       });
+//       setCount(newCount); // Update count state variable
+//     }
+//   }, [orderList]);
 
-//   // useEffect(() => {
-//   //   const config = {
-//   //     headers: {
-//   //       Authorization: `Bearer ${token}`,
-//   //       permission: "retailer-view",
-//   //     },
-//   //   };
-//   //   let paramObj = {};
 
-//   //   if (search !== "") {
-//   //     paramObj["search"] = search;
-//   //   }
+//   const submit1 = (createdDate) => {
+//     const timediifMili = startDate - new Date(createdDate);
+//     const secDiff = Math.floor(timediifMili / 1000);
+//     const minDiff = Math.floor(timediifMili / (1000 * 60));
+//     const hourDiff = Math.floor(timediifMili / (1000 * 60 * 60));
+//     const dayDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24));
+//     const monthDiff = Math.floor(timediifMili / (1000 * 60 * 60 * 24 * 30));
+//     const yearDiff = Math.floor(
+//       timediifMili / (1000 * 60 * 60 * 24 * 30 * 365)
+//     );
+//     let result = "";
+//     if (secDiff > 0 && secDiff < 60) {
+//       result = `${secDiff} sec ago`;
+//     }
+//     if (minDiff > 0 && minDiff < 60) {
+//       result = `${minDiff} minute ago`;
+//     }
+//     if (hourDiff > 0 && hourDiff < 24) {
+//       result = `${hourDiff} hour ago`;
+//     }
+//     if (dayDiff > 0 && dayDiff < 30) {
+//       result = `${dayDiff} ${dayDiff > 1
+//         ? t("supplier.retailer_request.days_ago")
+//         : t("supplier.retailer_request.day_ago")
+//         }`;
+//     }
+//     if (monthDiff > 0 && monthDiff < 12) {
+//       result = `${monthDiff} ${monthDiff > 1
+//         ? t("supplier.retailer_request.months_ago")
+//         : t("supplier.retailer_request.month_ago")
+//         }`;
+//     }
+//     if (yearDiff > 0) {
+//       result = `${yearDiff} ${yearDiff > 1
+//         ? t("supplier.retailer_request.years_ago")
+//         : t("supplier.retailer_request.year_ago")
+//         }`;
+//     }
+//     return result;
+//   };
 
-//   //   if (selectedRetailer !== "") {
-//   //     paramObj["filter_user_id"] = selectedRetailer;
-//   //   }
+//   const handleDistributorSearch = (e) => {
+//     setSelectedDistributor("");
+//     setSearchDistributor(e);
+//     const matchingStrings = distinctArrayDist.filter((x) => {
+//       return x?.user_profile?.company_name
+//         .toLowerCase()
+//         .includes(e.toLowerCase());
+//     });
+//     setDistinctDistributorList(matchingStrings);
+//   };
+//   const handleDistributorDropdown = (company_name, id) => {
+//     setSelectedDistributor(id);
+//     setSearchDistributor(company_name);
+//     setDropdownDistributor(false);
+//   };
 
-//   //   config["params"] = paramObj;
+//   const handleRetailerFilterSearch = (e) => {
+//     setSelectedRetailer("");
+//     setSearchRetailerFilter(e);
+//     const matchingStrings = distinctRetailerInfoArray.filter((str) => {
+//       const fullNameMatch = str?.full_name
+//         .toLowerCase()
+//         .includes(e.toLowerCase());
+//       const addressMatch =
+//         str?.user_main_address &&
+//         str?.user_main_address.address_1 &&
+//         str?.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+//       const businessMatch =
+//         str?.user_profile &&
+//         str?.user_profile.business_name &&
+//         str?.user_profile.business_name.toLowerCase().includes(e.toLowerCase());
+//       const groupMatch =
+//         str?.user_profile &&
+//         str?.user_profile.group_name &&
+//         str?.user_profile.group_name.toLowerCase().includes(e.toLowerCase());
+//       return fullNameMatch || addressMatch || businessMatch || groupMatch;
+//     });
 
-//   //   apis
-//   //     .get("/supplier/retailerList", config)
-//   //     .then((res) => {
-//   //       setLoading(false);
-//   //       if (res.data.success === true) {
-//   //         setRetailerList(res.data.data);
-//   //         console.log("Textttttt", res.data.data);
-//   //         const p = res.data.data.map((obj) => {
-//   //           return { id: obj.id, full_name: obj.full_name };
-//   //         });
-//   //         setFullNameRetailerList(p);
-//   //         setHideFilter("");
-//   //       } else {
-//   //         toast.error("Something went wrong. Please try again later.", {
-//   //           autoClose: 3000,
-//   //           position: toast.POSITION.TOP_CENTER,
-//   //         });
-//   //       }
-//   //     })
-//   //     .catch((error) => {
-//   //       setLoading(false);
-//   //       if (error.message !== "revoke") {
-//   //         toast.error("Something went wrong. Please try again later.", {
-//   //           autoClose: 3000,
-//   //           position: toast.POSITION.TOP_CENTER,
-//   //         });
-//   //       }
-//   //     });
-//   // }, [search, updateList]);
+//     setDistinctList(matchingStrings);
+//   };
+//   const handleRetailerFilterDropdown = (full_name, id) => {
+//     setSearchRetailerFilter(full_name);
+//     setSelectedRetailer(id);
+//     setDropdownShowRetailer(false);
+//   };
+//   useEffect(() => {
+//     // console.log("AAAData", orderList)
+//     const uniqueRetailerIds = new Set();
+//     const uniqueRetailerInfoArray = [];
+
+//     orderList.forEach((x) => {
+//       if (!uniqueRetailerIds.has(x.retailer_information?.id)) {
+//         uniqueRetailerIds.add(x.retailer_information?.id);
+//         uniqueRetailerInfoArray.push(x?.retailer_information);
+//       }
+//     });
+//     setDistinctRetailerInfoArray(uniqueRetailerInfoArray);
+//     setDistinctList(uniqueRetailerInfoArray);
+//     const uniqueDistributorIds = new Set();
+//     const uniqueDistributorArray = [];
+
+//     // Loop through orderList
+//     orderList.forEach((x) => {
+//       x.order_distributors.forEach((distributor) => {
+//         if (!uniqueDistributorIds.has(distributor?.distributor_info?.id)) {
+//           uniqueDistributorIds.add(distributor?.distributor_info?.id);
+//           uniqueDistributorArray.push(distributor?.distributor_info);
+//         }
+//       });
+//     });
+//     setDistinctDistributorList(uniqueDistributorArray);
+//     SetDistinctArrayDist(uniqueDistributorArray);
+//   }, [orderList]);
+
+//   useEffect(() => {
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         permission: `order-view`,
+//       },
+//     };
+
+//     apis
+//       .get(
+//         `/supplier/orders?distributor_id=${selectedDistributor}&retailer_id=${selectedRetailer}&to_date=${toDate}&from_date=${fromDate}`,
+//         config
+//       )
+//       .then((res) => {
+//         setLoading(false);
+//         if (res.data.success === true) {
+//           setOrderList(res.data.data);
+//         } else {
+//           toast.error("Could not fetch order list. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         setLoading(false);
+//         if (error.message !== "revoke") {
+//           toast.error("Could not fetch order list. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       });
+//   }, [selectedDistributor, selectedRetailer, toDate, fromDate]);
+
+//   const totalPrice = (arr) => {
+//     let total = 0;
+//     total = arr.reduce((accumulator, currentValue) => {
+//       const currentValueTotal =
+//         currentValue?.product?.pricing?.price * currentValue?.quantity || 0;
+//       return accumulator + currentValueTotal;
+//     }, 0);
+//     return total?.toFixed(2);
+//   };
+
+//   const handlePayment = (e) => {
+//     const order_id = e;
+//     const status = "6"
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         permission: "order-edit",
+//       },
+//     };
+//     const bodyData = {
+//       order_id: order_id,
+//       action: status,
+//     };
+
+//     setShow(false);
+//     apis
+//       .post("/supplier/order/status/update", bodyData, config)
+//       .then((res) => {
+//         if (res.data.success === true) {
+//           setTargetId([]);
+//           setUpdate(!update);
+//           toast.success("Status updated for selected orders.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         } else {
+//           toast.error("Could not update status. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         if (error.message !== "revoke") {
+//           toast.error("Could not update status. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       });
+//     console.log("-----------------------payment working");
+//   };
+//   // ---search--event------
+//   const handleSearchChange = (e) => {
+//     const searchKey = e.target.value;
+//     setSearching(searchKey);
+//     console.log("dsfa", allOrderList)
+//     const filteredOrder = allOrderList.filter((x) => {
+//       const matchBuisnnesName =
+//         x.retailer_information &&
+//         x.retailer_information.user_profile &&
+//         x.retailer_information.user_profile.business_name &&
+//         x.retailer_information.user_profile.business_name.toLowerCase().includes(searchKey.toLowerCase());
+//       const addressMatching =
+//         x.retailer_information &&
+//         x.retailer_information.user_main_address &&
+//         x.retailer_information.user_main_address.address_1 &&
+//         x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
+
+//       const orderReference =
+//         x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
+
+//       const statusMatching =
+//         x.status.toLowerCase().includes(searchKey.toLowerCase())
+//       return matchBuisnnesName || addressMatching || orderReference || statusMatching
+//     })
+//     console.log("==================================", filteredOrder);
+//     setOrderList(filteredOrder);
+//   };
+
+//   const handleRFilterDistSearch = (e) => {
+//     setRDistId("")
+//     SetrFilterSearchDistributor(e)
+//     const matchingStrings = distributorsList.filter((x) => {
+//       return x.user_profile?.company_name
+//         .toLowerCase()
+//         .includes(e.toLowerCase());
+//     });
+//     setFilterDistributorList(matchingStrings);
+//   }
+
+//   const handleRDistDropdown = (companyName, id) => {
+//     setRDistId(id)
+//     SetrFilterSearchDistributor(companyName)
+//   }
+
+//   const applyRightFilter = () => {
+//     console.log("Showwwwww")
+//     const config = {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         permission: `order-view`,
+//       },
+//     };
+
+//     apis
+//       .get(
+//         `/supplier/orders?distributor_id=${rDistId}&retailer_id=${retailerId}&status=${statusValue}`,
+//         config
+//       )
+//       .then((res) => {
+//         setLoading(false);
+//         if (res.data.success === true) {
+//           setOrderList(res.data.data);
+//         } else {
+//           toast.error("Could not fetch order list. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         setLoading(false);
+//         if (error.message !== "revoke") {
+//           toast.error("Could not fetch order list. Please try again later.", {
+//             autoClose: 3000,
+//             position: toast.POSITION.TOP_CENTER,
+//           });
+//         }
+//       });
+//   }
+
+
+
 
 //   return (
 //     <div className="container-fluid page-wrap order-manage">
@@ -267,7 +716,7 @@
 //           <LoadingOverlay
 //             active={loading}
 //             spinner
-//             className="h-100"
+//             className=""
 //             styles={{
 //               overlay: (base) => ({
 //                 ...base,
@@ -285,54 +734,137 @@
 //                   <div className="filter-row page-top-filter">
 //                     {/* [Page Filter Box] */}
 //                     <div className="filter-box">
-//                       {/* [Date] */}
-//                       <div className="dropdown date-selector">
-//                         <button
-//                           className="btn btn-outline-black btn-sm dropdown-toggle"
-//                           type="button"
-//                           data-bs-toggle="dropdown"
-//                           aria-expanded="false"
-//                         >
-//                           <img src={calendar} alt="" />{" "}
-//                           {t("supplier.order_management.list.select_date")}
-//                         </button>
-//                         <ul className="dropdown-menu">
-//                           <li>
-//                             <a className="dropdown-item" href="#">
-//                               Date
-//                             </a>
-//                           </li>
-//                           <li>
-//                             <a className="dropdown-item" href="#">
-//                               Date
-//                             </a>
-//                           </li>
-//                         </ul>
-//                       </div>
 //                       {/* [/Date] */}
 
-//                       {/* [Supplier] */}
-//                       <div className="dropdown date-selector">
-//                         <button
-//                           className="btn btn-outline-black btn-sm dropdown-toggle"
-//                           type="button"
-//                           data-bs-toggle="dropdown"
-//                           aria-expanded="false"
-//                         >
-//                           {t("supplier.order_management.list.supplier")}
-//                         </button>
-//                         <ul className="dropdown-menu py-0 overflow-hidden">
-//                           <li>
-//                             <a className="dropdown-item" href="#">
-//                               Supplier 1
-//                             </a>
-//                           </li>
-//                           <li>
-//                             <a className="dropdown-item" href="#">
-//                               Supplier 2
-//                             </a>
-//                           </li>
-//                         </ul>
+//                       <div className="dropdown date-selector card-top-filter-box">
+//                         <div className="search-table form-group">
+//                           <button
+//                             className="btn search-input dropdown-toggle"
+//                             type="button"
+//                             data-bs-toggle="dropdown"
+//                             aria-expanded="false"
+//                             style={{ background: "#ffffff", padding: '5px 40px', color: '#757575' }}
+//                           >
+//                             <img src={calendar} alt="" />{" "}
+//                             {t("supplier.order_management.list.select_date")}
+//                           </button>
+//                           <ul
+//                             className="dropdown-menu"
+//                             style={{ padding: "5px 10px" }}
+//                           >
+//                             <form>
+//                               <li>
+//                                 <label>{t("supplier.order_management.list.fromDate")}</label>
+
+//                                 <input
+//                                   type="date"
+//                                   value={fromDate}
+//                                   onChange={(e) => {
+//                                     setFromDate(e.target.value);
+//                                   }}
+//                                 />
+//                               </li>
+//                               <li>
+//                                 <label>{t("supplier.order_management.list.toDate")}</label>
+//                                 <input
+//                                   type="date"
+//                                   value={toDate}
+//                                   onChange={(e) => {
+//                                     setToDate(e.target.value);
+//                                   }}
+//                                 />
+//                               </li>
+//                             </form>
+//                           </ul>
+//                         </div>
+//                       </div>
+//                       <div className="dropdown date-selector card-top-filter-box">
+//                         <div className="search-table form-group">
+//                           <input
+//                             type="text"
+//                             className="search-input"
+//                             value={searchRetailerFilter}
+//                             placeholder={t("supplier.order_management.list.searchRetailer")}
+//                             onFocus={() => {
+//                               setDropdownShowRetailer(true);
+//                             }}
+//                             onBlur={() => {
+//                               setTimeout(() => {
+//                                 setDropdownShowRetailer(false);
+//                               }, 200);
+//                             }}
+//                             onChange={(e) => {
+//                               handleRetailerFilterSearch(e.target.value);
+//                             }}
+//                           />
+
+//                           {distinctList.length > 0 && (
+//                             <ul
+//                               className={`w-100 searchListBx custom-scrollbar ${dropdownShowRetailer ? "d-block" : "d-none"
+//                                 }`}
+//                             >
+//                               {" "}
+//                               {distinctList.map((s) => (
+//                                 <li
+//                                   className="dropdown-item pe-pointer"
+//                                   key={s?.id}
+//                                   onClick={() =>
+//                                     handleRetailerFilterDropdown(
+//                                       s?.full_name,
+//                                       s?.id
+//                                     )
+//                                   }
+//                                 >
+//                                   {s ? s.full_name ? s.full_name : "N/A" : "N/A"}
+//                                 </li>
+//                               ))}
+//                             </ul>
+//                           )}
+//                         </div>
+//                       </div>
+
+//                       <div className="dropdown date-selector card-top-filter-box">
+//                         <div className="search-table form-group">
+//                           <input
+//                             type="text"
+//                             className="search-input"
+//                             value={searchDistributor}
+//                             placeholder={t("supplier.order_management.list.searchDistributor")}
+//                             onFocus={() => {
+//                               setDropdownDistributor(true);
+//                             }}
+//                             onBlur={() => {
+//                               setTimeout(() => {
+//                                 setDropdownDistributor(false);
+//                               }, 200);
+//                             }}
+//                             onChange={(e) => {
+//                               handleDistributorSearch(e.target.value);
+//                             }}
+//                           />
+//                           {distinctDistributorList.length > 0 && (
+//                             <ul
+//                               className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+//                                 }`}
+//                             >
+//                               {" "}
+//                               {distinctDistributorList.map((s) => (
+//                                 <li
+//                                   className="dropdown-item pe-pointer"
+//                                   key={s?.id}
+//                                   onClick={() =>
+//                                     handleDistributorDropdown(
+//                                       s?.user_profile?.company_name,
+//                                       s?.id
+//                                     )
+//                                   }
+//                                 >
+//                                   {s?.user_profile?.company_name}
+//                                 </li>
+//                               ))}
+//                             </ul>
+//                           )}
+//                         </div>
 //                       </div>
 //                     </div>
 //                     {/* [/Page Filter Box] */}
@@ -353,7 +885,58 @@
 //                       <form class="dropdown-menu p-3 ">
 //                         <div class="mb-3">
 //                           <label class="form-label">Client</label>
-//                           <select className="form-select">
+//                           <div style={{ position: "relative" }}>
+//                             <button
+//                               className="search-btn"
+//                               onClick={(e) => {
+//                                 e.preventDefault();
+//                               }}
+//                             >
+//                               <i className="fa-solid fa-magnifying-glass"></i>
+//                             </button>
+//                             <input
+//                               type="text"
+//                               value={searchRetailer}
+//                               placeholder="Search Retailer"
+//                               onChange={(e) =>
+//                                 handleRetailerSearch(e.target.value)
+//                               }
+//                               onFocus={() => {
+//                                 setDropdownShow(true);
+//                               }}
+//                               onBlur={() => {
+//                                 setTimeout(() => {
+//                                   setDropdownShow(false)
+//                                 }, 250);
+//                               }}
+//                             />
+//                           </div>
+//                           {nameList.length > 0 && (
+//                             <ul
+//                               className={`w-100 searchListBx custom-scrollbar ${dropdownShow ? "d-block" : "d-none"
+//                                 }`}
+//                             >
+//                               {" "}
+//                               {nameList.map((s) => (
+//                                 <li
+//                                   className="dropdown-item pe-pointer"
+//                                   key={s.id}
+//                                   style={{
+//                                     overflow: "hidden",
+//                                     whiteSpace: "nowrap",
+//                                     textOverflow: "ellipsis",
+//                                     cursor: "pointer", // Optionally add cursor pointer for better UX
+//                                   }}
+//                                   onClick={() =>
+//                                     handleRetailerDropdown(s.full_name, s.id)
+//                                   }
+//                                 >
+//                                   {s.full_name}
+//                                 </li>
+//                               ))}
+//                             </ul>
+//                           )}
+//                           {/* <select className="form-select">
 //                             <option selected disabled>
 //                               {t(
 //                                 "supplier.order_management.list.choose_client"
@@ -362,7 +945,7 @@
 //                             <option value="">Client 1</option>
 //                             <option value="">Client 2</option>
 //                             <option value="">Client 3</option>
-//                           </select>
+//                           </select> */}
 //                         </div>
 //                         {/* <div class="mb-3">
 //                           <label class="form-label">Routes</label>
@@ -377,7 +960,7 @@
 //                             <option value="">Route 3</option>
 //                           </select>
 //                         </div> */}
-//                         <div class="mb-3">
+//                         {/* <div class="mb-3">
 //                           <label class="form-label">
 //                             {t("supplier.order_management.list.issues")}{" "}
 //                           </label>
@@ -418,34 +1001,44 @@
 //                               )}{" "}
 //                             </option>
 //                           </select>
-//                         </div>
+//                         </div> */}
 //                         <div class="mb-3">
 //                           <label class="form-label">
 //                             {t("supplier.order_management.list.order_status")}
 //                           </label>
-//                           <select className="form-select">
-//                             <option selected disabled>
+//                           <select className="form-select"
+//                             value={statusValue}
+//                             onChange={(e) => {
+//                               setstatusValue(e.target.value)
+//                             }}>
+//                             <option value="">
 //                               {t(
 //                                 "supplier.order_management.list.choose_status"
 //                               )}
 //                             </option>
-//                             <option value="">
+//                             <option value="1">
 //                               {t("supplier.order_management.list.approved")}{" "}
 //                             </option>
-//                             <option value="">
+//                             <option value="5">
 //                               {t("supplier.order_management.list.cancelled")}{" "}
 //                             </option>
-//                             <option value="">
+//                             <option value="4">
 //                               {t("supplier.order_management.list.delivered")}{" "}
 //                             </option>
-//                             <option value="">
+//                             <option value="2">
 //                               {t("supplier.order_management.list.onhold")}{" "}
 //                             </option>
-//                             <option value="">
+//                             <option value="0">
 //                               {t("supplier.order_management.list.pending")}{" "}
 //                             </option>
-//                             <option value="">
+//                             <option value="3">
 //                               {t("supplier.order_management.list.shipped")}{" "}
+//                             </option>
+//                             <option value="6">
+//                               Paid
+//                             </option>
+//                             <option value="7">
+//                               Unpaid
 //                             </option>
 //                           </select>
 //                         </div>
@@ -453,19 +1046,60 @@
 //                           <label class="form-label">
 //                             {t("supplier.order_management.list.distributor")}{" "}
 //                           </label>
-//                           <select className="form-select">
-//                             <option selected disabled>
-//                               {t(
-//                                 "supplier.order_management.list.choose_distributor"
-//                               )}
-//                             </option>
-//                             <option value="">Distributor 1</option>
-//                             <option value="">Distributor 2</option>
-//                             <option value="">Distributor 3</option>
-//                           </select>
+//                           <div style={{ position: "relative" }}>
+//                             <button
+//                               className="search-btn"
+//                               onClick={(e) => {
+//                                 e.preventDefault();
+//                               }}
+//                             >
+//                               <i className="fa-solid fa-magnifying-glass"></i>
+//                             </button>
+//                             <input
+//                               type="text"
+//                               value={rFilterSearchDistributor}
+//                               placeholder="Search Distributor"
+//                               onChange={(e) =>
+//                                 handleRFilterDistSearch(e.target.value)
+//                               }
+//                               onFocus={() => {
+//                                 setDistDropDown(true);
+//                               }}
+//                               onBlur={() => {
+//                                 setTimeout(() => {
+//                                   setDistDropDown(false)
+//                                 }, 200);
+//                               }}
+//                             />
+//                           </div>
+//                           {filterDistributorList.length > 0 && (
+//                             <ul
+//                               className={`w-100 searchListBx custom-scrollbar ${distDropDown ? "d-block" : "d-none"
+//                                 }`}
+//                             >
+//                               {" "}
+//                               {filterDistributorList.map((s) => (
+//                                 <li
+//                                   className="dropdown-item pe-pointer"
+//                                   key={s.id}
+//                                   style={{
+//                                     overflow: "hidden",
+//                                     whiteSpace: "nowrap",
+//                                     textOverflow: "ellipsis",
+//                                     cursor: "pointer", // Optionally add cursor pointer for better UX
+//                                   }}
+//                                   onClick={() =>
+//                                     handleRDistDropdown(s.user_profile.company_name, s.id)
+//                                   }
+//                                 >
+//                                   {s.user_profile.company_name ? s.user_profile.company_name : "N/A"}
+//                                 </li>
+//                               ))}
+//                             </ul>
+//                           )}
 //                         </div>
 //                         <div class="mb-3">
-//                           <div class="form-check form-check-inline">
+//                           {/* <div class="form-check form-check-inline">
 //                             <input
 //                               class="form-check-input"
 //                               type="checkbox"
@@ -478,8 +1112,8 @@
 //                             >
 //                               {t("supplier.order_management.list.invoiced")}
 //                             </label>
-//                           </div>
-//                           <div class="form-check form-check-inline">
+//                           </div> */}
+//                           {/* <div class="form-check form-check-inline">
 //                             <input
 //                               class="form-check-input"
 //                               type="checkbox"
@@ -492,8 +1126,8 @@
 //                             >
 //                               {t("supplier.order_management.list.expired")}
 //                             </label>
-//                           </div>
-//                           <div class="form-check form-check-inline">
+//                           </div> */}
+//                           {/* <div class="form-check form-check-inline">
 //                             <input
 //                               class="form-check-input"
 //                               type="checkbox"
@@ -506,19 +1140,35 @@
 //                             >
 //                               {t("supplier.order_management.list.paid")}
 //                             </label>
-//                           </div>
+//                           </div> */}
 //                         </div>
 //                         <div className="d-flex justify-content-end">
 //                           <button
-//                             type="submit"
+//                             type="button"
 //                             class="btn btn-purple width-auto me-2"
+//                             onClick={() => { applyRightFilter() }}
 //                           >
 //                             {t("supplier.order_management.list.applied")}
 //                           </button>
 //                           <input
-//                             type="reset"
+//                             type="button"
 //                             class="btn btn-outline-black width-auto"
 //                             value={t("supplier.order_management.list.clear")}
+//                             onClick={() => {
+//                               setstatusValue("")
+//                               setRDistId("")
+//                               SetrFilterSearchDistributor("")
+//                               setReatilerId("");
+//                               setSearchRetailer("");
+//                               // clear the value of others 
+//                               setToDate("")
+//                               setFromDate("")
+//                               setSelectedDistributor("")
+//                               setSelectedRetailer("")
+//                               setSearchRetailerFilter("")
+//                               setSearchDistributor("")
+//                               setReload(!reload)
+//                             }}
 //                           />
 //                         </div>
 //                       </form>
@@ -527,6 +1177,45 @@
 //                   </div>
 //                 </div>
 //               </div>
+//               {/* ------Commandes----- */}
+//               <div className="card user-card my-2 height-100">
+//                 <div className="cmd-data">
+//                   <table>
+//                     <tr>
+//                       <td>
+//                         {sigma}
+//                         <span>{ordersStatusCount.total_order}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-regular fa-clock"></i>
+//                         <span>{ordersStatusCount.pending_order}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-solid fa-check"></i>
+//                         <span>{ordersStatusCount.approved_order}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-solid fa-xmark"></i>
+//                         <span>{ordersStatusCount.cancelled_order}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-solid fa-sack-dollar"></i>
+//                         <span>{ordersStatusCount.paid_total_amount}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-solid fa-sack-dollar cancel"></i>
+//                         <i class="fa-solid fa-ban"></i>
+//                         <span className="count-cnl">{ordersStatusCount.unpaid_total_amount}</span>
+//                       </td>
+//                       <td>
+//                         <i class="fa-solid fa-triangle-exclamation"></i>
+//                         <span>{count}</span>
+//                       </td>
+//                     </tr>
+//                   </table>
+//                 </div>
+//               </div>
+//               {/* ----end----- */}
 
 //               <div className="row">
 //                 <div className="col">
@@ -542,6 +1231,9 @@
 //                                 <input
 //                                   type="text"
 //                                   className="search-input"
+//                                   placeholder="Search by Business name"
+//                                   value={searching}
+//                                   onChange={(e) => handleSearchChange(e)}
 //                                 ></input>
 //                               </div>
 //                             </div>
@@ -584,7 +1276,9 @@
 //                                   }}
 //                                   onClick={() => setShow(true)}
 //                                 >
-//                                   Change Status
+//                                   {t(
+//                                     "supplier.order_management.list.Change_Status"
+//                                   )}
 //                                 </button>
 //                                 {hasPermission(ORDER_EDIT) && (
 //                                   <NavLink
@@ -649,6 +1343,10 @@
 //                                     )}
 //                                   </th>
 //                                   <th></th>
+//                                   <th></th>
+//                                   <th></th>
+//                                   <th></th>
+//                                   <th></th>
 //                                 </tr>
 //                               </thead>
 //                               <tbody>
@@ -668,11 +1366,31 @@
 //                                           />{" "}
 //                                         </td>
 //                                         <td>{ele.order_reference}</td>
-//                                         <td>{ele.order_date}</td>
 //                                         <td>
-//                                           {ele.retailer_information.user_profile ? ele.retailer_information.user_profile.business_name ? ele.retailer_information.user_profile.business_name : "N/A" : "N/A"}
+//                                           {ele.order_date}
+//                                           <br></br>
+//                                           <span style={{ color: "red" }}>
+//                                             {submit1(ele.created_at)}
+//                                           </span>
 //                                         </td>
-//                                         <td>TBD</td>
+//                                         <td>
+//                                           {ele.retailer_information ? ele.retailer_information.user_profile
+//                                             ? ele.retailer_information
+//                                               .user_profile.business_name
+//                                               ? ele.retailer_information
+//                                                 .user_profile.business_name
+//                                               : "N/A"
+//                                             : "N/A" : "N/A"}
+//                                         </td>
+//                                         <td>
+//                                           {ele.retailer_information ? ele.retailer_information.user_profile
+//                                             ? ele.retailer_information
+//                                               .user_profile.group_name
+//                                               ? ele.retailer_information
+//                                                 .user_profile.group_name
+//                                               : "N/A"
+//                                             : "N/A" : "N/A"}
+//                                         </td>
 //                                         <td>
 //                                           {ele.status === "Approved" ? (
 //                                             <span className="badge text-bg-green">
@@ -687,22 +1405,135 @@
 //                                             <span className="badge text-bg-red">
 //                                               {ele.status}
 //                                             </span>
-//                                           ) : (
-//                                             "TBD"
+//                                           ) : ele.status === "Delivered" ||
+//                                             ele.status === "Shipped" ? (
+//                                             <span className="badge text-bg-blue">
+//                                               {ele.status}
+//                                             </span>
+//                                           ) : ele.status === "Paid" ? (
+//                                             <span className="badge text-bg-purple" style={{ color: '#79018c ', padding: '5px' }}>
+//                                               {ele.status}
+//                                             </span>
+//                                           ) : ele.status === "Unpaid" ? (
+//                                             <span className="badge text-bg-purple" style={{ color: '#79018c ', padding: '5px' }}>
+//                                               {ele.status}
+//                                             </span>
+//                                           )
+//                                             : "tbd"
+//                                           }
+//                                         </td>
+
+//                                         <td>
+//                                           {ele?.items.reduce(
+//                                             (acc, item) => acc + item?.quantity,
+//                                             0
 //                                           )}
 //                                         </td>
-//                                         <td>TBD</td>
-//                                         <td>TBD</td>
+//                                         <td>{totalPrice(ele?.items)}</td>
 //                                         <td>
-//                                           {ele.order_distributors[0] &&
-//                                           ele.order_distributors[0]
-//                                             .distributor_info.user_profile
-//                                             .company_name
-//                                             ? ele.order_distributors[0]
-//                                                 .distributor_info.user_profile
-//                                                 .company_name
-//                                             : "N/A"}
+//                                           {ele?.order_distributors[0] &&
+//                                             ele?.order_distributors[0]
+//                                               ?.distributor_info?.user_profile
+//                                               ?.company_name
+//                                             ? ele?.order_distributors[0]
+//                                               ?.distributor_info?.user_profile
+//                                               ?.company_name
+//                                             : ele?.order_distributors[0]?.other_distributor == 1 ? "Other" : "N/A"}
 //                                         </td>
+
+//                                         <td
+//                                           align="center"
+//                                           style={{
+//                                             width: "100px",
+//                                             maxWidth: "100px",
+//                                             overflow: "hidden",
+//                                           }}
+//                                         >
+//                                           <i
+//                                             className="fa-solid fa-check"
+//                                             style={{
+//                                               color:
+//                                                 ele.status === "Approved"
+//                                                   ? "#27C26C"
+//                                                   : ele.status === "Pending"
+//                                                     ? "#000"
+//                                                     : ele.status === "Cancelled"
+//                                                       ? "red"
+//                                                       : ele.status === "Delivered"
+//                                                         ? "#27C26C"
+//                                                         : ele.status === "Shipped"
+//                                                           ? "#27C26C"
+//                                                           : ele.status === "Paid"
+//                                                             ? "#27C26C"
+//                                                             : undefined, // No default color
+//                                             }}
+//                                           ></i>
+//                                         </td>
+
+//                                         <td
+//                                           align="center"
+//                                           style={{ width: "100px" }}
+//                                         >
+//                                           <i
+//                                             className="fa-solid fa-truck-fast"
+//                                             style={{
+//                                               color:
+//                                                 ele.status === "Shipped"
+//                                                   ? "red"
+//                                                   : ele.status === "Delivered"
+//                                                     ? "#27C26C"
+//                                                     : ele.status === "Paid"
+//                                                       ? "#27C26C"
+//                                                       : undefined, // No default color
+//                                             }}
+//                                           ></i>
+//                                         </td>
+//                                         <td
+//                                           align="center"
+//                                           style={{ width: "100px" }}
+//                                         >
+//                                           <i
+//                                             class="fa-solid fa-shop"
+//                                             style={{
+//                                               color:
+//                                                 ele.status === "Delivered"
+//                                                   ? "#27C26C"
+//                                                   : ele.status === "Paid"
+//                                                     ? "#27C26C"
+//                                                     : undefined, // No default color
+//                                             }}
+//                                           ></i>
+//                                         </td>
+//                                         <td
+//                                           align="center"
+//                                           style={{ width: "100px" }}
+//                                         >
+//                                           <span
+//                                             onClick={() => {
+//                                               if (ele.status === "Delivered") {
+//                                                 handlePayment(ele.id);
+//                                               }
+//                                               else {
+//                                                 toast.error("Could not update status before Delivery.", {
+//                                                   autoClose: 3000,
+//                                                   position: toast.POSITION.TOP_CENTER,
+//                                                 });
+//                                               }
+//                                             }}
+//                                           >
+//                                             <i
+//                                               class="fa-solid fa-sack-dollar"
+//                                               style={{
+//                                                 cursor: "pointer", color:
+//                                                   ele.status === "Paid"
+//                                                     ? "#27C26C"
+//                                                     : undefined,
+//                                               }}
+//                                             ></i>
+//                                           </span>
+//                                         </td>
+
+//                                         {/* -------------- */}
 //                                         <td>
 //                                           <div class="btn-group dropstart table-action">
 //                                             <button
@@ -714,21 +1545,38 @@
 //                                               <span></span>
 //                                             </button>
 //                                             <ul class="dropdown-menu">
-//                                               <li>
+//                                               <li className="text-center">
 //                                                 <NavLink
 //                                                   to={`/supplier/order-management/order-detail/${ele.id}`}
 //                                                   className="dropdown-item"
 //                                                 >
-//                                                   View
+//                                                   <i
+//                                                     class="fa-solid fa-eye"
+//                                                     style={{ color: "blue" }}
+//                                                   ></i>
 //                                                 </NavLink>
 //                                               </li>
-//                                               {/* <li>
-//                                                                                             <a className="dropdown-item">Edit</a>
-//                                                                                         </li> */}
-//                                               <li className="seperator">
+//                                               {/* <li> <a className="dropdown-item">Edit</a></li> */}
+//                                               <li className="seperator d-flex">
 //                                                 <a className="dropdown-item">
-//                                                   Download
+//                                                   <i
+//                                                     class="fa-solid fa-file-pdf"
+//                                                     style={{ color: "red" }}
+//                                                   ></i>
 //                                                 </a>
+//                                                 <a className="dropdown-item">
+//                                                   <i
+//                                                     class="fa-solid fa-file-csv"
+//                                                     style={{ color: "black" }}
+//                                                   ></i>
+//                                                 </a>
+//                                                 <a className="dropdown-item">
+//                                                   <i
+//                                                     class="fa-solid fa-file-excel"
+//                                                     style={{ color: "green" }}
+//                                                   ></i>
+//                                                 </a>
+//                                                 <i class=""></i>
 //                                               </li>
 //                                             </ul>
 //                                           </div>
@@ -744,57 +1592,52 @@
 //                                   </>
 //                                 )}
 //                               </tbody>
-//                               <tfoot>
-//                                 <tr>
-//                                   {data.length > 0 ? (
-//                                     <CustomTablePagination
-//                                       rowsPerPageOptions={[
-//                                         5,
-//                                         10,
-//                                         15,
-//                                         { label: "All", value: -1 },
-//                                       ]}
-//                                       labelRowsPerPage={t(
-//                                         "admin.supplier_management.list.pagination_text"
-//                                       )}
-//                                       colSpan={10}
-//                                       count={orderList.length}
-//                                       rowsPerPage={rowsPerPage}
-//                                       page={page}
-//                                       size="small"
-//                                       slotProps={{
-//                                         select: {
-//                                           "aria-label": "rows per page",
-//                                         },
-//                                         actions: {
-//                                           showFirstButton: true,
-//                                           showLastButton: true,
-//                                         },
-//                                       }}
-//                                       onPageChange={handleChangePage}
-//                                       onRowsPerPageChange={
-//                                         handleChangeRowsPerPage
-//                                       }
-//                                       sx={{
-//                                         ".MuiTablePagination-toolbar button": {
-//                                           backgroundColor: "#623ead",
-//                                           borderColor: "#623ead",
-//                                           borderRadius: "25px",
-//                                           color: "#fefefe",
-//                                         },
-
-//                                         ".MuiTablePagination-toolbar span": {
-//                                           fontSize: "12px",
-//                                         },
-//                                       }}
-//                                     />
-//                                   ) : (
-//                                     <></>
-//                                   )}
-//                                 </tr>
-//                               </tfoot>
 //                             </table>
 //                           </div>
+//                         </div>
+//                         <div className="table-pagination mb-2 mt-3">
+//                           {data.length > 0 ? (
+//                             <CustomTablePagination
+//                               rowsPerPageOptions={[
+//                                 5,
+//                                 10,
+//                                 15,
+//                                 { label: "All", value: -1 },
+//                               ]}
+//                               labelRowsPerPage={t(
+//                                 "admin.supplier_management.list.pagination_text"
+//                               )}
+//                               colSpan={10} // Assuming you want to span across 10 columns
+//                               count={orderList.length}
+//                               rowsPerPage={rowsPerPage}
+//                               page={page}
+//                               size="small"
+//                               slotProps={{
+//                                 select: {
+//                                   "aria-label": "rows per page",
+//                                 },
+//                                 actions: {
+//                                   showFirstButton: true,
+//                                   showLastButton: true,
+//                                 },
+//                               }}
+//                               onPageChange={handleChangePage}
+//                               onRowsPerPageChange={handleChangeRowsPerPage}
+//                               sx={{
+//                                 ".MuiTablePagination-toolbar button": {
+//                                   backgroundColor: "#623ead",
+//                                   borderColor: "#623ead",
+//                                   borderRadius: "25px",
+//                                   color: "#fefefe",
+//                                 },
+//                                 ".MuiTablePagination-toolbar span": {
+//                                   fontSize: "12px",
+//                                 },
+//                               }}
+//                             />
+//                           ) : (
+//                             <></>
+//                           )}
 //                         </div>
 //                       </div>
 //                     </div>
@@ -815,7 +1658,9 @@
 //         }}
 //       >
 //         <Modal.Header>
-//           <h5 class="modal-title text-purpal">Change Order Status</h5>
+//           <h5 class="modal-title text-purpal">
+//             {t("supplier.order_management.change_status.change_status_h")}
+//           </h5>
 //           <button
 //             type="button"
 //             class="btn-close text-purpal"
@@ -824,9 +1669,13 @@
 //           ></button>
 //         </Modal.Header>
 //         <Modal.Body>
-//           <p>{`Total number of selected orders : ${targetId.length}`}</p>
+//           <p>{`${t(
+//             "supplier.order_management.change_status.order_selected"
+//           )} : ${targetId.length}`}</p>
 //           <div className="border-purple p-3 rounded-2">
-//             <div>Select Status</div>
+//             <div>
+//               {t("supplier.order_management.change_status.select_status")}
+//             </div>
 //             <div className="mt-2">
 //               <div className="input-group">
 //                 <select
@@ -837,10 +1686,18 @@
 //                     setStatusError("");
 //                   }}
 //                 >
-//                   <option value="">Select status</option>
-//                   <option value="1">Approved</option>
-//                   <option value="2">On-hold</option>
-//                   <option value="5">Cancelled</option>
+//                   <option value="">
+//                     {t("supplier.order_management.change_status.select_status")}
+//                   </option>
+//                   <option value="1">
+//                     {t("supplier.order_management.change_status.approved")}
+//                   </option>
+//                   <option value="2">
+//                     {t("supplier.order_management.change_status.on_hold")}
+//                   </option>
+//                   <option value="5">
+//                     {t("supplier.order_management.change_status.cancelled")}
+//                   </option>
 //                 </select>
 //               </div>
 //               {statusError === "" ? (
@@ -854,7 +1711,9 @@
 //             className="border-purple p-3 mt-3 rounded-2"
 //             style={{ display: selectedStatus === "1" ? "block" : "none" }}
 //           >
-//             <div>Delivery Date</div>
+//             <div>
+//               {t("supplier.order_management.change_status.delivery_date")}
+//             </div>
 //             <div className="mt-2">
 //               <div className="input-group">
 //                 <DatePicker
@@ -888,14 +1747,14 @@
 //               setShow(false);
 //             }}
 //           >
-//             Cancel
+//             {t("supplier.order_management.change_status.cancel")}
 //           </button>
 //           <button
 //             type="button"
 //             class="btn btn-purple btn-md w-auto"
 //             onClick={() => handleUpdateStatus()}
 //           >
-//             Save
+//             {t("supplier.order_management.change_status.save")}
 //           </button>
 //         </Modal.Footer>
 //       </Modal>
@@ -922,6 +1781,7 @@ import LoadingOverlay from "react-loading-overlay";
 import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
 import Header from "../../../CommonComponents/Header/header";
 import "../../assets/scss/dashboard.scss";
+import "../../../assets/scss/dashboard.scss";
 import { NavLink } from "react-router-dom";
 import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
@@ -969,11 +1829,11 @@ const OrderManagement = () => {
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
   const token = localStorage.getItem("supplier_accessToken");
-  const [orderList, setOrderList] = useState("");
+  const [orderList, setOrderList] = useState([]);
   const [targetId, setTargetId] = useState([]);
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [ordersStatusCount , setOrdersStatusCount] = useState({})  
+  const [ordersStatusCount, setOrdersStatusCount] = useState({});
   const [statusError, setStatusError] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [dateError, setDateError] = useState("");
@@ -983,6 +1843,118 @@ const OrderManagement = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedSupplier, setSelectedSupplier] = useState("");
+  const [retailerList, setRetailerList] = useState("");
+  const [searchRetailer, setSearchRetailer] = useState("");
+  const [nameList, setNameList] = useState("");
+  const [retailerId, setReatilerId] = useState(0);
+  const [dropdownShow, setDropdownShow] = useState(false);
+  const [render, setRender] = useState(false);
+  const [distributorsList, setDistributorsList] = useState("");
+
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [selectedDistributor, setSelectedDistributor] = useState("");
+  const [selectedRetailer, setSelectedRetailer] = useState("");
+
+  const [searchRetailerFilter, setSearchRetailerFilter] = useState("");
+  const [distinctRetailerInfoArray, setDistinctRetailerInfoArray] = useState(
+    []
+  );
+  const [distinctList, setDistinctList] = useState([]);
+  const [dropdownShowRetailer, setDropdownShowRetailer] = useState(false);
+  const [searchDistributor, setSearchDistributor] = useState("");
+  const [dropdownDistributor, setDropdownDistributor] = useState(false);
+  const [distinctDistributorList, setDistinctDistributorList] = useState([]);
+  const [distinctArrayDist, SetDistinctArrayDist] = useState([]);
+  const [count, setCount] = useState(0);
+  const [allOrderList, setAllOrderList] = useState([])
+  const [searching, setSearching] = useState("")
+
+  const [rFilterSearchDistributor, SetrFilterSearchDistributor] = useState("")
+  const [distDropDown, setDistDropDown] = useState(false)
+  const [rDistId, setRDistId] = useState("")
+  const [filterDistributorList, setFilterDistributorList] = useState([])
+  const [statusValue, setstatusValue] = useState("")
+  const [reload, setReload] = useState(false)
+
+  // New changes
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "retailer-view",
+      },
+    };
+
+    // let paramObj = {};
+
+    // if (search !== "") {
+    //   paramObj["search"] = search;
+    // }
+
+    // if (selectedRetailer !== "") {
+    //   paramObj["filter_user_id"] = selectedRetailer;
+    // }
+
+    // config["params"] = paramObj;
+
+    apis
+      .get("/supplier/retailerList", config)
+      .then((res) => {
+        setLoading(false);
+        if (res.data.success === true) {
+          setRetailerList(res.data.data);
+          console.log("Retailer", res.data.data);
+          if (render == false) {
+            setNameList(res.data.data);
+            setRender(true);
+          }
+        } else {
+          toast.error("Something went wrong. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.message !== "revoke") {
+          toast.error("Something went wrong. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      });
+  }, [nameList]);
+  const handleRetailerSearch = (e) => {
+    setReatilerId(0);
+    // setInvitationStatus(false)
+    // setDropdownShow(false)
+    setSearchRetailer(e);
+
+    const matchingStrings = retailerList.filter((str) => {
+      const fullNameMatch = str.full_name
+        .toLowerCase()
+        .includes(e.toLowerCase());
+      const addressMatch =
+        str.user_main_address &&
+        str.user_main_address.address_1 &&
+        str.user_main_address.address_1.toLowerCase().includes(e.toLowerCase());
+      return fullNameMatch || addressMatch;
+    });
+
+    setNameList(matchingStrings);
+    console.log(matchingStrings, "dada");
+    setDropdownShow(true);
+  };
+  const handleRetailerDropdown = (full_name, id) => {
+    setSearchRetailer(full_name);
+    // setInvitationStatus(true)
+    setReatilerId(id);
+    // setShowNote(true);
+    setDropdownShow(false);
+    // setShowNote(true);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -1072,32 +2044,45 @@ const OrderManagement = () => {
     }
   };
 
-  // ---search--event------
-  const handleSearchChange = (e) => {
-    
-    const searchKey = e.target.value;
-    console.log(e.target.value,"dsa")
-    setSearch(searchKey);
-    const filteredOrder = orderList.filter((searchKey) => {
-      if (typeof searchKey === "string") {
-        return true; // Return true if searchKey is already a string
-      } else if (
-        searchKey &&
-        searchKey.retailer_information &&
-        searchKey.retailer_information.first_name
-      ) {
-        const retailerFirstName = searchKey.retailer_information.first_name
-          .toString()
-          .toLowerCase();
-        return retailerFirstName.includes(searchKey.toString().toLowerCase());
-      }
-      return false; // Return false if searchKey is not a string or if required properties are missing
-    });
-    console.log("==================================", filteredOrder);
-    setOrderList(filteredOrder);
-  };
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Projectlanguageid: 1,
+      },
+    };
 
-  // ----end------
+    apis
+      .get("/getAllDistributors", config)
+      .then((res) => {
+        if (res.data.success === true) {
+          let newData = [];
+          // console.log("new dist",res.data.data)
+          for (let i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].comapany_name) {
+              newData.push(res.data.data[i]);
+            }
+          }
+          console.log("Distributor data", newData);
+          setDistributorsList(newData);
+          setFilterDistributorList(newData)
+        } else {
+          toast.error(
+            "Could not fetch distributors list. Please try again later.",
+            { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+          );
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error(
+            "Could not fetch distributors list. Please try again later.",
+            { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+          );
+        }
+      });
+  }, []);
+
   useEffect(() => {
     if (hasPermission(ORDER_VIEW)) {
       const config = {
@@ -1112,11 +2097,11 @@ const OrderManagement = () => {
       if (search !== "") {
         paramObj["search"] = search;
       }
-  
+
       if (selectedSupplier !== "") {
         paramObj["filter_user_id"] = selectedSupplier;
       }
-  
+
       config["params"] = paramObj;
 
       apis
@@ -1125,6 +2110,7 @@ const OrderManagement = () => {
           setLoading(false);
           if (res.data.success === true) {
             setOrderList(res.data.data);
+            setAllOrderList(res.data.data) // In useffect ("/supplier/orders")
           } else {
             toast.error("Could not fetch order list. Please try again later.", {
               autoClose: 3000,
@@ -1142,30 +2128,36 @@ const OrderManagement = () => {
           }
         });
 
-        apis
+      apis
         .get("/supplier/ordersStatusCount", config)
         .then((res) => {
           setLoading(false);
           if (res.data.success === true) {
             setOrdersStatusCount(res.data.data);
           } else {
-            toast.error("Could not fetch order status count. Please try again later.", {
-              autoClose: 3000,
-              position: toast.POSITION.TOP_CENTER,
-            });
+            toast.error(
+              "Could not fetch order status count. Please try again later.",
+              {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              }
+            );
           }
         })
         .catch((error) => {
           setLoading(false);
           if (error.message !== "revoke") {
-            toast.error("Could not fetch order status count. Please try again later.", {
-              autoClose: 3000,
-              position: toast.POSITION.TOP_CENTER,
-            });
+            toast.error(
+              "Could not fetch order status count. Please try again later.",
+              {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+              }
+            );
           }
         });
     }
-  }, [search, update]);
+  }, [search, update, reload]);
 
   let data;
   if (rowsPerPage > 0) {
@@ -1180,20 +2172,20 @@ const OrderManagement = () => {
   useEffect(() => {
     // Perform the count calculation when data changes
     if (orderList && orderList.length > 0) {
-        let newCount = 0;
-        orderList.forEach((ele) => {
-            if (ele.status === 'Unpaid') {
-                const createdDate = new Date(ele.created_at);
-                const currentDate = new Date();
-                const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
-                if (monthDiff >= 2) {
-                    newCount++; // Increment newCount if conditions are met
-                }
-            }
-        });
-        setCount(newCount); // Update count state variable
+      let newCount = 0;
+      orderList.forEach((ele) => {
+        if (ele.status === 'Unpaid') {
+          const createdDate = new Date(ele.created_at);
+          const currentDate = new Date();
+          const monthDiff = Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24 * 30));
+          if (monthDiff >= 2) {
+            newCount++; // Increment newCount if conditions are met
+          }
+        }
+      });
+      setCount(newCount); // Update count state variable
     }
-}, [orderList]); 
+  }, [orderList]);
 
 
   const submit1 = (createdDate) => {
@@ -1398,35 +2390,35 @@ const OrderManagement = () => {
       });
     console.log("-----------------------payment working");
   };
- // ---search--event------
+  // ---search--event------
   const handleSearchChange = (e) => {
     const searchKey = e.target.value;
     setSearching(searchKey);
-    console.log("dsfa",allOrderList)
-    const filteredOrder=allOrderList.filter((x)=>{
-      const matchBuisnnesName=
-      x.retailer_information &&
-      x.retailer_information.user_profile &&
-      x.retailer_information.user_profile.business_name &&
-      x.retailer_information.user_profile.business_name.toLowerCase().includes(searchKey.toLowerCase());
-      const addressMatching=
-      x.retailer_information &&
-      x.retailer_information.user_main_address &&
-      x.retailer_information.user_main_address.address_1 &&
-      x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
+    console.log("dsfa", allOrderList)
+    const filteredOrder = allOrderList.filter((x) => {
+      const matchBuisnnesName =
+        x.retailer_information &&
+        x.retailer_information.user_profile &&
+        x.retailer_information.user_profile.business_name &&
+        x.retailer_information.user_profile.business_name.toLowerCase().includes(searchKey.toLowerCase());
+      const addressMatching =
+        x.retailer_information &&
+        x.retailer_information.user_main_address &&
+        x.retailer_information.user_main_address.address_1 &&
+        x.retailer_information.user_main_address.address_1.toLowerCase().includes(searchKey.toLowerCase());
 
-      const orderReference=
-      x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
+      const orderReference =
+        x.order_reference.toLowerCase().includes(searchKey.toLowerCase())
 
-      const statusMatching=
-      x.status.toLowerCase().includes(searchKey.toLowerCase())
+      const statusMatching =
+        x.status.toLowerCase().includes(searchKey.toLowerCase())
       return matchBuisnnesName || addressMatching || orderReference || statusMatching
     })
     console.log("==================================", filteredOrder);
     setOrderList(filteredOrder);
   };
 
-  const handleRFilterDistSearch=(e)=>{
+  const handleRFilterDistSearch = (e) => {
     setRDistId("")
     SetrFilterSearchDistributor(e)
     const matchingStrings = distributorsList.filter((x) => {
@@ -1437,12 +2429,12 @@ const OrderManagement = () => {
     setFilterDistributorList(matchingStrings);
   }
 
-  const handleRDistDropdown=(companyName,id)=>{
+  const handleRDistDropdown = (companyName, id) => {
     setRDistId(id)
     SetrFilterSearchDistributor(companyName)
   }
 
-  const applyRightFilter=()=>{
+  const applyRightFilter = () => {
     console.log("Showwwwww")
     const config = {
       headers: {
@@ -1478,6 +2470,9 @@ const OrderManagement = () => {
       });
   }
 
+
+
+
   return (
     <div className="container-fluid page-wrap order-manage">
       <div className="row height-inherit">
@@ -1488,7 +2483,7 @@ const OrderManagement = () => {
           <LoadingOverlay
             active={loading}
             spinner
-            className="h-100"
+            className=""
             styles={{
               overlay: (base) => ({
                 ...base,
@@ -1506,54 +2501,137 @@ const OrderManagement = () => {
                   <div className="filter-row page-top-filter">
                     {/* [Page Filter Box] */}
                     <div className="filter-box">
-                      {/* [Date] */}
-                      <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <img src={calendar} alt="" />{" "}
-                          {t("supplier.order_management.list.select_date")}
-                        </button>
-                        <ul className="dropdown-menu">
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Date
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Date
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
                       {/* [/Date] */}
 
-                      {/* [Supplier] */}
-                      <div className="dropdown date-selector">
-                        <button
-                          className="btn btn-outline-black btn-sm dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          {t("supplier.order_management.list.supplier")}
-                        </button>
-                        <ul className="dropdown-menu py-0 overflow-hidden">
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Supplier 1
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item" href="#">
-                              Supplier 2
-                            </a>
-                          </li>
-                        </ul>
+                      <div className="dropdown date-selector card-top-filter-box">
+                        <div className="search-table form-group">
+                          <button
+                            className="btn search-input dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style={{ background: "#ffffff", padding: '5px 40px', color: '#757575' }}
+                          >
+                            <img src={calendar} alt="" />{" "}
+                            {t("supplier.order_management.list.select_date")}
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            style={{ padding: "5px 10px" }}
+                          >
+                            <form>
+                              <li>
+                                <label>{t("supplier.order_management.list.fromDate")}</label>
+
+                                <input
+                                  type="date"
+                                  value={fromDate}
+                                  onChange={(e) => {
+                                    setFromDate(e.target.value);
+                                  }}
+                                />
+                              </li>
+                              <li>
+                                <label>{t("supplier.order_management.list.toDate")}</label>
+                                <input
+                                  type="date"
+                                  value={toDate}
+                                  onChange={(e) => {
+                                    setToDate(e.target.value);
+                                  }}
+                                />
+                              </li>
+                            </form>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="dropdown date-selector card-top-filter-box">
+                        <div className="search-table form-group">
+                          <input
+                            type="text"
+                            className="search-input"
+                            value={searchRetailerFilter}
+                            placeholder={t("supplier.order_management.list.searchRetailer")}
+                            onFocus={() => {
+                              setDropdownShowRetailer(true);
+                            }}
+                            onBlur={() => {
+                              setTimeout(() => {
+                                setDropdownShowRetailer(false);
+                              }, 200);
+                            }}
+                            onChange={(e) => {
+                              handleRetailerFilterSearch(e.target.value);
+                            }}
+                          />
+
+                          {distinctList.length > 0 && (
+                            <ul
+                              className={`w-100 searchListBx custom-scrollbar ${dropdownShowRetailer ? "d-block" : "d-none"
+                                }`}
+                            >
+                              {" "}
+                              {distinctList.map((s) => (
+                                <li
+                                  className="dropdown-item pe-pointer"
+                                  key={s?.id}
+                                  onClick={() =>
+                                    handleRetailerFilterDropdown(
+                                      s?.full_name,
+                                      s?.id
+                                    )
+                                  }
+                                >
+                                  {s ? s.full_name ? s.full_name : "N/A" : "N/A"}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="dropdown date-selector card-top-filter-box">
+                        <div className="search-table form-group">
+                          <input
+                            type="text"
+                            className="search-input"
+                            value={searchDistributor}
+                            placeholder={t("supplier.order_management.list.searchDistributor")}
+                            onFocus={() => {
+                              setDropdownDistributor(true);
+                            }}
+                            onBlur={() => {
+                              setTimeout(() => {
+                                setDropdownDistributor(false);
+                              }, 200);
+                            }}
+                            onChange={(e) => {
+                              handleDistributorSearch(e.target.value);
+                            }}
+                          />
+                          {distinctDistributorList.length > 0 && (
+                            <ul
+                              className={`w-100 searchListBx custom-scrollbar ${dropdownDistributor ? "d-block" : "d-none"
+                                }`}
+                            >
+                              {" "}
+                              {distinctDistributorList.map((s) => (
+                                <li
+                                  className="dropdown-item pe-pointer"
+                                  key={s?.id}
+                                  onClick={() =>
+                                    handleDistributorDropdown(
+                                      s?.user_profile?.company_name,
+                                      s?.id
+                                    )
+                                  }
+                                >
+                                  {s?.user_profile?.company_name}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
                       </div>
                     </div>
                     {/* [/Page Filter Box] */}
@@ -1573,8 +2651,59 @@ const OrderManagement = () => {
                       </button>
                       <form class="dropdown-menu p-3 ">
                         <div class="mb-3">
-                          <label class="form-label">Client</label>
-                          <select className="form-select">
+                          <label class="form-label">{t("supplier.order_management.list.client")}</label>
+                          <div style={{ position: "relative" }}>
+                            <button
+                              className="search-btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                            >
+                              <i className="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <input
+                              type="text"
+                              value={searchRetailer}
+                              placeholder={t("supplier.order_management.list.searchRetailer")}
+                              onChange={(e) =>
+                                handleRetailerSearch(e.target.value)
+                              }
+                              onFocus={() => {
+                                setDropdownShow(true);
+                              }}
+                              onBlur={() => {
+                                setTimeout(() => {
+                                  setDropdownShow(false)
+                                }, 250);
+                              }}
+                            />
+                          </div>
+                          {nameList.length > 0 && (
+                            <ul
+                              className={`w-100 searchListBx custom-scrollbar ${dropdownShow ? "d-block" : "d-none"
+                                }`}
+                            >
+                              {" "}
+                              {nameList.map((s) => (
+                                <li
+                                  className="dropdown-item pe-pointer"
+                                  key={s.id}
+                                  style={{
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    cursor: "pointer", // Optionally add cursor pointer for better UX
+                                  }}
+                                  onClick={() =>
+                                    handleRetailerDropdown(s.full_name, s.id)
+                                  }
+                                >
+                                  {s.full_name}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          {/* <select className="form-select">
                             <option selected disabled>
                               {t(
                                 "supplier.order_management.list.choose_client"
@@ -1583,7 +2712,7 @@ const OrderManagement = () => {
                             <option value="">Client 1</option>
                             <option value="">Client 2</option>
                             <option value="">Client 3</option>
-                          </select>
+                          </select> */}
                         </div>
                         {/* <div class="mb-3">
                           <label class="form-label">Routes</label>
@@ -1598,7 +2727,7 @@ const OrderManagement = () => {
                             <option value="">Route 3</option>
                           </select>
                         </div> */}
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                           <label class="form-label">
                             {t("supplier.order_management.list.issues")}{" "}
                           </label>
@@ -1639,34 +2768,44 @@ const OrderManagement = () => {
                               )}{" "}
                             </option>
                           </select>
-                        </div>
+                        </div> */}
                         <div class="mb-3">
                           <label class="form-label">
                             {t("supplier.order_management.list.order_status")}
                           </label>
-                          <select className="form-select">
-                            <option selected disabled>
+                          <select className="form-select"
+                            value={statusValue}
+                            onChange={(e) => {
+                              setstatusValue(e.target.value)
+                            }}>
+                            <option value="">
                               {t(
                                 "supplier.order_management.list.choose_status"
                               )}
                             </option>
-                            <option value="">
+                            <option value="1">
                               {t("supplier.order_management.list.approved")}{" "}
                             </option>
-                            <option value="">
+                            <option value="5">
                               {t("supplier.order_management.list.cancelled")}{" "}
                             </option>
-                            <option value="">
+                            <option value="4">
                               {t("supplier.order_management.list.delivered")}{" "}
                             </option>
-                            <option value="">
+                            <option value="2">
                               {t("supplier.order_management.list.onhold")}{" "}
                             </option>
-                            <option value="">
+                            <option value="0">
                               {t("supplier.order_management.list.pending")}{" "}
                             </option>
-                            <option value="">
+                            <option value="3">
                               {t("supplier.order_management.list.shipped")}{" "}
+                            </option>
+                            <option value="6">
+                              Paid
+                            </option>
+                            <option value="7">
+                              Unpaid
                             </option>
                           </select>
                         </div>
@@ -1674,19 +2813,60 @@ const OrderManagement = () => {
                           <label class="form-label">
                             {t("supplier.order_management.list.distributor")}{" "}
                           </label>
-                          <select className="form-select">
-                            <option selected disabled>
-                              {t(
-                                "supplier.order_management.list.choose_distributor"
-                              )}
-                            </option>
-                            <option value="">Distributor 1</option>
-                            <option value="">Distributor 2</option>
-                            <option value="">Distributor 3</option>
-                          </select>
+                          <div style={{ position: "relative" }}>
+                            <button
+                              className="search-btn"
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                            >
+                              <i className="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <input
+                              type="text"
+                              value={rFilterSearchDistributor}
+                              placeholder={t("supplier.order_management.list.searchDistributor")}
+                              onChange={(e) =>
+                                handleRFilterDistSearch(e.target.value)
+                              }
+                              onFocus={() => {
+                                setDistDropDown(true);
+                              }}
+                              onBlur={() => {
+                                setTimeout(() => {
+                                  setDistDropDown(false)
+                                }, 200);
+                              }}
+                            />
+                          </div>
+                          {filterDistributorList.length > 0 && (
+                            <ul
+                              className={`w-100 searchListBx custom-scrollbar ${distDropDown ? "d-block" : "d-none"
+                                }`}
+                            >
+                              {" "}
+                              {filterDistributorList.map((s) => (
+                                <li
+                                  className="dropdown-item pe-pointer"
+                                  key={s.id}
+                                  style={{
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                    textOverflow: "ellipsis",
+                                    cursor: "pointer", // Optionally add cursor pointer for better UX
+                                  }}
+                                  onClick={() =>
+                                    handleRDistDropdown(s.user_profile.company_name, s.id)
+                                  }
+                                >
+                                  {s.user_profile.company_name ? s.user_profile.company_name : "N/A"}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                         <div class="mb-3">
-                          <div class="form-check form-check-inline">
+                          {/* <div class="form-check form-check-inline">
                             <input
                               class="form-check-input"
                               type="checkbox"
@@ -1699,8 +2879,8 @@ const OrderManagement = () => {
                             >
                               {t("supplier.order_management.list.invoiced")}
                             </label>
-                          </div>
-                          <div class="form-check form-check-inline">
+                          </div> */}
+                          {/* <div class="form-check form-check-inline">
                             <input
                               class="form-check-input"
                               type="checkbox"
@@ -1713,8 +2893,8 @@ const OrderManagement = () => {
                             >
                               {t("supplier.order_management.list.expired")}
                             </label>
-                          </div>
-                          <div class="form-check form-check-inline">
+                          </div> */}
+                          {/* <div class="form-check form-check-inline">
                             <input
                               class="form-check-input"
                               type="checkbox"
@@ -1727,19 +2907,35 @@ const OrderManagement = () => {
                             >
                               {t("supplier.order_management.list.paid")}
                             </label>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="d-flex justify-content-end">
                           <button
-                            type="submit"
+                            type="button"
                             class="btn btn-purple width-auto me-2"
+                            onClick={() => { applyRightFilter() }}
                           >
                             {t("supplier.order_management.list.applied")}
                           </button>
                           <input
-                            type="reset"
+                            type="button"
                             class="btn btn-outline-black width-auto"
                             value={t("supplier.order_management.list.clear")}
+                            onClick={() => {
+                              setstatusValue("")
+                              setRDistId("")
+                              SetrFilterSearchDistributor("")
+                              setReatilerId("");
+                              setSearchRetailer("");
+                              // clear the value of others 
+                              setToDate("")
+                              setFromDate("")
+                              setSelectedDistributor("")
+                              setSelectedRetailer("")
+                              setSearchRetailerFilter("")
+                              setSearchDistributor("")
+                              setReload(!reload)
+                            }}
                           />
                         </div>
                       </form>
@@ -1752,7 +2948,7 @@ const OrderManagement = () => {
               <div className="card user-card my-2 height-100">
                 <div className="cmd-data">
                   <table>
-                  <tr>
+                    <tr>
                       <td>
                         {sigma}
                         <span>{ordersStatusCount.total_order}</span>
@@ -1771,16 +2967,16 @@ const OrderManagement = () => {
                       </td>
                       <td>
                         <i class="fa-solid fa-sack-dollar"></i>
-                        <span>800</span>
+                        <span>{ordersStatusCount.paid_total_amount}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-sack-dollar cancel"></i>
                         <i class="fa-solid fa-ban"></i>
-                        <span className="count-cnl">100</span>
+                        <span className="count-cnl">{ordersStatusCount.unpaid_total_amount}</span>
                       </td>
                       <td>
                         <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>35</span>
+                        <span>{count}</span>
                       </td>
                     </tr>
                   </table>
@@ -1803,7 +2999,7 @@ const OrderManagement = () => {
                                   type="text"
                                   className="search-input"
                                   placeholder="Search by Business name"
-                                  value={search}
+                                  value={searching}
                                   onChange={(e) => handleSearchChange(e)}
                                 ></input>
                               </div>
@@ -1847,14 +3043,16 @@ const OrderManagement = () => {
                                   }}
                                   onClick={() => setShow(true)}
                                 >
-                                  Change Status
+                                  {t(
+                                    "supplier.order_management.list.Change_Status"
+                                  )}
                                 </button>
                                 {hasPermission(ORDER_EDIT) && (
                                   <NavLink
                                     to="/supplier/order-management/create-order"
                                     className="btn btn-purple btn-sm"
                                   >
-                                    {t("supplier.order_management.list.new")}
+                                    {t("supplier.inventory_management.list.createnew")}
                                   </NavLink>
                                 )}
                               </div>
@@ -1935,23 +3133,38 @@ const OrderManagement = () => {
                                           />{" "}
                                         </td>
                                         <td>{ele.order_reference}</td>
-                                        <td>{ele.order_date}</td>
                                         <td>
-                                          {ele.retailer_information.user_profile
-                                            ? ele.retailer_information
-                                                .user_profile.business_name
-                                              ? ele.retailer_information
-                                                  .user_profile.business_name
-                                              : "N/A"
-                                            : "N/A"}
+                                          {ele.order_date}
+                                          <br></br>
+                                          <span style={{ color: "red" }}>
+                                            {submit1(ele.created_at)}
+                                          </span>
                                         </td>
-                                        <td>TBD</td>
+                                        <td>
+                                          {ele.retailer_information ? ele.retailer_information.user_profile
+                                            ? ele.retailer_information
+                                              .user_profile.business_name
+                                              ? ele.retailer_information
+                                                .user_profile.business_name
+                                              : "N/A"
+                                            : "N/A" : "N/A"}
+                                        </td>
+                                        <td>
+                                          {ele.retailer_information ? ele.retailer_information.user_profile
+                                            ? ele.retailer_information
+                                              .user_profile.group_name
+                                              ? ele.retailer_information
+                                                .user_profile.group_name
+                                              : "N/A"
+                                            : "N/A" : "N/A"}
+                                        </td>
                                         <td>
                                           {ele.status === "Approved" ? (
                                             <span className="badge text-bg-green">
                                               {ele.status}
                                             </span>
-                                          ) : ele.status === "Pending" || ele.status === "On Hold" ? (
+                                          ) : ele.status === "Pending" ||
+                                            ele.status === "On Hold" ? (
                                             <span className="badge text-bg-orange">
                                               {ele.status}
                                             </span>
@@ -1959,17 +3172,31 @@ const OrderManagement = () => {
                                             <span className="badge text-bg-red">
                                               {ele.status}
                                             </span>
-                                          ) : ele.status === "Delivered" || ele.status === "Shipped" ? (
+                                          ) : ele.status === "Delivered" ||
+                                            ele.status === "Shipped" ? (
                                             <span className="badge text-bg-blue">
                                               {ele.status}
                                             </span>
-                                          ) : (
-                                            "TBD"
-                                          )}
+                                          ) : ele.status === "Paid" ? (
+                                            <span className="badge text-bg-purple" style={{ color: '#79018c ', padding: '5px' }}>
+                                              {ele.status}
+                                            </span>
+                                          ) : ele.status === "Unpaid" ? (
+                                            <span className="badge text-bg-purple" style={{ color: '#79018c ', padding: '5px' }}>
+                                              {ele.status}
+                                            </span>
+                                          )
+                                            : "tbd"
+                                          }
                                         </td>
 
-                                        <td>{ele.total_quantity?ele.total_quantity : "N/A"}</td>
-                                        <td>{ele.total_amount?ele.total_amount:"N/A"}</td>
+                                        <td>
+                                          {ele?.items.reduce(
+                                            (acc, item) => acc + item?.quantity,
+                                            0
+                                          )}
+                                        </td>
+                                        <td>{totalPrice(ele?.items)}</td>
                                         <td>
                                           {ele?.order_distributors[0] &&
                                             ele?.order_distributors[0]
@@ -1978,18 +3205,17 @@ const OrderManagement = () => {
                                             ? ele?.order_distributors[0]
                                               ?.distributor_info?.user_profile
                                               ?.company_name
-                                            : ele?.order_distributors[0]?.other_distributor==1?"Other":"N/A"}
-
-                                          {ele.order_distributors[0] &&
-                                          ele.order_distributors[0]
-                                            .distributor_info.user_profile
-                                            .company_name
-                                            ? ele.order_distributors[0]
-                                                .distributor_info.user_profile
-                                                .company_name
-                                            : "N/A"}
+                                            : ele?.order_distributors[0]?.other_distributor == 1 ? "Other" : "N/A"}
                                         </td>
-                                        <td align="center">
+
+                                        <td
+                                          align="center"
+                                          style={{
+                                            width: "100px",
+                                            maxWidth: "100px",
+                                            overflow: "hidden",
+                                          }}
+                                        >
                                           <i
                                             className="fa-solid fa-check"
                                             style={{
@@ -1997,37 +3223,84 @@ const OrderManagement = () => {
                                                 ele.status === "Approved"
                                                   ? "#27C26C"
                                                   : ele.status === "Pending"
-                                                  ? "#000"
-                                                  : ele.status === "Cancelled"
-                                                  ? "red"
-                                                  : undefined, // No default color
+                                                    ? "#000"
+                                                    : ele.status === "Cancelled"
+                                                      ? "red"
+                                                      : ele.status === "Delivered"
+                                                        ? "#27C26C"
+                                                        : ele.status === "Shipped"
+                                                          ? "#27C26C"
+                                                          : ele.status === "Paid"
+                                                            ? "#27C26C"
+                                                            : undefined, // No default color
                                             }}
                                           ></i>
                                         </td>
-                                        <td align="center">
-                                          <i className="fa-solid fa-truck-fast" 
-                                           style={{
-                                            color:
-                                              ele.status === "Received"
-                                                ? "#27C26C"
-                                                : "red" // No default color
-                                          }}
+
+                                        <td
+                                          align="center"
+                                          style={{ width: "100px" }}
                                         >
-                                          </i>
-                                        </td>
-                                        <td align="center">
-                                          <i class="fa-solid fa-shop"
-                                           style={{
-                                            color:
-                                              ele.status === "Delivered "
-                                                ? "#27C26C"
-                                                : "black" // No default color
-                                          }}
+                                          <i
+                                            className="fa-solid fa-truck-fast"
+                                            style={{
+                                              color:
+                                                ele.status === "Shipped"
+                                                  ? "red"
+                                                  : ele.status === "Delivered"
+                                                    ? "#27C26C"
+                                                    : ele.status === "Paid"
+                                                      ? "#27C26C"
+                                                      : undefined, // No default color
+                                            }}
                                           ></i>
                                         </td>
-                                        <td align="center">
-                                          <i class="fa-solid fa-sack-dollar"></i>
+                                        <td
+                                          align="center"
+                                          style={{ width: "100px" }}
+                                        >
+                                          <i
+                                            class="fa-solid fa-shop"
+                                            style={{
+                                              color:
+                                                ele.status === "Delivered"
+                                                  ? "#27C26C"
+                                                  : ele.status === "Paid"
+                                                    ? "#27C26C"
+                                                    : undefined, // No default color
+                                            }}
+                                          ></i>
                                         </td>
+                                        <td
+                                          align="center"
+                                          style={{ width: "100px" }}
+                                        >
+                                          <span
+                                            onClick={() => {
+                                              if (ele.status === "Delivered") {
+                                                handlePayment(ele.id);
+                                              }
+                                              else {
+                                                toast.error("Could not update status before Delivery.", {
+                                                  autoClose: 3000,
+                                                  position: toast.POSITION.TOP_CENTER,
+                                                });
+                                              }
+                                            }}
+                                          >
+                                            <i
+                                              class="fa-solid fa-sack-dollar"
+                                              style={{
+                                                cursor: "pointer", color:
+                                                  ele.status === "Paid"
+                                                    ? "#27C26C"
+                                                    : undefined,
+                                              }}
+                                            ></i>
+                                          </span>
+                                        </td>
+
+                                        {/* -------------- */}
                                         <td>
                                           <div class="btn-group dropstart table-action">
                                             <button
@@ -2044,19 +3317,31 @@ const OrderManagement = () => {
                                                   to={`/supplier/order-management/order-detail/${ele.id}`}
                                                   className="dropdown-item"
                                                 >
-                                                <i class="fa-solid fa-eye" style={{color:'blue'}}></i>
+                                                  <i
+                                                    class="fa-solid fa-eye"
+                                                    style={{ color: "blue" }}
+                                                  ></i>
                                                 </NavLink>
                                               </li>
                                               {/* <li> <a className="dropdown-item">Edit</a></li> */}
                                               <li className="seperator d-flex">
                                                 <a className="dropdown-item">
-                                                <i class="fa-solid fa-file-pdf" style={{color:'red'}}></i>
+                                                  <i
+                                                    class="fa-solid fa-file-pdf"
+                                                    style={{ color: "red" }}
+                                                  ></i>
                                                 </a>
                                                 <a className="dropdown-item">
-                                                <i class="fa-solid fa-file-csv" style={{color:'black'}}></i>
+                                                  <i
+                                                    class="fa-solid fa-file-csv"
+                                                    style={{ color: "black" }}
+                                                  ></i>
                                                 </a>
                                                 <a className="dropdown-item">
-                                                <i class="fa-solid fa-file-excel" style={{color:'green'}}></i>
+                                                  <i
+                                                    class="fa-solid fa-file-excel"
+                                                    style={{ color: "green" }}
+                                                  ></i>
                                                 </a>
                                                 <i class=""></i>
                                               </li>
@@ -2074,57 +3359,52 @@ const OrderManagement = () => {
                                   </>
                                 )}
                               </tbody>
-                              <tfoot>
-                                <tr>
-                                  {data.length > 0 ? (
-                                    <CustomTablePagination
-                                      rowsPerPageOptions={[
-                                        5,
-                                        10,
-                                        15,
-                                        { label: "All", value: -1 },
-                                      ]}
-                                      labelRowsPerPage={t(
-                                        "admin.supplier_management.list.pagination_text"
-                                      )}
-                                      colSpan={10}
-                                      count={orderList.length}
-                                      rowsPerPage={rowsPerPage}
-                                      page={page}
-                                      size="small"
-                                      slotProps={{
-                                        select: {
-                                          "aria-label": "rows per page",
-                                        },
-                                        actions: {
-                                          showFirstButton: true,
-                                          showLastButton: true,
-                                        },
-                                      }}
-                                      onPageChange={handleChangePage}
-                                      onRowsPerPageChange={
-                                        handleChangeRowsPerPage
-                                      }
-                                      sx={{
-                                        ".MuiTablePagination-toolbar button": {
-                                          backgroundColor: "#623ead",
-                                          borderColor: "#623ead",
-                                          borderRadius: "25px",
-                                          color: "#fefefe",
-                                        },
-
-                                        ".MuiTablePagination-toolbar span": {
-                                          fontSize: "12px",
-                                        },
-                                      }}
-                                    />
-                                  ) : (
-                                    <></>
-                                  )}
-                                </tr>
-                              </tfoot>
                             </table>
                           </div>
+                        </div>
+                        <div className="table-pagination mb-2 mt-3">
+                          {data.length > 0 ? (
+                            <CustomTablePagination
+                              rowsPerPageOptions={[
+                                5,
+                                10,
+                                15,
+                                { label: "All", value: -1 },
+                              ]}
+                              labelRowsPerPage={t(
+                                "admin.supplier_management.list.pagination_text"
+                              )}
+                              colSpan={10} // Assuming you want to span across 10 columns
+                              count={orderList.length}
+                              rowsPerPage={rowsPerPage}
+                              page={page}
+                              size="small"
+                              slotProps={{
+                                select: {
+                                  "aria-label": "rows per page",
+                                },
+                                actions: {
+                                  showFirstButton: true,
+                                  showLastButton: true,
+                                },
+                              }}
+                              onPageChange={handleChangePage}
+                              onRowsPerPageChange={handleChangeRowsPerPage}
+                              sx={{
+                                ".MuiTablePagination-toolbar button": {
+                                  backgroundColor: "#623ead",
+                                  borderColor: "#623ead",
+                                  borderRadius: "25px",
+                                  color: "#fefefe",
+                                },
+                                ".MuiTablePagination-toolbar span": {
+                                  fontSize: "12px",
+                                },
+                              }}
+                            />
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -2145,7 +3425,9 @@ const OrderManagement = () => {
         }}
       >
         <Modal.Header>
-          <h5 class="modal-title text-purpal">Change Order Status</h5>
+          <h5 class="modal-title text-purpal">
+            {t("supplier.order_management.change_status.change_status_h")}
+          </h5>
           <button
             type="button"
             class="btn-close text-purpal"
@@ -2154,9 +3436,13 @@ const OrderManagement = () => {
           ></button>
         </Modal.Header>
         <Modal.Body>
-          <p>{`Total number of selected orders : ${targetId.length}`}</p>
+          <p>{`${t(
+            "supplier.order_management.change_status.order_selected"
+          )} : ${targetId.length}`}</p>
           <div className="border-purple p-3 rounded-2">
-            <div>Select Status</div>
+            <div>
+              {t("supplier.order_management.change_status.select_status")}
+            </div>
             <div className="mt-2">
               <div className="input-group">
                 <select
@@ -2167,10 +3453,18 @@ const OrderManagement = () => {
                     setStatusError("");
                   }}
                 >
-                  <option value="">Select status</option>
-                  <option value="1">Approved</option>
-                  <option value="2">On-hold</option>
-                  <option value="5">Cancelled</option>
+                  <option value="">
+                    {t("supplier.order_management.change_status.select_status")}
+                  </option>
+                  <option value="1">
+                    {t("supplier.order_management.change_status.approved")}
+                  </option>
+                  <option value="2">
+                    {t("supplier.order_management.change_status.on_hold")}
+                  </option>
+                  <option value="5">
+                    {t("supplier.order_management.change_status.cancelled")}
+                  </option>
                 </select>
               </div>
               {statusError === "" ? (
@@ -2184,7 +3478,9 @@ const OrderManagement = () => {
             className="border-purple p-3 mt-3 rounded-2"
             style={{ display: selectedStatus === "1" ? "block" : "none" }}
           >
-            <div>Delivery Date</div>
+            <div>
+              {t("supplier.order_management.change_status.delivery_date")}
+            </div>
             <div className="mt-2">
               <div className="input-group">
                 <DatePicker
@@ -2218,14 +3514,14 @@ const OrderManagement = () => {
               setShow(false);
             }}
           >
-            Cancel
+            {t("supplier.order_management.change_status.cancel")}
           </button>
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
             onClick={() => handleUpdateStatus()}
           >
-            Save
+            {t("supplier.order_management.change_status.save")}
           </button>
         </Modal.Footer>
       </Modal>

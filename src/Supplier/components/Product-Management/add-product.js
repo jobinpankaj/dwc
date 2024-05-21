@@ -1,45 +1,3 @@
-// import React, { useState, useEffect, useRef } from "react";
-// // import ReactCrop, {
-// //   centerCrop,
-// //   makeAspectCrop,
-// //   Crop,
-// //   PixelCrop,
-// // } from "react-image-crop";
-// // import { canvasPreview } from "./cropper/canvasPreview";
-// // import { canvasPreviewProduct } from "./cropper/imgPreview";
-// import { Modal } from "react-bootstrap";
-// // import { useDebounceEffect } from "./cropper/useDebounceEffect";
-// import { useNavigate } from "react-router-dom";
-// import { useTranslation } from "react-i18next";
-// import { toast } from "react-toastify";
-// import { ThreeDots } from "react-loader-spinner";
-// import editImg from "../../assets/images/upload.png";
-// import Sidebar from "../../../CommonComponents/Sidebar/sidebar";
-// import Header from "../../../CommonComponents/Header/header";
-// import "react-toastify/dist/ReactToastify.css";
-// import "../../assets/scss/dashboard.scss";
-// import "react-image-crop/dist/ReactCrop.css";
-// import useAuthInterceptor from "../../../utils/apis";
-// import noImage from "../../assets/images/no-image.png";
-
-// toast.configure();
-
-// // function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
-// //   return centerCrop(
-// //     makeAspectCrop(
-// //       {
-// //         unit: "px",
-// //         width: 500,
-// //       },
-// //       aspect,
-// //       mediaWidth,
-// //       mediaHeight
-// //     ),
-// //     mediaWidth,
-// //     mediaHeight
-// //   );
-// // }
-
 // const AddProduct = () => {
 //   const { t, i18n } = useTranslation();
 //   const apis = useAuthInterceptor();
@@ -107,7 +65,125 @@
 //   const [show, setShow] = useState(false);
 //   const [show2, setShow2] = useState(false);
 //   const [disable, setDisable] = useState(false);
+//   const [showStyleModal,setShowStyleModal]=useState(false);
+//   const [otherStyle,setOtherStyle]=useState("");
+//   const [showOther,setShowOther]=useState(false);
 
+//   const [showFormatModal,setShowFormatModal]=useState(false);
+//   const [otherFormat,setOtherFormat]=useState("");
+//   const [showNewFormat,setShowNewFormat]=useState(false);
+//   const [formatUnit,setFormatUnit]=useState(0)
+//   // console.log("saddddd",otherStyle)
+//   const submit=()=>{
+//     console.log(otherStyle,"sdagsajkjksa")
+//     if( otherStyle.trim()==="" || otherStyle===null ||otherStyle.toLowerCase().trim()=="other")
+//     {
+      
+//       toast.error("Please enter valid value", {
+//         autoClose: 3000,
+//         position: toast.POSITION.TOP_CENTER,
+//       });
+
+//     }
+//     else{
+//       const config = {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           permission: "product-edit",
+//         },
+//       };
+//       const formDataStyle=new FormData();
+//       formDataStyle.append("style",otherStyle)
+//       apis
+//         .post("/supplier/createProductStyles", formDataStyle, config)
+//         .then((res) => {
+//           // setDisable(false);
+//           if (res.data.success === true) {
+//             toast.success("Style added to the list successfully.", {
+//               autoClose: 3000,
+//               position: toast.POSITION.TOP_CENTER,
+//             });
+//             setSelectedStyle("")
+//             // setSelectedStyle(otherStyle)
+//             setShowOther(true);
+//             setShowStyleModal(false);
+//           } else {
+            
+//             toast.error("Could not add Style. Please try again later.", {
+//               autoClose: 3000,
+//               position: toast.POSITION.TOP_CENTER,
+//             });
+//           }
+//         })
+//         .catch((error) => {
+//           // setDisable(false);
+//               toast.error("Could not add style. Please try again later.", {
+//                 autoClose: 3000,
+//                 position: toast.POSITION.TOP_CENTER,
+//               });
+          
+//         });
+
+    
+    
+//   }
+//   }
+//   const submitFormat=()=>{
+//     // console.log(otherStyle,"sdagsajkjksa")
+//     if( otherFormat.trim()==="" || otherFormat===null ||formatUnit<=0 ||formatUnit===null)
+//     {
+      
+//       toast.error("Please enter valid value", {
+//         autoClose: 3000,
+//         position: toast.POSITION.TOP_CENTER,
+//       });
+
+//     }
+//     else{
+//       const config = {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           permission: "product-edit",
+//         },
+//       };
+//       const formDataFormat=new FormData();
+//       formDataFormat.append("name",otherFormat)
+//       formDataFormat.append("unit",formatUnit)
+//       apis
+//         .post("/supplier/createProductFormats", formDataFormat, config)
+//         .then((res) => {
+//           // setDisable(false);
+//           if (res.data.success === true) {
+//             toast.success("Format added to the list successfully.", {
+//               autoClose: 3000,
+//               position: toast.POSITION.TOP_CENTER,
+//             });
+//             setSelectedFormat("")
+//             setShowNewFormat(true);
+//             setShowFormatModal(false);
+//           } else {
+            
+//             toast.error("Could not add Format. Please try again later.", {
+//               autoClose: 3000,
+//               position: toast.POSITION.TOP_CENTER,
+//             });
+//           }
+//         })
+//         .catch((error) => {
+//           // setDisable(false);
+//               toast.error("Could not add Format. Please try again later.", {
+//                 autoClose: 3000,
+//                 position: toast.POSITION.TOP_CENTER,
+//               });
+          
+//         });
+
+//     // setSelectedFormat("")
+//     // setShowNewFormat(true);
+//     // setShowFormatModal(false);
+    
+//   }
+//   }
 //   // useDebounceEffect(
 //   //   async () => {
 //   //     if (
@@ -274,11 +350,11 @@
 //       }
 //     }
 
+
 //     if (selectedFormat === "") {
 //       formatValid = false;
 //       setFormatError("Please select format.");
 //     }
-
 //     if (selectedStyle === "") {
 //       styleValid = false;
 //       setStyleError("Please select style.");
@@ -318,7 +394,7 @@
 //           permission: "product-edit",
 //         },
 //       };
-
+      
 //       let descriptionArr = [];
 //       let descriptionObj = {
 //         description: description,
@@ -331,9 +407,23 @@
 //       const formData = new FormData();
 //       formData.append("product_name", productName);
 //       formData.append("product_type", "Beer");
-//       formData.append("product_format", selectedFormat);
+//       if(otherFormat!==""){
+//         formData.append("product_format", otherFormat);
+//       }
+//       else{
+//         formData.append("product_format", selectedFormat);
+//       }
+//       // formData.append("product_format", selectedFormat);
 //       formData.append("product_desc", JSON.stringify(descriptionArr));
-//       formData.append("style", selectedStyle);
+//       if(otherStyle!=="")
+//       {
+//         formData.append("style", otherStyle);
+//       }
+//       else
+//       {
+//         formData.append("style", selectedStyle);
+//       }
+//       // formData.append("style", selectedStyle);
 //       formData.append("organic", "1");
 //       formData.append("sub_category", selectedSubCat);
 //       formData.append("sap_lowbla", lowbla);
@@ -392,10 +482,12 @@
 
 //   useEffect(() => {
 //     apis
-//       .get("/Styles", {})
+//       .get("/Styles",{})
+//       // .get("/getProductStyles", {})
 //       .then((res) => {
 //         if (res.data.success === true) {
 //           setStylesList(res.data.data);
+//           console.log(res.data.data)
 //         } else {
 //           console.log("Styles List could not be fetched");
 //         }
@@ -422,6 +514,7 @@
 //       .then((res) => {
 //         if (res.data.success == true) {
 //           setFormatList(res.data.data);
+//           console.log("Deeeeexxx",res.data.data)
 //         } else {
 //           console.log("Format List could not be fetched.");
 //         }
@@ -429,7 +522,7 @@
 //       .catch((error) => {
 //         console.log(error);
 //       });
-//   }, []);
+//   }, [selectedStyle,selectedFormat]);
 
 //   const handleProductChange = (e) => {
 //     setProductName(e.target.value);
@@ -462,9 +555,14 @@
 //   };
 
 //   const handleStyleChange = (e) => {
+//     setShowOther(false)
 //     setSelectedStyle(e.target.value);
 //     console.log(e.target.value);
-//     if(e.target.value==='Other'){
+//     if(e.target.value==='other'){
+//       console.log("NO entry")
+//       handleStylePopup()
+//     }
+//     else if(e.target.value==='Other'){
 //       handleStylePopup()
 //     }
 //     setStyleError("");
@@ -472,7 +570,9 @@
 //   };
 
 //   const handleStylePopup=()=>{
+//     setOtherStyle("")
 //     console.log('done');
+//     setShowStyleModal(true);
        
 //   }
 
@@ -490,9 +590,26 @@
 //   };
 
 //   const handleFormatChange = (e) => {
+//     setShowNewFormat(false)
+//     setOtherFormat("")
 //     setSelectedFormat(e.target.value);
+//     if(e.target.value==="other")
+//     {
+//       console.log("xaaa");
+//       handleFormatPopup()
+//     }
 //     setFormatError("");
+
+//     // Clear current image when format changes
+//     if (currentImage !== "") {
+//       setCurrentImage("");
+//       document.getElementById('upload1').value = null;
+//     }
 //   };
+//   const handleFormatPopup=()=>{
+//       // setOtherFormat("")
+//       setShowFormatModal(true)
+//   }
 
 //   const handleOrganicChange = (e) => {
 //     if (e.target.checked === true) {
@@ -732,17 +849,34 @@
 //                               {stylesList &&
 //                                 stylesList.map((ele) => {
 //                                   return (
-//                                     <option key={ele.id} value={ele.id}>
+//                                     <option key={ele.id} value={ele.name}>
 //                                       {ele.name}
 //                                     </option>
 //                                   );
 //                                 })}
+//                                 {/* New style */}
+//                                 {/* {showOther==true?(<option value={otherStyle}>
+//                                 {otherStyle}
+//                                 </option>):(<></>)} */}
+//                                 <option value="other">
+//                                 {t("supplier.product_management.add.other")}
+//                                 </option>
+                                
+
 //                             </select>
 //                             {styleError === "" ? (
 //                               <></>
 //                             ) : (
 //                               <p className="error-label">{styleError}</p>
 //                             )}
+//                             {/* {showOther==true?(<input
+//                               type="text"
+//                               className="form-control"
+//                               value={otherStyle}
+//                               disabled={true}
+//                             />):(<></>)
+
+//                             } */}
 //                             <div class="form-check mt-2">
 //                               <input
 //                                 class="form-check-input me-2"
@@ -824,6 +958,12 @@
 //                                     </option>
 //                                   );
 //                                 })}
+//                                 {/* {showNewFormat==true?(<option value={otherFormat}>
+//                                 {otherFormat}
+//                                 </option>):(<></>)} */}
+//                                 <option value="other">
+//                                 {t("supplier.product_management.add.other")}
+//                                 </option>
 //                             </select>
 //                             {formatError === "" ? (
 //                               <></>
@@ -926,7 +1066,7 @@
 //                               </label>
 //                               <>
 //                                 <div className="mb-3 prodImg position-relative">
-//                                   <div className="productImg min-square-width border px-2 mb-3 ">
+//                                   <div className="productImg min-square-width proImg border px-2 mb-3 ">
 //                                     <img
 //                                       src={
 //                                         currentImageProduct === ""
@@ -1161,9 +1301,136 @@
 //           </button>
 //         </Modal.Footer>
 //       </Modal>
+
+//       {/* new stylemodal */}
+      
+//       <Modal
+//         className="modal fade"
+//         show={showStyleModal}
+//         centered
+//         // onHide={() => { setShow(false) }}
+//       >
+//         <Modal.Header>
+//           <h5 class="modal-title text-purpal">Add New Style</h5>
+//           {/* <button type="button" class="btn-close text-purpal" aria-label="Close" onClick={closeAgeConfirm}></button> */}
+//         </Modal.Header>
+//         <Modal.Body
+//           style={{
+//             display: "flex",
+//             justifyContent: "center",
+//             background: "black",
+//           }}
+//         >
+               
+//              <input
+//               type="text"
+//               className="form-control"
+//               value={otherStyle}
+//               placeholder="Enter Style"
+//               onChange={(e) => setOtherStyle(e.target.value)}/>
+//         </Modal.Body>
+
+//         <Modal.Footer
+//           style={{
+//             display: "flex",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <button
+//             type="button"
+//             class="btn btn-outline-purple"
+//             onClick={() => {
+//               setSelectedStyle("");
+//               setShowStyleModal(false);
+//               setOtherStyle("");
+//               // setCurrentImageProduct("");
+//               // setCompletedCropProduct(null);
+//             }}
+//           >
+//             Cancel
+//           </button>
+//           <button
+//             type="button"
+//             class="btn btn-purple btn-md w-auto"
+//             onClick={() => submit()}
+//           >
+//             Save
+//           </button>
+//         </Modal.Footer>
+//       </Modal>
+//       {/* New Format model */}
+//       <Modal
+//         className="modal fade"
+//         show={showFormatModal}
+//         centered
+//         // onHide={() => { setShow(false) }}
+//       >
+//         <Modal.Header>
+//           <h5 class="modal-title text-purpal">Add New Format</h5>
+//           {/* <button type="button" class="btn-close text-purpal" aria-label="Close" onClick={closeAgeConfirm}></button> */}
+//         </Modal.Header>
+//         <Modal.Body
+//           // style={{
+//           //   display: "flex",
+//           //   justifyContent: "center",
+//           //   background: "black",
+//           // }}
+//         >
+//              <label>Format name</label>
+//              <input
+//               type="text"
+//               className="form-control"
+//               value={otherFormat}
+//               placeholder="Enter Format Name"
+//               onChange={(e) => setOtherFormat(e.target.value)}/>
+//               <br/>
+//               <label>Format Unit</label>
+//               <input
+//               type="number"
+//               className="form-control"
+//               value={formatUnit}
+//               placeholder="Enter Unit"
+//               onChange={(e) => setFormatUnit(e.target.value)}/>
+
+//         </Modal.Body>
+
+//         <Modal.Footer
+//           style={{
+//             display: "flex",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <button
+//             type="button"
+//             class="btn btn-outline-purple"
+//             onClick={() => {
+//               setSelectedFormat("");
+//               setShowFormatModal(false);
+//               setOtherFormat("");
+//               setFormatUnit(0);
+//               // setCurrentImageProduct("");
+//               // setCompletedCropProduct(null);
+//             }}
+//           >
+//             Cancel
+//           </button>
+//           <button
+//             type="button"
+//             class="btn btn-purple btn-md w-auto"
+//             onClick={() => submitFormat()}
+//           >
+//             Save
+//           </button>
+//         </Modal.Footer>
+//       </Modal>
 //     </div>
 //   );
 // };
+
+// export default AddProduct;
+
+
+
 
 // export default AddProduct;
 import React, { useState, useEffect, useRef } from "react";
@@ -1189,7 +1456,9 @@ import "../../assets/scss/dashboard.scss";
 import "react-image-crop/dist/ReactCrop.css";
 import useAuthInterceptor from "../../../utils/apis";
 import noImage from "../../assets/images/no-image.png";
-
+import beerBottle from "../../assets/images/beer-bottle.png";
+import beerKeg from "../../assets/images/beer_keg.png";
+import beerCane from "../../assets/images/beer_cane.png";
 toast.configure();
 
 // function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
@@ -1247,6 +1516,7 @@ const AddProduct = () => {
   const [currentCode, setCurrentCode] = useState("");
   const [codePic, setCodePic] = useState("");
   const [codeError, setCodedError] = useState("");
+  const [formatType, setFormatType] = useState("")
   // const previewCanvasRef = useRef(null);
   // const previewCanvasRefProduct = useRef(null);
   // const imgRef = useRef(null);
@@ -1275,35 +1545,36 @@ const AddProduct = () => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [showStyleModal,setShowStyleModal]=useState(false);
-  const [otherStyle,setOtherStyle]=useState("");
-  const [showOther,setShowOther]=useState(false);
+  const [showStyleModal, setShowStyleModal] = useState(false);
+  const [otherStyle, setOtherStyle] = useState("");
+  const [showOther, setShowOther] = useState(false);
 
-  const [showFormatModal,setShowFormatModal]=useState(false);
-  const [otherFormat,setOtherFormat]=useState("");
-  const [showNewFormat,setShowNewFormat]=useState(false);
-  const [formatUnit,setFormatUnit]=useState(0)
+  const [showFormatModal, setShowFormatModal] = useState(false);
+  const [otherFormat, setOtherFormat] = useState("");
+  const [showNewFormat, setShowNewFormat] = useState(false);
+  const [formatUnit, setFormatUnit] = useState(0);
+  const [productType, setProductType] = useState("");
+  const [productTypeError, setProductTypeError] = useState("");
   // console.log("saddddd",otherStyle)
-  const submit=()=>{
-    console.log(otherStyle,"sdagsajkjksa")
-    if( otherStyle.trim()==="" || otherStyle===null ||otherStyle.toLowerCase().trim()=="other")
-    {
-      
+  const submit = () => {
+    console.log(otherStyle, "sdagsajkjksa")
+    if (otherStyle.trim() === "" || otherStyle === null || otherStyle.toLowerCase().trim() == "other") {
+
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
 
     }
-    else{
+    else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           permission: "product-edit",
         },
       };
-      const formDataStyle=new FormData();
-      formDataStyle.append("style",otherStyle)
+      const formDataStyle = new FormData();
+      formDataStyle.append("style", otherStyle)
       apis
         .post("/supplier/createProductStyles", formDataStyle, config)
         .then((res) => {
@@ -1318,7 +1589,7 @@ const AddProduct = () => {
             setShowOther(true);
             setShowStyleModal(false);
           } else {
-            
+
             toast.error("Could not add Style. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1327,38 +1598,37 @@ const AddProduct = () => {
         })
         .catch((error) => {
           // setDisable(false);
-              toast.error("Could not add style. Please try again later.", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER,
-              });
-          
+          toast.error("Could not add style. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+
         });
 
-    
-    
+
+
+    }
   }
-  }
-  const submitFormat=()=>{
+  const submitFormat = () => {
     // console.log(otherStyle,"sdagsajkjksa")
-    if( otherFormat.trim()==="" || otherFormat===null ||formatUnit<=0 ||formatUnit===null)
-    {
-      
+    if (otherFormat.trim() === "" || otherFormat === null || formatUnit <= 0 || formatUnit === null) {
+
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
 
     }
-    else{
+    else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
           permission: "product-edit",
         },
       };
-      const formDataFormat=new FormData();
-      formDataFormat.append("name",otherFormat)
-      formDataFormat.append("unit",formatUnit)
+      const formDataFormat = new FormData();
+      formDataFormat.append("name", otherFormat)
+      formDataFormat.append("unit", formatUnit)
       apis
         .post("/supplier/createProductFormats", formDataFormat, config)
         .then((res) => {
@@ -1372,7 +1642,7 @@ const AddProduct = () => {
             setShowNewFormat(true);
             setShowFormatModal(false);
           } else {
-            
+
             toast.error("Could not add Format. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1381,18 +1651,18 @@ const AddProduct = () => {
         })
         .catch((error) => {
           // setDisable(false);
-              toast.error("Could not add Format. Please try again later.", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER,
-              });
-          
+          toast.error("Could not add Format. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+
         });
 
-    // setSelectedFormat("")
-    // setShowNewFormat(true);
-    // setShowFormatModal(false);
-    
-  }
+      // setSelectedFormat("")
+      // setShowNewFormat(true);
+      // setShowFormatModal(false);
+
+    }
   }
   // useDebounceEffect(
   //   async () => {
@@ -1450,6 +1720,11 @@ const AddProduct = () => {
   };
 
   const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+  if (selectedImage) {
+    setCurrentImage(URL.createObjectURL(selectedImage));
+  }
+
     if (e.target.files && e.target.files[0]) {
       let pattern = /image-*/;
       let fileType = e.target.files[0].type;
@@ -1521,6 +1796,11 @@ const AddProduct = () => {
     }
   };
 
+  const handleProductType = (e) => {
+    setProductType(e.target.value);
+    setProductTypeError("");
+  };
+
   const handleAdd = () => {
     let nameValid = true,
       descriptionValid = true,
@@ -1533,7 +1813,14 @@ const AddProduct = () => {
       subCatValid = true,
       styleValid = true,
       lableValid = true,
+      TypeValid = true,
       productValid = true;
+    if (productType === "") {
+      TypeValid = false;
+      setProductTypeError(
+        "Product Type is required."
+      );
+      }
     if (productName === "") {
       nameValid = false;
       setProductNameError(
@@ -1604,7 +1891,7 @@ const AddProduct = () => {
           permission: "product-edit",
         },
       };
-      
+
       let descriptionArr = [];
       let descriptionObj = {
         description: description,
@@ -1616,23 +1903,21 @@ const AddProduct = () => {
 
       const formData = new FormData();
       formData.append("product_name", productName);
-      formData.append("product_type", "Beer");
-      if(otherFormat!==""){
+      formData.append("product_type", productType);
+      if (otherFormat !== "") {
         formData.append("product_format", otherFormat);
       }
-      else{
+      else {
         formData.append("product_format", selectedFormat);
       }
       // formData.append("product_format", selectedFormat);
       formData.append("product_desc", JSON.stringify(descriptionArr));
-      if(otherStyle!=="")
-      {
-        formData.append("style", otherStyle);
-      }
-      else
-      {
-        formData.append("style", selectedStyle);
-      }
+      // if (otherStyle !== "") {
+      //   formData.append("style", otherStyle);
+      // }
+      // else {
+      formData.append("style", selectedStyle);
+      
       // formData.append("style", selectedStyle);
       formData.append("organic", "1");
       formData.append("sub_category", selectedSubCat);
@@ -1673,7 +1958,7 @@ const AddProduct = () => {
         })
         .catch((error) => {
           setDisable(false);
-          if(error.message !== "revoke"){
+          if (error.message !== "revoke") {
             if (error.response.data.message === "validation_error") {
               if (error.response.data.data.product_image) {
                 setImageError("The image size can not be greater than 2mb.");
@@ -1685,14 +1970,14 @@ const AddProduct = () => {
               });
             }
           }
-          
+
         });
     }
   };
 
   useEffect(() => {
     apis
-      .get("/Styles",{})
+      .get("/Styles", {})
       // .get("/getProductStyles", {})
       .then((res) => {
         if (res.data.success === true) {
@@ -1724,7 +2009,7 @@ const AddProduct = () => {
       .then((res) => {
         if (res.data.success == true) {
           setFormatList(res.data.data);
-          console.log("Deeeeexxx",res.data.data)
+          console.log("Deeeeexxx", res.data.data)
         } else {
           console.log("Format List could not be fetched.");
         }
@@ -1732,7 +2017,7 @@ const AddProduct = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [selectedStyle,selectedFormat]);
+  }, [selectedStyle, selectedFormat]);
 
   const handleProductChange = (e) => {
     setProductName(e.target.value);
@@ -1767,29 +2052,29 @@ const AddProduct = () => {
   const handleStyleChange = (e) => {
     setShowOther(false)
     setSelectedStyle(e.target.value);
-    console.log(e.target.value);
-    if(e.target.value==='other'){
+    console.log("Style value ",e.target.value);
+    if (e.target.value === 'other') {
       console.log("NO entry")
       handleStylePopup()
     }
-    else if(e.target.value==='Other'){
+    else if (e.target.value === 'Other') {
       handleStylePopup()
     }
     setStyleError("");
 
   };
 
-  const handleStylePopup=()=>{
+  const handleStylePopup = () => {
     setOtherStyle("")
     console.log('done');
     setShowStyleModal(true);
-       
+
   }
 
   const handleSubCatChange = (e) => {
     setSubCatError("");
     setSelectedSubCat(e.target.value);
-    
+
   };
 
   const handleAlcoholChange = (e) => {
@@ -1800,25 +2085,33 @@ const AddProduct = () => {
   };
 
   const handleFormatChange = (e) => {
-    setShowNewFormat(false)
-    setOtherFormat("")
+    const formatId = e.target.value;
+    const ab = formatList.filter((x) => {
+      return x.id == formatId
+    });
+    let formatName = ab[0].name.split(' ')[0];
+    setFormatType(formatName);
+    setShowNewFormat(false);
+    setOtherFormat("");
     setSelectedFormat(e.target.value);
-    if(e.target.value==="other")
-    {
-      console.log("xaaa");
-      handleFormatPopup()
+    if (e.target.value === "other") {
+      handleFormatPopup();
     }
     setFormatError("");
 
     // Clear current image when format changes
     if (currentImage !== "") {
-      setCurrentImage("");
+      // setCurrentImage("");
       document.getElementById('upload1').value = null;
     }
   };
-  const handleFormatPopup=()=>{
-      // setOtherFormat("")
-      setShowFormatModal(true)
+
+
+
+
+  const handleFormatPopup = () => {
+    // setOtherFormat("")
+    setShowFormatModal(true)
   }
 
   const handleOrganicChange = (e) => {
@@ -2042,6 +2335,22 @@ const AddProduct = () => {
                       </div>
                       <div className="row mb-3 mx-0">
                         <div className="col-sm-6 px-0 ps-sm-0 pe-sm-3">
+
+
+                        <div className="mb-3">
+                            <label className="form-label">
+                            {t("supplier.product_management.Product_type.product_type_lable")}
+                            </label>
+                            <select className="form-select" onChange={(e) => handleProductType(e)} >
+                            <option value="">{t("supplier.product_management.Product_type.select_product")}</option>
+                                <option value="beer"> {t("supplier.product_management.Product_type.Beer")}</option>
+                                <option value="wine">{t("supplier.product_management.Product_type.Wine")}</option>
+                                <option value="cider">{t("supplier.product_management.Product_type.Cider")}</option>
+                                <option value="non-alcohol">{t("supplier.product_management.Product_type.Non-Alcohol")}</option>
+                                <option value="beverage">{t("supplier.product_management.Product_type.Beverage")}</option>
+                            </select>
+                          </div>
+
                           <div className="mb-3">
                             <label className="form-label">
                               {t("supplier.product_management.add.style")}
@@ -2059,19 +2368,19 @@ const AddProduct = () => {
                               {stylesList &&
                                 stylesList.map((ele) => {
                                   return (
-                                    <option key={ele.id} value={ele.name}>
+                                    <option key={ele.id} value={ele.id}>
                                       {ele.name}
                                     </option>
                                   );
                                 })}
-                                {/* New style */}
-                                {/* {showOther==true?(<option value={otherStyle}>
+                              {/* New style */}
+                              {/* {showOther==true?(<option value={otherStyle}>
                                 {otherStyle}
                                 </option>):(<></>)} */}
-                                <option value="other">
+                              <option value="other">
                                 {t("supplier.product_management.add.other")}
-                                </option>
-                                
+                              </option>
+
 
                             </select>
                             {styleError === "" ? (
@@ -2100,6 +2409,11 @@ const AddProduct = () => {
                               </label>
                             </div>
                           </div>
+                          {/* -------- */}
+
+                         
+
+                          {/* -------------- */}
                           <div className="mb-3">
                             <label className="form-label">
                               {t("supplier.product_management.add.subcategory")}
@@ -2145,6 +2459,9 @@ const AddProduct = () => {
                               <p className="error-label">{alcoholError}</p>
                             )}
                           </div>
+
+
+
                           <div className="mb-3">
                             <label className="form-label">
                               {t("supplier.product_management.add.format")}
@@ -2168,12 +2485,12 @@ const AddProduct = () => {
                                     </option>
                                   );
                                 })}
-                                {/* {showNewFormat==true?(<option value={otherFormat}>
+                              {/* {showNewFormat==true?(<option value={otherFormat}>
                                 {otherFormat}
                                 </option>):(<></>)} */}
-                                <option value="other">
+                              <option value="other">
                                 {t("supplier.product_management.add.other")}
-                                </option>
+                              </option>
                             </select>
                             {formatError === "" ? (
                               <></>
@@ -2181,8 +2498,10 @@ const AddProduct = () => {
                               <p className="error-label">{formatError}</p>
                             )}
                           </div>
+
+
                           <div className="mb-3">
-                            <label className="form-label">Upload Barcode</label>
+                            <label className="form-label"> {t("supplier.product_management.add.barcode")}</label>
                             <div className="uploadBtn">
                               {currentCode !== "" && currentCode !== null ? (
                                 <img
@@ -2215,36 +2534,59 @@ const AddProduct = () => {
                             )}
                           </div>
                         </div>
+
+
+
+
                         <div className="col-sm-6 px-0 pe-sm-0 ps-sm-3">
                           <div className="mb-3 prodImg row gap-0">
                             <div className="col-xl-6 col-lg-12 col-md-12">
                               <label className="form-label">
-                                {"Lable Image"}
+                              {t("supplier.product_management.add.label_image")}
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-                                  {/* {completedCrop && (
-                                    <>
-                                      <div style={{ display: "block" }}>
-                                        <canvas
-                                          ref={previewCanvasRef}
-                                          style={{
-                                            border: "1px solid black",
-                                            width: "200px",
-                                            height: "200px",
-                                          }}
-                                        />
-                                      </div>
-                                    </>
-                                  )} */}
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
-                                    <img
-                                      src={
-                                        currentImage === ""
-                                          ? noImage
-                                          : currentImage
-                                      }
-                                    ></img>
+                                  <div className="productImg min-square-width border px-2 mb-3">
+                                    {formatType === "Bottle" && (
+                                      <>
+                                        <div class="clipBox">
+                                          <img src={beerBottle} alt="Bottle" />
+                                        </div>
+                                        <div class="lable-bottle">
+                                          <div class="lable-content">
+                                          {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {formatType === "Can" && (
+                                      <>
+                                        <div class="clipBoxcane">
+                                          <img src={beerCane} alt="Can" />
+                                        </div>
+                                        <div className="lable-cane">
+                                          <div class="lable-content">
+                                          {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {formatType === "Keg" && (
+                                      <>
+                                        <div class="clipBoxkeg">
+                                          <img src={beerKeg} alt="Keg" />
+                                        </div>
+                                        <div className="lable-keg">
+                                          <div class="lable-content">
+                                          {currentImage ? <img src={currentImage} /> : null}
+                                          </div>
+                                        </div>
+                                      </>
+                                    )}
+                                    {(formatType !== "Bottle" && formatType !== "Can" && formatType !== "Keg") && (
+                                      <img src={noImage} alt="No Image" />
+                                    )}
+
                                   </div>
                                   {imageError === "" ? (
                                     <></>
@@ -2272,7 +2614,7 @@ const AddProduct = () => {
                             </div>
                             <div className="col-xl-6 col-lg-12 col-md-12">
                               <label className="form-label">
-                                {"Product Image"}
+                              {t("supplier.product_management.add.product_image")}
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
@@ -2285,34 +2627,7 @@ const AddProduct = () => {
                                       }
                                     ></img>
                                   </div>
-                                  {/* {completedCropProduct && (
-                                    <>
-                                      <div style={{ display: "block" }}>
-                                        <canvas
-                                          ref={previewCanvasRefProduct}
-                                          style={{
-                                            border: "1px solid black",
-                                            width: "200px",
-                                            height: "200px",
-                                          }}
-                                        />
-                                      </div> */}
-                                  {/* <div>
-                                                            <button onClick={onDownloadCropClick}>Download Crop</button>
-                                                            <a
-                                                            ref={hiddenAnchorRef}
-                                                            download
-                                                            style={{
-                                                                position: 'absolute',
-                                                                top: '-200vh',
-                                                                visibility: 'hidden',
-                                                            }}
-                                                            >
-                                                            Hidden download
-                                                            </a>
-                                                        </div> */}
-                                  {/* </>
-                                  )} */}
+                                 
                                   {imageProductError === "" ? (
                                     <></>
                                   ) : (
@@ -2343,6 +2658,8 @@ const AddProduct = () => {
                             </div>
                           </div>
                         </div>
+
+
                       </div>
                       <div className="mb-3 col">
                         <button
@@ -2392,7 +2709,7 @@ const AddProduct = () => {
         className="modal fade"
         show={show}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Lable Image</h5>
@@ -2445,7 +2762,7 @@ const AddProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-            // onClick={() => handleLableCrop()}
+          // onClick={() => handleLableCrop()}
           >
             Crop
           </button>
@@ -2456,7 +2773,7 @@ const AddProduct = () => {
         className="modal fade"
         show={show2}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Product Image</h5>
@@ -2505,7 +2822,7 @@ const AddProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-            // onClick={() => handleProductCrop()}
+          // onClick={() => handleProductCrop()}
           >
             Crop
           </button>
@@ -2513,12 +2830,12 @@ const AddProduct = () => {
       </Modal>
 
       {/* new stylemodal */}
-      
+
       <Modal
         className="modal fade"
         show={showStyleModal}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Style</h5>
@@ -2531,13 +2848,13 @@ const AddProduct = () => {
             background: "black",
           }}
         >
-               
-             <input
-              type="text"
-              className="form-control"
-              value={otherStyle}
-              placeholder="Enter Style"
-              onChange={(e) => setOtherStyle(e.target.value)}/>
+
+          <input
+            type="text"
+            className="form-control"
+            value={otherStyle}
+            placeholder="Enter Style"
+            onChange={(e) => setOtherStyle(e.target.value)} />
         </Modal.Body>
 
         <Modal.Footer
@@ -2573,34 +2890,34 @@ const AddProduct = () => {
         className="modal fade"
         show={showFormatModal}
         centered
-        // onHide={() => { setShow(false) }}
+      // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Format</h5>
           {/* <button type="button" class="btn-close text-purpal" aria-label="Close" onClick={closeAgeConfirm}></button> */}
         </Modal.Header>
         <Modal.Body
-          // style={{
-          //   display: "flex",
-          //   justifyContent: "center",
-          //   background: "black",
-          // }}
+        // style={{
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   background: "black",
+        // }}
         >
-             <label>Format name</label>
-             <input
-              type="text"
-              className="form-control"
-              value={otherFormat}
-              placeholder="Enter Format Name"
-              onChange={(e) => setOtherFormat(e.target.value)}/>
-              <br/>
-              <label>Format Unit</label>
-              <input
-              type="number"
-              className="form-control"
-              value={formatUnit}
-              placeholder="Enter Unit"
-              onChange={(e) => setFormatUnit(e.target.value)}/>
+          <label>Format name</label>
+          <input
+            type="text"
+            className="form-control"
+            value={otherFormat}
+            placeholder="Enter Format Name"
+            onChange={(e) => setOtherFormat(e.target.value)} />
+          <br />
+          <label>Format Unit</label>
+          <input
+            type="number"
+            className="form-control"
+            value={formatUnit}
+            placeholder="Enter Unit"
+            onChange={(e) => setFormatUnit(e.target.value)} />
 
         </Modal.Body>
 

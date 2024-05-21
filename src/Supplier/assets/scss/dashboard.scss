@@ -35,14 +35,181 @@
         }
     }
 
-    img {
-        width: auto !important;
+    // -----------clipbox-bottle---
+    .clipBox img {
+        width: 120px !important;
         height: 100% !important;
-        max-height: inherit;
-        max-width: 100% !important;
-        object-fit: contain;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+
     }
+
+    .clipBox img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+    @keyframes moveRightLeft {
+
+        0%,
+        100% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        25% {
+            transform: translateX(-5px);
+            /* Gradually move left */
+        }
+
+        75% {
+            transform: translateX(5px);
+            /* Gradually move right */
+        }
+    }
+
+    // -----lable-Bottle----
+
+    .lable-bottle {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 145px;
+        left: 74px;
+        cursor: pointer;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .lable-bottle img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBox:hover+.lable-bottle .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+        width: 60px !important;
+    }
+
+
+    @keyframes moveLeftRight {
+
+        0% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        50% {
+            transform: translateX(-0px);
+            /* Gradually move left */
+        }
+
+        100% {
+            transform: translateX(0px);
+            /* Gradually move right */
+        }
+    }
+
+
+
+
+    // -----------clipbox--cane---------------------
+
+    .clipBoxcane img {
+        width: 450px !important;
+        height: 100% !important;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+    }
+
+    .clipBoxcane img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+    // -----lable-Cane----
+
+    .lable-cane {
+        width: 86px;
+        height: 135px;
+        position: absolute;
+        top: 97px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .lable-cane img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBoxcane:hover+.lable-cane .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+    }
+
+
+
+
+    // --------lable-keg---
+
+    .clipBoxkeg img {
+        width: 90px !important;
+        height: 100% !important;
+        max-width: inherit !important;
+        object-fit: contain !important;
+        cursor: pointer;
+    }
+
+    .clipBoxkeg img:hover {
+        animation: moveRightLeft 4s linear infinite;
+    }
+
+
+    .lable-keg {
+        width: 66px;
+        height: 73px;
+        position: absolute;
+        top: 147px;
+        border-radius: 7px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .lable-keg img {
+        position: relative;
+        transition: transform 0.3s ease;
+        /* Apply smooth transition */
+    }
+
+    .clipBoxkeg:hover+.lable-keg .lable-content img {
+        animation: moveLeftRight 4s linear infinite;
+    }
+
+
+    @keyframes moveLeftRight {
+
+        0%,
+        100% {
+            transform: translateX(0);
+            /* Start and end position (center) */
+        }
+
+        25% {
+            transform: translateX(-25px);
+            /* Gradually move left */
+        }
+
+        75% {
+            transform: translateX(25px);
+            /* Gradually move right */
+        }
+    }
+
 }
+
 
 body {
     font-family: $font-regular;
@@ -611,13 +778,14 @@ a {
             hsl(194deg 100% 50%) 100%);
 }
 
-.modal {
+.order-details .modal {
+
     button.btn-close {
         position: absolute;
-        right: 15px;
-        top: 15px;
-        background: url(../images/modal-close.svg) center no-repeat;
+        right: -27px;
+        top: 8px;
         opacity: 1;
+        background-color: #fff;
     }
 
     .modal-header {
@@ -992,7 +1160,7 @@ table {
         @media only screen and (max-width:$mobile) {
             margin-bottom: 15px;
             max-width: unset;
-            width: 100%;
+            width: unset !important;
         }
 
         .search-input {
@@ -1003,6 +1171,7 @@ table {
             width: 100%;
             height: 36px;
             padding: 5px 10px 5px 30px;
+            background-color: #fff !important;
         }
     }
 }
@@ -1025,6 +1194,10 @@ table {
             }
         }
 
+    }
+
+    li {
+        padding: 5px;
     }
 
     .dropdown-menu {
@@ -1088,6 +1261,11 @@ table {
             font-size: 12px;
         }
     }
+}
+
+.table-pagination {
+    display: flex;
+    justify-content: end;
 }
 
 .tab-link-row {
@@ -1598,13 +1776,18 @@ table {
         border-radius: 10px;
         justify-content: center;
         align-items: center;
-        width: 120px;
+        width: 150px;
         font-weight: 500;
         font-size: 14px;
         font-family: $font-medium;
     }
 
 }
+.uploadBtn img{
+    width: 20px;
+    height: 16px;
+}
+
 
 .dropdown-item {
     padding-bottom: 5px;
@@ -1782,6 +1965,11 @@ table {
     }
 }
 
+
+
+
+
+
 .inventory-manage {
     .titleName {
         font-size: 20px;
@@ -1888,26 +2076,6 @@ table {
         }
     }
 
-    .addBtn {
-        display: flex;
-        align-items: flex-end;
-        font-family: "ubuntumedium";
-        font-size: 16px;
-        color: #9370DB;
-        gap: 10px;
-        height: 100%;
-
-        i {
-            font-style: normal;
-            width: 25px;
-            height: 25px;
-            border: 2px solid #9370DB;
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 18px;
-            text-align: center;
-        }
-    }
 
     .accordion-button {
 
@@ -1939,6 +2107,7 @@ table {
 
 }
 
+
 .modal {
     .modal-title {
         font-size: 26px;
@@ -1969,6 +2138,7 @@ table {
         font-family: inherit;
     }
 }
+
 
 // .product-manage .addProductBox {
 //     .card {
@@ -2172,6 +2342,7 @@ table {
         padding: 5px;
     }
 }
+
 
 .inventory-manage {
     .formBx {
@@ -2453,6 +2624,7 @@ table {
     }
 }
 
+
 @media only screen and (max-width: 600px) {
     .notificaiton-panel {
         width: 80% !important;
@@ -2478,12 +2650,36 @@ table {
     // }
     
 }
+@media only screen and (max-width: 330px) {
+    .table-pagination {
+        .base-TablePagination-toolbar {
+            gap: 5px !important;
+
+            p {
+                font-size: 10px !important;
+            }
+        }
+        button{
+            font-size: 10px;
+        }
+    }
+}
 
 @media only screen and (max-width: 768px) {
     .notificaiton-panel {
         width: 50%;
     }
+    .table-pagination {
+        .base-TablePagination-toolbar {
+            display: flex !important;
+            flex-direction: row !important;
+
+        }
+    }
 }
+
+
+
 .notification-footer {
     display: flex;
     margin-top: 5px;
@@ -2549,6 +2745,7 @@ table {
                 border-right: 2px solid #fff;
                 background: #f6f0f9;
                 font-size: 25px;
+                min-width: 65px;
 
                 span {
                     font-size: 15px;
@@ -2625,7 +2822,7 @@ table {
         }
     }
 
-    button{
+    button {
         border: unset !important;
         background-color: unset !important;
     }
@@ -2650,7 +2847,8 @@ table {
         p {
             margin-bottom: 3px !important;
             color: #673BB7;
-            span{
+
+            span {
                 color: #6c757d;
             }
         }
@@ -2664,9 +2862,10 @@ table {
         .fa-eye {
             font-size: 2em;
             color: blue;
-          
+
         }
-        .fa-xmark{
+
+        .fa-xmark {
             font-size: 23px;
             color: #6c757d;
             cursor: pointer;
@@ -2721,15 +2920,17 @@ table {
         text-align: right;
         cursor: pointer;
     }
-   
-}
-.bottom-btn, .tab-pane {
 
-    .btn-outline-black:hover{
+}
+
+.bottom-btn,
+.tab-pane {
+
+    .btn-outline-black:hover {
         box-shadow: 0px 0px 6px rgb(99, 99, 99);
     }
 
-    .btn{
+    .btn {
         padding: 3px 15px !important;
     }
 
@@ -2752,8 +2953,9 @@ table {
         box-shadow: 0px 0px 6px #777676 !important;
     }
 }
-.shadow-none{
-    h5{
+
+.shadow-none {
+    h5 {
         color: #673BB7;
     }
 }
@@ -3012,7 +3214,14 @@ table {
         font-size: 16px;
         margin-left: 4px;
     }
+    .table-pagination {
+        .base-TablePagination-toolbar {
+
+            p {
+                font-size: 12px;
+            }
+        }
+    }
 }
 
 // / ---------end----------- /
-}

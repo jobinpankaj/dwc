@@ -919,7 +919,7 @@ const CreateCompanyProfile = () => {
                               )}
                             </div>
                           </div>
-                          <div className="row mb-4">
+                          {/* <div className="row mb-4">
                             <div className="col-sm-12 mb-3 d-flex align-items-start">
                               <input
                                 type="checkbox"
@@ -1003,7 +1003,7 @@ const CreateCompanyProfile = () => {
                               {t("supplier.my_account_view.General_Information.desc5")}
                               </p>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="row mb-3">
                             <div className="form-head w-100">
                             {t("supplier.my_account_view.Billing_Information.billing_information")}

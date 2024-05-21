@@ -111,7 +111,7 @@ const EditRetailer = () => {
     let pass1valid = true,
       pass2valid = true,
       emailvalid = true,
-      mobilevalid = true,
+      // mobilevalid = true,
       firstnamevalid = true,
       lastnamevalid = true;
 
@@ -162,8 +162,8 @@ const EditRetailer = () => {
       lastnamevalid === false ||
       emailvalid === false ||
       pass1valid === false ||
-      pass2valid === false ||
-      mobilevalid === false
+      pass2valid === false
+      // mobilevalid === false
     ) {
       console.log("Validation Error");
     } else {

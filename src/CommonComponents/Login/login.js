@@ -10,12 +10,16 @@ import { useTranslation } from "react-i18next";
 import { Oval } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 // import useAuthInterceptor from "../../utils/interceptor";
+import world from "../Header/assets/images/world.svg";
+import { Popup } from "../NotificationPopup/notification";
 
 toast.configure();
 
 const Login = () => {
+  const userType = "admin";
+  const { t, i18n } = useTranslation();
   const apis = useAuthInterceptor();
-  const { t } = useTranslation();
+  // const { t, i18n } = useTranslation();
   const { loading, setLoading } = useState(false);
   const emailregex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -253,8 +257,42 @@ const Login = () => {
       <div className="container-fluid g-0">
         <div className="row m-0 login-setup">
           <LoginLeftSidebar />
+
           <div className="col-md-6 login-setup-right">
             <div className="form-box col col-sm-12 col-md-10 col-lg-8">
+            <div className="" style={{"position": "absolute", "right": "10px", top: "10px" }}>
+                <div className="language icon-wrap">
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-outline-black btn-sm dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img src={world} alt="" />{" "}
+                      {i18n.language === "fr" ? "French" : "English"}
+                    </button>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <p
+                          className="dropdown-item"
+                          onClick={() => i18n.changeLanguage("en")}
+                        >
+                          ENG
+                        </p>
+                      </li>
+                      <li>
+                        <p
+                          className="dropdown-item"
+                          onClick={() => i18n.changeLanguage("fr")}
+                        >
+                          FRA
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
               <h3>{t("retailer.login.welcome")}</h3>
               <p className="sub-head">{t("retailer.login.login_p")}</p>
               <hr />

@@ -216,8 +216,8 @@ en:t("router.admindashboard"),
         {/* Superadmin Routes */}
         <Route
           exact
-          path={routePaths[currentLanguage]}
-           //path="/admin/login"
+          // path={routePaths[currentLanguage]}
+           path="/admin/login"
           element={
             <Protected>
               <Login />

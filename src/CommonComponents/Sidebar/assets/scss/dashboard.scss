@@ -985,7 +985,7 @@ table{
         border-radius: 10px;
         justify-content: center;
         align-items: center;
-        width: 120px;
+        width: 150px;
         font-weight: 500;
         font-size: 14px;
         font-family: $font-medium;
@@ -1336,5 +1336,8 @@ table{
 #details-tab-pane tbody tr td:nth-child(4){
     text-align: center;
 }
- 
+.uploadBtn img{
+    width: 20px;
+    height: 16px;
+}
 

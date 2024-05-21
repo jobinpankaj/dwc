@@ -6,6 +6,7 @@ import '../../assets/scss/dashboard.scss'
 import useAuthInterceptor from "../../../utils/apis";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 toast.configure();
 
@@ -29,6 +30,7 @@ const initialValues = {
 
 const AddRole = () => {
     const token = localStorage.getItem("supplier_accessToken")
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate()
     const apis = useAuthInterceptor()
     const [roleName, setRoleName] = useState("")
@@ -150,7 +152,7 @@ const AddRole = () => {
             <div className="row height-inherit">
                 <Sidebar userType={"supplier"}/>
                 <div className="col main p-0">
-                    <Header title="Create Role"/>
+                    <Header title={t("supplier.user_role_Management.create_role")}/>
                     <div className="container-fluid page-content-box px-3 px-sm-4">
                         <div class="row">
                             <div class="col-12 mb-3">
@@ -162,12 +164,12 @@ const AddRole = () => {
                                                 
                                                     <div class="d-flex">
                                                         <div>
-                                                        <label class="form-label">Role Name</label>
-                                                        <input type="text" class="form-control" placeholder="Enter Role Name" value={roleName} onChange={(e) => {setRoleName(e.target.value); setRoleError("")}}/>
+                                                        <label class="form-label">{t("supplier.user_role_Management.role_name1")}</label>
+                                                        <input type="text" class="form-control" placeholder={t("supplier.user_role_Management.enter_role_name")} value={roleName} onChange={(e) => {setRoleName(e.target.value); setRoleError("")}}/>
                                                         {roleError !== "" ? (<p className="error-label"> {roleError}</p>) : (<></>)}
                                                         </div>
                                                         <div className="m-4">
-                                                        <button type="button" class="btn btn-purple width-auto" onClick={() => {setShow(true); setPermissionError("")}}>Assign Permissions</button>
+                                                        <button type="button" class="btn btn-purple width-auto" onClick={() => {setShow(true); setPermissionError("")}}>{t("supplier.user_role_Management.assign_Permission")}</button>
                                                         {permissionError !== "" ? (<p className="error-label"> {permissionError}</p>) : (<></>)}
                                                         </div>
                                                     </div>
@@ -176,8 +178,8 @@ const AddRole = () => {
                                     </div>
                                 </div>
                                 <div class="d-flex">
-                                    <button type="button" class="btn btn-outline-black width-auto me-2" onClick={() => navigate("/supplier/user-role-management")}>Cancel</button>
-                                    <button type="button" class="btn btn-purple width-auto" onClick={() => handleCreateRole()}>Create</button>
+                                    <button type="button" class="btn btn-outline-black width-auto me-2" onClick={() => navigate("/supplier/user-role-management")}>{t("supplier.user_role_Management.cancel")}</button>
+                                    <button type="button" class="btn btn-purple width-auto" onClick={() => handleCreateRole()}>{t("supplier.user_role_Management.create")}</button>
                                 </div>
                                 </form>
                             </div>

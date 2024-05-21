@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import logoDark from "../../assets/images/logo-dark.svg";
@@ -36,13 +36,219 @@ import moment from "moment";
 // }
 
 const OrderDetail = () => {
+  const params = useParams();
+  const componentRef = useRef();
+  // constructor(props){
+  //   super(props);
+  //   this.componentRef = React.createRef(); // Initialize componentRef
+  // }
+
   const apis = useAuthInterceptor();
   const token = localStorage.getItem("supplier_accessToken");
   const { t, i18n } = useTranslation();
   const { order_id } = useParams();
   const [orderDetail, setOrderDetail] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [editFunctionality, setEditFunctionality] = useState(false);
+  const [eachItemQuantity, setEachItemQuantity] = useState();
+  const [masterEditForID, setMasterEditForID] = useState();
+  const [show, setShow] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [dateError, setDateError] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [supplierId, setSupplierId] = useState();
+  const [pdfUrls, setPdfUrls] = useState([]);
+
+  let subtotal1 = 0,
+    subtotal2 = 0,
+    gst = 0,
+    qst = 0,
+    grandtotal = 0,
+    quantity = 0;
+
+  // const handleAttachFile = () => {
+  //   if (selectedFile) {
+  //     const formData = new FormData();
+  //     formData.append("file", selectedFile);
+  //     console.log(">>>", formData);
+
+  //     const config = {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         // Authorization: `Bearer ${token}`,
+  //         // permission: `order-view`,
+  //       },
+  //     };
+
+  //     apis
+  //       .post("/uploadfile", formData, config)
+  //       .then((res) => {
+  //         console.log("File Uploaded");
+  //         setSelectedFile(null);
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error uploading file", err);
+  //       });
+  //   } else {
+  //     console.log("No file selected");
+  //   }
+  // };
+
+  const generateFileName = (extension) => {
+    const timestamp = Date.now();
+
+    const randomString = Math.random().toString(36).substring(2, 7);
+    return `${timestamp}_${randomString}.${extension}`;
+  };
+
+  //----download PDF------
+  const handlePDFDownload = () => {
+    const element = document.getElementById("printItem");
+    const fileName = generateFileName("pdf"); // Generate a unique file name with .pdf extension
+    html2pdf().from(element).toPdf().save(fileName);
+    setIsOpen(false); // Close the slide-buttons
+  };
+
+  //-----download excel--------
+  const handleExcelDownload = () => {
+    const wb = XLSX.utils.book_new();
+
+    // Create a new worksheet
+    const ws = XLSX.utils.aoa_to_sheet([
+      ["Item", "Price Per Unit", "Quantity", "Subtotal"],
+    ]);
+
+    // Add table data to the worksheet
+    orderDetail.items.forEach((item) => {
+      XLSX.utils.sheet_add_aoa(
+        ws,
+        [
+          [
+            item.product.product_name,
+            `$${item.product.pricing.price}`,
+            item.quantity,
+            `$${item.sub_total}`,
+          ],
+        ],
+        { origin: -1 }
+      );
+    });
+
+    // Add additional content to the worksheet
+    const additionalContentData = [
+      [],
+      [],
+      ["", "", "Number of Products", `${orderDetail.items.length}`],
+      ["", "", "Deposits", `$${orderDetail.totalOrderProductDeposit}`],
+      [
+        "",
+        "",
+        "Sub-Total",
+        `$${orderDetail.items
+          .reduce((total, item) => total + parseFloat(item.sub_total), 0)
+          .toFixed(2)}`,
+      ],
+      ["", "", "GST", `$${orderDetail.totalOrderGST.toFixed(2)}`],
+      ["", "", "QST", `$${orderDetail.totalOrderQST.toFixed(2)}`],
+      // ["", "", "GST-QST", `$${orderDetail.totalOrderGSTQST.toFixed(2)}`],
+      ["", "", "Total", `$${orderDetail.finalPrice.toFixed(2)}`],
+    ];
+
+    additionalContentData.forEach((row) => {
+      XLSX.utils.sheet_add_aoa(ws, [row], { origin: -1 });
+    });
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Generate a binary string from the workbook
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+
+    // Convert string to ArrayBuffer
+    const buf = new ArrayBuffer(wbout.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < wbout.length; i++) {
+      view[i] = wbout.charCodeAt(i) & 0xff;
+    }
+
+    // Create a Blob object
+    const blob = new Blob([buf], { type: "application/octet-stream" });
+
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = generateFileName("xlsx");
+
+    // Append the link to the body and click it programmatically
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
+    setIsOpen(false); // Close the slide-buttons
+  };
 
   useEffect(() => {
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     permission: "order-view",
+    //   },
+    // };
+
+    // apis
+    //   .get(`/supplier/orderDetail/${order_id}`, config)
+    //   .then((res) => {
+    //     if (res.data.success === true) {
+    //       setOrderDetail(res.data.data);
+    //     } else {
+    //       toast.error(
+    //         "Could not fetch order details. Please try again later.",
+    //         { autoClose: 3000, position: toast.POSITION.TOP_CENTER }
+    //       );
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     if (error.message !== "revoke") {
+    //       toast.error(
+    //         "Could not fetch order details. Please try again later.",
+    //         {
+    //           autoClose: 3000,
+    //           position: toast.POSITION.TOP_CENTER,
+    //         }
+    //       );
+    //     }
+    //   });
+
+    fetchOrderDetail();
+  }, []);
+
+  // ----print-----
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+  // ----end-----
+
+  // ----download--toggleButtons------
+  const toggleButtons = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleClose = () => {
+    setIsOpen(false); // Close the slide-buttons
+  };
+  // -----end------
+
+  // -----product qunatity update-------
+  const editHandlerIcon = (ele) => {
+    setMasterEditForID(ele.id);
+    setEditFunctionality(false);
+    setEachItemQuantity(ele.quantity);
+  };
+  const handleInputChange = (e) => {
+    setEachItemQuantity(e.target.value);
+  };
+
+  const fetchOrderDetail = () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,6 +261,7 @@ const OrderDetail = () => {
       .then((res) => {
         if (res.data.success === true) {
           setOrderDetail(res.data.data);
+          setSupplierId(res.data.data.supplier_id);
         } else {
           toast.error(
             "Could not fetch order details. Please try again later.",
@@ -63,14 +270,56 @@ const OrderDetail = () => {
         }
       })
       .catch((error) => {
-        if(error.message !== "revoke"){
-          toast.error("Could not fetch order details. Please try again later.", {
+        if (error.message !== "revoke") {
+          toast.error(
+            "Could not fetch order details. Please try again later.",
+            {
+              autoClose: 3000,
+              position: toast.POSITION.TOP_CENTER,
+            }
+          );
+        }
+      });
+  };
+
+  const handleUpdateStatus = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        permission: "order-edit",
+      },
+    };
+
+    const bodyData = {
+      order_id: order_id.toString(),
+      action: "1",
+    };
+    bodyData["expected_delivery_date"] = moment(startDate).format("YYYY-MM-DD");
+    apis
+      .post("/supplier/order/status/update", bodyData, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          fetchOrderDetail();
+          setShow(false);
+          toast.success("Status updated for selected orders.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error("Could not update status. Please try again later.", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.message !== "revoke") {
+          toast.error("Could not update status. Please try again later.", {
             autoClose: 3000,
             position: toast.POSITION.TOP_CENTER,
           });
         }
       });
-
   };
   // const sumitHandler = ()  => {
   //   //api calling for upadte the quantity of item
@@ -240,8 +489,19 @@ const OrderDetail = () => {
       // Optionally, redirect to login page or display an error message
     }
   }, []);
+
   return (
     <div class="container-fluid page-wrap order-details">
+      {/* <div>
+        <ReactToPrint
+          trigger={() => <button>Print this document</button>}
+          content={() => this.componentRef}
+        />
+        <div ref={(el) => (this.componentRef = el)}>
+          Content to print
+        </div>
+      </div> */}
+
       <div class="row height-inherit">
         <Sidebar userType={"supplier"} />
 
@@ -334,10 +594,16 @@ const OrderDetail = () => {
                                           <input
                                             type="text"
                                             value={
-                                              orderDetail && orderDetail.supplier_information.user_profile
-                                                ? orderDetail.supplier_information.user_profile.company_name
-                                                ? orderDetail.supplier_information.user_profile.company_name
-                                                : "N/A"
+                                              orderDetail &&
+                                              orderDetail.supplier_information
+                                                .user_profile
+                                                ? orderDetail
+                                                    .supplier_information
+                                                    .user_profile.company_name
+                                                  ? orderDetail
+                                                      .supplier_information
+                                                      .user_profile.company_name
+                                                  : "N/A"
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -423,10 +689,17 @@ const OrderDetail = () => {
                                           <input
                                             type="text"
                                             value={
-                                              orderDetail && orderDetail.retailer_information.user_profile
-                                                ? orderDetail.retailer_information.user_profile.business_name
-                                                ? orderDetail.retailer_information.user_profile.business_name
-                                                : "N/A"
+                                              orderDetail &&
+                                              orderDetail.retailer_information
+                                                .user_profile
+                                                ? orderDetail
+                                                    .retailer_information
+                                                    .user_profile.business_name
+                                                  ? orderDetail
+                                                      .retailer_information
+                                                      .user_profile
+                                                      .business_name
+                                                  : "N/A"
                                                 : "N/A"
                                             }
                                             className="form-control"
@@ -504,7 +777,7 @@ const OrderDetail = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-3" id="printItem" ref={componentRef}>
                       <div class="col">
                         <div class="card shadow-none height-100">
                           <div class="card-body p-0">
@@ -538,6 +811,17 @@ const OrderDetail = () => {
                                   {orderDetail &&
                                   orderDetail.items.length > 0 ? (
                                     orderDetail.items.map((ele) => {
+                                      subtotal1 += parseFloat(ele.sub_total);
+                                      subtotal2 = (subtotal1 + 9).toFixed(2);
+                                      gst = (subtotal1 / 20).toFixed(2);
+                                      qst = ((subtotal1 * 9.975) / 100).toFixed(
+                                        2
+                                      );
+                                      grandtotal =
+                                        parseFloat(subtotal2) +
+                                        parseFloat(gst) +
+                                        parseFloat(qst);
+                                      quantity += parseInt(ele.quantity);
                                       return (
                                         <tr>
                                           <td>
@@ -563,10 +847,12 @@ const OrderDetail = () => {
                                               </div>
                                             </div>
                                           </td>
+
                                           <td class="">
                                             <div className="price-box ">
                                               <div className="mrp">
-                                                {"$ " + ele.price}
+                                                {"$ " +
+                                                  ele.product.pricing.price}
                                               </div>
                                               {/* <div className="old-price">
                                                                                 <span className="price-cut d-inline-block me-2">
@@ -579,7 +865,53 @@ const OrderDetail = () => {
                                             </div>
                                           </td>
                                           <td className="qty">
-                                            {ele.quantity}
+                                            {masterEditForID == ele.id ? (
+                                              <>
+                                                <input
+                                                  type="number"
+                                                  min="0"
+                                                  max="999"
+                                                  value={eachItemQuantity}
+                                                  onChange={(e) =>
+                                                    handleInputChange(e)
+                                                  }
+                                                />
+                                                <button
+                                                  onClick={sumitHandler}
+                                                  style={{
+                                                    border: "none",
+                                                    background: "#9366e8",
+                                                    padding: "3px 5px",
+                                                    color: "#fff",
+                                                  }}
+                                                >
+                                                  <i class="fa-solid fa-circle-arrow-up"></i>
+                                                </button>
+                                              </>
+                                            ) : (
+                                              <>
+                                                {ele.quantity}
+                                                {editFunctionality ? (
+                                                  <span
+                                                    onClick={() =>
+                                                      editHandlerIcon(ele)
+                                                    }
+                                                    style={{
+                                                      margin: "0px 5px",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    <i
+                                                      className="fa fa-pencil"
+                                                      aria-hidden="true"
+                                                      style={{
+                                                        cursor: "pointer",
+                                                      }}
+                                                    ></i>{" "}
+                                                  </span>
+                                                ) : null}{" "}
+                                              </>
+                                            )}
                                           </td>
                                           <td class="">
                                             <div className="price-box">
@@ -610,47 +942,53 @@ const OrderDetail = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="row justify-content-end">
-                      <div className="col-sm-3">
-                        <div className="card shadow-none order-subtotal-box">
-                          <div className="card-body p-3">
-                            <div className="price-breakage mb-2 d-flex justify-content-between">
-                              <label>4 Products (22.704L):</label>
-                              <span>$178.89</span>
+                      <div className="row justify-content-end">
+                        <div className="col-sm-3">
+                          <div className="card shadow-none order-subtotal-box">
+                            <div className="card-body p-3">
+                              <div className="price-breakage mb-2 d-flex justify-content-between">
+                                <label>{quantity} Products (22.704L):</label>
+                                <span>${subtotal1.toFixed(2)}</span>
+                              </div>
+                              <div className="price-breakage mb-2 d-flex justify-content-between">
+                                <label>Deposits:</label>
+                                <span>$9</span>
+                              </div>
+                              <div className="price-breakage-sum mb-2 d-flex justify-content-between">
+                                <label>Subtotal</label>
+                                <span>${subtotal2}</span>
+                              </div>
+                              <hr />
+                              <div className="price-addon mb-2 d-flex justify-content-between">
+                                <label>
+                                  GST (5%) on $ {subtotal1.toFixed(2)}
+                                </label>
+                                <span>${gst}</span>
+                              </div>
+                              <div className="price-addon d-flex justify-content-between">
+                                <label>
+                                  QST (9.975%) on ${subtotal1.toFixed(2)}
+                                </label>
+                                <span>${qst}</span>
+                              </div>
                             </div>
-                            <div className="price-breakage mb-2 d-flex justify-content-between">
-                              <label>Deposits:</label>
-                              <span>$9</span>
+                            <div class="card-footer total-sum d-flex justify-content-between">
+                              <label>Total</label>
+                              <span>${grandtotal.toFixed(2)}</span>
                             </div>
-                            <div className="price-breakage-sum mb-2 d-flex justify-content-between">
-                              <label>Subtotal</label>
-                              <span>$188.19</span>
-                            </div>
-                            <hr />
-                            <div className="price-addon mb-2 d-flex justify-content-between">
-                              <label>GST (5%) on $178.89</label>
-                              <span>$8.93</span>
-                            </div>
-                            <div className="price-addon d-flex justify-content-between">
-                              <label>QST (9.975%) on $178.89</label>
-                              <span>$17.75</span>
-                            </div>
-                          </div>
-                          <div class="card-footer total-sum d-flex justify-content-between">
-                            <label>Total</label>
-                            <span>$188.19</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="row mt-sm-5 mt-4 bottom-btn ">
+
+                    <div className="d-flex justify-content-between mt-sm-5 mt-4 bottom-btn ">
                       {/* <div class="col-12  d-flex gap-4 justify-content-sm-end justify-content-center"> */}
-                      <div className="col-md-8 d-flex justify-content-between">
+                      <div className="">
                         <div className="">
                           <button
                             className="btn btn-outline-black"
                             title="Edit"
+                            onClick={() => setEditFunctionality(true)}
                           >
                             <i
                               class="fa-solid fa-pen-to-square"
@@ -658,6 +996,7 @@ const OrderDetail = () => {
                             ></i>
                           </button>
                           <button
+                            onClick={handlePrint}
                             className="btn btn-outline-black mx-2"
                             title="Print"
                           >
@@ -675,61 +1014,55 @@ const OrderDetail = () => {
                               style={{ color: "red" }}
                             ></i>
                           </button>
-                        </div>
-                        <div>
-                          <button
-                            className="btn btn-outline-black mx-2"
-                            title="Download"
-                          >
-                            <i
-                              class="fa-solid fa-download"
-                              style={{ color: "#20c152" }}
-                            ></i>
-                          </button>
 
-                          <button
-                            className="btn btn-outline-black mx-2"
-                            title="PDF"
-                          >
-                            <i
-                              class="fa-solid fa-file-pdf"
-                              style={{ color: "red" }}
-                            ></i>
-                          </button>
-                          <button
-                            className="btn btn-outline-black mx-2"
-                            title="CSV"
-                          >
-                            <i
-                              class="fa-solid fa-file-csv"
-                              style={{ color: "black" }}
-                            ></i>
-                          </button>
-                          <button
-                            className="btn btn-outline-black mx-2"
-                            title="EXCEL"
-                          >
-                            <i
-                              class="fa-solid fa-file-excel"
-                              style={{ color: "green" }}
-                            ></i>
-                          </button>
+                          <span className="download-buttons-container">
+                            <button
+                              className="btn btn-outline-black"
+                              title="Download"
+                              onClick={toggleButtons}
+                            >
+                              <i
+                                className="fa-solid fa-download"
+                                style={{ color: "#20c152" }}
+                              ></i>
+                            </button>
+
+                            {isOpen && (
+                              <div className="slide-buttons">
+                                <button
+                                  className="btn btn-outline-black my-1"
+                                  title="PDF"
+                                  onClick={handlePDFDownload}
+                                >
+                                  <i
+                                    className="fa-solid fa-file-pdf"
+                                    style={{ color: "red" }}
+                                  ></i>
+                                </button>
+                                <button
+                                  className="btn btn-outline-black my-1"
+                                  title="EXCEL"
+                                  onClick={handleExcelDownload}
+                                >
+                                  <i
+                                    className="fa-solid fa-file-excel"
+                                    style={{ color: "green" }}
+                                  ></i>
+                                </button>
+                              </div>
+                            )}
+                          </span>
                         </div>
                       </div>
-                      <div className="col-md-4 text-end">
-                        <button class="btn btn-purple" title="New Order">
-                          <i class="fa-solid fa-plus"></i>
-                        </button>
+                      <div className="">
                         <button
-                          class="btn btn-outline-secondary mx-2"
-                          title="Save"
+                          class="btn btn-outline-success"
+                          title="Accept"
+                          disabled={orderDetail.status == "Approved"}
+                          onClick={() => {
+                            setShow(true);
+                          }}
                         >
-                          <i
-                            class="fa-solid fa-file-arrow-down"
-                            style={{ color: "#fff" }}
-                          ></i>
-                        </button>
-                        <button class="btn btn-outline-success" title="Accept">
                           <i
                             class="fa-solid fa-check"
                             style={{ color: "#fff" }}
@@ -923,9 +1256,18 @@ const OrderDetail = () => {
                                 ></i>
                               </button>
 
-                              <button className="btn btn-outline-black"  type="button" title="Upload Document" data-bs-toggle="modal"  data-bs-target="#uploadFiles">
-                                <i class="fa-solid fa-upload" style={{color: 'blue'}}></i>
-                                </button>
+                              <button
+                                className="btn btn-outline-black"
+                                type="button"
+                                title="Upload Document"
+                                data-bs-toggle="modal"
+                                data-bs-target="#uploadFiles"
+                              >
+                                <i
+                                  class="fa-solid fa-upload"
+                                  style={{ color: "blue" }}
+                                ></i>
+                              </button>
                             </div>
                           </div>
                           {/* [/Page Filter Box] */}
@@ -976,16 +1318,6 @@ const OrderDetail = () => {
                                 </div> 
                               );
                             }) }
-                        <div className="row">
-                          <div className="col">
-                            <div className="pdfBox">
-                              <div className="pdfList">
-                                <img src={pdf} />
-                              </div>
-                              <div className="pdfList">
-                                <img src={pdf} />
-                              </div>
-                            </div>
                           </div>
                         </div>
                        </>
@@ -1025,25 +1357,56 @@ const OrderDetail = () => {
             </div>
             <div class="modal-body">
               <h6>Attach invoice form here</h6>
-              <div className="dropFile rounded-2">
+              <div
+                className="dropFile rounded-2"
+                onClick={() => {
+                  document.getElementById("fileInput").click();
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const file = e.dataTransfer.files[0];
+                  setSelectedFile(file);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                }}
+              >
                 <p>
-                  Drag and Drop files here or{" "}
-                  <a href="#" className="text-purpel">
+                  Drag and Drop files here or
+                  <label htmlFor="fileInput" className="text-purple">
                     Browse
-                  </a>
+                  </label>
+                  <input
+                    type="file"
+                    id="fileInput"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      console.log(e.target.files[0]);
+                      setSelectedFile(e.target.files[0]);
+                    }}
+                  />
                 </p>
               </div>
 
               <h6>Upload Files</h6>
               <div className="dropFile rounded-2 border-0 p-3">
-                <img src={viewfile} />
-                <p className="opacity-50 mt-2">
-                  The files you’ll upload <br /> will appear here
-                </p>
+                {selectedFile && <div>{selectedFile.name}</div>}
+                {!selectedFile && (
+                  <p className="opacity-50 mt-2">No file selected</p>
+                )}
               </div>
             </div>
             <div class="modal-footer border-0 justify-content-center">
               <button
+                onClick={() => {
+                  setSelectedFile(null);
+                }}
                 type="button"
                 class="btn btn-outline-black width-auto"
                 data-bs-dismiss="modal"
@@ -1051,7 +1414,12 @@ const OrderDetail = () => {
                 Cancel
               </button>
               &nbsp;&nbsp;
-              <button type="button" class="btn btn-purple width-auto">
+              <button
+                type="button"
+                class="btn btn-purple width-auto"
+                onClick={handleAttachFile}
+                data-bs-dismiss="modal"
+              >
                 Attach File
               </button>
             </div>
@@ -1059,6 +1427,74 @@ const OrderDetail = () => {
         </div>
       </div>
       {/* [/Modal] */}
+      <Modal
+        className="modal fade"
+        show={show}
+        centered
+        onHide={() => {
+          setShow(false);
+        }}
+      >
+        <Modal.Header>
+          <h5 class="modal-title text-purpal">Change Order Status</h5>
+          <button
+            type="button"
+            class="btn-close text-purpal"
+            aria-label="Close"
+            onClick={() => setShow(false)}
+          ></button>
+        </Modal.Header>
+        <Modal.Body>
+          <p>{`Total number of selected orders : ${order_id}`}</p>
+          <div
+            className="border-purple p-3 mt-3 rounded-2"
+            style={{ display: "block" }}
+          >
+            <div>Delivery Date</div>
+            <div className="mt-2">
+              <div className="input-group">
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => {
+                    setStartDate(date);
+                    setDateError("");
+                  }}
+                  minDate={new Date()}
+                  dateFormat="yyyy/MM/dd"
+                />
+              </div>
+              {dateError === "" ? (
+                <></>
+              ) : (
+                <p className="error-label">{dateError}</p>
+              )}
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            type="button"
+            class="btn btn-outline-purple"
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-purple btn-md w-auto"
+            onClick={() => handleUpdateStatus()}
+          >
+            Save
+          </button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

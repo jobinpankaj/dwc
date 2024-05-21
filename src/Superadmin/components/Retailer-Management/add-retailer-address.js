@@ -27,6 +27,7 @@ const AddRetailerAddress = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
+  const [statusError, setStatusError] = useState("");
   const [lat, setLat] = useState("");
   const [long, setLong] = useState("");
   const [city, setCity] = useState("");
@@ -49,9 +50,13 @@ const AddRetailerAddress = () => {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState("");
-  const [opc, setOpc] = useState("0");
+  const [opc, setOpc] = useState("1");
   const [hc, setHc] = useState("0");
   const [placeId, setPlaceId] = useState("");
+  // const [website, setWebsite] = useState("");
+
+
+  const websiteRegex = /^(ftp|http|https):\/\/[^ "]+(\.(ca|com|org|info))$/;
 
   const updateSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -136,6 +141,7 @@ const AddRetailerAddress = () => {
   };
 
   const handleOpcChange = (e) => {
+    setStatusError("");
     if (e.target.checked === true) {
       setOpc("1");
     } else {
@@ -144,6 +150,7 @@ const AddRetailerAddress = () => {
   };
 
   const handleHcChange = (e) => {
+    setStatusError("");
     if (e.target.checked === true) {
       setHc("1");
     } else {
@@ -180,10 +187,12 @@ const AddRetailerAddress = () => {
 
   const handleSave = () => {
     let businessValid = true,
-      emailValid = true,
-      phoneValid = true,
-      publicPhoneValid = true,
-      addressValid = true;
+      urlValid = true,
+      // phoneValid = true,
+      // publicPhoneValid = true,
+      addressValid = true,
+      statusValid = true;
+
     if (business == "") {
       setBusinessError("Business name is required.");
       businessValid = false;
@@ -194,9 +203,21 @@ const AddRetailerAddress = () => {
       addressValid = false;
     }
 
-    if (!emailregex.test(email) && email !== "") {
-      setEmailError("Enter Valid Email.");
-      emailValid = false;
+    if (url != "" && url !== null) {
+      if (!websiteRegex.test(url) && url !== "") {
+        setUrlError("Enter Website .com, .ca, .me, .net, or .org only allowed");
+        urlValid = false;
+      }
+    }
+
+    
+    // if (!emailregex.test(email) && email !== "") {
+    //   setEmailError("Enter Valid Email.");
+    //   emailValid = false;
+    // }
+    if (hc == "0" && opc == "0") {
+      setStatusError("Select CSP/CAD");
+      statusValid = false;
     }
 
     // if (!mobileregex.test(phone) && phone !== "") {
@@ -209,7 +230,18 @@ const AddRetailerAddress = () => {
     //   publicPhoneValid = false;
     // }
 
-    if (false) {
+    if (businessError !== "" ||
+    addressError !== "" ||
+    urlError !== "" ||
+    statusError !== "" ||
+    // publicPhoneError !== "" ||
+    // phoneError !== "" ||
+    businessValid === false ||
+    urlValid === false ||
+    // phoneValid === false ||
+    // publicPhoneValid === false ||
+    addressValid === false ||
+    statusValid === false) {
       console.log("Validation Error");
     } else {
       const bodyData = {
@@ -505,7 +537,9 @@ const AddRetailerAddress = () => {
                                         type="text"
                                         className="form-control"
                                         value={url}
-                                        placeholder="Enter website URL"
+                                        placeholder={t(
+                                          "admin.retailer_management.add_second.website_label"
+                                        )}
                                         onChange={(e) => handleUrlChange(e)}
                                       />
                                       {urlError !== "" ? (
@@ -541,6 +575,13 @@ const AddRetailerAddress = () => {
                                       )}
                                     </div>
                                   </div>
+                                  {statusError !== "" ? (
+                                        <p className="error-label">
+                                          {statusError}
+                                        </p>
+                                      ) : (
+                                        <></>
+                                      )}
                                 </div>
                               </div>
                               {/* [/General Info] */}
@@ -565,6 +606,9 @@ const AddRetailerAddress = () => {
                                       <GooglePlacesAutocomplete
                                         apiKey="AIzaSyBLkLSPnlPCzCfWun-oexkLi9DT7ijQXeY"
                                         selectProps={{
+                                          placeholder:t(
+                                            "admin.retailer_management.add_second.select"
+                                          ),
                                           value: address,
                                           onChange: (e) =>
                                             handleAddressChange(e),
@@ -711,3 +755,4 @@ const AddRetailerAddress = () => {
 };
 
 export default AddRetailerAddress;
+

@@ -16,6 +16,9 @@ import useAuthInterceptor from "../../../utils/apis";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+
 
 const Cart = () => {
   const apis = useAuthInterceptor();
@@ -27,6 +30,7 @@ const Cart = () => {
   const [quantities, setQuantities] = useState({});
   const [show, setShow] = useState(false);
   console.log(cartItems);
+  const componentRef = useRef();
   useEffect(() => {
     const quantities = cartItems.reduce((acc, item) => {
       acc[item.product_id] = item.quantity;
@@ -140,6 +144,7 @@ const Cart = () => {
   // };
   // }
 
+
   const totalPrice = () => {
     let total = 0
     // if (cartItems.length) {
@@ -164,6 +169,17 @@ const Cart = () => {
   //   });
   //   return total.toFixed(2);
   // };
+
+   //Handle Print function
+   const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    onAfterPrint: () => {
+    console.log("Printed PDF successfully!");
+    // handleClearCart();
+    // navigate('retailer/supplier-list')
+    }
+
+  });
 
   return (
     <>
