@@ -154,6 +154,16 @@ const Sidebar = ({ showSidebar, updateSidebar }) => {
                 {t("retailer.sidebar.reports")}
               </NavLink>
             </li>
+            <NavLink
+              to="/retailer/invoice"
+              className="invoice"
+              exact
+              activeClassname="active"
+            >
+              <span class=""></span>
+              {t("retailer.sidebar.invoice")}
+            </NavLink>
+          </li>
             {/* <li>
               <NavLink
                 to="/retailer/user-role"
