@@ -80,7 +80,7 @@ const Info = ({ accessToken = "" }) => {
                       <h6>{data?.find(({ key }) => key == "Total_orders")?.value}</h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                 Total Orders
+                 {t("admin.dashboard.total_orders")}
                         </label>{" "}
 
                       </span>
@@ -106,7 +106,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                     Total Revenue
+                       {t("admin.dashboard.total_revenue")}
                         </label>{" "}
 
                       </span>
@@ -134,7 +134,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                       Invoices Sent{" "}
+                         {t("admin.dashboard.invoice_sent")}{" "}
                         </label>{" "}
                       </span>
                     </p>
@@ -158,7 +158,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                           Total Sold
+                              {t("admin.dashboard.total_sold")}
                         </label>{" "}
                       </span>
                     </p>
@@ -185,7 +185,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          Warehouses
+                             {t("admin.dashboard.warehouses")}
                         </label>{" "}
                       </span>
                     </p>
@@ -212,7 +212,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                            Pending Orders
+                               {t("admin.dashboard.pending_orders")}
                         </label>{" "}
                       </span>
                     </p>
@@ -239,7 +239,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                       Shipped Orders
+                          {t("admin.dashboard.shipped_orders")}
                         </label>{" "}
                       </span>
                     </p>
@@ -266,7 +266,7 @@ const Info = ({ accessToken = "" }) => {
                       </h6>
                       <span class="text-nowrap">
                         <label className="badge bg-white bg-opacity-10 me-1">
-                          Customers
+                             {t("admin.dashboard.users")}
                         </label>{" "}
                       </span>
                     </p>
