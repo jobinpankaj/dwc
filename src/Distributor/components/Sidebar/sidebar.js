@@ -125,10 +125,10 @@ const Sidebar = ({ showSidebar, updateSidebar }) => {
 
                         </li>
                         <li>
-                            {show && <NavLink to="/distributor/reports" className="report" exact activeClassname="active">
+                          <NavLink to="/distributor/reports" className="report" exact activeClassname="active">
                                 <span class=""></span>
                                 {t('distributor.sidebar.reports')}
-                            </NavLink>}
+                            </NavLink>
                         </li>
                         <li>
                             {show && <NavLink to="/distributor/user-role" className="user-manage" exact activeClassname="active">
