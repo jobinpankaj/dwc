@@ -656,10 +656,16 @@
     }
   },
   "admin": {
-    "filter":{
-      "filter": "Filter"
+    "dashboard": {
+      "total_orders": "Total Orders",
+      "total_revenue": "Total Revenue",
+      "invoice_sent": "Invoices Sent",
+      "total_sold": "Total Sold",
+      "warehouses": "Warehouses",
+      "pending_orders": "Pending Orders",
+      "shipped_orders": "Shipped Orders",
+      "users": "Users"
     },
-    "dashboard": {},
     "supplier_management": {
       "list": {
         "title": "Supplier Management",
@@ -671,8 +677,8 @@
         "table_col4": "Status",
         "search_label": "Search by Supplier Name..",
         "pagination_text": "Rows per page:"
-        
-        
+
+
       },
       "add_first": {
         "title": "Add Supplier",
@@ -738,7 +744,6 @@
         "city": "City",
         "city_ph": "Enter city name",
         "state": "State",
-        "select": "Select...",
         "state_ph": "Enter state name",
         "postal": "Postal Code",
         "postal_ph": "Enter postal code",
@@ -848,15 +853,11 @@
         "search_label": "Search by distributor name..",
         "add_button": "+ Add Distributor",
         "filter_button": "Filters",
-        "filter_lable":"Distributor Name",
-        "filter_ph": "Choose Distributor",
         "table_col1": "Distributor Name",
         "table_col2": "Company Name",
         "table_col3": "Address",
         "table_col4": "Status",
-        "pagination_text": "Rows per page:",
-        "apply": "Apply",
-        "reset": "Reset"
+        "pagination_text": "Rows per page:"
       },
       "add_first": {
         "title": "Add Distributor",
@@ -1017,7 +1018,7 @@
       "list": {
         "view": "View",
         "edit": "Edit",
-        "delete": "Delete User", 
+        "delete": "Delete User",
         "login": "Login With this User",
         "title": "Retailer Management",
         "search_label": "Search by retailer name..",
@@ -1052,7 +1053,6 @@
         "next_button": "Next"
       },
       "add_second": {
-        "edit_retailer": "Edit Retailer",
         "title": "Add Retailer",
         "card_header_1": "General Information",
         "business_name": "Business Name",
@@ -1074,7 +1074,6 @@
         "opc": "CSP",
         "hc": "Consommation à domicile (CAD)",
         "card_header_2": "Main Address",
-        "select": "Select...",
         "address": "Address",
         "address_2": "Address 2",
         "address_2_ph": "Enter address",
@@ -1140,6 +1139,7 @@
       "supplier": "Supplier Management",
       "distributor": "Distributor Management",
       "retailer": "Retailer Management",
+      "invoice": "Invoice",
       "logout": "Logout"
     },
     "my_account": {
@@ -1148,7 +1148,86 @@
       "logout": "Logout"
     }
   },
+    "modal":{
+      "modal_discreption1": "Products Distributions",
+      "modal_discreption2": "Find out where your products have been delivered.",
+      "list_of_inventories": "List of Inventories",
+      "find_out_where_your_products": "Find out where your products have been Stored",
+      "from": "From",
+      "custom_made": "Custom Made",
+      "list_of_custom_made": "List of custom made",
+      "custom_lists": "Custom Lists",
+      "find_out_custom": "Find out where your products have been delivered during the analysis period.",
+      "list_of_sales": "List of Sales",
+      "find_out_sales_lists": "Find out Sales Lists",
+     "to": "to",
+     "all": "All",
+     "is_required": "is required",
+     "choose": "Choose...",
+     "paid": "Paid",
+     "pending": "Pending",
+     "overdue": "Overdue",
+     "closed": "Closed",
+     "collect": "Collect",
+     "approved": "Approved",
+     "shipped": "Shipped",
+     "delivered": "Delivered",
+     "cancelled": "Cancelled",
+     "products": "Products",
+     "sales": "Sales",
+     "distribution": "Distribution",
+     "inventories": "Inventories",
+     "by_supplier": "By Supplier",
+     "by_retailer": "By Retailer",
+     "by_distributor": "By Distributor",
+     "by_users": "By Users",
+     "by_warehouse": "By warehouse",
+     "product_name": "Product name",
+     "product_style": "Product Style",
+     "product_type": "Product Type",
+     "product_format": "Product Format",
+     "order_status": "Order status",
+     "invoice_status": "Invoices Status",
+     "invoice_no": "Invoice No",
+     "payment_collected_by": "Payment collected By",
+     "collection_fees": "Collection fees",
+     "group": "Group",
+     "generate_list": "Generate List",
+     "file_type": "File Type",
+     "language": "Language",
+     "created_at": "Created At",
+     "download": "Download",
+     "close": "Close",
+     "invoice": "Invoice",
+     "super_invoice": "Super Invoice"
+  },
   "supplier": {
+    "dashboard": {
+      "total_orders": "Total Orders",
+      "total_revenue": "Total Revenue",
+      "invoice_sent": "Invoices Sent",
+      "total_sold": "Total Sold",
+      "warehouses": "Warehouses",
+      "pending_orders": "Pending Orders",
+      "shipped_orders": "Shipped Orders",
+      "retailers": "Retailers"
+    },
+            "invoice_title": "Invoice Management",
+            "invoice_title_list": "Invoice lists",
+            "invoice_customers": "Customers",
+            "invoice_products": "Products",
+            "invoice_paid": "Amount Paid",
+            "invoice_unpaid": "Amount Unpaid",
+            "invoice_total_invoice": "Invoices",
+            "invoice_paid": "Paid Invoices",
+            "invoice_unpaid": "Unpaid Invoices",
+            "invoice_pending": "Pending Invoice",
+            "invoice_customer": "CUSTOMERS",
+            "invoice_date": "INVOICE DATE",
+            "invoice_amount": "AMOUNT",
+            "invoice_status": "STATUS",
+            "invoice_action": "ACTION",
+            "invoice_create": "Create new invoice",
     "sidebar": {
       "dashboard": "Dashboard",
       "order": "Order Management",
@@ -1178,6 +1257,7 @@
       "product_name": "Product name",
       "product_value": "Product value",
       "days": " Days",
+            "invoice": "Invoice",
       "top_retailers": "Top Retailers"
     },
     "my_account": {
@@ -1265,7 +1345,6 @@
       "cancel-btn":"Cancel",
       "company_logo":"Company Logo",
       "country_name":"Enter country name",
-      "file_choose":">Choose",
       "state_name":"Enter state",
       "efn":"Enter first name",
       "eln":"Enter last name",
@@ -1275,8 +1354,6 @@
       "cf":"Confirm password",
       "eapp":"Enter alcohol production permit"
     },
-
-
     "order_management": {
       "list": {
         "title": "Orders",
@@ -1295,8 +1372,7 @@
         "search_supplier": "Search Supplier",
         "search_distributor": "Search Distributor",
         "clear1": "Clear",
-        "searching": "Searching...", 
-        "client":"Retailer",  
+        "searching": "Searching...",
         "filter": "Filter",
         "no_data_to_show": "No data to show",
         "choose_client": "Choose Client",
@@ -1323,13 +1399,7 @@
         "expired": "Expired",
         "paid": "Paid",
         "applied": "Apply",
-        "clear": "Effacer",
-        "fromDate":"From Date",
-        "toDate":"To Date",
-        "searchRetailer":"Search retailer",
-        "searchDistributor":"Search Distributor",
-        "searchByBusinessNmae":"Search by Business name",
-        "invitation":"Invitation"
+        "clear": "Effacer"
       },
       "new_order": {
         "title": "Create Order",
@@ -1345,11 +1415,7 @@
         "subtotal": "Subtotal",
         "total": "Total",
         "cancel_btn": "Cancel",
-        "create_btn": "Create",
-        "fillThDetail":"Fill The Detail",
-        "distribuor":"Enter Distributor Name",
-        "email":"Enter Distribuor Email",
-        "nosuchdata":"No such data found"
+        "create_btn": "Create"
       },
       "view_order": {
         "title": "Order Detail",
@@ -1426,34 +1492,7 @@
         "product": "Product",
         "category": "Category",
         "view_map": "view map",
-        "batch_number": "Batch Number",
-        "updateStock":"Update Stock",
-        "modific":"Modification",
-        "reason":"Reason",
-        "batchNmber":"Batch Number",
-        "cancel":"Cancel",
-        "update":"Update",
-        "create":"Create",
-        "createnew":"+ Create New",
-        "table_col21": "SENDER",
-        "table_col22": "RECIPIENT",
-        "table_col23": "STATUS",
-        "table_col24": "DATE",
-        "table_col25": "SENT",
-        "table_col26": "RECEIVED",
-        "table_col27": "BROKEN",
-        "noOfRetailer":"No of Retailers",
-        "action":"Action",
-        "createGroup":"Create Group",
-        "grpName":"Group Name",
-        "chooseColor":"Choose Color",
-        "orderConfMess":"Order Confirmation message",
-        "orderDefaultNote":"Order Default Note",
-        "miniorderCoun":"Minimum Order Count per Order",
-        "miniOrderVal":"Minimum Order Value per Order",
-        "accepPayType":"Accepted Payment Type",
-        "forOffpayment":"For offline payment",
-        "forOnlinePAy":"For online payment"
+        "batch_number": "Batch Number"
       },
       "create_transfer": {
         "create_transfer":"Create Transfer",
@@ -1583,12 +1622,7 @@
         "add_btn": "Add",
         "select_style": "Select Style",
         "select_format": "Select Format",
-        "select_subcategory": "Select Sub Category",
-        "barcode":"Upload Barcode",
-        "barcode_1": "Barcode",
-        "label_image":"Label Image",
-        "product_image":"Product Image",
-        "new": "New"
+        "select_subcategory": "Select Sub Category"
       },
       "view": {
         "title": "View Product",
@@ -1651,15 +1685,7 @@
         "max_per_order": "MAX PER ORDER",
         "by_default": "By Defaul",
         "cancel": "Cancel",
-        "save": "Save",
-        "td1":"Available for sale",
-        "td2":"Ordered",
-        "td3":"In Stock",
-        "td4":"visibility in Marketplace",
-        "td5":"Producer",
-        "container":"Container",
-        "status":"Status",
-        "depo":"Deposits"
+        "save": "Save"
       }
     },
     "request": {
@@ -1673,8 +1699,7 @@
       }
     },
     "retailer_management":{
-      "search": "By name or address",
-      "filter": "Filter"
+      "search": "By name or address"
     },
     "retailer_request":{
       "group": "Group",
@@ -1713,40 +1738,19 @@
       "invoice3":"We are an agency and we sell and collect payments on behalf of other suppliers",
       "invoice4":"We produce our product in our facility but we authorize Distribution Bucké pay b to distribute and collect ments on our behalf",
       "invoice5":"We produce our product in our facility and Self-Distribute"
-    },
-    "user_role_Management":{
-      "header_title":"Retailer Management",
-      "user":"User",
-      "roles":"Roles",
-      "manage_user":"Manage Users",
-      "manage_role":"Manage Roles",
-      "name":"NAME",
-      "email":"E-MAIL ADDRESS",
-      "contact_number":"CONTACT NUMBER",
-      "role":"Role",
-      "role_name":"ROLE NAME",
-      "update_date":"UPDATE DATE",
-      "add_user":"Add User",
-      "add_role":"Add Role",
-      "search_retailer_name":"Search by Retailer Name",
-      "search_role_name":"Search by Role Name",
-      "add_retailer":"Add Retailer",
-      "create_role":"Create Role",
-      "role_name1":"Role Name",
-      "enter_role_name":"Enter Role Name",
-      "assign_Permission":"Assign Permission",
-      "create":"Create",
-      "cancel":"Cancel",
-      "next":"Next",
-      "retailer_name":"Retailer Name",
-      "route":"Route Name",
-      "shown_message":"No data to show.",
-      "choose_retailer":"Choose Retailer",
-      "choose_route":"Choose Route",
-      "filter": "Filter"
     }
   },
   "distributor": {
+    "dashboard": {
+      "total_orders": "Total Orders",
+      "total_revenue": "Total Revenue",
+      "invoice_sent": "Invoices Sent",
+      "total_sold": "Total Sold",
+      "warehouses": "Warehouses",
+      "pending_orders": "Pending Orders",
+      "shipped_orders": "Shipped Orders",
+      "retailers": "Retailers"
+    },
     "sidebar": {
       "dashboard": "Dashboard",
       "order_management": "Order Management",
@@ -1757,6 +1761,7 @@
       "supplier_management": "Suppliers Management",
       "retailers_management": "Retailers Management",
       "reports": "Reports",
+      "invoice": "Invoices",
       "user_role_management": "Users & Roles Management",
       "logout": "Logout",
       "value": "Value",
@@ -2363,7 +2368,7 @@
       "website_url": "Website URL",
       "website_url_placeholder": "Enter website URL",
       "same_as_main_address": "Same as Main Address",
-      "on_premise_consumption": "On Premise Consumption(CSP)",
+      "on_premise_consumption": "On Premise Consumption(OCP)",
       "permit_of_alcohol": "I have a permit of Alcohol",
       "billing_info": "Billing Information",
       "gst_tax": "GST Tax",
@@ -2434,6 +2439,7 @@
       "account_payable": "Account Payable",
       "supplier_management": "Suppliers Management",
       "reports": "Reports",
+      "invoice": "Invoices",
       "user_role_management": "Users & Roles Management",
       "logout": "Logout"
     },
@@ -2540,8 +2546,7 @@
         "quantity": "Quantity",
         "price": "Price",
         "transit": "Transit",
-        "view_details": "View Details",
-        "filter_ph": "Search Supplier"
+        "view_details": "View Details"
       },
       "order_detail": {
         "title": "Order Detail",
@@ -2611,8 +2616,15 @@
       "dashboard_card_p3": "Place your ",
       "dashboard_card_p33": "first order.",
       "dashboard_card_p4": "Verify your profile information is correct.",
-      "dashboard_card_p44": "Verify"
-
+      "dashboard_card_p44": "Verify",
+        "total_orders": "Total Orders",
+        "total_revenue": "Total Revenue",
+        "invoice_sent": "Invoices Sent",
+        "total_sold": "Total Sold",
+        "warehouses": "Warehouses",
+        "pending_orders": "Pending Orders",
+        "shipped_orders": "Shipped Orders",
+        "customers": "Customers"
     },
     "account_payable": {
       "account_payable": "Account Payable",
@@ -2668,7 +2680,7 @@
       "switch_7": "Order modified",
       "switch_8": "Order Delivered ",
       "switch_9": "Service offer invitation"
-  
+
     },
     "supplier_notification": {
       "switch_1": "Final invoice ",
@@ -2693,7 +2705,7 @@
       "switch_7": "Order cancelled",
       "switch_8": "Order modified",
       "switch_9": "Order Delivered ",
-      "switch_10": "Supplier connection"  
+      "switch_10": "Supplier connection"
 
     },
 
