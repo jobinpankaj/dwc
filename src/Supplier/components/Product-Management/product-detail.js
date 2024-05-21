@@ -169,7 +169,7 @@ const ProductDetail = () => {
                             <p>{selectedFormat}</p>
                           </div>
                           <div className="mb-3">
-                            <label className="form-label">Barcode</label>
+                            <label className="form-label">{t("supplier.product_management.add.barcode_1")}</label>
                             <div>
                               {currentCode !== "" && currentCode !== null ? (
                                 <img
@@ -188,7 +188,7 @@ const ProductDetail = () => {
                           <div className="mb-3 prodImg">
                             <div>
                               <label className="form-label">
-                                {"Lable Image"}
+                              {t("supplier.product_management.add.label_image")}
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
@@ -201,18 +201,18 @@ const ProductDetail = () => {
 
                             <div>
                               <label className="form-label">
-                                {"Product Image"}
+                              {t("supplier.product_management.add.product_image")}
                               </label>
-                              <>
                                 <div className="mb-3 position-relative">
                                   <div className="productImg prodtImg min-square-width border  mb-3 ">
-                                <div className="mb-3 prodImg position-relative">
-                                  <div className="productImg min-square-width border px-2 mb-3 ">
+                                    <div className="mb-3 prodImg position-relative">
+                                      <div className="productImg min-square-width border px-2 mb-3 ">
 
-                                    <img src={productImage === "" || productImage === null ? noImage : productImage}></img>
+                                        <img src={productImage === "" || productImage === null ? noImage : productImage}></img>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                              </>
                             </div>
                           </div>
                         </div>

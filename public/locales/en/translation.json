@@ -656,6 +656,9 @@
     }
   },
   "admin": {
+    "filter":{
+      "filter": "Filter"
+    },
     "dashboard": {},
     "supplier_management": {
       "list": {
@@ -735,6 +738,7 @@
         "city": "City",
         "city_ph": "Enter city name",
         "state": "State",
+        "select": "Select...",
         "state_ph": "Enter state name",
         "postal": "Postal Code",
         "postal_ph": "Enter postal code",
@@ -844,11 +848,15 @@
         "search_label": "Search by distributor name..",
         "add_button": "+ Add Distributor",
         "filter_button": "Filters",
+        "filter_lable":"Distributor Name",
+        "filter_ph": "Choose Distributor",
         "table_col1": "Distributor Name",
         "table_col2": "Company Name",
         "table_col3": "Address",
         "table_col4": "Status",
-        "pagination_text": "Rows per page:"
+        "pagination_text": "Rows per page:",
+        "apply": "Apply",
+        "reset": "Reset"
       },
       "add_first": {
         "title": "Add Distributor",
@@ -1044,6 +1052,7 @@
         "next_button": "Next"
       },
       "add_second": {
+        "edit_retailer": "Edit Retailer",
         "title": "Add Retailer",
         "card_header_1": "General Information",
         "business_name": "Business Name",
@@ -1065,6 +1074,7 @@
         "opc": "CSP",
         "hc": "Consommation à domicile (CAD)",
         "card_header_2": "Main Address",
+        "select": "Select...",
         "address": "Address",
         "address_2": "Address 2",
         "address_2_ph": "Enter address",
@@ -1255,6 +1265,7 @@
       "cancel-btn":"Cancel",
       "company_logo":"Company Logo",
       "country_name":"Enter country name",
+      "file_choose":">Choose",
       "state_name":"Enter state",
       "efn":"Enter first name",
       "eln":"Enter last name",
@@ -1284,7 +1295,8 @@
         "search_supplier": "Search Supplier",
         "search_distributor": "Search Distributor",
         "clear1": "Clear",
-        "searching": "Searching...",   
+        "searching": "Searching...", 
+        "client":"Retailer",  
         "filter": "Filter",
         "no_data_to_show": "No data to show",
         "choose_client": "Choose Client",
@@ -1311,7 +1323,13 @@
         "expired": "Expired",
         "paid": "Paid",
         "applied": "Apply",
-        "clear": "Effacer"
+        "clear": "Effacer",
+        "fromDate":"From Date",
+        "toDate":"To Date",
+        "searchRetailer":"Search retailer",
+        "searchDistributor":"Search Distributor",
+        "searchByBusinessNmae":"Search by Business name",
+        "invitation":"Invitation"
       },
       "new_order": {
         "title": "Create Order",
@@ -1327,7 +1345,11 @@
         "subtotal": "Subtotal",
         "total": "Total",
         "cancel_btn": "Cancel",
-        "create_btn": "Create"
+        "create_btn": "Create",
+        "fillThDetail":"Fill The Detail",
+        "distribuor":"Enter Distributor Name",
+        "email":"Enter Distribuor Email",
+        "nosuchdata":"No such data found"
       },
       "view_order": {
         "title": "Order Detail",
@@ -1404,7 +1426,34 @@
         "product": "Product",
         "category": "Category",
         "view_map": "view map",
-        "batch_number": "Batch Number"
+        "batch_number": "Batch Number",
+        "updateStock":"Update Stock",
+        "modific":"Modification",
+        "reason":"Reason",
+        "batchNmber":"Batch Number",
+        "cancel":"Cancel",
+        "update":"Update",
+        "create":"Create",
+        "createnew":"+ Create New",
+        "table_col21": "SENDER",
+        "table_col22": "RECIPIENT",
+        "table_col23": "STATUS",
+        "table_col24": "DATE",
+        "table_col25": "SENT",
+        "table_col26": "RECEIVED",
+        "table_col27": "BROKEN",
+        "noOfRetailer":"No of Retailers",
+        "action":"Action",
+        "createGroup":"Create Group",
+        "grpName":"Group Name",
+        "chooseColor":"Choose Color",
+        "orderConfMess":"Order Confirmation message",
+        "orderDefaultNote":"Order Default Note",
+        "miniorderCoun":"Minimum Order Count per Order",
+        "miniOrderVal":"Minimum Order Value per Order",
+        "accepPayType":"Accepted Payment Type",
+        "forOffpayment":"For offline payment",
+        "forOnlinePAy":"For online payment"
       },
       "create_transfer": {
         "create_transfer":"Create Transfer",
@@ -1534,7 +1583,12 @@
         "add_btn": "Add",
         "select_style": "Select Style",
         "select_format": "Select Format",
-        "select_subcategory": "Select Sub Category"
+        "select_subcategory": "Select Sub Category",
+        "barcode":"Upload Barcode",
+        "barcode_1": "Barcode",
+        "label_image":"Label Image",
+        "product_image":"Product Image",
+        "new": "New"
       },
       "view": {
         "title": "View Product",
@@ -1597,7 +1651,15 @@
         "max_per_order": "MAX PER ORDER",
         "by_default": "By Defaul",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "td1":"Available for sale",
+        "td2":"Ordered",
+        "td3":"In Stock",
+        "td4":"visibility in Marketplace",
+        "td5":"Producer",
+        "container":"Container",
+        "status":"Status",
+        "depo":"Deposits"
       }
     },
     "request": {
@@ -1611,7 +1673,8 @@
       }
     },
     "retailer_management":{
-      "search": "By name or address"
+      "search": "By name or address",
+      "filter": "Filter"
     },
     "retailer_request":{
       "group": "Group",
@@ -1650,6 +1713,37 @@
       "invoice3":"We are an agency and we sell and collect payments on behalf of other suppliers",
       "invoice4":"We produce our product in our facility but we authorize Distribution Bucké pay b to distribute and collect ments on our behalf",
       "invoice5":"We produce our product in our facility and Self-Distribute"
+    },
+    "user_role_Management":{
+      "header_title":"Retailer Management",
+      "user":"User",
+      "roles":"Roles",
+      "manage_user":"Manage Users",
+      "manage_role":"Manage Roles",
+      "name":"NAME",
+      "email":"E-MAIL ADDRESS",
+      "contact_number":"CONTACT NUMBER",
+      "role":"Role",
+      "role_name":"ROLE NAME",
+      "update_date":"UPDATE DATE",
+      "add_user":"Add User",
+      "add_role":"Add Role",
+      "search_retailer_name":"Search by Retailer Name",
+      "search_role_name":"Search by Role Name",
+      "add_retailer":"Add Retailer",
+      "create_role":"Create Role",
+      "role_name1":"Role Name",
+      "enter_role_name":"Enter Role Name",
+      "assign_Permission":"Assign Permission",
+      "create":"Create",
+      "cancel":"Cancel",
+      "next":"Next",
+      "retailer_name":"Retailer Name",
+      "route":"Route Name",
+      "shown_message":"No data to show.",
+      "choose_retailer":"Choose Retailer",
+      "choose_route":"Choose Route",
+      "filter": "Filter"
     }
   },
   "distributor": {
@@ -2269,7 +2363,7 @@
       "website_url": "Website URL",
       "website_url_placeholder": "Enter website URL",
       "same_as_main_address": "Same as Main Address",
-      "on_premise_consumption": "On Premise Consumption(OCP)",
+      "on_premise_consumption": "On Premise Consumption(CSP)",
       "permit_of_alcohol": "I have a permit of Alcohol",
       "billing_info": "Billing Information",
       "gst_tax": "GST Tax",
@@ -2446,7 +2540,8 @@
         "quantity": "Quantity",
         "price": "Price",
         "transit": "Transit",
-        "view_details": "View Details"
+        "view_details": "View Details",
+        "filter_ph": "Search Supplier"
       },
       "order_detail": {
         "title": "Order Detail",

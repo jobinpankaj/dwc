@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { hasPermission } from "../../../CommonComponents/commonMethods";
 import { ROLE_EDIT, USER_EDIT } from "../../../Constants/constant";
 import LoadingOverlay from "react-loading-overlay";
+import { useTranslation } from "react-i18next";
 
 
 toast.configure();
@@ -56,6 +57,7 @@ const CustomTablePagination = styled(TablePagination)`
 `;
 
 const SuppliearUsersRoles = () => {
+  const { t } = useTranslation();
   const apis = useAuthInterceptor()
   const token = localStorage.getItem("supplier_accessToken")
   const navigate = useNavigate()
@@ -167,7 +169,7 @@ const SuppliearUsersRoles = () => {
         />
 
         <div class="col main p-0">
-          <Header title="Retailer Management" updateSidebar={updateSidebar} />
+          <Header title={t("supplier.user_role_Management.header_title")}updateSidebar={updateSidebar} />
           <LoadingOverlay
             active={loading}
             spinner
@@ -198,7 +200,7 @@ const SuppliearUsersRoles = () => {
                         aria-controls="Pricing-tab-pane"
                         aria-selected="true"
                       >
-                        Users
+                        {t("supplier.user_role_Management.user")}
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -212,7 +214,7 @@ const SuppliearUsersRoles = () => {
                         aria-controls="Availability-tab-pane"
                         aria-selected="false"
                       >
-                        Roles
+                        {t("supplier.user_role_Management.roles")}
                       </button>
                     </li>
                   </ul>
@@ -226,7 +228,7 @@ const SuppliearUsersRoles = () => {
                     tabindex="0"
                   >
                     {/* [Card] */}
-                    <h6 className="page-title">Manage Users</h6>
+                    <h6 className="page-title">{t("supplier.user_role_Management.manage_user")}</h6>
                     <div className="card user-card height-100">
                       <div className="card-body p-0">
                         <div className="row">
@@ -238,7 +240,7 @@ const SuppliearUsersRoles = () => {
                                   <input
                                     type="text"
                                     className="search-input"
-                                    placeholder="Search by Retailer Name..."
+                                    placeholder={t("supplier.user_role_Management.search_retailer_name")}
                                   ></input>
                                 </div>
                               </div>
@@ -253,7 +255,7 @@ const SuppliearUsersRoles = () => {
                                   className="btn btn-purple"
                                   onClick={() => navigate('/supplier/user-role-management/add-user')}
                                   >
-                                    + Add User
+                                    + {t("supplier.user_role_Management.add_user")}
                                   </button>
                                 }
                                 <button
@@ -263,7 +265,7 @@ const SuppliearUsersRoles = () => {
                                   aria-expanded="false"
                                   data-bs-auto-close="outside"
                                 >
-                                  <img src={filter} alt="" /> Filter
+                                  <img src={filter} alt="" /> {t("supplier.user_role_Management.filter")}
                                 </button>
                                 <form
                                   className={`dropdown-menu p-3`}
@@ -277,17 +279,17 @@ const SuppliearUsersRoles = () => {
                                 >
                                   <div class="mb-3">
                                     <label class="form-label">
-                                      Retailer Name
+                                    {t("supplier.user_role_Management.retailer_name")}
                                     </label>
                                     <select className="form-select">
-                                      <option value="">Choose Retailer</option>
+                                      <option value="">{t("supplier.user_role_Management.choose_retailer")}</option>
                                     </select>
                                   </div>
                                   <div class="mb-3">
-                                    <label class="form-label">Route Name</label>
+                                    <label class="form-label">{t("supplier.user_role_Management.route")}</label>
                                     <select className="form-select">
                                       <option selected disabled>
-                                        Choose Route
+                                      {t("supplier.user_role_Management.choose_route")}
                                       </option>
                                     </select>
                                   </div>
@@ -318,10 +320,10 @@ const SuppliearUsersRoles = () => {
                               <table className="table table-striped m-0">
                                 <thead>
                                   <tr>
-                                    <th>NAME</th>
-                                    <th>E-MAIL ADDRESS</th>
-                                    <th>CONTACT NUMBER</th>
-                                    <th>ROLE</th>
+                                  <th>{t("supplier.user_role_Management.name")}</th>
+                                    <th>{t("supplier.user_role_Management.email")}</th>
+                                    <th>{t("supplier.user_role_Management.contact_number")}</th>
+                                    <th>{t("supplier.user_role_Management.role")}</th>
                                     <th className="tableActionBox"></th>
                                   </tr>
                                 </thead>
@@ -365,7 +367,7 @@ const SuppliearUsersRoles = () => {
                                         </tr>
                                       )
                                     }) :
-                                    <>No data to show.</>
+                                    <>{t("supplier.user_role_Management.shown_message")}</>
                                   }
                                 </tbody>
                                 <tfoot>
@@ -430,7 +432,7 @@ const SuppliearUsersRoles = () => {
                     tabindex="1"
                   >
                     {/* [Card] */}
-                    <h6 className="page-title">Manage Roles</h6>
+                    <h6 className="page-title">{t("supplier.user_role_Management.manage_role")}</h6>
                     <div className="card user-card height-100">
                       <div className="card-body p-0">
                         <div className="row">
@@ -442,7 +444,7 @@ const SuppliearUsersRoles = () => {
                                   <input
                                     type="text"
                                     className="search-input"
-                                    placeholder="Search by Role Name..."
+                                    placeholder={t("supplier.user_role_Management.search_role_name")}
                                   ></input>
                                 </div>
                               </div>
@@ -457,7 +459,7 @@ const SuppliearUsersRoles = () => {
                                     className="btn btn-purple"
                                     onClick={() => navigate("/supplier/user-role-management/add-role")}
                                   >
-                                    + Add Role
+                                    + {t("supplier.user_role_Management.add_role")}
                                   </button> 
                                 }
                               </div>
@@ -470,8 +472,8 @@ const SuppliearUsersRoles = () => {
                               <table className="table table-striped m-0">
                                 <thead>
                                   <tr>
-                                    <th>Role Name</th>
-                                    <th>Update Date</th>
+                                  <th>{t("supplier.user_role_Management.role_name")}</th>
+                                    <th>{t("supplier.user_role_Management.update_date")}</th>
                                     <th className="tableActionBox"></th>
                                   </tr>
                                 </thead>

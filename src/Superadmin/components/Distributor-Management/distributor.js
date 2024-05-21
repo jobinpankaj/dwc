@@ -353,9 +353,7 @@ const Distributor = () => {
                               data-bs-auto-close="outside"
                             >
                               <img src={filter} alt="" />{" "}
-                              {t(
-                                "admin.distributor_management.list.filter_button"
-                              )}
+                              {t("admin.distributor_management.list.filter_button")}
                             </button>
                             <form
                               className={`dropdown-menu p-3 ${hideFilter}`}
@@ -369,14 +367,14 @@ const Distributor = () => {
                             >
                               <div className="mb-3">
                                 <label className="form-label">
-                                  Distributor Name
+                                {t("admin.distributor_management.list.filter_lable")}
                                 </label>
                                 <select
                                   className="form-select"
                                   value={selectedDistributor}
                                   onChange={(e) => handleFilterChange(e)}
                                 >
-                                  <option value="">Choose Distributor</option>
+                                  <option value="">{t("admin.distributor_management.list.filter_ph")}</option>
                                   {distributorFilter &&
                                     distributorFilter.sort().map((ele) => {
                                       return (
@@ -394,14 +392,14 @@ const Distributor = () => {
                                   className="btn btn-purple width-auto me-2"
                                   onClick={() => setUpdateList(!updateList)}
                                 >
-                                  Apply
+                                  {t("admin.distributor_management.list.apply")}
                                 </button>
                                 <button
                                   type="button"
                                   className="btn btn-outline-black width-auto"
                                   onClick={() => handleResetFilter()}
                                 >
-                                  Reset
+                                 {t("admin.distributor_management.list.reset")}
                                 </button>
                               </div>
                             </form>

@@ -34,6 +34,21 @@ const initialValues = {
   "user-edit": false,
 };
 
+const allCheckBoxIntitials = {
+  "dashboard-management": false,
+  "delivery-user-management": false,
+  "inventory-management": false,
+  "order-management": false,
+  "product-management": false,
+  "reports-management": false,
+  "retailers-management": false,
+  "role-management": false,
+  "routes-management": false,
+  "shipment-management": false,
+  "suppliers-management": false,
+  "user-management": false,
+};
+
 const ViewDistributor = () => {
   const apis = useAuthInterceptor();
   const { t, i18n } = useTranslation();
@@ -46,6 +61,8 @@ const ViewDistributor = () => {
   const [values, setValues] = useState(initialValues);
   const [permissions, setPermissions] = useState("");
   const [defaultPermissions, setDefaultPermissions] = useState("");
+  const [masterValue, setMasterValue] = useState(false);
+  const [allCheckBox, setAllCheckBox] = useState(allCheckBoxIntitials);
 
   const handleHide = () => {
     setShow(false);
@@ -75,7 +92,49 @@ const ViewDistributor = () => {
       updateArray.push(parseInt(e.target.value));
       setDefaultPermissions(updateArray);
     }
+    if (updateArray.length == 18) {
+      let flag = 1;
+      for (let x in allCheckBox) {
+        if (allCheckBox[x] == false) {
+          flag = 0;
+          break;
+        }
+      }
+      if (flag) setMasterValue(true);
+      else setMasterValue(false);
+    } else {
+      setMasterValue(false);
+    }
   };
+
+  
+  const handleManCheck = (e) => {
+    setAllCheckBox({
+      ...allCheckBox,
+      [e.target.name]: e.target.checked,
+    });
+    if (defaultPermissions.length == 18) {
+      let flag = 1;
+      for (let x in allCheckBox) {
+        if (x != [e.target.name]) {
+          if (allCheckBox[x] == false) {
+            flag = 0;
+            break;
+          }
+        }
+        else {
+          if (e.target.checked == false) { flag = 0; break; }
+        }
+      }
+      if (flag)
+        setMasterValue(true)
+      else
+        setMasterValue(false)
+    }
+    else {
+      setMasterValue(false)
+    }
+  }
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -171,6 +230,13 @@ const ViewDistributor = () => {
             .then((res2) => {
               if (res2.data.success === true) {
                 setDefaultPermissions(res2.data.data.userPermissions);
+                if(res2.data.data.userPermissions.length==18)
+                  {
+                    for (let key in allCheckBoxIntitials)
+                      allCheckBoxIntitials[key]=true
+                    setAllCheckBox(allCheckBoxIntitials)
+                    setMasterValue(true)
+                  }
                 if (
                   res2.data.data.userPermissions.includes(
                     parseInt(
@@ -428,6 +494,23 @@ const ViewDistributor = () => {
                     "user-edit": true,
                   }));
                 }
+                if (
+                  res2.data.data.userPermissions.includes(
+                    parseInt(
+                      getValueId(
+                        res.data.data.permissions["product-management"],
+                        "product-view"
+                      )
+                    )
+                  )
+                ) {
+                  setValues((prevState) => ({
+                    ...prevState,
+                    "product-view": true,
+                  }));
+                }
+
+
               } else {
                 toast.error("Something went wrong. Please try again later.", {
                   autoClose: 3000,
@@ -455,6 +538,43 @@ const ViewDistributor = () => {
         });
       });
   }, []);
+
+  const masterCheck = (e) => {
+    setMasterValue(e.target.checked)
+    // console.log("open")
+    if (e.target.checked == true) {
+      console.log("true")
+      for (let key in initialValues) {
+        initialValues[key] = true
+      }
+      setValues(initialValues)
+      let array = [];
+      for (let x in permissions) {
+
+        for (let y in permissions[x]) {
+          if (y != 14) {
+            array.push(parseInt(y))
+          }
+        }
+      }
+      setDefaultPermissions(array)
+      for (let p in allCheckBoxIntitials)
+        allCheckBoxIntitials[p] = true;
+      setAllCheckBox(allCheckBoxIntitials)
+    }
+    else {
+      for (let key in initialValues) {
+        initialValues[key] = false
+      }
+      setValues(initialValues)
+      setDefaultPermissions([])
+      for (let p in allCheckBoxIntitials)
+        allCheckBoxIntitials[p] = false;
+      setAllCheckBox(allCheckBoxIntitials)
+    }
+
+  }
+
 
   return (
     <div class="container-fluid page-wrap add-supplier">
@@ -1257,6 +1377,22 @@ const ViewDistributor = () => {
                   <form>
                     {/* [Row] */}
                     <div class="row g-3 align-items-center justify-content-between">
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value={masterValue}
+                          id="masterCheckBoxDist"
+                          onChange={(e) => { masterCheck(e) }}
+                          checked={masterValue}
+                        />
+                        <label
+                          class="form-check-label"
+                          for="masterCheckBoxDist"
+                        >
+                          Select All
+                        </label>
+                      </div>
                       <div class="col-auto">
                         <div class="form-check">
                           <input
@@ -1264,6 +1400,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="dashboard-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["dashboard-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1283,9 +1422,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["dashboard-management"],
-                                    "dashboard-view"
-                                  )
+                                  permissions["dashboard-management"],
+                                  "dashboard-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1304,7 +1443,7 @@ const ViewDistributor = () => {
                             disabled
                             // value= {permissions && permissions !== "" ? getValueId(permissions["pricing-management"], "pricing-edit") : ""}
                             onChange={(e) => handleCheck(e)}
-                            // checked = {values["pricing-edit"]}
+                          // checked = {values["pricing-edit"]}
                           />
                           <label class="form-check-label" for="inlineCheckbox2">
                             Edit
@@ -1323,6 +1462,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="delivery-user-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["delivery-user-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1342,9 +1484,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["delivery-user-management"],
-                                    "delivery-user-view"
-                                  )
+                                  permissions["delivery-user-management"],
+                                  "delivery-user-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1363,9 +1505,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["delivery-user-management"],
-                                    "delivery-user-edit"
-                                  )
+                                  permissions["delivery-user-management"],
+                                  "delivery-user-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1388,6 +1530,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="order-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["order-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1407,9 +1552,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["order-management"],
-                                    "order-view"
-                                  )
+                                  permissions["order-management"],
+                                  "order-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1428,7 +1573,7 @@ const ViewDistributor = () => {
                             disabled
                             // value= {permissions && permissions !== "" ? getValueId(permissions["order-management"], "order-edit") : ""}
                             onChange={(e) => handleCheck(e)}
-                            // checked = {values["order-edit"]}
+                          // checked = {values["order-edit"]}
                           />
                           <label class="form-check-label" for="inlineCheckbox2">
                             Edit
@@ -1447,6 +1592,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="inventory-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["inventory-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1466,9 +1614,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["inventory-management"],
-                                    "inventory-view"
-                                  )
+                                  permissions["inventory-management"],
+                                  "inventory-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1487,9 +1635,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["inventory-management"],
-                                    "inventory-edit"
-                                  )
+                                  permissions["inventory-management"],
+                                  "inventory-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1512,6 +1660,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="product-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["product-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1531,9 +1682,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["product-management"],
-                                    "product-view"
-                                  )
+                                  permissions["product-management"],
+                                  "product-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1552,7 +1703,7 @@ const ViewDistributor = () => {
                             disabled
                             // value= {permissions && permissions !== "" ? getValueId(permissions["product-management"], "product-edit") : ""}
                             onChange={(e) => handleCheck(e)}
-                            // checked = {values["product-edit"]}
+                          // checked = {values["product-edit"]}
                           />
                           <label class="form-check-label" for="inlineCheckbox2">
                             Edit
@@ -1571,6 +1722,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="role-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["role-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1590,9 +1744,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["role-management"],
-                                    "role-view"
-                                  )
+                                  permissions["role-management"],
+                                  "role-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1611,9 +1765,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["role-management"],
-                                    "role-edit"
-                                  )
+                                  permissions["role-management"],
+                                  "role-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1636,6 +1790,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="user-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["user-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1655,9 +1812,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["user-management"],
-                                    "user-view"
-                                  )
+                                  permissions["user-management"],
+                                  "user-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1676,9 +1833,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["user-management"],
-                                    "user-edit"
-                                  )
+                                  permissions["user-management"],
+                                  "user-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1701,6 +1858,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="retailers-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["retailers-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1720,9 +1880,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["retailers-management"],
-                                    "retailer-view"
-                                  )
+                                  permissions["retailers-management"],
+                                  "retailer-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1756,6 +1916,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="reports-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["reports-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1775,9 +1938,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["reports-management"],
-                                    "reports-view"
-                                  )
+                                  permissions["reports-management"],
+                                  "reports-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1812,6 +1975,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="routes-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["routes-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1831,9 +1997,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["routes-management"],
-                                    "routes-view"
-                                  )
+                                  permissions["routes-management"],
+                                  "routes-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1852,9 +2018,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["routes-management"],
-                                    "routes-edit"
-                                  )
+                                  permissions["routes-management"],
+                                  "routes-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1876,6 +2042,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="shipment-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["shipment-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1895,9 +2064,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["shipment-management"],
-                                    "shipment-view"
-                                  )
+                                  permissions["shipment-management"],
+                                  "shipment-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1916,9 +2085,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["shipment-management"],
-                                    "shipment-edit"
-                                  )
+                                  permissions["shipment-management"],
+                                  "shipment-edit"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1940,6 +2109,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            name="suppliers-management"
+                            onChange={(e) => handleManCheck(e)}
+                            checked={allCheckBox["suppliers-management"]}
                           />
                           <label
                             class="form-check-label"
@@ -1959,9 +2131,9 @@ const ViewDistributor = () => {
                             value={
                               permissions && permissions !== ""
                                 ? getValueId(
-                                    permissions["suppliers-management"],
-                                    "supplier-view"
-                                  )
+                                  permissions["suppliers-management"],
+                                  "supplier-view"
+                                )
                                 : ""
                             }
                             onChange={(e) => handleCheck(e)}
@@ -1977,9 +2149,9 @@ const ViewDistributor = () => {
                             type="checkbox"
                             id="inlineCheckbox2"
                             disabled
-                            // value= {permissions && permissions !== "" ? getValueId(permissions["routes-management"], "routes-edit") : ""}
-                            // onChange = {(e) => handleCheck(e)}
-                            // checked = {values["routes-edit"]}
+                          // value= {permissions && permissions !== "" ? getValueId(permissions["routes-management"], "routes-edit") : ""}
+                          // onChange = {(e) => handleCheck(e)}
+                          // checked = {values["routes-edit"]}
                           />
                           <label class="form-check-label" for="inlineCheckbox2">
                             Edit

@@ -1586,7 +1586,7 @@ const MyProfile = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="row">
+                              {/* <div className="row">
                                 <div className="col-sm-12 mb-3 d-flex align-items-start">
                                   <input
                                     type="checkbox"
@@ -1681,7 +1681,7 @@ const MyProfile = () => {
                                   {t("supplier.my_account_view.General_Information.desc5")}
                                   </p>
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
                             {/* [/General Info] */}
 

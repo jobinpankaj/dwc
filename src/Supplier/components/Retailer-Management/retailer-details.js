@@ -7,11 +7,13 @@ import Header from "../../../CommonComponents/Header/header";
 import uploadImg from "../../assets/images/upload.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTranslation } from "react-i18next";
 
 import "../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 
 const RetailerDetails = () => {
+  const { t, i18n } = useTranslation();
   const apis = useAuthInterceptor();
   const token = localStorage.getItem("supplier_accessToken");
   const { user_id } = useParams();
@@ -166,7 +168,7 @@ const RetailerDetails = () => {
         <Sidebar userType={"supplier"} />
 
         <div class="col main p-0">
-          <Header title="Retailer Detail" updateSidebar={updateSidebar} />
+          <Header title={t("distributor.retailer_management.detail.title")} updateSidebar={updateSidebar} />
           <div class="container-fluid page-content-box px-3 px-sm-4">
             <div className="row mb-3">
               <div className="col-12">
@@ -180,7 +182,7 @@ const RetailerDetails = () => {
                             <ul class="list-group list-group-flush">
                               <li class="list-group-item d-flex justify-content-between align-items-start border-0 px-0">
                                 <div class="ms-2 me-auto">
-                                  <div class="fw-bold">Contact email</div>
+                                  <div class="fw-bold">{t("retailer.profile.contact_email")}</div>
                                   <div className="d-flex align-items-start">
                                     <span className="icon-wrap me-2">
                                       <img src={emailIcon} />
@@ -191,13 +193,13 @@ const RetailerDetails = () => {
                               </li>
                               <li class="list-group-item d-flex justify-content-between align-items-start border-0 px-0">
                                 <div class="ms-2 me-auto">
-                                  <div class="fw-bold">Consumption</div>
+                                  <div class="fw-bold">{t("admin.retailer_management.view.consumption")}</div>
                                   On Site
                                 </div>
                               </li>
                               <li class="list-group-item d-flex justify-content-between align-items-start border-0 px-0">
                                 <div class="ms-2 me-auto">
-                                  <div class="fw-bold">Address</div>
+                                  <div class="fw-bold">{t("retailer.profile.address")}</div>
                                   <div className="d-flex align-items-start">
                                     <span className="icon-wrap me-2">
                                       <img src={addressIcon} />
@@ -249,7 +251,7 @@ const RetailerDetails = () => {
                             <div className="col-12">
                               <div className="row">
                                 <div className="form-head w-100 card-top-filter-box">
-                                  <p>General Information</p>
+                                  <p>{t( "retailer.profile.general_information" )}</p>
                                   {/* <button
                                     type="button"
                                     onClick={() =>
@@ -264,7 +266,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-12 col-xl-6 mb-3">
                                   <label className="form-label">
-                                    Business Name<sup>*</sup>
+                                  {t("retailer.profile.business_name")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -276,7 +278,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Group Name
+                                  {t("retailer.profile.group_name")}
                                   </label>
                                   <input
                                     type="text"
@@ -290,7 +292,7 @@ const RetailerDetails = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Business Category
+                                  {t("retailer.profile.business_category")}
                                   </label>
                                   <select
                                     className="form-select"
@@ -315,7 +317,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Contact E-Mail
+                                  {t("retailer.profile.email_address")}
                                   </label>
                                   <input
                                     type="text"
@@ -331,7 +333,7 @@ const RetailerDetails = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Public Phone Number
+                                  {t("retailer.profile.public_phone_number")}
                                   </label>
                                   <input
                                     type="text"
@@ -345,7 +347,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Phone Number
+                                  {t("retailer.profile.phone_number")}
                                   </label>
                                   <input
                                     type="text"
@@ -359,7 +361,7 @@ const RetailerDetails = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Contact Name
+                                  {t("retailer.profile.contact_name")}
                                   </label>
                                   <input
                                     type="text"
@@ -429,7 +431,7 @@ const RetailerDetails = () => {
                             <div className="col-12">
                               <div className="row">
                                 <div className="form-head w-100 card-top-filter-box">
-                                  <p>Main Address</p>
+                                   <p>{t("retailer.profile.main_address")}</p>
                                   {/* <button
                                     type="button"
                                     onClick={() =>
@@ -444,7 +446,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-12 col-xl-6 mb-3">
                                   <label className="form-label">
-                                    Address<sup>*</sup>
+                                  {t("retailer.profile.address")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -456,7 +458,7 @@ const RetailerDetails = () => {
                                 </div>
                                 <div className="col-sm-12 col-xl-6 mb-3">
                                   <label className="form-label">
-                                    Address 2
+                                  {t("retailer.profile.address_2")}
                                   </label>
                                   <input
                                     type="text"
@@ -470,7 +472,7 @@ const RetailerDetails = () => {
                               <div className="row">
                                 <div className="col-sm-12 col-xl-6 mb-3">
                                   <label className="form-label">
-                                    City Name
+                                  {t("retailer.profile.city_name")}
                                   </label>
                                   <input
                                     type="text"
@@ -481,7 +483,7 @@ const RetailerDetails = () => {
                                   />
                                 </div>
                                 <div className="col-sm-12 col-xl-6 mb-3 position-relative">
-                                  <label className="form-label">State</label>
+                                  <label className="form-label">{t("retailer.profile.state")}</label>
                                   <input
                                     type="email"
                                     className="form-control"
@@ -494,7 +496,7 @@ const RetailerDetails = () => {
                               <div className="row">
                                 <div className="col-sm-12 col-xl-6 mb-3">
                                   <label className="form-label">
-                                    Postal Code
+                                  {t("retailer.profile.postal_code")}
                                   </label>
                                   <input
                                     type="email"
@@ -505,7 +507,7 @@ const RetailerDetails = () => {
                                   />
                                 </div>
                                 <div className="col-sm-12 col-xl-6 mb-3 position-relative">
-                                  <label className="form-label">Country</label>
+                                  <label className="form-label">{t("retailer.profile.country")}</label>
                                   <input
                                     type="email"
                                     className="form-control"

@@ -262,9 +262,13 @@ const AddSupplierAddress = () => {
                                       <GooglePlacesAutocomplete
                                         apiKey="AIzaSyBLkLSPnlPCzCfWun-oexkLi9DT7ijQXeY"
                                         selectProps={{
+                                          placeholder: t(
+                                            "admin.supplier_management.add_third.select"
+                                          ),
                                           value: mainAddress,
                                           onChange: (e) =>
                                             handleMainAddressChange(e),
+                                          
                                         }}
                                       />
                                       {mainAddressError !== "" ? (

@@ -103,7 +103,8 @@ const Marketplace = () => {
     apis
       .get(`/retailer/suppliersAllList`, config)
       .then((res) => {
-        setSupplierList(res.data.data);
+        const filter=res.data.data.filter((a)=>{return a?.supplier_status==="1"})
+        setSupplierList(filter);
         console.log("all data in market place-------------", res.data.data);
         setLoading(false);
       })

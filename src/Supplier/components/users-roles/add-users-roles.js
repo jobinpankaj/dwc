@@ -8,10 +8,12 @@ import Header from "../../../CommonComponents/Header/header";
 import "react-toastify/dist/ReactToastify.css";
 import useAuthInterceptor from "../../../utils/apis";
 import "../../assets/scss/dashboard.scss";
+import { useTranslation } from "react-i18next";
 
 toast.configure();
 
 const SuppliearAddUsersRoles = () => {
+  const { t, i18n } = useTranslation();
   const apis = useAuthInterceptor();
   const [showSidebar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
@@ -294,7 +296,7 @@ const SuppliearAddUsersRoles = () => {
         />
 
         <div class="col main p-0">
-          <Header title="Add Retailer" updateSidebar={updateSidebar} />
+          <Header title={t("admin.retailer_management.add_first.title")} updateSidebar={updateSidebar} />
           <div class="container-fluid page-content-box px-3 px-sm-4">
             <div class="row">
               <div class="col">
@@ -350,7 +352,7 @@ const SuppliearAddUsersRoles = () => {
                                         class="form-check-label ms-2"
                                         for="flexSwitchCheck1"
                                       >
-                                        Enable User
+                                        {t("admin.supplier_management.add_first.enable")}
                                       </label>
                                     </div>
                                   </div>
@@ -364,11 +366,11 @@ const SuppliearAddUsersRoles = () => {
                             <div className="card-body">
                               <div className="row">
                                 <div className="form-head w-100">
-                                  Profile info.
+                                {t("retailer.profile.my_profile")}
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    First Name<sup>*</sup>
+                                  {t("retailer.profile.first_name")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -387,7 +389,7 @@ const SuppliearAddUsersRoles = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Last Name<sup>*</sup>
+                                  {t("retailer.profile.last_name")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -406,7 +408,7 @@ const SuppliearAddUsersRoles = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Address<sup>*</sup>
+                                  {t("retailer.profile.address")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -425,7 +427,7 @@ const SuppliearAddUsersRoles = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Country<sup>*</sup>
+                                  {t("retailer.profile.country")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -446,7 +448,7 @@ const SuppliearAddUsersRoles = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Email<sup>*</sup>
+                                  {t("retailer.profile.email_address")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="email"
@@ -463,7 +465,7 @@ const SuppliearAddUsersRoles = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Mobile number<sup>*</sup>
+                                  {t("retailer.profile.phone_number")}<sup>*</sup>
                                   </label>
                                   <input
                                     type="text"
@@ -484,7 +486,7 @@ const SuppliearAddUsersRoles = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Create Password<sup>*</sup>
+                                  {t("admin.retailer_management.add_first.create_pass")}<sup>*</sup>
                                   </label>
                                   <div className="position-relative">
                                     <input
@@ -512,7 +514,7 @@ const SuppliearAddUsersRoles = () => {
                                 </div>
                                 <div className="col-sm-6 mb-3 position-relative">
                                   <label className="form-label">
-                                    Confirm Password<sup>*</sup>
+                                  {t("retailer.change_password.confirm_pass")}<sup>*</sup>
                                   </label>
                                   <div className="position-relative">
                                     <input
@@ -542,7 +544,7 @@ const SuppliearAddUsersRoles = () => {
                               <div className="row">
                                 <div className="col-sm-6 mb-3">
                                   <label className="form-label">
-                                    Role<sup>*</sup>
+                                  {t("retailer.profile.user_role")}<sup>*</sup>
                                   </label>
                                   <select className="form-select" value={role} onChange={(e) => {setRole(e.target.value); setRoleError("")}}>
                                     <option value={""}>Select a role</option>
@@ -579,14 +581,14 @@ const SuppliearAddUsersRoles = () => {
                         className="btn btn-outline-black me-3"
                         onClick={(e) => handleCancel(e)}
                       >
-                        Cancel
+                        {t("supplier.inventory_management.config_availability.cancel_btn" )}
                       </button>
                       <button
                         type="button"
                         className="btn btn-purple"
                         onClick={(e) => handleNext(e)}
                       >
-                        Next
+                        {t("admin.supplier_management.add_first.next_button")}
                       </button>
                     </div>
                   </div>

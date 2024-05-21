@@ -1178,7 +1178,6 @@
 
 // export default EditProduct;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 // import { canvasPreview } from "./cropper/canvasPreview";
@@ -1201,7 +1200,7 @@ import "../../assets/scss/dashboard.scss";
 import useAuthInterceptor from "../../../utils/apis";
 import noImage from "../../assets/images/no-image.png";
 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import beerBottle from "../../assets/images/beer-bottle.png";
 import beerKeg from "../../assets/images/beer_keg.png";
 import beerCane from "../../assets/images/beer_cane.png";
@@ -1225,7 +1224,7 @@ toast.configure();
 // }
 
 const EditProduct = () => {
-  const numberRegEx = /^\d*\.?\d*$/
+  const numberRegEx = /^\d*\.?\d*$/;
   const { t, i18n } = useTranslation();
   const apis = useAuthInterceptor();
   const token = localStorage.getItem("supplier_accessToken");
@@ -1233,16 +1232,16 @@ const EditProduct = () => {
   // new
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const optionalParam = searchParams.get('optionalParam');
-  console.log(optionalParam, "adda")
+  const optionalParam = searchParams.get("optionalParam");
+  console.log(optionalParam, "adda");
   const [disableInputs, setDisableInputs] = useState(false);
   useEffect(() => {
     // Check the condition based on product_id
-    if (optionalParam === 'some_value') {
+    if (optionalParam === "some_value") {
       setDisableInputs(true);
     }
   }, [product_id]);
-  console.log(disableInputs, "assa")
+  console.log(disableInputs, "assa");
   // new
   const navigate = useNavigate();
   const [productName, setProductName] = useState("");
@@ -1275,8 +1274,8 @@ const EditProduct = () => {
   const [show2, setShow2] = useState(false);
   const [imageError, setImageError] = useState("");
   const [imageProductError, setImageProductError] = useState("");
-  const [currentImage, setCurrentImage] = useState("")
-  const [currentImageProduct, setCurrentImageProduct] = useState("")
+  const [currentImage, setCurrentImage] = useState("");
+  const [currentImageProduct, setCurrentImageProduct] = useState("");
   const [currentCode, setCurrentCode] = useState("");
   const [codePic, setCodePic] = useState("");
   const [codeError, setCodedError] = useState("");
@@ -1289,19 +1288,20 @@ const EditProduct = () => {
   const [otherFormat, setOtherFormat] = useState("");
   const [showNewFormat, setShowNewFormat] = useState(false);
   const [formatUnit, setFormatUnit] = useState(0);
-  const [formatType, setFormatType] = useState("")
+  const [formatType, setFormatType] = useState("");
   // console.log("saddddd",otherStyle)
   const submit = () => {
-    console.log(otherStyle, "sdagsajkjksa")
-    if (otherStyle.trim() === "" || otherStyle === null || otherStyle.toLowerCase().trim() == "other") {
-
+    console.log(otherStyle, "sdagsajkjksa");
+    if (
+      otherStyle.trim() === "" ||
+      otherStyle === null ||
+      otherStyle.toLowerCase().trim() == "other"
+    ) {
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
-
-    }
-    else {
+    } else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1309,7 +1309,7 @@ const EditProduct = () => {
         },
       };
       const formDataStyle = new FormData();
-      formDataStyle.append("style", otherStyle)
+      formDataStyle.append("style", otherStyle);
       apis
         .post("/supplier/createProductStyles", formDataStyle, config)
         .then((res) => {
@@ -1319,12 +1319,11 @@ const EditProduct = () => {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
-            setSelectedStyle("")
+            setSelectedStyle("");
             // setSelectedStyle(otherStyle)
             setShowOther(true);
             setShowStyleModal(false);
           } else {
-
             toast.error("Could not add Style. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1337,24 +1336,22 @@ const EditProduct = () => {
             autoClose: 3000,
             position: toast.POSITION.TOP_CENTER,
           });
-
         });
-
-
-
     }
-  }
+  };
   const submitFormat = () => {
     // console.log(otherStyle,"sdagsajkjksa")
-    if (otherFormat.trim() === "" || otherFormat === null || formatUnit <= 0 || formatUnit === null) {
-
+    if (
+      otherFormat.trim() === "" ||
+      otherFormat === null ||
+      formatUnit <= 0 ||
+      formatUnit === null
+    ) {
       toast.error("Please enter valid value", {
         autoClose: 3000,
         position: toast.POSITION.TOP_CENTER,
       });
-
-    }
-    else {
+    } else {
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1362,8 +1359,8 @@ const EditProduct = () => {
         },
       };
       const formDataFormat = new FormData();
-      formDataFormat.append("name", otherFormat)
-      formDataFormat.append("unit", formatUnit)
+      formDataFormat.append("name", otherFormat);
+      formDataFormat.append("unit", formatUnit);
       apis
         .post("/supplier/createProductFormats", formDataFormat, config)
         .then((res) => {
@@ -1373,11 +1370,10 @@ const EditProduct = () => {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
             });
-            setSelectedFormat("")
+            setSelectedFormat("");
             setShowNewFormat(true);
             setShowFormatModal(false);
           } else {
-
             toast.error("Could not add Format. Please try again later.", {
               autoClose: 3000,
               position: toast.POSITION.TOP_CENTER,
@@ -1390,15 +1386,13 @@ const EditProduct = () => {
             autoClose: 3000,
             position: toast.POSITION.TOP_CENTER,
           });
-
         });
 
       // setSelectedFormat("")
       // setShowNewFormat(true);
       // setShowFormatModal(false);
-
     }
-  }
+  };
 
   // const previewCanvasRef = useRef(null);
   // const previewCanvasRefProduct = useRef(null);
@@ -1520,15 +1514,15 @@ const EditProduct = () => {
   // }
 
   const getBase64 = (file, cb) => {
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
     reader.onload = function () {
-      cb(reader.result)
-    }
+      cb(reader.result);
+    };
     reader.onerror = function (error) {
-      console.log(error)
-    }
-  }
+      console.log(error);
+    };
+  };
   const handleBarCode = (e) => {
     if (e.target.files && e.target.files[0]) {
       let pattern = /image-*/;
@@ -1537,8 +1531,8 @@ const EditProduct = () => {
       if (fileType.match(pattern) && e.target.files[0].size < 2 * 1024 * 1024) {
         setCurrentCode(URL.createObjectURL(e.target.files[0]));
         getBase64(e.target.files[0], (result) => {
-          setCodePic(result)
-        })
+          setCodePic(result);
+        });
       } else {
         if (e.target.files[0].size > 2 * 1024 * 1024) {
           setCodedError("The image size can not be greater than 2mb.");
@@ -1559,8 +1553,8 @@ const EditProduct = () => {
       if (fileType.match(pattern) && e.target.files[0].size < 2 * 1024 * 1024) {
         setCurrentImage(URL.createObjectURL(e.target.files[0]));
         getBase64(e.target.files[0], (result) => {
-          setFormPic(result)
-        })
+          setFormPic(result);
+        });
         // setShow(true);
       } else {
         if (e.target.files[0].size > 2 * 1024 * 1024) {
@@ -1624,8 +1618,8 @@ const EditProduct = () => {
       if (fileType.match(pattern) && e.target.files[0].size < 2 * 1024 * 1024) {
         setCurrentImageProduct(URL.createObjectURL(e.target.files[0]));
         getBase64(e.target.files[0], (result) => {
-          setFormPicProduct(result)
-        })
+          setFormPicProduct(result);
+        });
         // setShow2(true);
       } else {
         if (e.target.files[0].size > 2 * 1024 * 1024) {
@@ -1786,7 +1780,6 @@ const EditProduct = () => {
               });
             }
           }
-
         });
     }
   };
@@ -1840,7 +1833,6 @@ const EditProduct = () => {
       },
     };
 
-
     apis
       .get(`/supplier/product/${product_id}`, config)
       .then((res) => {
@@ -1852,15 +1844,20 @@ const EditProduct = () => {
           setSelectedStyle(res.data.data.product_style.id);
           setSelectedSubCat(res.data.data.product_category.id);
           setOrganic(res.data.data.is_organic);
-          setCurrentImageProduct(res.data.data.product_image)
+          setCurrentImageProduct(res.data.data.product_image);
           if (disableInputs == false) {
-            setCurrentImage(res.data.data.label_image)
+            setCurrentImage(res.data.data.label_image);
             setSelectedFormat(res.data.data.product_format.id);
             setLowbla(res.data.data.sap_lowbla ? res.data.data.sap_lowbla : "");
-            setShowbay(res.data.data.sap_showbay ? res.data.data.sap_lowbla : "");
+            setShowbay(
+              res.data.data.sap_showbay ? res.data.data.sap_lowbla : ""
+            );
             setMetro(res.data.data.sap_metro ? res.data.data.sap_metro : "");
-            if (res.data.data.barcode_image_url !== null || res.data.data.barcode_image_url !== "") {
-              setCurrentCode(res.data.data.barcode_image_url)
+            if (
+              res.data.data.barcode_image_url !== null ||
+              res.data.data.barcode_image_url !== ""
+            ) {
+              setCurrentCode(res.data.data.barcode_image_url);
             }
           }
         } else {
@@ -1911,25 +1908,22 @@ const EditProduct = () => {
   };
 
   const handleStyleChange = (e) => {
-    setShowOther(false)
+    setShowOther(false);
     setSelectedStyle(e.target.value);
     console.log(e.target.value);
-    if (e.target.value === 'other') {
-      console.log("NO entry")
-      handleStylePopup()
-    }
-    else if (e.target.value === 'Other') {
-      handleStylePopup()
+    if (e.target.value === "other") {
+      console.log("NO entry");
+      handleStylePopup();
+    } else if (e.target.value === "Other") {
+      handleStylePopup();
     }
     setStyleError("");
-
   };
   const handleStylePopup = () => {
-    setOtherStyle("")
-    console.log('done');
+    setOtherStyle("");
+    console.log("done");
     setShowStyleModal(true);
-
-  }
+  };
 
   const handleSubCatChange = (e) => {
     setSubCatError("");
@@ -1946,10 +1940,10 @@ const EditProduct = () => {
   const handleFormatChange = (e) => {
     const formatId = e.target.value;
     const ab = formatList.filter((x) => {
-      return x.id == formatId
+      return x.id == formatId;
     });
 
-    let formatName = ab[0].name.split(' ')[0];
+    let formatName = ab[0].name.split(" ")[0];
     setFormatType(formatName);
     setShowNewFormat(false);
     setOtherFormat("");
@@ -1962,24 +1956,21 @@ const EditProduct = () => {
     // Clear current image when format changes
     if (currentImage !== "") {
       setCurrentImage("");
-      document.getElementById('upload1').value = null;
+      document.getElementById("upload1").value = null;
     }
 
-
-
-
-    setShowNewFormat(false)
+    setShowNewFormat(false);
     setSelectedFormat(e.target.value);
     if (e.target.value === "other") {
       console.log("xaaa");
-      handleFormatPopup()
+      handleFormatPopup();
     }
     setFormatError("");
   };
   const handleFormatPopup = () => {
-    setOtherFormat("")
-    setShowFormatModal(true)
-  }
+    setOtherFormat("");
+    setShowFormatModal(true);
+  };
   const handleOrganicChange = (e) => {
     if (e.target.checked === true) {
       setOrganic("1");
@@ -2112,6 +2103,47 @@ const EditProduct = () => {
                       </div>
                       <div className="row mb-3 mx-0">
                         <div className="col-sm-6 px-0 ps-sm-0 pe-sm-3">
+                          {/* <div className="mb-3">
+                            <label className="form-label">
+                              {t(
+                                "supplier.product_management.Product_type.product_type_lable"
+                              )}
+                            </label>
+                            <select className="form-select">
+                              <option value="">
+                                {t(
+                                  "supplier.product_management.Product_type.select_product"
+                                )}
+                              </option>
+                              <option value="beer">
+                                {" "}
+                                {t(
+                                  "supplier.product_management.Product_type.Beer"
+                                )}
+                              </option>
+                              <option value="wine">
+                                {t(
+                                  "supplier.product_management.Product_type.Wine"
+                                )}
+                              </option>
+                              <option value="cider">
+                                {t(
+                                  "supplier.product_management.Product_type.Cider"
+                                )}
+                              </option>
+                              <option value="non-alcohol">
+                                {t(
+                                  "supplier.product_management.Product_type.Non-Alcohol"
+                                )}
+                              </option>
+                              <option value="beverage">
+                                {t(
+                                  "supplier.product_management.Product_type.Beverage"
+                                )}
+                              </option>
+                            </select>
+                          </div> */}
+
                           <div className="mb-3">
                             <label className="form-label">
                               {t("supplier.product_management.add.style")}
@@ -2142,7 +2174,6 @@ const EditProduct = () => {
                               <option value="other">
                                 {t("supplier.product_management.add.other")}
                               </option>
-
                             </select>
                             {styleError === "" ? (
                               <></>
@@ -2173,7 +2204,11 @@ const EditProduct = () => {
                               disabled={disableInputs}
                               onChange={(e) => handleSubCatChange(e)}
                             >
-                              <option value="">Select Sub Category</option>
+                              <option value="">
+                                {t(
+                                  "supplier.product_management.add.select_subcategory"
+                                )}
+                              </option>
                               {subCatList &&
                                 subCatList.map((ele) => {
                                   return (
@@ -2215,7 +2250,11 @@ const EditProduct = () => {
                               value={selectedFormat}
                               onChange={(e) => handleFormatChange(e)}
                             >
-                              <option value="">Select Format</option>
+                              <option value="">
+                                {t(
+                                  "supplier.product_management.add.select_format"
+                                )}
+                              </option>
                               {formatList &&
                                 formatList.map((ele) => {
                                   return (
@@ -2239,7 +2278,9 @@ const EditProduct = () => {
                           </div>
 
                           <div className="mb-3">
-                            <label className="form-label">Upload Barcode</label>
+                            <label className="form-label">
+                              {t("supplier.product_management.add.barcode_1")}
+                            </label>
                             <div className="uploadBtn">
                               {currentCode !== "" && currentCode !== null ? (
                                 <img
@@ -2276,11 +2317,12 @@ const EditProduct = () => {
                           <div className="mb-3 prodImg">
                             <div>
                               <label className="form-label">
-                                {"Lable Image"}
+                                {t(
+                                  "supplier.product_management.add.label_image"
+                                )}
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-
                                   {/* <div className="productImg min-square-width border px-2 mb-3 ">
                                     <img src={currentImage === "" || !currentImage ? noImage : currentImage}></img>
                                   </div> */}
@@ -2293,7 +2335,9 @@ const EditProduct = () => {
                                         </div>
                                         <div class="lable-bottle">
                                           <div class="lable-content">
-                                            {currentImage ? <img src={currentImage} /> : null}
+                                            {currentImage ? (
+                                              <img src={currentImage} />
+                                            ) : null}
                                           </div>
                                         </div>
                                       </>
@@ -2305,7 +2349,9 @@ const EditProduct = () => {
                                         </div>
                                         <div className="lable-cane">
                                           <div class="lable-content">
-                                            {currentImage ? <img src={currentImage} /> : null}
+                                            {currentImage ? (
+                                              <img src={currentImage} />
+                                            ) : null}
                                           </div>
                                         </div>
                                       </>
@@ -2317,15 +2363,18 @@ const EditProduct = () => {
                                         </div>
                                         <div className="lable-keg">
                                           <div class="lable-content">
-                                            {currentImage ? <img src={currentImage} /> : null}
+                                            {currentImage ? (
+                                              <img src={currentImage} />
+                                            ) : null}
                                           </div>
                                         </div>
                                       </>
                                     )}
-                                    {(formatType !== "Bottle" && formatType !== "Can" && formatType !== "Keg") && (
-                                      <img src={noImage} alt="No Image" />
-                                    )}
-
+                                    {formatType !== "Bottle" &&
+                                      formatType !== "Can" &&
+                                      formatType !== "Keg" && (
+                                        <img src={noImage} alt="No Image" />
+                                      )}
                                   </div>
                                   {imageError === "" ? (
                                     <></>
@@ -2354,13 +2403,21 @@ const EditProduct = () => {
 
                             <div>
                               <label className="form-label">
-                                {"Product Image"}
+                                {t(
+                                  "supplier.product_management.add.product_image"
+                                )}
                               </label>
                               <>
                                 <div className="mb-3 prodImg position-relative">
-
                                   <div className="productImg min-square-width border px-2 mb-3 ">
-                                    <img src={currentImageProduct === "" || !currentImageProduct ? noImage : currentImageProduct}></img>
+                                    <img
+                                      src={
+                                        currentImageProduct === "" ||
+                                        !currentImageProduct
+                                          ? noImage
+                                          : currentImageProduct
+                                      }
+                                    ></img>
                                   </div>
                                   {imageProductError === "" ? (
                                     <></>
@@ -2439,7 +2496,7 @@ const EditProduct = () => {
         className="modal fade"
         show={show}
         centered
-      // onHide={() => { setShow(false) }}
+        // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Lable Image</h5>
@@ -2492,7 +2549,7 @@ const EditProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-          // onClick={() => handleLableCrop()}
+            // onClick={() => handleLableCrop()}
           >
             Crop
           </button>
@@ -2503,7 +2560,7 @@ const EditProduct = () => {
         className="modal fade"
         show={show2}
         centered
-      // onHide={() => { setShow(false) }}
+        // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Crop Product Image</h5>
@@ -2552,7 +2609,7 @@ const EditProduct = () => {
           <button
             type="button"
             class="btn btn-purple btn-md w-auto"
-          // onClick={() => handleProductCrop()}
+            // onClick={() => handleProductCrop()}
           >
             Crop
           </button>
@@ -2564,7 +2621,7 @@ const EditProduct = () => {
         className="modal fade"
         show={showStyleModal}
         centered
-      // onHide={() => { setShow(false) }}
+        // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Style</h5>
@@ -2577,13 +2634,13 @@ const EditProduct = () => {
             background: "black",
           }}
         >
-
           <input
             type="text"
             className="form-control"
             value={otherStyle}
             placeholder="Enter Style"
-            onChange={(e) => setOtherStyle(e.target.value)} />
+            onChange={(e) => setOtherStyle(e.target.value)}
+          />
         </Modal.Body>
 
         <Modal.Footer
@@ -2618,7 +2675,7 @@ const EditProduct = () => {
         className="modal fade"
         show={showFormatModal}
         centered
-      // onHide={() => { setShow(false) }}
+        // onHide={() => { setShow(false) }}
       >
         <Modal.Header>
           <h5 class="modal-title text-purpal">Add New Format</h5>
@@ -2637,7 +2694,8 @@ const EditProduct = () => {
             className="form-control"
             value={otherFormat}
             placeholder="Enter Format Name"
-            onChange={(e) => setOtherFormat(e.target.value)} />
+            onChange={(e) => setOtherFormat(e.target.value)}
+          />
           <br />
           <label>Format Unit</label>
           <input
@@ -2645,8 +2703,8 @@ const EditProduct = () => {
             className="form-control"
             value={formatUnit}
             placeholder="Enter Unit"
-            onChange={(e) => setFormatUnit(e.target.value)} />
-
+            onChange={(e) => setFormatUnit(e.target.value)}
+          />
         </Modal.Body>
 
         <Modal.Footer
@@ -2678,7 +2736,6 @@ const EditProduct = () => {
           </button>
         </Modal.Footer>
       </Modal>
-
     </div>
   );
 };

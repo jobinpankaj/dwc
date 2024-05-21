@@ -1114,12 +1114,18 @@ table {
     border-radius: 10px;
     justify-content: center;
     align-items: center;
-    width: 120px;
+    width: 150px;
     font-weight: 500;
     font-size: 14px;
     font-family: $font-medium;
   }
 }
+.uploadBtn img{
+  width: 20px;
+  height: 16px;
+}
+
+
 
 .dropdown-item {
   padding-bottom: 5px;
