@@ -4,22 +4,24 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 import useAuthInterceptor from "../../../../utils/apis";
 import Loader from "../../UI/Loader";
 import { hasPermission } from "../../../../CommonComponents/commonMethods";
 import { REPORTS_VIEW, REPORTS_EDIT } from "../../../../Constants/constant";
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
+import { useTranslation } from "react-i18next";
 // define needed URLs here
 const getFormDataSuppliername = "/supplier/reportSuppliername";
 const postFormDataUrl = "/supplier/PostReportProductList";
 const getFormDataUrl = "/supplier/getsalesReport";
 const getFormDataSupplierUrl = "/supplier/reportFormdataSuppliersList";
+
 const InvoiceLists = ({ img, token }) => {
   // config for api call
   const config = {
@@ -30,7 +32,7 @@ const InvoiceLists = ({ img, token }) => {
   };
 
   const apis = useAuthInterceptor();
-
+  const { t, i18n } = useTranslation();
   // modal, formData, loading states
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -81,7 +83,7 @@ const InvoiceLists = ({ img, token }) => {
       //console.log("form submit", { formData }, { config });
       console.log("form submit", { formData });
       apis
-      .post(postFormDataUrl, formData, config)
+        .post(postFormDataUrl, formData, config)
         //  .post(postFormDataUrl, formData)
         .then((res) => {
           console.log("response", { res });
@@ -176,46 +178,45 @@ const InvoiceLists = ({ img, token }) => {
 
   // fetch saved form city data from db
   const fetchFormSupplierData = () => {
-  // add permissions based on URL
-  config.headers.permission = "reports-view";
-  setGetTableDataLoading(true);
-  apis
-    .get(getFormDataSuppliername, config)
-    //.get(getFormDataUrl)
-    .then((res) => {
-      if (res.status === 200) {
-        console.log("response Distributor data", { res });
-        setSupplierData(res.data.data);
-        setGetTableDataLoading(false);
-      }
-    })
-    .catch((error) => {
-      console.log({ error });
-      setGetTableDataLoading(false);
-      if (error) {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataSuppliername, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Distributor data", { res });
+          setSupplierData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
         console.log({ error });
-      }
-    });
-  setGetTableDataLoading(false);
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
   };
 
   useEffect(() => {
-  fetchFormSupplierData();
+    fetchFormSupplierData();
   }, []);
 
   return (
     <>
         <Card className="reports reports4">
-
-      <Card.Body>
-  <FontAwesomeIcon icon="fa-solid fa-file-invoice-dollar" />
-        <Card.Title></Card.Title>
-        <Card.Text>
-      Invoices
-        </Card.Text>
-        <Button variant="primary" onClick={() => setShowModal(true)}><FontAwesomeIcon icon="fa-solid fa-eye" /></Button>
-      </Card.Body>
-    </Card>
+          <Card.Body>
+            <FontAwesomeIcon icon="fa-solid fa-file-invoice-dollar" />
+            <Card.Title></Card.Title>
+            <Card.Text>{t("modal.invoice")}</Card.Text>
+            <Button variant="primary" onClick={() => setShowModal(false)}>
+              <FontAwesomeIcon icon="fa-solid fa-eye" />
+            </Button>
+          </Card.Body>
+        </Card>
 
       <Modal
         className="modal fade"
@@ -235,9 +236,9 @@ const InvoiceLists = ({ img, token }) => {
               </Col>
 
               <Col>
-              {Suppliername.map((values) => (
-                <h5>{values?.first_name} {values?.last_name}</h5>
-              ))}
+                {Suppliername.map((values) => (
+                  <h5>{values?.company_name} </h5>
+                ))}
                 List of Invoices
                 <br />
                 Category
@@ -301,9 +302,11 @@ const InvoiceLists = ({ img, token }) => {
                 >
                   <option value="">Choose...</option>
                   <option value="all">All</option>
-            {SupplierData.map((values) => (
-              <option value={values?.id}>{values?.first_name} {values?.last_name}</option>
-            ))}
+                  {SupplierData.map((values) => (
+                    <option value={values?.id}>
+                      {values?.first_name} {values?.last_name}
+                    </option>
+                  ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
                   Supplier is required.
@@ -352,20 +355,20 @@ const InvoiceLists = ({ img, token }) => {
               </Form.Group>
               <Form.Group as={Col} controlId="file-type">
                 <Form.Label>&nbsp;</Form.Label>
-              <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Payment collected By"
-      />
-      </Form.Group>
-      <Form.Group as={Col} controlId="file-type">
-        <Form.Label>&nbsp;</Form.Label>
-      <Form.Check // prettier-ignore
-type="switch"
-id="custom-switch"
-label="COllection fees"
-/>
-</Form.Group>
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="custom-switch"
+                  label="Payment collected By"
+                />
+              </Form.Group>
+              <Form.Group as={Col} controlId="file-type">
+                <Form.Label>&nbsp;</Form.Label>
+                <Form.Check // prettier-ignore
+                  type="switch"
+                  id="custom-switch"
+                  label="COllection fees"
+                />
+              </Form.Group>
             </Row>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="file-type">
@@ -374,7 +377,9 @@ label="COllection fees"
                   as="select"
                   name="file_type"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="xlsx">XLSX</option>
                   <option value="csv">CSV</option>
                   <option value="pdf">PDF</option>
@@ -389,7 +394,9 @@ label="COllection fees"
                   as="select"
                   name="language"
                   onChange={(e) => handleChange(e)}
-                >       <option value="">Choose...</option>
+                >
+                  {" "}
+                  <option value="">Choose...</option>
                   <option value="CAeng"> ENG </option>
                   <option value="CAfr"> FRA </option>
                 </Form.Control>
@@ -407,28 +414,33 @@ label="COllection fees"
           <hr />
           {!!getTableDataLoading && <Loader />}
           {!getTableDataLoading && (
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Created At</th>
-                  <th>Download</th>
-                  <th>File Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((values) => (
-                  <tr>
-                    <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
-                    <td>
-                      <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
-                        Download - {values?.file_type}
-                      </a>
-                    </td>
-                    <td>{values?.file_type}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            // <Table responsive striped bordered hover>
+            //   <thead>
+            //     <tr>
+            //       <th>Created At</th>
+            //       <th>Download</th>
+            //       <th>File Type</th>
+            //     </tr>
+            //   </thead>
+            //   <tbody>
+            //     {tableData.map((values) => (
+            //       <tr>
+            //         <td>{new Date(values?.created_at)?.toLocaleDateString('en-GB').replace(new RegExp("/", 'g'),"-")}</td>
+            //         <td>
+            //           <a class="btn btn-success" target="_blank" href={`${values?.file_path}/${values?.filename}`}>
+            //             Download - {values?.file_type}
+            //           </a>
+            //         </td>
+            //         <td>{values?.file_type}</td>
+            //       </tr>
+            //     ))}
+            //   </tbody>
+            // </Table>
+            <ReportsTable
+              tableData={tableData}
+              headings={["Created At", "File Type", "Download"]}
+              className=""
+            />
           )}
         </Modal.Body>
         <Modal.Footer>
