@@ -16,12 +16,14 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
 import { productList } from "../../../../Constants/data";
-
+import { useTranslation } from "react-i18next";
 // define needed URLs here
 const postFormDataUrl = "/PostReportProductList";
-const getFormDataUrl = "/supplier/getsalesReport";
-const getFormDataproductGroup = "/supplier/reportFormdataProductgroup";
+const getFormDataUrl = "/getDistributionTableReport";
+const getFormDataproductGroup = "/reportFormdataProductgroup";
 const getProductListData = "/GetFullDist_model";
+const getFormDataSuppliername = "/reportCompanyName";
+const getFormDataCadCsp = "/reportCadCsp";
 const ProductLists = ({ img, token, supplierName }) => {
   // config for api call
   const config = {
@@ -32,7 +34,7 @@ const ProductLists = ({ img, token, supplierName }) => {
   };
 
   const apis = useAuthInterceptor();
-
+  const { t, i18n } = useTranslation();
   // modal, formData, loading states
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -64,7 +66,9 @@ const ProductLists = ({ img, token, supplierName }) => {
   const [productTypeData, setProductTypeData] = useState([]);
   const [productStyleData, setProductStyleData] = useState([]);
   const [productFormatData, setProductFormatData] = useState([]);
-
+  const [productRetailerData, setProductRetailerData] = useState([]);
+  const [SupplierBname, setSupplierData] = useState([]);
+  const [CadCsp, setCadCspData] = useState([]);
   // handle change : sets formData
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +79,7 @@ const ProductLists = ({ img, token, supplierName }) => {
       : null;
 
     let newFormData = [];
+    let newProductRetailerData = [];
     let newProductCadData = [];
     let newProductNameData = [];
     let newProductTypeData = [];
@@ -85,6 +90,10 @@ const ProductLists = ({ img, token, supplierName }) => {
     if (dataKey) {
       newFormData = fullProductListData?.map((data) =>
         data?.find((value) => value?.user_id == dataKey)
+      );
+
+      newProductRetailerData = fullProductListData[1]?.filter(
+        (data) => data?.user_id == dataKey
       );
 
       newProductCadData = fullProductListData[2]?.filter(
@@ -102,36 +111,37 @@ const ProductLists = ({ img, token, supplierName }) => {
       newProductFormatData = fullProductListData[6]?.filter(
         (data) => data?.user_id == dataKey
       );
-    }
 
-    const notEligible = newFormData.some((item) => item === undefined);
-    if (notEligible) {
-      toast.error("Report cannot be processed!", {
-        autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
+      // const notEligible = newFormData.some((item) => item === undefined);
+      // if (notEligible) {
+      //   toast.error("Report cannot be processed!", {
+      //     autoClose: 3000,
+      //     position: toast.POSITION.TOP_CENTER,
+      //   });
+      // }
 
-    setProductCadData(newProductCadData);
-    setProductNameData(newProductNameData);
-    setProductTypeData(newProductTypeData);
-    setProductStyleData(newProductStyleData);
-    setProductFormatData(newProductFormatData);
+      setProductRetailerData(newProductRetailerData);
+      setProductCadData(newProductCadData);
+      setProductNameData(newProductNameData);
+      setProductTypeData(newProductTypeData);
+      setProductStyleData(newProductStyleData);
+      setProductFormatData(newProductFormatData);
 
-    // check if newFormData is not empty
-    // then update formData
-    // if no common value then that field won't be updated
-    if (newFormData?.length != 0) {
-      setFormData((prevData) => ({
-        ...prevData,
-        supplier: newFormData[0]?.company_name ?? "",
-        retailer: newFormData[1]?.business_name ?? "",
-        cad: newFormData[2]?.name ?? "",
-        product_name: newFormData[3]?.product_name ?? "",
-        product_type: newFormData[4]?.product_type ?? "",
-        product_style: newFormData[5]?.name ?? "",
-        product_format: newFormData[6]?.name ?? "",
-      }));
+      // check if newFormData is not empty
+      // then update formData
+      // if no common value then that field won't be updated
+      if (newFormData?.length != 0) {
+        setFormData((prevData) => ({
+          ...prevData,
+          supplier: newFormData[0]?.company_name ?? "",
+          retailer: newFormData[1]?.business_name ?? "",
+          cad: newFormData[2]?.name ?? "",
+          product_name: newFormData[3]?.product_name ?? "",
+          product_type: newFormData[4]?.product_type ?? "",
+          product_style: newFormData[5]?.name ?? "",
+          product_format: newFormData[6]?.name ?? "",
+        }));
+      }
     }
 
     // update formData for values without dataKey
@@ -248,6 +258,7 @@ const ProductLists = ({ img, token, supplierName }) => {
       .then((res) => {
         if (res.status === 200) {
           setFullProductListData(res?.data?.data);
+          setProductRetailerData(res?.data?.data[1]);
           setProductCadData(res?.data?.data[2]);
           setProductNameData(res?.data?.data[3]);
           setProductTypeData(res?.data?.data[4]);
@@ -265,12 +276,61 @@ const ProductLists = ({ img, token, supplierName }) => {
       });
     setFullProductListDataLoading(false);
   };
-
+ // fetch Company Name data from db
+ const fetchFormSupplierData = () => {
+  // add permissions based on URL
+  config.headers.permission = "reports-view";
+  setGetTableDataLoading(true);
+  apis
+    .get(getFormDataSuppliername, config)
+    //.get(getFormDataUrl)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log("response Supplier Name", { res });
+        setSupplierData(res.data.data);
+        setGetTableDataLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.log({ error });
+      setGetTableDataLoading(false);
+      if (error) {
+        console.log({ error });
+      }
+    });
+  setGetTableDataLoading(false);
+};
+// fetch CAD CSP data from db
+const fetchFormCadCspData = () => {
+// add permissions based on URL
+config.headers.permission = "reports-view";
+setGetTableDataLoading(true);
+apis
+  .get(getFormDataCadCsp, config)
+  //.get(getFormDataUrl)
+  .then((res) => {
+    if (res.status === 200) {
+      console.log("response Supplier Name", { res });
+      setCadCspData(res.data.data);
+      setGetTableDataLoading(false);
+    }
+  })
+  .catch((error) => {
+    console.log({ error });
+    setGetTableDataLoading(false);
+    if (error) {
+      console.log({ error });
+    }
+  });
+setGetTableDataLoading(false);
+};
   useEffect(() => {
     if (showModal) {
       fetchProductListData();
       fetchFormData();
       fetchProductGroupData();
+      fetchFormSupplierData();
+      fetchFormCadCspData();
       setFullProductListDataLoading(true);
     }
   }, [showModal]);
@@ -309,10 +369,12 @@ const ProductLists = ({ img, token, supplierName }) => {
                   </Col>
 
                   <Col>
-                    <h5>{supplierName} </h5>
-                    Products Distributions
+                  {SupplierBname.map((values) => (
+    <h5>{values?.company_name} </h5>
+  ))}
+                    {t("modal.modal_discreption1")}
                     <br />
-                    Find out where your products have been delivered.
+                    {t("modal.modal_discreption2")}
                   </Col>
                   <Col xs={6}></Col>
                 </Row>
@@ -320,7 +382,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                 <hr />
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="from_date">
-                    <Form.Label>From</Form.Label>
+                  <Form.Label>{t("modal.from")}</Form.Label>
                     <Form.Control
                       type="date"
                       name="from_date"
@@ -328,12 +390,12 @@ const ProductLists = ({ img, token, supplierName }) => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      From date is required.
+                    {t("modal.from")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} controlId="to_date">
-                    <Form.Label>To</Form.Label>
+                  <Form.Label>{t("modal.to")}</Form.Label>
                     <Form.Control
                       type="date"
                       name="to_date"
@@ -341,11 +403,11 @@ const ProductLists = ({ img, token, supplierName }) => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      To date is required.
+                    {t("modal.to")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="supplier">
-                    <Form.Label>By Supplier</Form.Label>
+                  <Form.Label>{t("modal.by_supplier")}</Form.Label>
                     <Form.Control
                       as="select"
                       required
@@ -353,7 +415,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.supplier}
                     >
-                      <option value="">Choose...</option>
+                      <option value="">{t("modal.choose")}</option>
                       {fullProductListData &&
                         fullProductListData[0]?.map((values) => (
                           <option
@@ -368,11 +430,11 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Supplier is required.
+                          {t("modal.by_supplier")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="retailer">
-                    <Form.Label>By Retailer</Form.Label>
+                  <Form.Label>{t("modal.by_retailer")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="retailer"
@@ -380,42 +442,14 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.retailer}
                     >
-                      <option value="">Choose...</option>
+                       <option value="">{t("modal.choose")}</option>
                       <option value="all">All</option>
-                      {fullProductListData &&
-                        fullProductListData[1]?.map((values) => (
-                          <option
-                            value={values?.business_name}
-                            data-key={values?.user_id}
-                          >
-                            {values?.business_name}
-                          </option>
-                        ))}
-                    </Form.Control>
-                    <Form.Control.Feedback
-                      className="error-label"
-                      type="invalid"
-                    >
-                      Retailer type is required.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} controlId="cad">
-                    <Form.Label>CSP/CAD</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="cad"
-                      required
-                      onChange={(e) => handleChange(e)}
-                      value={formData?.cad}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="all">All</option>
-                      {productCadData?.map((values) => (
-                        <option value={values?.name} data-key={values?.user_id}>
-                          {values?.name}
+                      {productRetailerData?.map((values) => (
+                        <option
+                          value={values?.business_name}
+                          data-key={values?.user_id}
+                        >
+                          {values?.business_name}
                         </option>
                       ))}
                     </Form.Control>
@@ -423,11 +457,14 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      CSP/CAD type is required.
+     {t("modal.by_retailer")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
                   <Form.Group as={Col} controlId="product-name">
-                    <Form.Label>Product name</Form.Label>
+                  <Form.Label>{t("modal.product_name")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_name"
@@ -435,7 +472,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.product_name}
                     >
-                      <option value="">Choose...</option>
+                  <option value="">{t("modal.choose")}</option>
                       {productNameData?.map((values) => (
                         <option
                           value={values?.product_name}
@@ -449,11 +486,11 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Product name is required.
+            {t("modal.product_name")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="product-type">
-                    <Form.Label>Product Type</Form.Label>
+                  <Form.Label>{t("modal.product_type")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_type"
@@ -461,7 +498,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.product_type}
                     >
-                      <option value="">Choose...</option>
+          <option value="">{t("modal.choose")}</option>
                       {productTypeData?.map((values) => (
                         <option
                           value={values?.product_type}
@@ -475,11 +512,11 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Product type is required.
+                {t("modal.product_type")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="product-style">
-                    <Form.Label>Product style</Form.Label>
+                  <Form.Label>{t("modal.product_style")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_style"
@@ -487,7 +524,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.product_style}
                     >
-                      <option value="">Choose...</option>
+                        <option value="">{t("modal.choose")}</option>
                       {productStyleData?.map((values) => (
                         <option value={values?.name} data-key={values?.user_id}>
                           {values?.name}
@@ -498,14 +535,11 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Product style is required.
+            {t("modal.product_style")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
                   <Form.Group as={Col} controlId="product-format">
-                    <Form.Label>Product format</Form.Label>
+                  <Form.Label>{t("modal.product_format")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_format"
@@ -513,7 +547,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.product_format}
                     >
-                      <option value="">Choose...</option>
+                     <option value="">{t("modal.choose")}</option>
                       {productFormatData?.map((values) => (
                         <option
                           key={values?.id}
@@ -528,18 +562,65 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Product format is required.
+                     {t("modal.product_format")} {t("modal.is_required")}.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Group as={Col} controlId="cad">
+                    <Form.Label>CSP/CAD</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="cad"
+                      required
+                      onChange={(e) => handleChange(e)}
+                      value={formData?.cad}
+                    >
+                           <option value="">{t("modal.choose")}</option>
+                      <option value="all">All</option>
+                      {CadCsp?.map((values) => (
+                        <option value={values?.name} data-key={values?.user_id}>
+                          {values?.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                    <Form.Control.Feedback
+                      className="error-label"
+                      type="invalid"
+                    >
+                     CSP/CAD {t("modal.is_required")}.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="group">
+                  <Form.Label>{t("modal.group")}</Form.Label>
+                    <Form.Control
+                      as="select"
+                      required
+                      name="group"
+                      onChange={(e) => handleChange(e)}
+                    >
+                      <option value="">{t("modal.choose")}</option>
+                      {ProductGroupData.map((values) => (
+                        <option value={values?.name}>{values?.name}</option>
+                      ))}
+                    </Form.Control>
+                    <Form.Control.Feedback
+                      className="error-label"
+                      type="invalid"
+                    >
+                      {t("modal.group")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="order-state">
-                    <Form.Label>Order status </Form.Label>
+                  <Form.Label>{t("modal.order_status")} </Form.Label>
                     <Form.Control
                       as="select"
                       required
                       name="order_state"
                       onChange={(e) => handleChange(e)}
                     >
-                      <option value="">Choose...</option>
+                          <option value="">{t("modal.choose")}</option>
                       <option value="all">All</option>
                       <option value="Pending">Pending</option>
                       <option value="Approved">Approved</option>
@@ -551,18 +632,18 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Order state is required.
+               {t("modal.order_status")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="invoice-state">
-                    <Form.Label>Invoices Status</Form.Label>
+                  <Form.Label>{t("modal.invoice_status")}</Form.Label>
                     <Form.Control
                       as="select"
                       required
                       name="invoice_state"
                       onChange={(e) => handleChange(e)}
                     >
-                      <option value="">Choose...</option>
+                      <option value="">{t("modal.choose")}</option>
                       <option value="All">All</option>
                       <option value="paid">Paid</option>
                       <option value="pending">Pending</option>
@@ -574,40 +655,20 @@ const ProductLists = ({ img, token, supplierName }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Invoice status is required.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} controlId="group">
-                    <Form.Label>Group</Form.Label>
-                    <Form.Control
-                      as="select"
-                      required
-                      name="group"
-                      onChange={(e) => handleChange(e)}
-                    >
-                      <option value="">Choose...</option>
-                      {ProductGroupData.map((values) => (
-                        <option value={values?.name}>{values?.name}</option>
-                      ))}
-                    </Form.Control>
-                    <Form.Control.Feedback
-                      className="error-label"
-                      type="invalid"
-                    >
-                      Group is required.
+                     {t("modal.invoice_status")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="file-type">
-                    <Form.Label>File Type</Form.Label>
+                  <Form.Label>{t("modal.file_type")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="file_type"
                       onChange={(e) => handleChange(e)}
                     >
                       {" "}
-                      <option value="">Choose...</option>
+                      <option value="">{t("modal.choose")}</option>
                       <option value="xlsx">XLSX</option>
                       <option value="csv">CSV</option>
                       <option value="pdf">PDF</option>
@@ -617,14 +678,14 @@ const ProductLists = ({ img, token, supplierName }) => {
                 </Form.Control.Feedback> */}
                   </Form.Group>
                   <Form.Group as={Col} controlId="language">
-                    <Form.Label>Language</Form.Label>
+                  <Form.Label>{t("modal.language")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="language"
                       onChange={(e) => handleChange(e)}
                     >
                       {" "}
-                      <option value="">Choose...</option>
+                      <option value="">{t("modal.choose")}</option>
                       <option value="CAeng">ENG</option>
                       <option value="CAfr">FRA</option>
                     </Form.Control>
@@ -636,7 +697,7 @@ const ProductLists = ({ img, token, supplierName }) => {
                   class="btn btn-success w-auto"
                   disabled={loading}
                 >
-                  Generate List
+                  {t("modal.generate_list")}
                 </button>
               </Form>
               <hr />
@@ -644,7 +705,7 @@ const ProductLists = ({ img, token, supplierName }) => {
               {!getTableDataLoading && (
                 <ReportsTable
                   tableData={tableData}
-                  headings={["Created At", "File Type", "Download"]}
+                  headings={[t("modal.created_at"), t("modal.file_type"), t("modal.download")]}
                   className=""
                 />
               )}
@@ -659,7 +720,7 @@ const ProductLists = ({ img, token, supplierName }) => {
             data-bs-dismiss="modal"
             onClick={() => setShowModal(false)}
           >
-            Close
+                  {t("modal.close")}
           </button>
         </Modal.Footer>
       </Modal>

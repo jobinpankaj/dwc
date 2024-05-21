@@ -15,11 +15,12 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
+import { useTranslation } from "react-i18next";
 // define needed URLs here
-const getFormDataSuppliername = "/supplier/reportSuppliername";
+const getFormDataSuppliername = "/reportCompanyName";
 const postFormDataUrl = "/supplier/PostReportCustomList";
 const getFormDataUrl = "/supplier/getCustomReports";
-const getFormDataDistributorList = "/supplier/reportFormdataDistributorList";
+const getFormDataDistributorList = "/GetDistributorsList";
 const getFormDataproductType = "/supplier/reportFormdataProducttype";
 
 const CustomMade = ({ img, token }) => {
@@ -32,7 +33,7 @@ const CustomMade = ({ img, token }) => {
   };
 
   const apis = useAuthInterceptor();
-
+  const { t, i18n } = useTranslation();
   // modal, formData, loading states
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -149,7 +150,7 @@ const CustomMade = ({ img, token }) => {
     fetchFormData();
   }, []);
 
-  // fetch saved form city data from db
+  // fetch saved form Supplier data from db
   const fetchFormSupplierData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
@@ -177,7 +178,7 @@ const CustomMade = ({ img, token }) => {
   useEffect(() => {
     fetchFormSupplierData();
   }, []);
-  // fetch saved form city data from db
+  // fetch saved form Distributor data from db
   const fetchFormDistributorData = () => {
     // add permissions based on URL
     config.headers.permission = "reports-view";
@@ -241,7 +242,7 @@ const CustomMade = ({ img, token }) => {
           <Card.Body>
             <FontAwesomeIcon icon="fa-solid fa-sliders" />
             <Card.Title></Card.Title>
-            <Card.Text>Custom Made</Card.Text>
+            <Card.Text>{t("modal.custom_made")}</Card.Text>
             <Button variant="primary" onClick={() => setShowModal(true)}>
               <FontAwesomeIcon icon="fa-solid fa-eye" />
             </Button>
@@ -257,7 +258,7 @@ const CustomMade = ({ img, token }) => {
         onHide={() => setShowModal(false)}
       >
         <Modal.Header>
-          <Modal.Title>List of custom made</Modal.Title>
+          <Modal.Title>{t("modal.list_of_custom_made")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -267,13 +268,12 @@ const CustomMade = ({ img, token }) => {
               </Col>
 
               <Col>
-                {Suppliername.map((values) => (
-                  <h5>{values?.company_name} </h5>
-                ))}
-                Custom Lists
-                <br />
-                Find out where your products have been delivered during the
-                analyzed perio
+              {Suppliername.map((values) => (
+                <h5>{values?.company_name} </h5>
+              ))}
+              {t("modal.custom_lists")}
+              <br />
+        {t("modal.find_out_custom")}
               </Col>
               <Col xs={6}></Col>
             </Row>
@@ -281,7 +281,7 @@ const CustomMade = ({ img, token }) => {
             <hr />
             <Row className="mb-3">
               <Form.Group as={Col} controlId="from_date">
-                <Form.Label>From</Form.Label>
+                <Form.Label>{t("modal.from")}</Form.Label>
                 <Form.Control
                   type="date"
                   name="from_date"
@@ -289,12 +289,12 @@ const CustomMade = ({ img, token }) => {
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                  From date is required.
+                  {t("modal.from")} {t("modal.is_required")}.
                 </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group as={Col} controlId="to_date">
-                <Form.Label>To</Form.Label>
+                <Form.Label>{t("modal.to")}</Form.Label>
                 <Form.Control
                   type="date"
                   name="to_date"
@@ -302,7 +302,7 @@ const CustomMade = ({ img, token }) => {
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                  To date is required.
+              {t("modal.to")}   {t("modal.is_required")}.
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
@@ -316,27 +316,27 @@ const CustomMade = ({ img, token }) => {
                   name="distributer"
                   onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Choose...</option>
-                  {DistributorData.map((values) => (
-                    <option value={values?.user_id}>
-                      {values?.business_name}
-                    </option>
-                  ))}
+                <option value="">{t("modal.choose")}</option>
+                {DistributorData.map((values) => (
+                  <option value={values?.user_id}>
+                    {values?.company_name}
+                  </option>
+                ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
-                  Distributer is required.
+                  Distributer {t("modal.is_required")}.
                 </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group as={Col} controlId="product-type">
-                <Form.Label>Product Type</Form.Label>
+                  <Form.Label>{t("modal.product_type")}</Form.Label>
                 <Form.Control
                   as="select"
                   name="product_type"
                   required
                   onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Choose...</option>
+                  <option value="">{t("modal.choose")}</option>
                   {ProductTypeData.map((values) => (
                     <option value={values?.product_type}>
                       {values?.product_type}
@@ -344,18 +344,18 @@ const CustomMade = ({ img, token }) => {
                   ))}
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
-                  Product type is required.
+              {t("modal.product_type")} {t("modal.is_required")}.
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group as={Col} controlId="order-state">
-                <Form.Label>Order state</Form.Label>
+                <Form.Label>{t("modal.order_status")}</Form.Label>
                 <Form.Control
                   as="select"
                   required
                   name="order_state"
                   onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Choose...</option>
+                  <option value="">{t("modal.choose")}</option>
                   <option value="All">All</option>
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
@@ -365,20 +365,20 @@ const CustomMade = ({ img, token }) => {
                   <option value="cancelled">Cancelled</option>
                 </Form.Control>
                 <Form.Control.Feedback className="error-label" type="invalid">
-                  Order state is required.
+                    {t("modal.order_state")} {t("modal.is_required")}.
                 </Form.Control.Feedback>
               </Form.Group>
             </Row>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="file-type">
-                <Form.Label>File Type</Form.Label>
+                <Form.Label>{t("modal.file_type")}</Form.Label>
                 <Form.Control
                   as="select"
                   name="file_type"
                   onChange={(e) => handleChange(e)}
                 >
                   {" "}
-                  <option value="">Choose...</option>
+                  <option value="">{t("modal.choose")}</option>
                   <option value="xlsx">XLSX</option>
                   <option value="csv">CSV</option>
                   <option value="pdf">PDF</option>
@@ -388,14 +388,14 @@ const CustomMade = ({ img, token }) => {
                 </Form.Control.Feedback> */}
               </Form.Group>
               <Form.Group as={Col} controlId="language">
-                <Form.Label>Language</Form.Label>
+                <Form.Label>{t("modal.language")}</Form.Label>
                 <Form.Control
                   as="select"
                   name="language"
                   onChange={(e) => handleChange(e)}
                 >
                   {" "}
-                  <option value="">Choose...</option>
+                  <option value="">{t("modal.choose")}</option>
                   <option value="CAeng">ENG</option>
                   <option value="CAfr">FRA</option>
                 </Form.Control>
@@ -407,7 +407,7 @@ const CustomMade = ({ img, token }) => {
               class="btn btn-success w-auto"
               disabled={loading}
             >
-              Generate List
+              {t("modal.generate_list")}
             </button>
           </Form>
           <hr />
@@ -437,7 +437,7 @@ const CustomMade = ({ img, token }) => {
             // </Table>
             <ReportsTable
               tableData={tableData}
-              headings={["Created At", "File Type", "Download"]}
+              headings={[t("modal.created_at"), t("modal.file_type"), t("modal.download")]}
               className=""
             />
           )}
@@ -450,7 +450,7 @@ const CustomMade = ({ img, token }) => {
             data-bs-dismiss="modal"
             onClick={() => setShowModal(false)}
           >
-            Close
+          {t("modal.close")}
           </button>
         </Modal.Footer>
       </Modal>

@@ -15,6 +15,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
+import { useTranslation } from "react-i18next";
 // define needed URLs here
 const postFormDataUrl = "/supplier/PostReportProductList";
 const getFormDataUrl = "/supplier/getsalesReport";
@@ -31,7 +32,7 @@ const SuperInvoice = ({ img, token }) => {
   };
 
   const apis = useAuthInterceptor();
-
+  const { t, i18n } = useTranslation();
   // modal, formData, loading states
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -245,8 +246,8 @@ const SuperInvoice = ({ img, token }) => {
           <Card.Body>
             <FontAwesomeIcon icon="fa-solid fa-file-invoice" />
             <Card.Title></Card.Title>
-            <Card.Text>Super Invoice</Card.Text>
-            <Button variant="primary" onClick={() => setShowModal(true)}>
+            <Card.Text>{t("modal.super_invoice")}</Card.Text>
+            <Button variant="primary" onClick={() => setShowModal(false)}>
               <FontAwesomeIcon icon="fa-solid fa-eye" />
             </Button>
           </Card.Body>

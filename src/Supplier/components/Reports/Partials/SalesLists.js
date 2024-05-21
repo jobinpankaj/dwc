@@ -15,11 +15,13 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReportsTable from "../../../../CommonComponents/UI/ReportsTable";
+import { useTranslation } from "react-i18next";
 // define needed URLs here
 const postFormDataUrl = "/supplier/PostSuperSalesReports";
 const getFormDataUrl = "/supplier/getSuperSalesReports";
 const getFullSalesData = "/GetFullDist_model"; // "/GetFullSales_model";
-
+const getFormDataSuppliername = "/reportCompanyName";
+const getFormUserLists = "/GetInventoryUserList";
 const SalesLists = ({ img, token, supplierName, usersData }) => {
   // config for api call
   const config = {
@@ -30,7 +32,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
   };
 
   const apis = useAuthInterceptor();
-
+  const { t, i18n } = useTranslation();
   // modal, formData, loading states
   const [showModal, setShowModal] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -53,7 +55,9 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
     useState(true);
   const [productTypeData, setProductTypeData] = useState([]);
   const [productFormatData, setProductFormatData] = useState([]);
-
+  const [retailerData, setRetailerData] = useState([]);
+  const [SupplierBname, setSupplierData] = useState([]);
+  const [ByUsers, setUsersData] = useState([]);
   // testing values for table
   // {
   //   created_at: "123",
@@ -73,6 +77,8 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
     let newFormData = [];
     let newProductTypeData = [];
     let newProductFormatData = [];
+    let newRetailerData = [];
+
     // if dataKey
     // code inside finds values with common user_id
     if (dataKey) {
@@ -80,36 +86,42 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
         data?.find((value) => value?.user_id == dataKey)
       );
 
+      newRetailerData = fullSalesData[1]?.filter(
+        (data) => data?.user_id == dataKey
+      );
+
       newProductTypeData = fullSalesData[4]?.filter(
         (data) => data?.user_id == dataKey
       );
+
       newProductFormatData = fullSalesData[6]?.filter(
         (data) => data?.user_id == dataKey
       );
-    }
 
-    const notEligible = newFormData.some((item) => item === undefined);
-    if (notEligible) {
-      toast.error("Report cannot be processed!", {
-        autoClose: 3000,
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
+      // const notEligible = newFormData.some((item) => item === undefined);
+      // if (notEligible) {
+      //   toast.error("Report cannot be processed!", {
+      //     autoClose: 3000,
+      //     position: toast.POSITION.TOP_CENTER,
+      //   });
+      // }
 
-    setProductTypeData(newProductTypeData);
-    setProductFormatData(newProductFormatData);
+      setProductTypeData(newProductTypeData);
+      setProductFormatData(newProductFormatData);
+      setRetailerData(newRetailerData);
 
-    // check if newFormData is not empty
-    // then update formData
-    // if no common value then that field won't be updated
-    if (newFormData?.length != 0) {
-      setFormData((prevData) => ({
-        ...prevData,
-        supplier: newFormData[0]?.company_name ?? "",
-        retailer: newFormData[1]?.business_name ?? "",
-        product_type: newFormData[4]?.product_type ?? "",
-        product_format: newFormData[6]?.name ?? "",
-      }));
+      // check if newFormData is not empty
+      // then update formData
+      // if no common value then that field won't be updated
+      if (newFormData?.length != 0) {
+        setFormData((prevData) => ({
+          ...prevData,
+          supplier: newFormData[0]?.company_name ?? "",
+          retailer: newFormData[1]?.business_name ?? "",
+          product_type: newFormData[4]?.product_type ?? "",
+          product_format: newFormData[6]?.name ?? "",
+        }));
+      }
     }
 
     setFormData((prevData) => ({
@@ -204,6 +216,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
       .then((res) => {
         if (res.status === 200) {
           setFullSalesData(res.data.data);
+          setRetailerData(res.data.data[1]);
           setProductTypeData(res?.data?.data[4]);
           setProductFormatData(res?.data?.data[6]);
           setFullProductListDataLoading(false);
@@ -226,6 +239,64 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
       setFullProductListDataLoading(true);
     }
   }, [showModal]);
+  // fetch Supplier name data from db
+  const fetchFormSupplierData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormDataSuppliername, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Supplier data", { res });
+          setSupplierData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  const fetchUsersData = () => {
+    // add permissions based on URL
+    config.headers.permission = "reports-view";
+    setGetTableDataLoading(true);
+    apis
+      .get(getFormUserLists, config)
+      //.get(getFormDataUrl)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("response Supplier Name", { res });
+          setUsersData(res.data.data);
+          setGetTableDataLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log({ error });
+        setGetTableDataLoading(false);
+        if (error) {
+          console.log({ error });
+        }
+      });
+    setGetTableDataLoading(false);
+  };
+
+  useEffect(() => {
+    if (showModal) {
+      fetchFullSalesData();
+      fetchFormData();
+      fetchUsersData();
+      setFullProductListDataLoading(true);
+      fetchFormSupplierData();
+    }
+  }, [showModal]);
 
   return (
     <>
@@ -233,7 +304,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
         <Card.Body>
           <FontAwesomeIcon icon="fa-solid fa-list-ul" />
           <Card.Title></Card.Title>
-          <Card.Text>Sales</Card.Text>
+          <Card.Text>{t("modal.sales")}</Card.Text>
           <Button variant="primary" onClick={() => setShowModal(true)}>
             <FontAwesomeIcon icon="fa-solid fa-eye" />
           </Button>
@@ -248,7 +319,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
         onHide={() => setShowModal(false)}
       >
         <Modal.Header>
-          <Modal.Title>List of Sales</Modal.Title>
+          <Modal.Title>{t("modal.list_of_sales")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {!!fullProductListDataLoading && <Loader />}
@@ -261,12 +332,12 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                   </Col>
 
                   <Col>
-                    <h5>{supplierName} </h5>
-                    List of Sales
+                  {SupplierBname.map((values) => (
+                    <h5>{values?.company_name} </h5>
+                  ))}
+                  {t("modal.list_of_sales")}
                     <br />
-                    Category
-                    <br />
-                    Find out Sales Lists
+                {t("modal.find_out_sales_lists")}
                   </Col>
                   <Col xs={6}></Col>
                 </Row>
@@ -274,7 +345,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                 <hr />
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="from_date">
-                    <Form.Label>From</Form.Label>
+                    <Form.Label>{t("modal.from")}</Form.Label>
                     <Form.Control
                       type="date"
                       name="from_date"
@@ -282,12 +353,12 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      From date is required.
+                        {t("modal.from")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} controlId="to_date">
-                    <Form.Label>To</Form.Label>
+                <Form.Label>{t("modal.to")}</Form.Label>
                     <Form.Control
                       type="date"
                       name="to_date"
@@ -295,11 +366,11 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      To date is required.
+                    {t("modal.to")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group as={Col} controlId="supplier">
-                    <Form.Label>By Supplier</Form.Label>
+                  <Form.Label>{t("modal.by_supplier")}</Form.Label>
                     <Form.Control
                       as="select"
                       required
@@ -307,7 +378,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       onChange={(e) => handleChange(e)}
                       value={formData?.supplier}
                     >
-                      <option value="">Choose...</option>
+                    <option value="">{t("modal.choose")}</option>
                       {fullSalesData &&
                         fullSalesData[0]?.map((values) => (
                           <option
@@ -322,7 +393,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       className="error-label"
                       type="invalid"
                     >
-                      Supplier is required.
+                      {t("modal.by_supplier")} {t("modal.is_required")}.
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
@@ -397,30 +468,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                 </Form.Group>
             </Row>*/}
                 <Row className="mb-3">
-                  <Form.Group as={Col} controlId="by-user">
-                    <Form.Label>By user</Form.Label>
-                    <Form.Control
-                      as="select"
-                      required
-                      name="by_user"
-                      onChange={(e) => handleChange(e)}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="all">All</option>
-                      {usersData &&
-                        usersData.map((values) => (
-                          <option value={values?.id}>
-                            {values?.first_name} {values?.last_name}
-                          </option>
-                        ))}
-                    </Form.Control>
-                    <Form.Control.Feedback
-                      className="error-label"
-                      type="invalid"
-                    >
-                      User is required.
-                    </Form.Control.Feedback>
-                  </Form.Group>
+
                   {/*}          <Form.Group as={Col} controlId="product-type">
             <Form.Label>Select</Form.Label>
               {['checkbox'].map((type) => (
@@ -456,7 +504,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
             ))}
                 </Form.Group> */}
                   <Form.Group as={Col} controlId="retailer">
-                    <Form.Label>By Retailer</Form.Label>
+                <Form.Label>{t("modal.by_retailer")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="retailer"
@@ -464,16 +512,15 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       value={formData?.retailer}
                     >
                       {" "}
-                      <option value="">Choose...</option>
-                      {fullSalesData &&
-                        fullSalesData[1]?.map((values) => (
-                          <option
-                            value={values?.business_name}
-                            data-key={values?.user_id}
-                          >
-                            {values?.business_name}
-                          </option>
-                        ))}
+                    <option value="">{t("modal.choose")}</option>
+                      {retailerData?.map((values) => (
+                        <option
+                          value={values?.business_name}
+                          data-key={values?.user_id}
+                        >
+                          {values?.business_name}
+                        </option>
+                      ))}
                     </Form.Control>
                     {/* <Form.Control.Feedback className="error-label" type="invalid">
                     Please select an option.
@@ -482,7 +529,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="Product_type">
-                    <Form.Label>Product type</Form.Label>
+                        <Form.Label>{t("modal.product_type")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_type"
@@ -502,7 +549,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                     </Form.Control>
                   </Form.Group>
                   <Form.Group as={Col} controlId="Product-format">
-                    <Form.Label>Product format</Form.Label>
+                <Form.Label>{t("modal.product_format")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="product_format"
@@ -510,7 +557,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       value={formData?.product_format}
                     >
                       {" "}
-                      <option value="">Choose...</option>
+                <option value="">{t("modal.choose")}</option>
                       {productFormatData?.map((values) => (
                         <option value={values?.name} data-key={values?.user_id}>
                           {values?.name}
@@ -518,17 +565,40 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                       ))}
                     </Form.Control>
                   </Form.Group>
+                  <Form.Group as={Col} controlId="by-user">
+                  <Form.Label>{t("modal.by_users")}</Form.Label>
+                    <Form.Control
+                      as="select"
+                      required
+                      name="by_user"
+                      onChange={(e) => handleChange(e)}
+                    >
+                    <option value="">{t("modal.choose")}</option>
+                    <option value="all">All</option>
+                    {ByUsers.map((values) => (
+                          <option value={values?.id}>
+                            {values?.first_name} {values?.last_name}
+                          </option>
+                        ))}
+                    </Form.Control>
+                    <Form.Control.Feedback
+                      className="error-label"
+                      type="invalid"
+                    >
+                      {t("modal.by_users")} {t("modal.is_required")}.
+                    </Form.Control.Feedback>
+                  </Form.Group>
                 </Row>
                 <Row className="mb-3">
                   <Form.Group as={Col} controlId="file-type">
-                    <Form.Label>File Type</Form.Label>
+                      <Form.Label>{t("modal.file_type")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="file_type"
                       onChange={(e) => handleChange(e)}
                     >
                       {" "}
-                      <option value="">Choose...</option>
+              <option value="">{t("modal.choose")}</option>
                       <option value="xlsx">XLSX</option>
                       <option value="csv">CSV</option>
                       <option value="pdf">PDF</option>
@@ -538,14 +608,14 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                 </Form.Control.Feedback> */}
                   </Form.Group>
                   <Form.Group as={Col} controlId="language">
-                    <Form.Label>Language</Form.Label>
+                    <Form.Label>{t("modal.language")}</Form.Label>
                     <Form.Control
                       as="select"
                       name="language"
                       onChange={(e) => handleChange(e)}
                     >
                       {" "}
-                      <option value="">Choose...</option>
+            <option value="">{t("modal.choose")}</option>
                       <option value="CAeng"> ENG </option>
                       <option value="CAfr"> FRA </option>
                     </Form.Control>
@@ -557,7 +627,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                   class="btn btn-success w-auto"
                   disabled={loading}
                 >
-                  Generate List
+    <option value="">{t("modal.generate_list")}</option>
                 </button>
               </Form>
               <hr />
@@ -587,7 +657,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
                 // </Table>
                 <ReportsTable
                   tableData={tableData}
-                  headings={["Created At", "File Type", "Download"]}
+                  headings={[t("modal.created_at"), t("modal.file_type"), t("modal.download")]}
                   className=""
                 />
               )}
@@ -602,7 +672,7 @@ const SalesLists = ({ img, token, supplierName, usersData }) => {
             data-bs-dismiss="modal"
             onClick={() => setShowModal(false)}
           >
-            Close
+          {t("modal.close")}
           </button>
         </Modal.Footer>
       </Modal>
